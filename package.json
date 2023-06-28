@@ -9,7 +9,9 @@
     "lint": "eslint . --fix --ignore-path .gitignore"
   },
   "dependencies": {
+    "@material/material-color-utilities": "^0.2.7",
     "@mdi/font": "7.0.96",
+    "@vueuse/core": "^10.2.1",
     "core-js": "^3.29.0",
     "pinia": "^2.0.0",
     "roboto-fontface": "*",
