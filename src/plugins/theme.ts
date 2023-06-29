@@ -22,11 +22,11 @@ const mainColorMappings: [string, keyof Scheme][] = [
 ]
 
 const surfaceColorMappings: [string, number, number][] = [
-    ["lowest", 100, 4],
-    ["low", 96, 10],
+    ["-lowest", 100, 4],
+    ["-low", 96, 10],
     ["", 94, 12],
-    ["high", 92, 17],
-    ["highest", 90, 22],
+    ["-high", 92, 17],
+    ["-highest", 90, 22],
 ]
 
 export function generateThemeColors(color: string, dark: boolean): ThemeColors {
@@ -38,7 +38,7 @@ export function generateThemeColors(color: string, dark: boolean): ThemeColors {
     });
     surfaceColorMappings.forEach(([key, lightValue, darkValue]) => {
         const value = dark ? darkValue : lightValue;
-        colors[`surface-container-${key}`] = hexFromArgb(theme.palettes.neutral.tone(value));
+        colors[`surface-container${key}`] = hexFromArgb(theme.palettes.neutral.tone(value));
     });
     return colors;
 }

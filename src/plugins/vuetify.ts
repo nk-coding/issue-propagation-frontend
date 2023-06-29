@@ -18,13 +18,13 @@ export default createVuetify({
     theme: {
         themes: {
             light: {
-                colors: generateThemeColors("#00ffff", false)
+                colors: generateThemeColors("#00ffff", false),
             },
             dark: {
-                colors: generateThemeColors("#00ffff", true)
+                colors: generateThemeColors("#00ffff", true),
             },
         },
-        variations: false
+        variations: false,
     },
     blueprint: md3,
 });
