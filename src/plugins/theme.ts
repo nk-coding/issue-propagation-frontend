@@ -11,22 +11,22 @@ const mainColorMappings: [string, keyof Scheme][] = [
     ["on-secondary", "onSecondary"],
     ["tertiary", "tertiary"],
     ["on-tertiary", "onTertiary"],
-    ["surface", "surface"],
-    ["on-surface", "onSurface"],
-    ["surface-variant", "surfaceVariant"],
-    ["on-surface-variant", "onSurfaceVariant"],
-    ["background", "background"],
-    ["on-background", "onBackground"],
     ["error", "error"],
     ["on-error", "onError"],
 ]
 
 const surfaceColorMappings: [string, number, number][] = [
-    ["-lowest", 100, 4],
-    ["-low", 96, 10],
-    ["", 94, 12],
-    ["-high", 92, 17],
-    ["-highest", 90, 22],
+    ["surface-container-lowest", 100, 4],
+    ["surface-container-low", 96, 10],
+    ["surface-container", 94, 12],
+    ["surface-container-high", 92, 17],
+    ["surface-container-highest", 90, 22],
+    ["surface", 98, 6],
+    ["on-surface", 10, 90],
+    ["surface-variant", 90, 30],
+    ["on-surface-variant", 30, 80],
+    ["background", 98, 6],
+    ["on-background", 10, 90],
 ]
 
 export function generateThemeColors(color: string, dark: boolean): ThemeColors {
@@ -38,7 +38,7 @@ export function generateThemeColors(color: string, dark: boolean): ThemeColors {
     });
     surfaceColorMappings.forEach(([key, lightValue, darkValue]) => {
         const value = dark ? darkValue : lightValue;
-        colors[`surface-container${key}`] = hexFromArgb(theme.palettes.neutral.tone(value));
+        colors[key] = hexFromArgb(theme.palettes.neutral.tone(value));
     });
     return colors;
 }
