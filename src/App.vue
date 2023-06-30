@@ -13,4 +13,28 @@ body, html, #app {
     padding: 0;
     overflow: hidden !important;
 }
+
+::-webkit-scrollbar {
+    width: 9px !important;
+    height: 9px !important;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    border: 3px solid transparent;
+    border-radius: 10px;
+    background: rgba(var(--v-theme-on-surface), 0.25);
+    background-clip: padding-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    border: 0;
+}
+
+::-webkit-scrollbar-corner {
+    visibility: hidden;
+}
 </style>

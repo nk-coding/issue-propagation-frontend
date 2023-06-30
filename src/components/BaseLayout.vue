@@ -1,6 +1,6 @@
 <template>
     <div class="root d-flex flex-column">
-        <div class="header d-flex align-center my-1 mx-2">
+        <div class="header d-flex align-center ma-2">
             <v-btn @click="router.push('/')" class="mr-3 d-flex" variant="text" icon size="small">
                 <img src="@/assets/logo.svg" width="40" />
             </v-btn>
