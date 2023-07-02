@@ -1,28 +1,28 @@
-/**
- * plugins/vuetify.ts
- *
- * Framework documentation: https://vuetifyjs.com`
- */
-
-// Styles
 import "@mdi/font/css/materialdesignicons.css";
 import "vuetify/styles";
-
-// Composables
 import { createVuetify } from "vuetify";
 import { md3 } from "vuetify/blueprints";
 import { generateThemeColors } from "./theme";
 import { VBtn } from "vuetify/lib/components/index.mjs";
 
-// https://vuetifyjs.com/en/introduction/why-vuetify/#feature-guides
+const themeIndependentVariables = {
+    "hover-opacity": 0.08,
+}
+
 export default createVuetify({
     theme: {
         themes: {
             light: {
                 colors: generateThemeColors("#00ffff", false),
+                variables: {
+                    ...themeIndependentVariables
+                },
             },
             dark: {
                 colors: generateThemeColors("#00ffff", true),
+                variables: {
+                    ...themeIndependentVariables
+                },
             },
         },
         variations: false,

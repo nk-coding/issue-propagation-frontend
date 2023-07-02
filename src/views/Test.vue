@@ -15,6 +15,8 @@
 import BaseLayout from "@/components/BaseLayout.vue";
 import PaginatedList, { ItemManager } from "@/components/PaginatedList.vue";
 import { SideBarItem } from "@/components/SideBar.vue";
+import { ref } from "vue";
+import { reactive } from "vue";
 
 const titleSegments = [
     { name: 'Gropius', path: '/' },
@@ -31,7 +33,7 @@ const rightSidebarItems: SideBarItem[][] = [
         {
             icon: 'mdi-plus',
             description: 'Add element',
-            color: "secondary-container",
+            color: "secondary",
             onClick: () => { },
         },
     ],
@@ -39,30 +41,28 @@ const rightSidebarItems: SideBarItem[][] = [
         {
             icon: 'mdi-plus',
             description: 'Add element',
-            color: "tertiary-container",
+            color: "tertiary",
             onClick: () => { },
         },
     ],
 ];
 
-const leftSidebarItems: SideBarItem[][] = [
+const leftSidebarItems = reactive([
     [
         {
             icon: 'mdi-plus',
             name: 'Add',
-            color: "secondary-container",
-            onClick: () => { },
+            active: true,
+            onClick: () => { leftSidebarItems[0][0].active = !leftSidebarItems[0][0].active },
         },
-    ],
-    [
         {
-            icon: 'mdi-plus',
-            name: 'Remove',
-            color: "tertiary-container",
-            onClick: () => { },
+            icon: 'mdi-cog',
+            name: 'Settings',
+            active: false,
+            onClick: () => {  leftSidebarItems[0][1].active = !leftSidebarItems[0][1].active },
         },
     ],
-];
+]);
 
 interface Item {
     name: string,

@@ -1,36 +1,55 @@
 <template>
     <div class="d-flex flex-column">
-        <div v-for="(itemGroup, idx) in items" class="d-flex flex-column align-center full-width">
-            <div v-if="idx > 0" class="ma-3 align-self-stretch">
+        <div
+            v-for="(itemGroup, idx) in items"
+            class="d-flex flex-column align-center full-width"
+        >
+            <div v-if="idx > 0" class="mx-3 mb-3 mt-1 align-self-stretch">
                 <v-divider></v-divider>
             </div>
-            <div v-for="item in itemGroup" class="sidebar-item" @click="item.onClick">
-                <SideBarButton v-if="'name' in item" :icon="item.icon" :text="item.name"></SideBarButton>
-                <FAB v-else :color="item.color">
+            <div
+                v-for="item in itemGroup"
+                class="sidebar-item mb-2"
+                @click="item.onClick"
+            >
+                <SideBarButton
+                    v-if="'name' in item"
+                    :icon="item.icon"
+                    :text="item.name"
+                    :color="item.color"
+                    :active="item.active"
+                    @click="item.onClick"
+                ></SideBarButton>
+                <FAB v-else :color="`${item.color}-container`" @click="item.onClick">
                     <v-icon class="fab-icon">{{ item.icon }}</v-icon>
-                    <v-tooltip v-if="item.description" activator="parent" location="bottom">{{ item.description }}</v-tooltip>
+                    <v-tooltip
+                        v-if="item.description"
+                        activator="parent"
+                        location="bottom"
+                        >{{ item.description }}</v-tooltip
+                    >
                 </FAB>
             </div>
         </div>
     </div>
 </template>
 <script setup lang="ts">
-import { PropType } from 'vue';
-import SideBarButton from './SideBarButton.vue';
+import { PropType } from "vue";
+import SideBarButton from "./SideBarButton.vue";
 
 export interface BaseSideBarItem {
-    color: string,
-    icon: string,
-    description?: string,
-    onClick: () => void,
+    color?: string;
+    icon: string;
+    onClick: () => void;
 }
 
 export interface FABSideBarItem extends BaseSideBarItem {
-    
+    description?: string;
 }
 
 export interface IconSideBarItem extends BaseSideBarItem {
-    name: string,
+    name: string;
+    active: boolean;
 }
 
 export type SideBarItem = FABSideBarItem | IconSideBarItem;
@@ -40,7 +59,7 @@ const props = defineProps({
         type: Array as PropType<SideBarItem[][]>,
         default: () => [],
     },
-})
+});
 </script>
 <style scoped>
 .full-width {
