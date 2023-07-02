@@ -13,6 +13,14 @@ const mainColorMappings: [string, keyof Scheme][] = [
     ["on-tertiary", "onTertiary"],
     ["error", "error"],
     ["on-error", "onError"],
+    ["primary-container", "primaryContainer"],
+    ["on-primary-container", "onPrimaryContainer"],
+    ["secondary-container", "secondaryContainer"],
+    ["on-secondary-container", "onSecondaryContainer"],
+    ["tertiary-container", "tertiaryContainer"],
+    ["on-tertiary-container", "onTertiaryContainer"],
+    ["error-container", "errorContainer"],
+    ["on-error-container", "onErrorContainer"],
 ]
 
 const surfaceColorMappings: [string, number, number][] = [

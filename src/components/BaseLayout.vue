@@ -28,7 +28,7 @@
         <div class="content d-flex flex-grow-1 mb-3">
             <div class="left-bar">
                 <slot name="left-bar">
-                    TODO
+                    <SideBar :items="leftSidebarItems" class="full-width" />
                 </slot>
             </div>
             <v-sheet color="surface" class="main-sheet flex-grow-1" rounded="xl">
@@ -36,7 +36,7 @@
             </v-sheet>
             <div class="right-bar">
                 <slot name="right-bar">
-                    TODO
+                    <SideBar :items="rightSidebarItems" class="full-width" />
                 </slot>
             </div>
         </div>
@@ -47,6 +47,7 @@ import { useLocalStorage } from '@vueuse/core';
 import { PropType, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useTheme } from 'vuetify/lib/framework.mjs';
+import SideBar, { SideBarItem } from './SideBar.vue';
 
 export interface TitleSegment {
     name: string,
@@ -64,6 +65,14 @@ const props = defineProps({
     },
     tabs: {
         type: Array as PropType<TabSegment[]>,
+        default: () => [],
+    },
+    leftSidebarItems: {
+        type: Array as PropType<SideBarItem[][]>,
+        default: () => [],
+    },
+    rightSidebarItems: {
+        type: Array as PropType<SideBarItem[][]>,
         default: () => [],
     },
 })
@@ -92,11 +101,24 @@ updateColorMode();
 }
 
 .left-bar, .right-bar {
-    width: 50px;
+    width: 80px;
     height: 100%;
 }
 
 .main-sheet {
     height: 100%;
+    width: 0px;
+}
+
+.content {
+    height: 0px;
+}
+
+.main-sheet {
+    overflow: hidden;
+}
+
+.full-width {
+    width: 100%;
 }
 </style>

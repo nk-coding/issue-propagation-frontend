@@ -1,0 +1,52 @@
+<template>
+    <div class="d-flex flex-column">
+        <div v-for="(itemGroup, idx) in items" class="d-flex flex-column align-center full-width">
+            <div v-if="idx > 0" class="ma-3 align-self-stretch">
+                <v-divider></v-divider>
+            </div>
+            <div v-for="item in itemGroup" class="sidebar-item" @click="item.onClick">
+                <SideBarButton v-if="'name' in item" :icon="item.icon" :text="item.name"></SideBarButton>
+                <FAB v-else :color="item.color">
+                    <v-icon class="fab-icon">{{ item.icon }}</v-icon>
+                    <v-tooltip v-if="item.description" activator="parent" location="bottom">{{ item.description }}</v-tooltip>
+                </FAB>
+            </div>
+        </div>
+    </div>
+</template>
+<script setup lang="ts">
+import { PropType } from 'vue';
+import SideBarButton from './SideBarButton.vue';
+
+export interface BaseSideBarItem {
+    color: string,
+    icon: string,
+    description?: string,
+    onClick: () => void,
+}
+
+export interface FABSideBarItem extends BaseSideBarItem {
+    
+}
+
+export interface IconSideBarItem extends BaseSideBarItem {
+    name: string,
+}
+
+export type SideBarItem = FABSideBarItem | IconSideBarItem;
+
+const props = defineProps({
+    items: {
+        type: Array as PropType<SideBarItem[][]>,
+        default: () => [],
+    },
+})
+</script>
+<style scoped>
+.full-width {
+    width: 100%;
+}
+.fab-icon {
+    --v-icon-size-multiplier: 1;
+}
+</style>
