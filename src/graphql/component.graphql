@@ -1,0 +1,7 @@
+query getComponents {
+    components {
+        nodes {
+            id
+        }
+    }
+}

@@ -20,8 +20,8 @@ const mainColorMappings: [string, keyof Scheme][] = [
     ["tertiary-container", "tertiaryContainer"],
     ["on-tertiary-container", "onTertiaryContainer"],
     ["error-container", "errorContainer"],
-    ["on-error-container", "onErrorContainer"],
-]
+    ["on-error-container", "onErrorContainer"]
+];
 
 const surfaceColorMappings: [string, number, number][] = [
     ["surface-container-lowest", 100, 4],
@@ -34,8 +34,8 @@ const surfaceColorMappings: [string, number, number][] = [
     ["surface-variant", 90, 30],
     ["on-surface-variant", 30, 80],
     ["background", 98, 6],
-    ["on-background", 10, 90],
-]
+    ["on-background", 10, 90]
+];
 
 export function generateThemeColors(color: string, dark: boolean): ThemeColors {
     const theme = themeFromSourceColor(argbFromHex(color));

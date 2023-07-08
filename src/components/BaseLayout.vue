@@ -1,24 +1,24 @@
 <template>
     <div class="root d-flex flex-column">
         <div class="header d-flex align-center ma-2">
-            <v-btn @click="router.push('/')" class="mr-3 d-flex" variant="text" icon size="small">
+            <v-btn class="mr-3 d-flex" variant="text" icon size="small" @click="router.push('/')">
                 <img src="@/assets/logo.svg" width="40" />
             </v-btn>
             <slot name="header-title">
                 <div v-for="(segment, index) in titleSegments" :key="index" class="d-flex align-center">
-                    <span class="text-h6 mx-1" v-if="index != 0">/</span>
-                    <v-btn @click="router.push(segment.path)" variant="text" class="px-0" min-width="0">
+                    <span v-if="index != 0" class="text-h6 mx-1">/</span>
+                    <v-btn variant="text" class="px-0" min-width="0" @click="router.push(segment.path)">
                         <span class="text-h6">{{ segment.name }}</span>
                     </v-btn>
                 </div>
             </slot>
             <slot name="header-content">
-                <v-tabs color="primary" v-model="currentTab" v-if="tabs.length > 0" density="compact" class="ml-5">
+                <v-tabs v-if="tabs.length > 0" v-model="currentTab" color="primary" density="compact" class="ml-5">
                     <v-tab v-for="(tab, index) in tabs" :value="tab.name">{{ tab.name }}</v-tab>
                 </v-tabs>
             </slot>
             <v-spacer />
-            <v-btn icon @click="toggleDarkMode()" variant="outlined" size="small">
+            <v-btn icon variant="outlined" size="small" @click="toggleDarkMode()">
                 <v-icon>
                     {{ lightMode ? "mdi-weather-sunny" : "mdi-weather-night" }}
                 </v-icon>
@@ -43,44 +43,44 @@
     </div>
 </template>
 <script setup lang="ts">
-import { useLocalStorage } from '@vueuse/core';
-import { PropType, ref } from 'vue';
-import { useRouter } from 'vue-router';
-import { useTheme } from 'vuetify/lib/framework.mjs';
-import SideBar, { SideBarItem } from './SideBar.vue';
+import { useLocalStorage } from "@vueuse/core";
+import { PropType, ref } from "vue";
+import { useRouter } from "vue-router";
+import { useTheme } from "vuetify/lib/framework.mjs";
+import SideBar, { SideBarItem } from "./SideBar.vue";
 
 export interface TitleSegment {
-    name: string,
-    path: string,
+    name: string;
+    path: string;
 }
 export interface TabSegment {
-    name: string,
-    path: string,
+    name: string;
+    path: string;
 }
 
 const props = defineProps({
     titleSegments: {
         type: Array as PropType<TitleSegment[]>,
-        default: () => [{ name: 'Gropius', path: '/' }],
+        default: () => [{ name: "Gropius", path: "/" }]
     },
     tabs: {
         type: Array as PropType<TabSegment[]>,
-        default: () => [],
+        default: () => []
     },
     leftSidebarItems: {
         type: Array as PropType<SideBarItem[][]>,
-        default: () => [],
+        default: () => []
     },
     rightSidebarItems: {
         type: Array as PropType<SideBarItem[][]>,
-        default: () => [],
-    },
-})
+        default: () => []
+    }
+});
 
-const currentTab = ref('slo');
+const currentTab = ref("slo");
 const theme = useTheme();
-const lightMode = useLocalStorage('lightMode', true);
-const router = useRouter()
+const lightMode = useLocalStorage("lightMode", true);
+const router = useRouter();
 
 function toggleDarkMode() {
     lightMode.value = !lightMode.value;
@@ -97,10 +97,11 @@ updateColorMode();
 .root {
     width: 100%;
     height: 100%;
-    background: rgb(var(--v-theme-surface-container))
+    background: rgb(var(--v-theme-surface-container));
 }
 
-.left-bar, .right-bar {
+.left-bar,
+.right-bar {
     width: 80px;
     height: 100%;
 }

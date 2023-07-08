@@ -1,17 +1,10 @@
 <template>
     <div class="d-flex flex-column">
-        <div
-            v-for="(itemGroup, idx) in items"
-            class="d-flex flex-column align-center full-width"
-        >
+        <div v-for="(itemGroup, idx) in items" class="d-flex flex-column align-center full-width">
             <div v-if="idx > 0" class="mx-3 mb-3 mt-1 align-self-stretch">
                 <v-divider></v-divider>
             </div>
-            <div
-                v-for="item in itemGroup"
-                class="sidebar-item mb-2"
-                @click="item.onClick"
-            >
+            <div v-for="item in itemGroup" class="sidebar-item mb-2" @click="item.onClick">
                 <SideBarButton
                     v-if="'name' in item"
                     :icon="item.icon"
@@ -22,12 +15,9 @@
                 ></SideBarButton>
                 <FAB v-else :color="`${item.color}-container`" @click="item.onClick">
                     <v-icon class="fab-icon">{{ item.icon }}</v-icon>
-                    <v-tooltip
-                        v-if="item.description"
-                        activator="parent"
-                        location="bottom"
-                        >{{ item.description }}</v-tooltip
-                    >
+                    <v-tooltip v-if="item.description" activator="parent" location="bottom">{{
+                        item.description
+                    }}</v-tooltip>
                 </FAB>
             </div>
         </div>
@@ -57,8 +47,8 @@ export type SideBarItem = FABSideBarItem | IconSideBarItem;
 const props = defineProps({
     items: {
         type: Array as PropType<SideBarItem[][]>,
-        default: () => [],
-    },
+        default: () => []
+    }
 });
 </script>
 <style scoped>

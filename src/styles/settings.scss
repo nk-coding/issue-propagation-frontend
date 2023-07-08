@@ -6,8 +6,8 @@
 
 // https://vuetifyjs.com/features/sass-variables/`
 @use "vuetify/settings" with (
-  $color-pack: false,
-  $rounded: (
-    "lger": 16px,
-  ),
+    $color-pack: false,
+    $rounded: (
+        "lger": 16px
+    )
 );
