@@ -7,5 +7,3 @@ generates:
             - "typescript"
             - "typescript-operations"
             - "typescript-graphql-request"
-        config:
-            enumsAsTypes: true

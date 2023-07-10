@@ -600,36 +600,37 @@ export type AffectedByIssueOrder = {
 };
 
 /** Fields a list of AffectedByIssue can be sorted by */
-export type AffectedByIssueOrderField =
+export enum AffectedByIssueOrderField {
     /** Order by id */
-    | "ID"
+    Id = "ID",
     /** Order by name */
-    | "NAME";
+    Name = "NAME"
+}
 
 /** Non global permission entries */
-export type AllPermissionEntry =
+export enum AllPermissionEntry {
     /**
      * Allows to add the Component to Projects
      * Note: this should be handled very carefully, as adding a Component to a Project gives
      * all users with READ access to the Project READ access to the Component
      */
-    | "ADD_TO_PROJECTS"
+    AddToProjects = "ADD_TO_PROJECTS",
     /** Grants all other permissions on the Node except READ. */
-    | "ADMIN"
+    Admin = "ADMIN",
     /**
      * Allows to create Comments on Issues on this Trackable.
      * Also allows editing of your own Comments.
      */
-    | "COMMENT"
+    Comment = "COMMENT",
     /**
      * Allows to create new Issues on the Trackable.
      * This includes adding Issues from other Trackables.
      */
-    | "CREATE_ISSUES"
+    CreateIssues = "CREATE_ISSUES",
     /** Allows adding Issues on this Trackable to other Trackables. */
-    | "EXPORT_ISSUES"
+    ExportIssues = "EXPORT_ISSUES",
     /** Allows adding Labels on this Trackable to other Trackables. */
-    | "EXPORT_LABELS"
+    ExportLabels = "EXPORT_LABELS",
     /**
      * Allows affecting entities part of this Trackable with any Issues.
      * Affectable entitites include
@@ -639,16 +640,16 @@ export type AllPermissionEntry =
      *     - Interfaces on the Component
      *     - ComponentVersions of the Component
      */
-    | "LINK_FROM_ISSUES"
+    LinkFromIssues = "LINK_FROM_ISSUES",
     /** Allows to add, remove, and update Artefacts on this Trackable. */
-    | "MANAGE_ARTEFACTS"
+    ManageArtefacts = "MANAGE_ARTEFACTS",
     /** Allows to add / remove ComponentVersions to / from this Project. */
-    | "MANAGE_COMPONENTS"
+    ManageComponents = "MANAGE_COMPONENTS",
     /**
      * Allows to add, remove, and update IMSProjects on this Trackable.
      * Note: for adding, `IMSPermissionEntry.SYNC_TRACKABLES` is required additionally
      */
-    | "MANAGE_IMS"
+    ManageIms = "MANAGE_IMS",
     /**
      * Allows to manage issues.
      * This includes `CREATE_ISSUES` and `COMMENT`.
@@ -661,32 +662,33 @@ export type AllPermissionEntry =
      *   - change templated fields
      * In contrast to `MODERATOR`, this does not allow editing / removing Comments of other users
      */
-    | "MANAGE_ISSUES"
+    ManageIssues = "MANAGE_ISSUES",
     /**
      * Allows to add, remove, and update Labels on this Trackable.
      * Also allows to delete a Label, but only if it is allowed on all Trackable the Label is on.
      */
-    | "MANAGE_LABELS"
+    ManageLabels = "MANAGE_LABELS",
     /**
      * Allows to moderate Issues on this Trackable.
      * This allows everything `MANAGE_ISSUES` allows.
      * Additionally, it allows editing and deleting Comments of other Users
      */
-    | "MODERATOR"
+    Moderator = "MODERATOR",
     /**
      * Allows to read the Node (obtain it via the API) and to read certain related Nodes.
      * See documentation for specific Node for the specific conditions.
      */
-    | "READ"
+    Read = "READ",
     /**
      * Allows to create Relations with a version of this Component or an Interface of this Component
      * as start.
      * Note: as these Relations cannot cause new Interfaces on this Component, this can be granted
      * more permissively compared to `RELATE_TO_COMPONENT`.
      */
-    | "RELATE_FROM_COMPONENT"
+    RelateFromComponent = "RELATE_FROM_COMPONENT",
     /** Allows to create IMSProjects with this IMS. */
-    | "SYNC_TRACKABLES";
+    SyncTrackables = "SYNC_TRACKABLES"
+}
 
 /**
  * An Artefact referencing a file defined via a URL.
@@ -929,21 +931,22 @@ export type ArtefactOrder = {
 };
 
 /** Fields a list of Artefact can be sorted by */
-export type ArtefactOrderField =
+export enum ArtefactOrderField {
     /** Order by createdAt */
-    | "CREATED_AT"
+    CreatedAt = "CREATED_AT",
     /** Order by file */
-    | "FILE"
+    File = "FILE",
     /** Order by from */
-    | "FROM"
+    From = "FROM",
     /** Order by id */
-    | "ID"
+    Id = "ID",
     /** Order by lastModifiedAt */
-    | "LAST_MODIFIED_AT"
+    LastModifiedAt = "LAST_MODIFIED_AT",
     /** Order by to */
-    | "TO"
+    To = "TO",
     /** Order by version */
-    | "VERSION";
+    Version = "VERSION"
+}
 
 /**
  * Template for Artefacts
@@ -1125,11 +1128,12 @@ export type ArtefactTemplateOrder = {
 };
 
 /** Fields a list of ArtefactTemplate can be sorted by */
-export type ArtefactTemplateOrderField =
+export enum ArtefactTemplateOrderField {
     /** Order by id */
-    | "ID"
+    Id = "ID",
     /** Order by name */
-    | "NAME";
+    Name = "NAME"
+}
 
 /**
  * Event representing that a User is assigned to an Issue.
@@ -1267,13 +1271,14 @@ export type AssignmentOrder = {
 };
 
 /** Fields a list of Assignment can be sorted by */
-export type AssignmentOrderField =
+export enum AssignmentOrderField {
     /** Order by createdAt */
-    | "CREATED_AT"
+    CreatedAt = "CREATED_AT",
     /** Order by id */
-    | "ID"
+    Id = "ID",
     /** Order by lastModifiedAt */
-    | "LAST_MODIFIED_AT";
+    LastModifiedAt = "LAST_MODIFIED_AT"
+}
 
 /**
  * Type for an Assignment, like REVIEWER. Part of an IssueTemplate.
@@ -1496,11 +1501,12 @@ export type AssignmentTypeOrder = {
 };
 
 /** Fields a list of AssignmentType can be sorted by */
-export type AssignmentTypeOrderField =
+export enum AssignmentTypeOrderField {
     /** Order by id */
-    | "ID"
+    Id = "ID",
     /** Order by name */
-    | "NAME";
+    Name = "NAME"
+}
 
 /**
  * ExtensibleNode which provides auditing information, which can e.g. be used for the sync.
@@ -1622,13 +1628,14 @@ export type AuditedNodeOrder = {
 };
 
 /** Fields a list of AuditedNode can be sorted by */
-export type AuditedNodeOrderField =
+export enum AuditedNodeOrderField {
     /** Order by createdAt */
-    | "CREATED_AT"
+    CreatedAt = "CREATED_AT",
     /** Order by id */
-    | "ID"
+    Id = "ID",
     /** Order by lastModifiedAt */
-    | "LAST_MODIFIED_AT";
+    LastModifiedAt = "LAST_MODIFIED_AT"
+}
 
 export type BasePermission = {
     /** If, the permission is granted to all users. Use with caution. */
@@ -1714,13 +1721,14 @@ export type BasePermissionOrder = {
 };
 
 /** Fields a list of BasePermission can be sorted by */
-export type BasePermissionOrderField =
+export enum BasePermissionOrderField {
     /** Order by allUsers */
-    | "ALL_USERS"
+    AllUsers = "ALL_USERS",
     /** Order by id */
-    | "ID"
+    Id = "ID",
     /** Order by name */
-    | "NAME";
+    Name = "NAME"
+}
 
 /**
  * Base type for both Template and SubTemplate.
@@ -2647,11 +2655,12 @@ export type ComponentOrder = {
 };
 
 /** Fields a list of Component can be sorted by */
-export type ComponentOrderField =
+export enum ComponentOrderField {
     /** Order by id */
-    | "ID"
+    Id = "ID",
     /** Order by name */
-    | "NAME";
+    Name = "NAME"
+}
 
 /** NodePermission to grant specific permissions to a set of Components. */
 export type ComponentPermission = Named &
@@ -2718,29 +2727,29 @@ export type ComponentPermissionEdge = {
 };
 
 /** ComponentPermission entry enum type. */
-export type ComponentPermissionEntry =
+export enum ComponentPermissionEntry {
     /**
      * Allows to add the Component to Projects
      * Note: this should be handled very carefully, as adding a Component to a Project gives
      * all users with READ access to the Project READ access to the Component
      */
-    | "ADD_TO_PROJECTS"
+    AddToProjects = "ADD_TO_PROJECTS",
     /** Grants all other permissions on the Node except READ. */
-    | "ADMIN"
+    Admin = "ADMIN",
     /**
      * Allows to create Comments on Issues on this Trackable.
      * Also allows editing of your own Comments.
      */
-    | "COMMENT"
+    Comment = "COMMENT",
     /**
      * Allows to create new Issues on the Trackable.
      * This includes adding Issues from other Trackables.
      */
-    | "CREATE_ISSUES"
+    CreateIssues = "CREATE_ISSUES",
     /** Allows adding Issues on this Trackable to other Trackables. */
-    | "EXPORT_ISSUES"
+    ExportIssues = "EXPORT_ISSUES",
     /** Allows adding Labels on this Trackable to other Trackables. */
-    | "EXPORT_LABELS"
+    ExportLabels = "EXPORT_LABELS",
     /**
      * Allows affecting entities part of this Trackable with any Issues.
      * Affectable entitites include
@@ -2750,14 +2759,14 @@ export type ComponentPermissionEntry =
      *     - Interfaces on the Component
      *     - ComponentVersions of the Component
      */
-    | "LINK_FROM_ISSUES"
+    LinkFromIssues = "LINK_FROM_ISSUES",
     /** Allows to add, remove, and update Artefacts on this Trackable. */
-    | "MANAGE_ARTEFACTS"
+    ManageArtefacts = "MANAGE_ARTEFACTS",
     /**
      * Allows to add, remove, and update IMSProjects on this Trackable.
      * Note: for adding, `IMSPermissionEntry.SYNC_TRACKABLES` is required additionally
      */
-    | "MANAGE_IMS"
+    ManageIms = "MANAGE_IMS",
     /**
      * Allows to manage issues.
      * This includes `CREATE_ISSUES` and `COMMENT`.
@@ -2770,30 +2779,31 @@ export type ComponentPermissionEntry =
      *   - change templated fields
      * In contrast to `MODERATOR`, this does not allow editing / removing Comments of other users
      */
-    | "MANAGE_ISSUES"
+    ManageIssues = "MANAGE_ISSUES",
     /**
      * Allows to add, remove, and update Labels on this Trackable.
      * Also allows to delete a Label, but only if it is allowed on all Trackable the Label is on.
      */
-    | "MANAGE_LABELS"
+    ManageLabels = "MANAGE_LABELS",
     /**
      * Allows to moderate Issues on this Trackable.
      * This allows everything `MANAGE_ISSUES` allows.
      * Additionally, it allows editing and deleting Comments of other Users
      */
-    | "MODERATOR"
+    Moderator = "MODERATOR",
     /**
      * Allows to read the Node (obtain it via the API) and to read certain related Nodes.
      * See documentation for specific Node for the specific conditions.
      */
-    | "READ"
+    Read = "READ",
     /**
      * Allows to create Relations with a version of this Component or an Interface of this Component
      * as start.
      * Note: as these Relations cannot cause new Interfaces on this Component, this can be granted
      * more permissively compared to `RELATE_TO_COMPONENT`.
      */
-    | "RELATE_FROM_COMPONENT";
+    RelateFromComponent = "RELATE_FROM_COMPONENT"
+}
 
 /** Filter used to filter ComponentPermission */
 export type ComponentPermissionFilterInput = {
@@ -2836,13 +2846,14 @@ export type ComponentPermissionOrder = {
 };
 
 /** Fields a list of ComponentPermission can be sorted by */
-export type ComponentPermissionOrderField =
+export enum ComponentPermissionOrderField {
     /** Order by allUsers */
-    | "ALL_USERS"
+    AllUsers = "ALL_USERS",
     /** Order by id */
-    | "ID"
+    Id = "ID",
     /** Order by name */
-    | "NAME";
+    Name = "NAME"
+}
 
 /**
  * Template for Components.
@@ -3115,11 +3126,12 @@ export type ComponentTemplateOrder = {
 };
 
 /** Fields a list of ComponentTemplate can be sorted by */
-export type ComponentTemplateOrderField =
+export enum ComponentTemplateOrderField {
     /** Order by id */
-    | "ID"
+    Id = "ID",
     /** Order by name */
-    | "NAME";
+    Name = "NAME"
+}
 
 /**
  * Version of a component.
@@ -3428,13 +3440,14 @@ export type ComponentVersionOrder = {
 };
 
 /** Fields a list of ComponentVersion can be sorted by */
-export type ComponentVersionOrderField =
+export enum ComponentVersionOrderField {
     /** Order by id */
-    | "ID"
+    Id = "ID",
     /** Order by name */
-    | "NAME"
+    Name = "NAME",
     /** Order by version */
-    | "VERSION";
+    Version = "VERSION"
+}
 
 /**
  * SubTemplate for ComponentVersion.
@@ -4618,13 +4631,14 @@ export type GropiusUserOrder = {
 };
 
 /** Fields a list of GropiusUser can be sorted by */
-export type GropiusUserOrderField =
+export enum GropiusUserOrderField {
     /** Order by displayName */
-    | "DISPLAY_NAME"
+    DisplayName = "DISPLAY_NAME",
     /** Order by email */
-    | "EMAIL"
+    Email = "EMAIL",
     /** Order by id */
-    | "ID";
+    Id = "ID"
+}
 
 /** Filter which can be used to filter for Nodes with a specific ID field */
 export type IdFilterInput = {
@@ -4972,9 +4986,10 @@ export type ImsIssueOrder = {
 };
 
 /** Fields a list of IMSIssue can be sorted by */
-export type ImsIssueOrderField =
+export enum ImsIssueOrderField {
     /** Order by id */
-    "ID";
+    Id = "ID"
+}
 
 /**
  * SubTemplate for IMSIssue.
@@ -5100,11 +5115,12 @@ export type ImsOrder = {
 };
 
 /** Fields a list of IMS can be sorted by */
-export type ImsOrderField =
+export enum ImsOrderField {
     /** Order by id */
-    | "ID"
+    Id = "ID",
     /** Order by name */
-    | "NAME";
+    Name = "NAME"
+}
 
 /** NodePermission to grant specific permissions to a set of IMSs. */
 export type ImsPermission = Named &
@@ -5171,16 +5187,17 @@ export type ImsPermissionEdge = {
 };
 
 /** IMSPermission entry enum type. */
-export type ImsPermissionEntry =
+export enum ImsPermissionEntry {
     /** Grants all other permissions on the Node except READ. */
-    | "ADMIN"
+    Admin = "ADMIN",
     /**
      * Allows to read the Node (obtain it via the API) and to read certain related Nodes.
      * See documentation for specific Node for the specific conditions.
      */
-    | "READ"
+    Read = "READ",
     /** Allows to create IMSProjects with this IMS. */
-    | "SYNC_TRACKABLES";
+    SyncTrackables = "SYNC_TRACKABLES"
+}
 
 /** Filter used to filter IMSPermission */
 export type ImsPermissionFilterInput = {
@@ -5223,13 +5240,14 @@ export type ImsPermissionOrder = {
 };
 
 /** Fields a list of IMSPermission can be sorted by */
-export type ImsPermissionOrderField =
+export enum ImsPermissionOrderField {
     /** Order by allUsers */
-    | "ALL_USERS"
+    AllUsers = "ALL_USERS",
     /** Order by id */
-    | "ID"
+    Id = "ID",
     /** Order by name */
-    | "NAME";
+    Name = "NAME"
+}
 
 /**
  * Project on an IMS, represents a Trackable synced to an IMS.
@@ -5399,9 +5417,10 @@ export type ImsProjectOrder = {
 };
 
 /** Fields a list of IMSProject can be sorted by */
-export type ImsProjectOrderField =
+export enum ImsProjectOrderField {
     /** Order by id */
-    "ID";
+    Id = "ID"
+}
 
 /**
  * SubTemplate for IMSProject.
@@ -5694,11 +5713,12 @@ export type ImsTemplateOrder = {
 };
 
 /** Fields a list of IMSTemplate can be sorted by */
-export type ImsTemplateOrderField =
+export enum ImsTemplateOrderField {
     /** Order by id */
-    | "ID"
+    Id = "ID",
     /** Order by name */
-    | "NAME";
+    Name = "NAME"
+}
 
 /**
  * A user an IMS.
@@ -5940,13 +5960,14 @@ export type ImsUserOrder = {
 };
 
 /** Fields a list of IMSUser can be sorted by */
-export type ImsUserOrderField =
+export enum ImsUserOrderField {
     /** Order by displayName */
-    | "DISPLAY_NAME"
+    DisplayName = "DISPLAY_NAME",
     /** Order by email */
-    | "EMAIL"
+    Email = "EMAIL",
     /** Order by id */
-    | "ID";
+    Id = "ID"
+}
 
 /**
  * SubTemplate for IMSUser.
@@ -6515,13 +6536,14 @@ export type InterfaceDefinitionOrder = {
 };
 
 /** Fields a list of InterfaceDefinition can be sorted by */
-export type InterfaceDefinitionOrderField =
+export enum InterfaceDefinitionOrderField {
     /** Order by id */
-    | "ID"
+    Id = "ID",
     /** Order by invisibleSelfDefined */
-    | "INVISIBLE_SELF_DEFINED"
+    InvisibleSelfDefined = "INVISIBLE_SELF_DEFINED",
     /** Order by visibleSelfDefined */
-    | "VISIBLE_SELF_DEFINED";
+    VisibleSelfDefined = "VISIBLE_SELF_DEFINED"
+}
 
 /**
  * SubTemplate for InterfaceDefinition.
@@ -6682,11 +6704,12 @@ export type InterfaceOrder = {
 };
 
 /** Fields a list of Interface can be sorted by */
-export type InterfaceOrderField =
+export enum InterfaceOrderField {
     /** Order by id */
-    | "ID"
+    Id = "ID",
     /** Order by name */
-    | "NAME";
+    Name = "NAME"
+}
 
 /**
  * Part of an Interface(Specification).
@@ -6988,11 +7011,12 @@ export type InterfacePartOrder = {
 };
 
 /** Fields a list of InterfacePart can be sorted by */
-export type InterfacePartOrderField =
+export enum InterfacePartOrderField {
     /** Order by id */
-    | "ID"
+    Id = "ID",
     /** Order by name */
-    | "NAME";
+    Name = "NAME"
+}
 
 /**
  * SubTemplate for InterfacePart.
@@ -7448,9 +7472,10 @@ export type InterfaceSpecificationDerivationConditionOrder = {
 };
 
 /** Fields a list of InterfaceSpecificationDerivationCondition can be sorted by */
-export type InterfaceSpecificationDerivationConditionOrderField =
+export enum InterfaceSpecificationDerivationConditionOrderField {
     /** Order by id */
-    "ID";
+    Id = "ID"
+}
 
 /** An edge in a connection. */
 export type InterfaceSpecificationEdge = {
@@ -7526,11 +7551,12 @@ export type InterfaceSpecificationOrder = {
 };
 
 /** Fields a list of InterfaceSpecification can be sorted by */
-export type InterfaceSpecificationOrderField =
+export enum InterfaceSpecificationOrderField {
     /** Order by id */
-    | "ID"
+    Id = "ID",
     /** Order by name */
-    | "NAME";
+    Name = "NAME"
+}
 
 /**
  * Template for InterfaceSpecifications.
@@ -7857,11 +7883,12 @@ export type InterfaceSpecificationTemplateOrder = {
 };
 
 /** Fields a list of InterfaceSpecificationTemplate can be sorted by */
-export type InterfaceSpecificationTemplateOrderField =
+export enum InterfaceSpecificationTemplateOrderField {
     /** Order by id */
-    | "ID"
+    Id = "ID",
     /** Order by name */
-    | "NAME";
+    Name = "NAME"
+}
 
 /**
  * A specific version of an InterfaceSpecification.
@@ -8140,13 +8167,14 @@ export type InterfaceSpecificationVersionOrder = {
 };
 
 /** Fields a list of InterfaceSpecificationVersion can be sorted by */
-export type InterfaceSpecificationVersionOrderField =
+export enum InterfaceSpecificationVersionOrderField {
     /** Order by id */
-    | "ID"
+    Id = "ID",
     /** Order by name */
-    | "NAME"
+    Name = "NAME",
     /** Order by version */
-    | "VERSION";
+    Version = "VERSION"
+}
 
 /**
  * SubTemplate for InterfaceSpecificationVersion.
@@ -8517,9 +8545,10 @@ export type IntraComponentDependencyParticipantOrder = {
 };
 
 /** Fields a list of IntraComponentDependencyParticipant can be sorted by */
-export type IntraComponentDependencyParticipantOrderField =
+export enum IntraComponentDependencyParticipantOrderField {
     /** Order by id */
-    "ID";
+    Id = "ID"
+}
 
 /**
  * Describes a dependency between Interfaces of a Component.
@@ -8695,11 +8724,12 @@ export type IntraComponentDependencySpecificationOrder = {
 };
 
 /** Fields a list of IntraComponentDependencySpecification can be sorted by */
-export type IntraComponentDependencySpecificationOrderField =
+export enum IntraComponentDependencySpecificationOrderField {
     /** Order by id */
-    | "ID"
+    Id = "ID",
     /** Order by name */
-    | "NAME";
+    Name = "NAME"
+}
 
 /**
  * An Issue in the Gropius system.
@@ -9342,15 +9372,16 @@ export type IssueCommentOrder = {
 };
 
 /** Fields a list of IssueComment can be sorted by */
-export type IssueCommentOrderField =
+export enum IssueCommentOrderField {
     /** Order by bodyLastEditedAt */
-    | "BODY_LAST_EDITED_AT"
+    BodyLastEditedAt = "BODY_LAST_EDITED_AT",
     /** Order by createdAt */
-    | "CREATED_AT"
+    CreatedAt = "CREATED_AT",
     /** Order by id */
-    | "ID"
+    Id = "ID",
     /** Order by lastModifiedAt */
-    | "LAST_MODIFIED_AT";
+    LastModifiedAt = "LAST_MODIFIED_AT"
+}
 
 /** The connection type for Issue. */
 export type IssueConnection = {
@@ -9461,25 +9492,26 @@ export type IssueOrder = {
 };
 
 /** Fields a list of Issue can be sorted by */
-export type IssueOrderField =
+export enum IssueOrderField {
     /** Order by createdAt */
-    | "CREATED_AT"
+    CreatedAt = "CREATED_AT",
     /** Order by dueDate */
-    | "DUE_DATE"
+    DueDate = "DUE_DATE",
     /** Order by estimatedTime */
-    | "ESTIMATED_TIME"
+    EstimatedTime = "ESTIMATED_TIME",
     /** Order by id */
-    | "ID"
+    Id = "ID",
     /** Order by lastModifiedAt */
-    | "LAST_MODIFIED_AT"
+    LastModifiedAt = "LAST_MODIFIED_AT",
     /** Order by lastUpdatedAt */
-    | "LAST_UPDATED_AT"
+    LastUpdatedAt = "LAST_UPDATED_AT",
     /** Order by spentTime */
-    | "SPENT_TIME"
+    SpentTime = "SPENT_TIME",
     /** Order by startDate */
-    | "START_DATE"
+    StartDate = "START_DATE",
     /** Order by title */
-    | "TITLE";
+    Title = "TITLE"
+}
 
 /**
  * Priority of an Issue like HIGH or LOW. Part of an IssueTemplate.
@@ -9641,13 +9673,14 @@ export type IssuePriorityOrder = {
 };
 
 /** Fields a list of IssuePriority can be sorted by */
-export type IssuePriorityOrderField =
+export enum IssuePriorityOrderField {
     /** Order by id */
-    | "ID"
+    Id = "ID",
     /** Order by name */
-    | "NAME"
+    Name = "NAME",
     /** Order by value */
-    | "VALUE";
+    Value = "VALUE"
+}
 
 /**
  * Event representing that a relation between two Issues has been created.
@@ -9793,13 +9826,14 @@ export type IssueRelationOrder = {
 };
 
 /** Fields a list of IssueRelation can be sorted by */
-export type IssueRelationOrderField =
+export enum IssueRelationOrderField {
     /** Order by createdAt */
-    | "CREATED_AT"
+    CreatedAt = "CREATED_AT",
     /** Order by id */
-    | "ID"
+    Id = "ID",
     /** Order by lastModifiedAt */
-    | "LAST_MODIFIED_AT";
+    LastModifiedAt = "LAST_MODIFIED_AT"
+}
 
 /**
  * Type for an IssueRelation, like DUPLICATES or DEPENDS_ON. Part of an IssueTemplate.
@@ -9957,11 +9991,12 @@ export type IssueRelationTypeOrder = {
 };
 
 /** Fields a list of IssueRelationType can be sorted by */
-export type IssueRelationTypeOrderField =
+export enum IssueRelationTypeOrderField {
     /** Order by id */
-    | "ID"
+    Id = "ID",
     /** Order by name */
-    | "NAME";
+    Name = "NAME"
+}
 
 /**
  * State of an Issue like BUG or FEATURE_REQUEST. Part of an IssueTemplate.
@@ -10125,13 +10160,14 @@ export type IssueStateOrder = {
 };
 
 /** Fields a list of IssueState can be sorted by */
-export type IssueStateOrderField =
+export enum IssueStateOrderField {
     /** Order by id */
-    | "ID"
+    Id = "ID",
     /** Order by isOpen */
-    | "IS_OPEN"
+    IsOpen = "IS_OPEN",
     /** Order by name */
-    | "NAME";
+    Name = "NAME"
+}
 
 /**
  * Template for Issues.
@@ -10460,11 +10496,12 @@ export type IssueTemplateOrder = {
 };
 
 /** Fields a list of IssueTemplate can be sorted by */
-export type IssueTemplateOrderField =
+export enum IssueTemplateOrderField {
     /** Order by id */
-    | "ID"
+    Id = "ID",
     /** Order by name */
-    | "NAME";
+    Name = "NAME"
+}
 
 /**
  * Type of an Issue like BUG or FEATURE_REQUEST. Part of an IssueTemplate.
@@ -10622,11 +10659,12 @@ export type IssueTypeOrder = {
 };
 
 /** Fields a list of IssueType can be sorted by */
-export type IssueTypeOrderField =
+export enum IssueTypeOrderField {
     /** Order by id */
-    | "ID"
+    Id = "ID",
     /** Order by name */
-    | "NAME";
+    Name = "NAME"
+}
 
 /** A JSON extension field, consisting of a name and a value. */
 export type JsonField = {
@@ -10824,17 +10862,18 @@ export type LabelOrder = {
 };
 
 /** Fields a list of Label can be sorted by */
-export type LabelOrderField =
+export enum LabelOrderField {
     /** Order by color */
-    | "COLOR"
+    Color = "COLOR",
     /** Order by createdAt */
-    | "CREATED_AT"
+    CreatedAt = "CREATED_AT",
     /** Order by id */
-    | "ID"
+    Id = "ID",
     /** Order by lastModifiedAt */
-    | "LAST_MODIFIED_AT"
+    LastModifiedAt = "LAST_MODIFIED_AT",
     /** Order by name */
-    | "NAME";
+    Name = "NAME"
+}
 
 /** Interface for all types which support templates describing user writeable fields. */
 export type MutableTemplatedNode = {
@@ -11961,11 +12000,12 @@ export type NullableSubTemplateInput = {
 };
 
 /** Possible direction in which a list of nodes can be ordered */
-export type OrderDirection =
+export enum OrderDirection {
     /** Ascending */
-    | "ASC"
+    Asc = "ASC",
     /** Descending */
-    | "DESC";
+    Desc = "DESC"
+}
 
 /**
  * Event representing that the type of an incoming IssueRelation changed.
@@ -12145,15 +12185,16 @@ export type ParentTimelineItemFilterInput = {
 };
 
 /** Permission entry enum type. */
-export type PermissionEntry =
+export enum PermissionEntry {
     /** Allows to create new Components. */
-    | "CAN_CREATE_COMPONENTS"
+    CanCreateComponents = "CAN_CREATE_COMPONENTS",
     /** Allows to create new IMSs. */
-    | "CAN_CREATE_IMSS"
+    CanCreateImss = "CAN_CREATE_IMSS",
     /** Allows to create new Projects. */
-    | "CAN_CREATE_PROJECTS"
+    CanCreateProjects = "CAN_CREATE_PROJECTS",
     /** Allows to create new Templates. */
-    | "CAN_CREATE_TEMPLATES";
+    CanCreateTemplates = "CAN_CREATE_TEMPLATES"
+}
 
 /**
  * Event representing that the priority of an Issue changed.
@@ -12524,11 +12565,12 @@ export type ProjectOrder = {
 };
 
 /** Fields a list of Project can be sorted by */
-export type ProjectOrderField =
+export enum ProjectOrderField {
     /** Order by id */
-    | "ID"
+    Id = "ID",
     /** Order by name */
-    | "NAME";
+    Name = "NAME"
+}
 
 /** NodePermission to grant specific permissions to a set of Projects. */
 export type ProjectPermission = Named &
@@ -12595,23 +12637,23 @@ export type ProjectPermissionEdge = {
 };
 
 /** ProjectPermission entry enum type. */
-export type ProjectPermissionEntry =
+export enum ProjectPermissionEntry {
     /** Grants all other permissions on the Node except READ. */
-    | "ADMIN"
+    Admin = "ADMIN",
     /**
      * Allows to create Comments on Issues on this Trackable.
      * Also allows editing of your own Comments.
      */
-    | "COMMENT"
+    Comment = "COMMENT",
     /**
      * Allows to create new Issues on the Trackable.
      * This includes adding Issues from other Trackables.
      */
-    | "CREATE_ISSUES"
+    CreateIssues = "CREATE_ISSUES",
     /** Allows adding Issues on this Trackable to other Trackables. */
-    | "EXPORT_ISSUES"
+    ExportIssues = "EXPORT_ISSUES",
     /** Allows adding Labels on this Trackable to other Trackables. */
-    | "EXPORT_LABELS"
+    ExportLabels = "EXPORT_LABELS",
     /**
      * Allows affecting entities part of this Trackable with any Issues.
      * Affectable entitites include
@@ -12621,16 +12663,16 @@ export type ProjectPermissionEntry =
      *     - Interfaces on the Component
      *     - ComponentVersions of the Component
      */
-    | "LINK_FROM_ISSUES"
+    LinkFromIssues = "LINK_FROM_ISSUES",
     /** Allows to add, remove, and update Artefacts on this Trackable. */
-    | "MANAGE_ARTEFACTS"
+    ManageArtefacts = "MANAGE_ARTEFACTS",
     /** Allows to add / remove ComponentVersions to / from this Project. */
-    | "MANAGE_COMPONENTS"
+    ManageComponents = "MANAGE_COMPONENTS",
     /**
      * Allows to add, remove, and update IMSProjects on this Trackable.
      * Note: for adding, `IMSPermissionEntry.SYNC_TRACKABLES` is required additionally
      */
-    | "MANAGE_IMS"
+    ManageIms = "MANAGE_IMS",
     /**
      * Allows to manage issues.
      * This includes `CREATE_ISSUES` and `COMMENT`.
@@ -12643,23 +12685,24 @@ export type ProjectPermissionEntry =
      *   - change templated fields
      * In contrast to `MODERATOR`, this does not allow editing / removing Comments of other users
      */
-    | "MANAGE_ISSUES"
+    ManageIssues = "MANAGE_ISSUES",
     /**
      * Allows to add, remove, and update Labels on this Trackable.
      * Also allows to delete a Label, but only if it is allowed on all Trackable the Label is on.
      */
-    | "MANAGE_LABELS"
+    ManageLabels = "MANAGE_LABELS",
     /**
      * Allows to moderate Issues on this Trackable.
      * This allows everything `MANAGE_ISSUES` allows.
      * Additionally, it allows editing and deleting Comments of other Users
      */
-    | "MODERATOR"
+    Moderator = "MODERATOR",
     /**
      * Allows to read the Node (obtain it via the API) and to read certain related Nodes.
      * See documentation for specific Node for the specific conditions.
      */
-    | "READ";
+    Read = "READ"
+}
 
 /** Filter used to filter ProjectPermission */
 export type ProjectPermissionFilterInput = {
@@ -12702,13 +12745,14 @@ export type ProjectPermissionOrder = {
 };
 
 /** Fields a list of ProjectPermission can be sorted by */
-export type ProjectPermissionOrderField =
+export enum ProjectPermissionOrderField {
     /** Order by allUsers */
-    | "ALL_USERS"
+    AllUsers = "ALL_USERS",
     /** Order by id */
-    | "ID"
+    Id = "ID",
     /** Order by name */
-    | "NAME";
+    Name = "NAME"
+}
 
 export type PublicTimelineItem =
     | AddedAffectedEntityEvent
@@ -13349,9 +13393,10 @@ export type RelationConditionOrder = {
 };
 
 /** Fields a list of RelationCondition can be sorted by */
-export type RelationConditionOrderField =
+export enum RelationConditionOrderField {
     /** Order by id */
-    "ID";
+    Id = "ID"
+}
 
 /** The connection type for Relation. */
 export type RelationConnection = {
@@ -13422,9 +13467,10 @@ export type RelationOrder = {
 };
 
 /** Fields a list of Relation can be sorted by */
-export type RelationOrderField =
+export enum RelationOrderField {
     /** Order by id */
-    "ID";
+    Id = "ID"
+}
 
 /** Entity which can be used as start / end of Relations. Can be affected by Issues. */
 export type RelationPartner = {
@@ -13669,11 +13715,12 @@ export type RelationPartnerTemplateOrder = {
 };
 
 /** Fields a list of RelationPartnerTemplate can be sorted by */
-export type RelationPartnerTemplateOrderField =
+export enum RelationPartnerTemplateOrderField {
     /** Order by id */
-    | "ID"
+    Id = "ID",
     /** Order by name */
-    | "NAME";
+    Name = "NAME"
+}
 
 /**
  * Template for Relations.
@@ -13892,11 +13939,12 @@ export type RelationTemplateOrder = {
 };
 
 /** Fields a list of RelationTemplate can be sorted by */
-export type RelationTemplateOrderField =
+export enum RelationTemplateOrderField {
     /** Order by id */
-    | "ID"
+    Id = "ID",
     /** Order by name */
-    | "NAME";
+    Name = "NAME"
+}
 
 /** Event representing that the type of an IssueRelation changed. */
 export type RelationTypeChangedEvent = {
@@ -15342,13 +15390,14 @@ export type TimelineItemOrder = {
 };
 
 /** Fields a list of TimelineItem can be sorted by */
-export type TimelineItemOrderField =
+export enum TimelineItemOrderField {
     /** Order by createdAt */
-    | "CREATED_AT"
+    CreatedAt = "CREATED_AT",
     /** Order by id */
-    | "ID"
+    Id = "ID",
     /** Order by lastModifiedAt */
-    | "LAST_MODIFIED_AT";
+    LastModifiedAt = "LAST_MODIFIED_AT"
+}
 
 /**
  * Event representing that the title of an Issue changed.
@@ -15659,11 +15708,12 @@ export type TrackableOrder = {
 };
 
 /** Fields a list of Trackable can be sorted by */
-export type TrackableOrderField =
+export enum TrackableOrderField {
     /** Order by id */
-    | "ID"
+    Id = "ID",
     /** Order by name */
-    | "NAME";
+    Name = "NAME"
+}
 
 export type TrackablePermission = ComponentPermission | ProjectPermission;
 
@@ -16498,13 +16548,14 @@ export type UserOrder = {
 };
 
 /** Fields a list of User can be sorted by */
-export type UserOrderField =
+export enum UserOrderField {
     /** Order by displayName */
-    | "DISPLAY_NAME"
+    DisplayName = "DISPLAY_NAME",
     /** Order by email */
-    | "EMAIL"
+    Email = "EMAIL",
     /** Order by id */
-    | "ID";
+    Id = "ID"
+}
 
 /** Entity with a version */
 export type Versioned = {
@@ -16512,21 +16563,165 @@ export type Versioned = {
     version: Scalars["String"]["output"];
 };
 
-export type GetComponentsQueryVariables = Exact<{ [key: string]: never }>;
+export type GetComponentsQueryVariables = Exact<{
+    filter: Scalars["String"]["input"];
+    orderBy: ComponentOrder;
+    count: Scalars["Int"]["input"];
+    skip: Scalars["Int"]["input"];
+}>;
 
 export type GetComponentsQuery = {
     __typename?: "Query";
-    components: { __typename?: "ComponentConnection"; nodes: Array<{ __typename?: "Component"; id: string }> };
+    components: {
+        __typename?: "ComponentConnection";
+        totalCount: number;
+        nodes: Array<{
+            __typename?: "Component";
+            id: string;
+            name: string;
+            description: string;
+            openIssues: { __typename?: "IssueConnection"; totalCount: number };
+        }>;
+    };
 };
 
+export type GetComponentQueryVariables = Exact<{
+    id: Scalars["ID"]["input"];
+}>;
+
+export type GetComponentQuery = {
+    __typename?: "Query";
+    node?:
+        | { __typename?: "AddedAffectedEntityEvent"; id: string }
+        | { __typename?: "AddedArtefactEvent"; id: string }
+        | { __typename?: "AddedLabelEvent"; id: string }
+        | { __typename?: "AddedToPinnedIssuesEvent"; id: string }
+        | { __typename?: "AddedToTrackableEvent"; id: string }
+        | { __typename?: "Artefact"; id: string }
+        | { __typename?: "ArtefactTemplate"; id: string }
+        | { __typename?: "Assignment"; id: string }
+        | { __typename?: "AssignmentType"; id: string }
+        | { __typename?: "AssignmentTypeChangedEvent"; id: string }
+        | { __typename?: "Body"; id: string }
+        | {
+              __typename?: "Component";
+              name: string;
+              description: string;
+              id: string;
+              openIssues: { __typename?: "IssueConnection"; totalCount: number };
+          }
+        | { __typename?: "ComponentPermission"; id: string }
+        | { __typename?: "ComponentTemplate"; id: string }
+        | { __typename?: "ComponentVersion"; id: string }
+        | { __typename?: "ComponentVersionTemplate"; id: string }
+        | { __typename?: "DueDateChangedEvent"; id: string }
+        | { __typename?: "EstimatedTimeChangedEvent"; id: string }
+        | { __typename?: "GlobalPermission"; id: string }
+        | { __typename?: "GropiusUser"; id: string }
+        | { __typename?: "IMS"; id: string }
+        | { __typename?: "IMSIssue"; id: string }
+        | { __typename?: "IMSIssueTemplate"; id: string }
+        | { __typename?: "IMSPermission"; id: string }
+        | { __typename?: "IMSProject"; id: string }
+        | { __typename?: "IMSProjectTemplate"; id: string }
+        | { __typename?: "IMSTemplate"; id: string }
+        | { __typename?: "IMSUser"; id: string }
+        | { __typename?: "IMSUserTemplate"; id: string }
+        | { __typename?: "IncomingRelationTypeChangedEvent"; id: string }
+        | { __typename?: "Interface"; id: string }
+        | { __typename?: "InterfaceDefinition"; id: string }
+        | { __typename?: "InterfaceDefinitionTemplate"; id: string }
+        | { __typename?: "InterfacePart"; id: string }
+        | { __typename?: "InterfacePartTemplate"; id: string }
+        | { __typename?: "InterfaceSpecification"; id: string }
+        | { __typename?: "InterfaceSpecificationDerivationCondition"; id: string }
+        | { __typename?: "InterfaceSpecificationTemplate"; id: string }
+        | { __typename?: "InterfaceSpecificationVersion"; id: string }
+        | { __typename?: "InterfaceSpecificationVersionTemplate"; id: string }
+        | { __typename?: "InterfaceTemplate"; id: string }
+        | { __typename?: "IntraComponentDependencyParticipant"; id: string }
+        | { __typename?: "IntraComponentDependencySpecification"; id: string }
+        | { __typename?: "Issue"; id: string }
+        | { __typename?: "IssueComment"; id: string }
+        | { __typename?: "IssuePriority"; id: string }
+        | { __typename?: "IssueRelation"; id: string }
+        | { __typename?: "IssueRelationType"; id: string }
+        | { __typename?: "IssueState"; id: string }
+        | { __typename?: "IssueTemplate"; id: string }
+        | { __typename?: "IssueType"; id: string }
+        | { __typename?: "Label"; id: string }
+        | { __typename?: "OutgoingRelationTypeChangedEvent"; id: string }
+        | { __typename?: "PriorityChangedEvent"; id: string }
+        | { __typename?: "Project"; id: string }
+        | { __typename?: "ProjectPermission"; id: string }
+        | { __typename?: "RelatedByIssueEvent"; id: string }
+        | { __typename?: "Relation"; id: string }
+        | { __typename?: "RelationCondition"; id: string }
+        | { __typename?: "RelationTemplate"; id: string }
+        | { __typename?: "RemovedAffectedEntityEvent"; id: string }
+        | { __typename?: "RemovedArtefactEvent"; id: string }
+        | { __typename?: "RemovedAssignmentEvent"; id: string }
+        | { __typename?: "RemovedFromPinnedIssuesEvent"; id: string }
+        | { __typename?: "RemovedFromTrackableEvent"; id: string }
+        | { __typename?: "RemovedIncomingRelationEvent"; id: string }
+        | { __typename?: "RemovedLabelEvent"; id: string }
+        | { __typename?: "RemovedOutgoingRelationEvent"; id: string }
+        | { __typename?: "RemovedTemplatedFieldEvent"; id: string }
+        | { __typename?: "SpentTimeChangedEvent"; id: string }
+        | { __typename?: "StartDateChangedEvent"; id: string }
+        | { __typename?: "StateChangedEvent"; id: string }
+        | { __typename?: "TemplateChangedEvent"; id: string }
+        | { __typename?: "TemplatedFieldChangedEvent"; id: string }
+        | { __typename?: "TitleChangedEvent"; id: string }
+        | { __typename?: "TypeChangedEvent"; id: string }
+        | null;
+};
+
+type OpenIssueCount_Component_Fragment = {
+    __typename?: "Component";
+    openIssues: { __typename?: "IssueConnection"; totalCount: number };
+};
+
+type OpenIssueCount_Project_Fragment = {
+    __typename?: "Project";
+    openIssues: { __typename?: "IssueConnection"; totalCount: number };
+};
+
+export type OpenIssueCountFragment = OpenIssueCount_Component_Fragment | OpenIssueCount_Project_Fragment;
+
+export const OpenIssueCountFragmentDoc = gql`
+    fragment OpenIssueCount on Trackable {
+        openIssues: issues(filter: { state: { isOpen: { eq: true } } }) {
+            totalCount
+        }
+    }
+`;
 export const GetComponentsDocument = gql`
-    query getComponents {
-        components {
+    query getComponents($filter: String!, $orderBy: ComponentOrder!, $count: Int!, $skip: Int!) {
+        components(filter: { name: { contains: $filter } }, orderBy: $orderBy, first: $count, skip: $skip) {
             nodes {
                 id
+                name
+                description
+                ...OpenIssueCount
+            }
+            totalCount
+        }
+    }
+    ${OpenIssueCountFragmentDoc}
+`;
+export const GetComponentDocument = gql`
+    query getComponent($id: ID!) {
+        node(id: $id) {
+            id
+            ... on Component {
+                name
+                description
+                ...OpenIssueCount
             }
         }
     }
+    ${OpenIssueCountFragmentDoc}
 `;
 
 export type SdkFunctionWrapper = <T>(
@@ -16540,7 +16735,7 @@ const defaultWrapper: SdkFunctionWrapper = (action, _operationName, _operationTy
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
     return {
         getComponents(
-            variables?: GetComponentsQueryVariables,
+            variables: GetComponentsQueryVariables,
             requestHeaders?: GraphQLClientRequestHeaders
         ): Promise<GetComponentsQuery> {
             return withWrapper(
@@ -16550,6 +16745,20 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "getComponents",
+                "query"
+            );
+        },
+        getComponent(
+            variables: GetComponentQueryVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<GetComponentQuery> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<GetComponentQuery>(GetComponentDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "getComponent",
                 "query"
             );
         }

@@ -35,16 +35,16 @@
         </div>
     </div>
 </template>
-<script setup lang="ts" generic="T">
+<script setup lang="ts" generic="T, S extends string">
 import { watch } from "vue";
 import { Ref, onMounted } from "vue";
 import { PropType, ref } from "vue";
 
-export interface ItemManager<I> {
+export interface ItemManager<I, J> {
     filterLocal(item: I, filter: string): boolean;
     fetchItems(
         filter: string,
-        sortField: string,
+        sortField: J,
         sortAscending: boolean,
         count: number,
         page: number
@@ -53,17 +53,17 @@ export interface ItemManager<I> {
 
 const props = defineProps({
     sortFields: {
-        type: Array as PropType<string[]>,
+        type: Array as PropType<S[]>,
         required: true
     },
     itemManager: {
-        type: Object as PropType<ItemManager<T>>,
+        type: Object as PropType<ItemManager<T, S>>,
         required: true
     },
     itemCount: {
         type: Number,
         required: false,
-        default: 30
+        default: 25
     }
 });
 
@@ -72,10 +72,10 @@ defineEmits<{
 }>();
 
 const searchString = ref("");
-const currentSortField = ref(props.sortFields[0]);
+const currentSortField = ref(props.sortFields[0]) as Ref<S>;
 const sortAscending = ref(true);
 
-const pageCount = ref(5);
+const pageCount = ref(0);
 const currentPage = ref(1);
 const currentItems = ref<T[]>([]) as Ref<T[]>;
 
@@ -119,7 +119,7 @@ async function updateItems(resetPage: boolean) {
     flex: 1 1 250px;
 }
 
-.top-bar /deep/ .v-input__details {
+.top-bar :deep(.v-input__details) {
     display: none !important;
 }
 

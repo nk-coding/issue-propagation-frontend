@@ -28,6 +28,15 @@ export default defineConfig({
         extensions: [".js", ".json", ".jsx", ".mjs", ".ts", ".tsx", ".vue"]
     },
     server: {
-        port: 3000
+        port: 4200,
+        proxy: {
+            "/api": {
+                target: "http://localhost:8080/graphql",
+                changeOrigin: true,
+                secure: false,
+                ws: true,
+                ignorePath: true
+            }
+        }
     }
 });

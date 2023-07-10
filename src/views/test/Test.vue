@@ -77,7 +77,7 @@ interface Item {
     id: string;
 }
 
-const itemManager: ItemManager<Item> = {
+const itemManager: ItemManager<Item, string> = {
     filterLocal: function (item: Item, filter: string): boolean {
         return item.name.includes(filter);
     },

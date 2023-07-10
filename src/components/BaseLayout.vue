@@ -8,13 +8,14 @@
                 <div v-for="(segment, index) in titleSegments" :key="index" class="d-flex align-center">
                     <span v-if="index != 0" class="text-h6 mx-1">/</span>
                     <v-btn variant="text" class="px-0" min-width="0" @click="router.push(segment.path)">
-                        <span class="text-h6">{{ segment.name }}</span>
+                        <span v-if="'name' in segment" class="text-h6">{{ segment.name }}</span>
+                        <v-icon size="large" v-else>{{ segment.icon }}</v-icon>
                     </v-btn>
                 </div>
             </slot>
             <slot name="header-content">
-                <v-tabs v-if="tabs.length > 0" v-model="currentTab" color="primary" density="compact" class="ml-5">
-                    <v-tab v-for="(tab, index) in tabs" :value="tab.name">{{ tab.name }}</v-tab>
+                <v-tabs v-if="tabs.length > 0" color="primary" density="compact" class="ml-5">
+                    <v-tab v-for="(tab, index) in tabs" :value="tab.name" :to="tab.path" exact>{{ tab.name }}</v-tab>
                 </v-tabs>
             </slot>
             <v-spacer />
@@ -49,10 +50,16 @@ import { useRouter } from "vue-router";
 import { useTheme } from "vuetify/lib/framework.mjs";
 import SideBar, { SideBarItem } from "./SideBar.vue";
 
-export interface TitleSegment {
-    name: string;
+export type TitleSegment = {
     path: string;
-}
+} & (
+    | {
+          name: string;
+      }
+    | {
+          icon: string;
+      }
+);
 export interface TabSegment {
     name: string;
     path: string;
@@ -77,7 +84,6 @@ const props = defineProps({
     }
 });
 
-const currentTab = ref("slo");
 const theme = useTheme();
 const lightMode = useLocalStorage("lightMode", true);
 const router = useRouter();

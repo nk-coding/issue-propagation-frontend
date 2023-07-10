@@ -1,0 +1,5 @@
+fragment OpenIssueCount on Trackable {
+    openIssues: issues(filter: { state: { isOpen: { eq: true } } }) {
+        totalCount
+    }
+}

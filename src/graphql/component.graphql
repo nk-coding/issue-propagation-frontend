@@ -1,7 +1,22 @@
-query getComponents {
-    components {
+query getComponents($filter: String!, $orderBy: ComponentOrder!, $count: Int!, $skip: Int!) {
+    components(filter: { name: { contains: $filter } }, orderBy: $orderBy, first: $count, skip: $skip) {
         nodes {
             id
+            name
+            description
+            ...OpenIssueCount
+        }
+        totalCount
+    }
+}
+
+query getComponent($id: ID!) {
+    node(id: $id) {
+        id
+        ... on Component {
+            name
+            description
+            ...OpenIssueCount
         }
     }
 }
