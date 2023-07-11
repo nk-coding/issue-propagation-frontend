@@ -17,7 +17,7 @@ type Component = NodeReturnType<"getComponent", "Component">;
 
 const client = useClient();
 const route = useRoute();
-const componentId = computed(() => route.params.component as string);
+const componentId = computed(() => route.params.trackable as string);
 
 const { state: component, isReady } = useAsyncState(async () => {
     const res = await client.getComponent({ id: componentId.value });

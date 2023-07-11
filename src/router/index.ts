@@ -26,7 +26,7 @@ const routes: RouteRecordRaw[] = [
         ]
     },
     {
-        path: "/components/:component",
+        path: "/components/:trackable",
         component: () => import("../views/component/Root.vue"),
         children: [
             {
@@ -41,6 +41,33 @@ const routes: RouteRecordRaw[] = [
             {
                 path: "issues",
                 name: "component-issues",
+                component: () => import("../views/issue/Issues.vue"),
+                children: [
+                    {
+                        path: ":issue",
+                        name: "component-issue",
+                        component: () => import("../views/issue/Issue.vue")
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        path: "/projects/:trackable",
+        component: () => import("../views/project/Root.vue"),
+        children: [
+            {
+                path: "",
+                name: "project",
+                component: () => import("../views/project/Home.vue")
+            },
+            {
+                path: "details",
+                component: () => import("../views/project/Details.vue")
+            },
+            {
+                path: "issues",
+                name: "project-issues",
                 component: () => import("../views/issue/Issues.vue")
             }
         ]

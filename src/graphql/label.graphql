@@ -1,0 +1,5 @@
+fragment DefaultLabelInfo on Label {
+    name
+    description
+    color
+}

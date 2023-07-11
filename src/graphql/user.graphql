@@ -1,0 +1,6 @@
+fragment DefaultUserInfo on User {
+    id
+    username
+    displayName
+    avatar
+}

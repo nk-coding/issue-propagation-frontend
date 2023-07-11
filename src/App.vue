@@ -39,4 +39,8 @@ html,
 ::-webkit-scrollbar-corner {
     visibility: hidden;
 }
+
+.whitespace-pre {
+    white-space: pre;
+}
 </style>

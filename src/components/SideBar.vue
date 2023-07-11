@@ -13,7 +13,7 @@
                     :active="item.active"
                     @click="item.onClick"
                 ></SideBarButton>
-                <FAB v-else :color="`${item.color}-container`" @click="item.onClick">
+                <FAB v-else :color="`${item.color}-container`" @click="item.onClick" elevation="0">
                     <v-icon class="fab-icon">{{ item.icon }}</v-icon>
                     <v-tooltip v-if="item.description" activator="parent" location="bottom">{{
                         item.description

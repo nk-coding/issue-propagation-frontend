@@ -1,0 +1,41 @@
+query getIssues($filter: String!, $orderBy: IssueOrder!, $count: Int!, $skip: Int!, $trackable: ID!) {
+    node(id: $trackable) {
+        ... on Trackable {
+            issues(filter: { title: { contains: $filter } }, orderBy: $orderBy, first: $count, skip: $skip) {
+                nodes {
+                    id
+                    title
+                    createdAt
+                    createdBy {
+                        ...DefaultUserInfo
+                    }
+                    ...DefaultIssueIconInfo
+                    issueComments {
+                        totalCount
+                    }
+                    labels {
+                        nodes {
+                            ...DefaultLabelInfo
+                        }
+                    }
+                }
+                totalCount
+            }
+        }
+    }
+}
+
+fragment DefaultIssueIconInfo on Issue {
+    incomingRelations {
+        totalCount
+    }
+    outgoingRelations {
+        totalCount
+    }
+    state {
+        isOpen
+    }
+    type {
+        iconPath
+    }
+}
