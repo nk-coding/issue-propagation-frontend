@@ -4,6 +4,13 @@ interface ThemeColors {
     [key: string]: string;
 }
 
+const commonColors = {
+    "issue-open": "#00BA39",
+    "issue-closed": "#FF0036",
+    "issue-incoming": "#00C6EB",
+    "issue-outgoing": "#FF8900"
+};
+
 const mainColorMappings: [string, keyof Scheme][] = [
     ["primary", "primary"],
     ["on-primary", "onPrimary"],
@@ -32,9 +39,11 @@ const surfaceColorMappings: [string, number, number][] = [
     ["surface", 98, 6],
     ["on-surface", 10, 90],
     ["surface-variant", 90, 30],
-    ["on-surface-variant", 30, 80],
+    ["on-surface-variant", 50, 60],
     ["background", 98, 6],
-    ["on-background", 10, 90]
+    ["on-background", 10, 90],
+    ["inverse-surface", 20, 90],
+    ["on-inverse-surface", 95, 20]
 ];
 
 export function generateThemeColors(color: string, dark: boolean): ThemeColors {
@@ -48,5 +57,8 @@ export function generateThemeColors(color: string, dark: boolean): ThemeColors {
         const value = dark ? darkValue : lightValue;
         colors[key] = hexFromArgb(theme.palettes.neutral.tone(value));
     });
-    return colors;
+    return {
+        ...colors,
+        ...commonColors
+    };
 }

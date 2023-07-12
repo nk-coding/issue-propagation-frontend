@@ -9,7 +9,7 @@
                 </slot>
             </div>
             <slot name="subtitle">
-                <v-list-item-subtitle>{{ subtitle }}</v-list-item-subtitle>
+                <div class="text-variant text-body-2">{{ subtitle }}</div>
             </slot>
         </div>
         <slot name="append" />

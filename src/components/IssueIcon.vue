@@ -3,13 +3,13 @@
         <path :d="issue.type.iconPath" :fill="iconFill" />
         <polygon
             v-if="issue.incomingRelations.totalCount > 0"
-            fill="#00C6EB"
+            fill="rgb(var(--v-theme-issue-incoming))"
             points="3 11 3 21 10 16"
             transform="scale(3.125)"
         ></polygon>
         <polygon
             v-if="issue.outgoingRelations.totalCount > 0"
-            fill="#FF8900"
+            fill="rgb(var(--v-theme-issue-outgoing))"
             points="24 11 24 21 31 16"
             transform="scale(3.125)"
         ></polygon>
@@ -29,9 +29,9 @@ const props = defineProps({
 
 const iconFill = computed(() => {
     if (props.issue.state.isOpen) {
-        return "#00BA39";
+        return "rgb(var(--v-theme-issue-open))";
     } else {
-        return "#FF0036";
+        return "rgb(var(--v-theme-issue-closed))";
     }
 });
 </script>

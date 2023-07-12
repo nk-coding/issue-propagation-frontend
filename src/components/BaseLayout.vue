@@ -6,8 +6,8 @@
             </v-btn>
             <slot name="header-title">
                 <div v-for="(segment, index) in titleSegments" :key="index" class="d-flex align-center">
-                    <span v-if="index != 0" class="text-h6 mx-1">/</span>
-                    <v-btn variant="text" class="px-0" min-width="0" @click="router.push(segment.path)">
+                    <span v-if="index != 0" class="text-h6">/</span>
+                    <v-btn variant="text" class="px-1" min-width="0" @click="router.push(segment.path)" rounded="lger">
                         <span v-if="'name' in segment" class="text-h6">{{ segment.name }}</span>
                         <v-icon size="large" v-else>{{ segment.icon }}</v-icon>
                     </v-btn>

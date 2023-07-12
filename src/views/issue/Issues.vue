@@ -3,21 +3,32 @@
         <template #item="{ item }">
             <ListItem :title="item.title" :subtitle="item.title">
                 <template v-slot:prepend>
-                    <IssueIcon :issue="item" height="40px" class="mr-2" />
+                    <IssueIcon :issue="item" height="40px" class="mr-2 flex-0-0" />
                 </template>
                 <template v-slot:append>
-                    <div class="text-medium-emphasis issue-container">
-                        <v-icon color="on-surface-variant">mdi-comment-outline</v-icon>
+                    <div class="mr-7 user-stack-container">
+                        <UserStack :users="item.assignments.nodes.map((assignment) => assignment.user)" size="small" class="pa-3" />
+                    </div>
+                    <div class="text-variant icon-container d-flex align-center">
+                        <v-icon color="issue-incoming" class="triangle-right mr-1" size="x-small">mdi-triangle</v-icon>
+                        {{ item.incomingRelations.totalCount }}
+                    </div>
+                    <div class="text-variant icon-container d-flex align-center">
+                        {{ item.outgoingRelations.totalCount }}
+                        <v-icon color="issue-outgoing" class="triangle-right ml-1" size="x-small">mdi-triangle</v-icon>
+                    </div>
+                    <div class="text-variant icon-container">
+                        <v-icon>mdi-comment-outline</v-icon>
                         {{ item.issueComments.totalCount }}
                     </div>
                 </template>
                 <template v-slot:subtitle>
-                    <v-list-item-subtitle class="d-flex align-center">
+                    <div class="d-flex align-center text-variant text-body-2">
                         was created&nbsp;
                         <RelativeTime :time="item.createdAt" />
                         &nbsp;by&nbsp;
-                        <User :user="item.createdBy" class="subtitle-user" />
-                    </v-list-item-subtitle>
+                        <User :user="item.createdBy" size="small" />
+                    </div>
                 </template>
                 <template v-slot:title-append>
                     <Label
@@ -43,6 +54,7 @@ import RelativeTime from "@/components/RelativeTime.vue";
 import User from "@/components/User.vue";
 import IssueIcon from "@/components/IssueIcon.vue";
 import Label from "@/components/Label.vue";
+import UserStack from "@/components/UserStack.vue";
 
 type Trackable = NodeReturnType<"getIssues", "Component">;
 type Issue = Trackable["issues"]["nodes"][0];
@@ -92,11 +104,15 @@ function selectIssue(issue: any) {
     });
 }
 </script>
-<style scoped>
-.issue-container {
-    min-width: 70px;
+<style scoped lang="scss">
+@use "@/styles/settings";
+.icon-container {
+    min-width: settings.$icon-with-number-width;
 }
-.subtitle-user {
-    height: 1.3em;
+.triangle-right {
+    rotate: 90deg;
+}
+.user-stack-container {
+    background: transparent;
 }
 </style>

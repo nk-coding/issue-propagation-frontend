@@ -4,7 +4,7 @@
             <ListItem :title="item.name" :subtitle="item.description">
                 <template v-slot:append>
                     <div class="text-medium-emphasis issue-container">
-                        <v-icon color="on-surface-variant">mdi-alert-circle-outline</v-icon>
+                        <v-icon>mdi-alert-circle-outline</v-icon>
                         {{ item.openIssues.totalCount }}
                     </div>
                 </template>
@@ -57,8 +57,9 @@ function selectComponent(component: any) {
     router.push({ name: "component", params: { trackable: component.id } });
 }
 </script>
-<style scoped>
+<style scoped lang="scss">
+@use "@/styles/settings";
 .issue-container {
-    min-width: 70px;
+    min-width: settings.$icon-with-number-width;
 }
 </style>

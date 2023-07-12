@@ -18,6 +18,13 @@ query getIssues($filter: String!, $orderBy: IssueOrder!, $count: Int!, $skip: In
                             ...DefaultLabelInfo
                         }
                     }
+                    assignments {
+                        nodes {
+                            user {
+                                ...DefaultUserInfo
+                            }
+                        }
+                    }
                 }
                 totalCount
             }

@@ -16733,6 +16733,27 @@ export type GetIssuesQuery = {
                           __typename?: "LabelConnection";
                           nodes: Array<{ __typename?: "Label"; name: string; description: string; color: string }>;
                       };
+                      assignments: {
+                          __typename?: "AssignmentConnection";
+                          nodes: Array<{
+                              __typename?: "Assignment";
+                              user:
+                                  | {
+                                        __typename?: "GropiusUser";
+                                        id: string;
+                                        username: string;
+                                        displayName: string;
+                                        avatar: any;
+                                    }
+                                  | {
+                                        __typename?: "IMSUser";
+                                        id: string;
+                                        username?: string | null;
+                                        displayName: string;
+                                        avatar: any;
+                                    };
+                          }>;
+                      };
                       incomingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
                       outgoingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
                       state: { __typename?: "IssueState"; isOpen: boolean };
@@ -16811,6 +16832,27 @@ export type GetIssuesQuery = {
                       labels: {
                           __typename?: "LabelConnection";
                           nodes: Array<{ __typename?: "Label"; name: string; description: string; color: string }>;
+                      };
+                      assignments: {
+                          __typename?: "AssignmentConnection";
+                          nodes: Array<{
+                              __typename?: "Assignment";
+                              user:
+                                  | {
+                                        __typename?: "GropiusUser";
+                                        id: string;
+                                        username: string;
+                                        displayName: string;
+                                        avatar: any;
+                                    }
+                                  | {
+                                        __typename?: "IMSUser";
+                                        id: string;
+                                        username?: string | null;
+                                        displayName: string;
+                                        avatar: any;
+                                    };
+                          }>;
                       };
                       incomingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
                       outgoingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
@@ -16967,6 +17009,13 @@ export const GetIssuesDocument = gql`
                         labels {
                             nodes {
                                 ...DefaultLabelInfo
+                            }
+                        }
+                        assignments {
+                            nodes {
+                                user {
+                                    ...DefaultUserInfo
+                                }
                             }
                         }
                     }

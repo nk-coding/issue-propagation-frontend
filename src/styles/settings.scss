@@ -9,5 +9,16 @@
     $color-pack: false,
     $rounded: (
         "lger": 16px
-    )
+    ),
+    $tooltip-background-color: rgb(var(--v-theme-inverse-surface)),
+    $tooltip-text-color: rgb(var(--v-theme-on-inverse-surface))
+);
+
+$icon-with-number-width: 70px;
+$avatar-sizes: (
+    "x-small": 1em,
+    "small": 1.25em,
+    "default": 1.5em,
+    "large": 1.75em,
+    "x-large": 2em
 );

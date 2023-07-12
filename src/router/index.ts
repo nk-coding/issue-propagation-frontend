@@ -41,14 +41,12 @@ const routes: RouteRecordRaw[] = [
             {
                 path: "issues",
                 name: "component-issues",
-                component: () => import("../views/issue/Issues.vue"),
-                children: [
-                    {
-                        path: ":issue",
-                        name: "component-issue",
-                        component: () => import("../views/issue/Issue.vue")
-                    }
-                ]
+                component: () => import("../views/issue/Issues.vue")
+            },
+            {
+                path: "issues/:issue",
+                name: "component-issue",
+                component: () => import("../views/issue/Issue.vue")
             }
         ]
     },
