@@ -36,17 +36,24 @@ const routes: RouteRecordRaw[] = [
             },
             {
                 path: "details",
+                name: "component-details",
                 component: () => import("../views/component/Details.vue")
             },
             {
                 path: "issues",
-                name: "component-issues",
-                component: () => import("../views/issue/Issues.vue")
-            },
-            {
-                path: "issues/:issue",
-                name: "component-issue",
-                component: () => import("../views/issue/Issue.vue")
+                component: () => import("../views/RouterOnly.vue"),
+                children: [
+                    {
+                        path: "",
+                        name: "component-issues",
+                        component: () => import("../views/issue/Issues.vue")
+                    },
+                    {
+                        path: ":issue",
+                        name: "component-issue",
+                        component: () => import("../views/issue/Issue.vue")
+                    }
+                ]
             }
         ]
     },

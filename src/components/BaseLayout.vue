@@ -15,7 +15,9 @@
             </slot>
             <slot name="header-content">
                 <v-tabs v-if="tabs.length > 0" color="primary" density="compact" class="ml-5">
-                    <v-tab v-for="(tab, index) in tabs" :value="tab.name" :to="tab.path" exact>{{ tab.name }}</v-tab>
+                    <v-tab v-for="(tab, index) in tabs" :value="tab.name" :to="tab.path" :exact="tab.exact ?? true">{{
+                        tab.name
+                    }}</v-tab>
                 </v-tabs>
             </slot>
             <v-spacer />
@@ -46,12 +48,12 @@
 <script setup lang="ts">
 import { useLocalStorage } from "@vueuse/core";
 import { PropType, ref } from "vue";
-import { useRouter } from "vue-router";
+import { RouteLocationRaw, useRouter } from "vue-router";
 import { useTheme } from "vuetify/lib/framework.mjs";
 import SideBar, { SideBarItem } from "./SideBar.vue";
 
 export type TitleSegment = {
-    path: string;
+    path: RouteLocationRaw;
 } & (
     | {
           name: string;
@@ -62,7 +64,8 @@ export type TitleSegment = {
 );
 export interface TabSegment {
     name: string;
-    path: string;
+    path: RouteLocationRaw;
+    exact?: boolean;
 }
 
 const props = defineProps({

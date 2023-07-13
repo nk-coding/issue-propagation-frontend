@@ -11,7 +11,7 @@ import BaseLayout, { TabSegment } from "@/components/BaseLayout.vue";
 import { NodeReturnType, useClient } from "@/graphql/client";
 import { useAsyncState } from "@vueuse/core";
 import { computed } from "vue";
-import { useRoute } from "vue-router";
+import { RouteLocationRaw, useRoute } from "vue-router";
 
 type Component = NodeReturnType<"getComponent", "Component">;
 
@@ -24,8 +24,11 @@ const { state: component, isReady } = useAsyncState(async () => {
     return res.node as Component;
 }, null);
 
-function componentPath(suffix: string): string {
-    return `/components/${componentId.value}/${suffix}`;
+function componentPath(name: string): RouteLocationRaw {
+    return {
+        name,
+        params: { trackable: componentId.value }
+    };
 }
 
 const titleSegments = computed(() => [
@@ -34,9 +37,9 @@ const titleSegments = computed(() => [
 ]);
 
 const tabs: TabSegment[] = [
-    { name: "Home", path: componentPath("") },
-    { name: "Details", path: componentPath("details") },
-    { name: "Issues", path: componentPath("issues") }
+    { name: "Home", path: componentPath("component") },
+    { name: "Details", path: componentPath("component-details") },
+    { name: "Issues", path: componentPath("component-issues"), exact: false }
 ];
 
 const rightSidebarItems = computed(() => {

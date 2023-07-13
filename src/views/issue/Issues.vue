@@ -7,7 +7,11 @@
                 </template>
                 <template v-slot:append>
                     <div class="mr-7 user-stack-container">
-                        <UserStack :users="item.assignments.nodes.map((assignment) => assignment.user)" size="small" class="pa-3" />
+                        <UserStack
+                            :users="item.assignments.nodes.map((assignment) => assignment.user)"
+                            size="small"
+                            class="pa-3"
+                        />
                     </div>
                     <div class="text-variant icon-container d-flex align-center">
                         <v-icon color="issue-incoming" class="triangle-right mr-1" size="x-small">mdi-triangle</v-icon>
