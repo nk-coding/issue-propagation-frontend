@@ -16885,6 +16885,1031 @@ export type GetIssuesQuery = {
         | null;
 };
 
+export type GetIssueQueryVariables = Exact<{
+    id: Scalars["ID"]["input"];
+}>;
+
+export type GetIssueQuery = {
+    __typename?: "Query";
+    node?:
+        | { __typename?: "AddedAffectedEntityEvent" }
+        | { __typename?: "AddedArtefactEvent" }
+        | { __typename?: "AddedLabelEvent" }
+        | { __typename?: "AddedToPinnedIssuesEvent" }
+        | { __typename?: "AddedToTrackableEvent" }
+        | { __typename?: "Artefact" }
+        | { __typename?: "ArtefactTemplate" }
+        | { __typename?: "Assignment" }
+        | { __typename?: "AssignmentType" }
+        | { __typename?: "AssignmentTypeChangedEvent" }
+        | { __typename?: "Body" }
+        | { __typename?: "Component" }
+        | { __typename?: "ComponentPermission" }
+        | { __typename?: "ComponentTemplate" }
+        | { __typename?: "ComponentVersion" }
+        | { __typename?: "ComponentVersionTemplate" }
+        | { __typename?: "DueDateChangedEvent" }
+        | { __typename?: "EstimatedTimeChangedEvent" }
+        | { __typename?: "GlobalPermission" }
+        | { __typename?: "GropiusUser" }
+        | { __typename?: "IMS" }
+        | { __typename?: "IMSIssue" }
+        | { __typename?: "IMSIssueTemplate" }
+        | { __typename?: "IMSPermission" }
+        | { __typename?: "IMSProject" }
+        | { __typename?: "IMSProjectTemplate" }
+        | { __typename?: "IMSTemplate" }
+        | { __typename?: "IMSUser" }
+        | { __typename?: "IMSUserTemplate" }
+        | { __typename?: "IncomingRelationTypeChangedEvent" }
+        | { __typename?: "Interface" }
+        | { __typename?: "InterfaceDefinition" }
+        | { __typename?: "InterfaceDefinitionTemplate" }
+        | { __typename?: "InterfacePart" }
+        | { __typename?: "InterfacePartTemplate" }
+        | { __typename?: "InterfaceSpecification" }
+        | { __typename?: "InterfaceSpecificationDerivationCondition" }
+        | { __typename?: "InterfaceSpecificationTemplate" }
+        | { __typename?: "InterfaceSpecificationVersion" }
+        | { __typename?: "InterfaceSpecificationVersionTemplate" }
+        | { __typename?: "InterfaceTemplate" }
+        | { __typename?: "IntraComponentDependencyParticipant" }
+        | { __typename?: "IntraComponentDependencySpecification" }
+        | {
+              __typename?: "Issue";
+              id: string;
+              title: string;
+              timelineItems: {
+                  __typename?: "TimelineItemConnection";
+                  nodes: Array<
+                      | {
+                            __typename?: "AddedAffectedEntityEvent";
+                            id: string;
+                            createdAt: any;
+                            addedAffectedEntity?:
+                                | { __typename: "Component"; id: string; name: string; description: string }
+                                | { __typename: "ComponentVersion"; id: string; name: string; description: string }
+                                | { __typename: "Interface"; id: string; name: string; description: string }
+                                | { __typename: "InterfacePart"; id: string; name: string; description: string }
+                                | {
+                                      __typename: "InterfaceSpecification";
+                                      id: string;
+                                      name: string;
+                                      description: string;
+                                  }
+                                | {
+                                      __typename: "InterfaceSpecificationVersion";
+                                      id: string;
+                                      name: string;
+                                      description: string;
+                                  }
+                                | { __typename: "Project"; id: string; name: string; description: string }
+                                | null;
+                            createdBy:
+                                | {
+                                      __typename?: "GropiusUser";
+                                      id: string;
+                                      username: string;
+                                      displayName: string;
+                                      avatar: any;
+                                  }
+                                | {
+                                      __typename?: "IMSUser";
+                                      id: string;
+                                      username?: string | null;
+                                      displayName: string;
+                                      avatar: any;
+                                  };
+                        }
+                      | {
+                            __typename?: "AddedArtefactEvent";
+                            id: string;
+                            createdAt: any;
+                            addedArtefact?: { __typename?: "Artefact"; file: any; id: string } | null;
+                            createdBy:
+                                | {
+                                      __typename?: "GropiusUser";
+                                      id: string;
+                                      username: string;
+                                      displayName: string;
+                                      avatar: any;
+                                  }
+                                | {
+                                      __typename?: "IMSUser";
+                                      id: string;
+                                      username?: string | null;
+                                      displayName: string;
+                                      avatar: any;
+                                  };
+                        }
+                      | {
+                            __typename?: "AddedLabelEvent";
+                            id: string;
+                            createdAt: any;
+                            addedLabel?: {
+                                __typename?: "Label";
+                                name: string;
+                                description: string;
+                                color: string;
+                            } | null;
+                            createdBy:
+                                | {
+                                      __typename?: "GropiusUser";
+                                      id: string;
+                                      username: string;
+                                      displayName: string;
+                                      avatar: any;
+                                  }
+                                | {
+                                      __typename?: "IMSUser";
+                                      id: string;
+                                      username?: string | null;
+                                      displayName: string;
+                                      avatar: any;
+                                  };
+                        }
+                      | {
+                            __typename?: "AddedToPinnedIssuesEvent";
+                            id: string;
+                            createdAt: any;
+                            pinnedOn?:
+                                | { __typename?: "Component"; id: string; name: string; description: string }
+                                | { __typename?: "Project"; id: string; name: string; description: string }
+                                | null;
+                            createdBy:
+                                | {
+                                      __typename?: "GropiusUser";
+                                      id: string;
+                                      username: string;
+                                      displayName: string;
+                                      avatar: any;
+                                  }
+                                | {
+                                      __typename?: "IMSUser";
+                                      id: string;
+                                      username?: string | null;
+                                      displayName: string;
+                                      avatar: any;
+                                  };
+                        }
+                      | {
+                            __typename?: "AddedToTrackableEvent";
+                            id: string;
+                            createdAt: any;
+                            createdBy:
+                                | {
+                                      __typename?: "GropiusUser";
+                                      id: string;
+                                      username: string;
+                                      displayName: string;
+                                      avatar: any;
+                                  }
+                                | {
+                                      __typename?: "IMSUser";
+                                      id: string;
+                                      username?: string | null;
+                                      displayName: string;
+                                      avatar: any;
+                                  };
+                        }
+                      | {
+                            __typename?: "Assignment";
+                            id: string;
+                            createdAt: any;
+                            createdBy:
+                                | {
+                                      __typename?: "GropiusUser";
+                                      id: string;
+                                      username: string;
+                                      displayName: string;
+                                      avatar: any;
+                                  }
+                                | {
+                                      __typename?: "IMSUser";
+                                      id: string;
+                                      username?: string | null;
+                                      displayName: string;
+                                      avatar: any;
+                                  };
+                            user:
+                                | {
+                                      __typename?: "GropiusUser";
+                                      id: string;
+                                      username: string;
+                                      displayName: string;
+                                      avatar: any;
+                                  }
+                                | {
+                                      __typename?: "IMSUser";
+                                      id: string;
+                                      username?: string | null;
+                                      displayName: string;
+                                      avatar: any;
+                                  };
+                            type?: { __typename?: "AssignmentType"; name: string; description: string } | null;
+                        }
+                      | {
+                            __typename?: "AssignmentTypeChangedEvent";
+                            id: string;
+                            createdAt: any;
+                            assignment: {
+                                __typename?: "Assignment";
+                                id: string;
+                                user:
+                                    | {
+                                          __typename?: "GropiusUser";
+                                          id: string;
+                                          username: string;
+                                          displayName: string;
+                                          avatar: any;
+                                      }
+                                    | {
+                                          __typename?: "IMSUser";
+                                          id: string;
+                                          username?: string | null;
+                                          displayName: string;
+                                          avatar: any;
+                                      };
+                                type?: { __typename?: "AssignmentType"; name: string; description: string } | null;
+                            };
+                            newAssignmentType?: {
+                                __typename?: "AssignmentType";
+                                name: string;
+                                description: string;
+                            } | null;
+                            oldAssignmentType?: {
+                                __typename?: "AssignmentType";
+                                name: string;
+                                description: string;
+                            } | null;
+                            createdBy:
+                                | {
+                                      __typename?: "GropiusUser";
+                                      id: string;
+                                      username: string;
+                                      displayName: string;
+                                      avatar: any;
+                                  }
+                                | {
+                                      __typename?: "IMSUser";
+                                      id: string;
+                                      username?: string | null;
+                                      displayName: string;
+                                      avatar: any;
+                                  };
+                        }
+                      | {
+                            __typename?: "Body";
+                            id: string;
+                            createdAt: any;
+                            body: string;
+                            bodyLastEditedAt: any;
+                            createdBy:
+                                | {
+                                      __typename?: "GropiusUser";
+                                      id: string;
+                                      username: string;
+                                      displayName: string;
+                                      avatar: any;
+                                  }
+                                | {
+                                      __typename?: "IMSUser";
+                                      id: string;
+                                      username?: string | null;
+                                      displayName: string;
+                                      avatar: any;
+                                  };
+                            bodyLastEditedBy:
+                                | {
+                                      __typename?: "GropiusUser";
+                                      id: string;
+                                      username: string;
+                                      displayName: string;
+                                      avatar: any;
+                                  }
+                                | {
+                                      __typename?: "IMSUser";
+                                      id: string;
+                                      username?: string | null;
+                                      displayName: string;
+                                      avatar: any;
+                                  };
+                        }
+                      | {
+                            __typename?: "DueDateChangedEvent";
+                            oldDueDate?: any | null;
+                            newDueDate?: any | null;
+                            id: string;
+                            createdAt: any;
+                            createdBy:
+                                | {
+                                      __typename?: "GropiusUser";
+                                      id: string;
+                                      username: string;
+                                      displayName: string;
+                                      avatar: any;
+                                  }
+                                | {
+                                      __typename?: "IMSUser";
+                                      id: string;
+                                      username?: string | null;
+                                      displayName: string;
+                                      avatar: any;
+                                  };
+                        }
+                      | {
+                            __typename?: "EstimatedTimeChangedEvent";
+                            oldEstimatedTime?: any | null;
+                            newEstimatedTime?: any | null;
+                            id: string;
+                            createdAt: any;
+                            createdBy:
+                                | {
+                                      __typename?: "GropiusUser";
+                                      id: string;
+                                      username: string;
+                                      displayName: string;
+                                      avatar: any;
+                                  }
+                                | {
+                                      __typename?: "IMSUser";
+                                      id: string;
+                                      username?: string | null;
+                                      displayName: string;
+                                      avatar: any;
+                                  };
+                        }
+                      | {
+                            __typename?: "IncomingRelationTypeChangedEvent";
+                            id: string;
+                            createdAt: any;
+                            issueRelation: {
+                                __typename?: "IssueRelation";
+                                issue?: {
+                                    __typename?: "Issue";
+                                    title: string;
+                                    incomingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
+                                    outgoingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
+                                    state: { __typename?: "IssueState"; isOpen: boolean };
+                                    type: { __typename?: "IssueType"; iconPath: string };
+                                } | null;
+                                type?: { __typename?: "IssueRelationType"; name: string; description: string } | null;
+                            };
+                            oldRelationType?: {
+                                __typename?: "IssueRelationType";
+                                name: string;
+                                description: string;
+                            } | null;
+                            newRelationTyoe?: {
+                                __typename?: "IssueRelationType";
+                                name: string;
+                                description: string;
+                            } | null;
+                            createdBy:
+                                | {
+                                      __typename?: "GropiusUser";
+                                      id: string;
+                                      username: string;
+                                      displayName: string;
+                                      avatar: any;
+                                  }
+                                | {
+                                      __typename?: "IMSUser";
+                                      id: string;
+                                      username?: string | null;
+                                      displayName: string;
+                                      avatar: any;
+                                  };
+                        }
+                      | {
+                            __typename?: "IssueComment";
+                            isDeleted: boolean;
+                            id: string;
+                            createdAt: any;
+                            body: string;
+                            bodyLastEditedAt: any;
+                            answers?:
+                                | { __typename?: "Body"; id: string }
+                                | { __typename?: "IssueComment"; id: string }
+                                | null;
+                            createdBy:
+                                | {
+                                      __typename?: "GropiusUser";
+                                      id: string;
+                                      username: string;
+                                      displayName: string;
+                                      avatar: any;
+                                  }
+                                | {
+                                      __typename?: "IMSUser";
+                                      id: string;
+                                      username?: string | null;
+                                      displayName: string;
+                                      avatar: any;
+                                  };
+                            bodyLastEditedBy:
+                                | {
+                                      __typename?: "GropiusUser";
+                                      id: string;
+                                      username: string;
+                                      displayName: string;
+                                      avatar: any;
+                                  }
+                                | {
+                                      __typename?: "IMSUser";
+                                      id: string;
+                                      username?: string | null;
+                                      displayName: string;
+                                      avatar: any;
+                                  };
+                        }
+                      | {
+                            __typename?: "IssueRelation";
+                            id: string;
+                            createdAt: any;
+                            createdBy:
+                                | {
+                                      __typename?: "GropiusUser";
+                                      id: string;
+                                      username: string;
+                                      displayName: string;
+                                      avatar: any;
+                                  }
+                                | {
+                                      __typename?: "IMSUser";
+                                      id: string;
+                                      username?: string | null;
+                                      displayName: string;
+                                      avatar: any;
+                                  };
+                            relatedIssue?: {
+                                __typename?: "Issue";
+                                title: string;
+                                incomingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
+                                outgoingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
+                                state: { __typename?: "IssueState"; isOpen: boolean };
+                                type: { __typename?: "IssueType"; iconPath: string };
+                            } | null;
+                            type?: { __typename?: "IssueRelationType"; name: string; description: string } | null;
+                        }
+                      | {
+                            __typename?: "OutgoingRelationTypeChangedEvent";
+                            id: string;
+                            createdAt: any;
+                            issueRelation: {
+                                __typename?: "IssueRelation";
+                                relatedIssue?: {
+                                    __typename?: "Issue";
+                                    title: string;
+                                    incomingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
+                                    outgoingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
+                                    state: { __typename?: "IssueState"; isOpen: boolean };
+                                    type: { __typename?: "IssueType"; iconPath: string };
+                                } | null;
+                                type?: { __typename?: "IssueRelationType"; name: string; description: string } | null;
+                            };
+                            oldRelationType?: {
+                                __typename?: "IssueRelationType";
+                                name: string;
+                                description: string;
+                            } | null;
+                            newRelationTyoe?: {
+                                __typename?: "IssueRelationType";
+                                name: string;
+                                description: string;
+                            } | null;
+                            createdBy:
+                                | {
+                                      __typename?: "GropiusUser";
+                                      id: string;
+                                      username: string;
+                                      displayName: string;
+                                      avatar: any;
+                                  }
+                                | {
+                                      __typename?: "IMSUser";
+                                      id: string;
+                                      username?: string | null;
+                                      displayName: string;
+                                      avatar: any;
+                                  };
+                        }
+                      | {
+                            __typename?: "PriorityChangedEvent";
+                            id: string;
+                            createdAt: any;
+                            oldPriority?: { __typename?: "IssuePriority"; name: string; description: string } | null;
+                            newPriority?: { __typename?: "IssuePriority"; name: string; description: string } | null;
+                            createdBy:
+                                | {
+                                      __typename?: "GropiusUser";
+                                      id: string;
+                                      username: string;
+                                      displayName: string;
+                                      avatar: any;
+                                  }
+                                | {
+                                      __typename?: "IMSUser";
+                                      id: string;
+                                      username?: string | null;
+                                      displayName: string;
+                                      avatar: any;
+                                  };
+                        }
+                      | {
+                            __typename?: "RelatedByIssueEvent";
+                            id: string;
+                            createdAt: any;
+                            relation?: {
+                                __typename?: "IssueRelation";
+                                issue?: {
+                                    __typename?: "Issue";
+                                    title: string;
+                                    incomingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
+                                    outgoingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
+                                    state: { __typename?: "IssueState"; isOpen: boolean };
+                                    type: { __typename?: "IssueType"; iconPath: string };
+                                } | null;
+                                type?: { __typename?: "IssueRelationType"; name: string; description: string } | null;
+                            } | null;
+                            createdBy:
+                                | {
+                                      __typename?: "GropiusUser";
+                                      id: string;
+                                      username: string;
+                                      displayName: string;
+                                      avatar: any;
+                                  }
+                                | {
+                                      __typename?: "IMSUser";
+                                      id: string;
+                                      username?: string | null;
+                                      displayName: string;
+                                      avatar: any;
+                                  };
+                        }
+                      | {
+                            __typename?: "RemovedAffectedEntityEvent";
+                            id: string;
+                            createdAt: any;
+                            removedAffectedEntity?:
+                                | { __typename: "Component"; id: string; name: string; description: string }
+                                | { __typename: "ComponentVersion"; id: string; name: string; description: string }
+                                | { __typename: "Interface"; id: string; name: string; description: string }
+                                | { __typename: "InterfacePart"; id: string; name: string; description: string }
+                                | {
+                                      __typename: "InterfaceSpecification";
+                                      id: string;
+                                      name: string;
+                                      description: string;
+                                  }
+                                | {
+                                      __typename: "InterfaceSpecificationVersion";
+                                      id: string;
+                                      name: string;
+                                      description: string;
+                                  }
+                                | { __typename: "Project"; id: string; name: string; description: string }
+                                | null;
+                            createdBy:
+                                | {
+                                      __typename?: "GropiusUser";
+                                      id: string;
+                                      username: string;
+                                      displayName: string;
+                                      avatar: any;
+                                  }
+                                | {
+                                      __typename?: "IMSUser";
+                                      id: string;
+                                      username?: string | null;
+                                      displayName: string;
+                                      avatar: any;
+                                  };
+                        }
+                      | {
+                            __typename?: "RemovedArtefactEvent";
+                            id: string;
+                            createdAt: any;
+                            removedArtefact?: { __typename?: "Artefact"; file: any; id: string } | null;
+                            createdBy:
+                                | {
+                                      __typename?: "GropiusUser";
+                                      id: string;
+                                      username: string;
+                                      displayName: string;
+                                      avatar: any;
+                                  }
+                                | {
+                                      __typename?: "IMSUser";
+                                      id: string;
+                                      username?: string | null;
+                                      displayName: string;
+                                      avatar: any;
+                                  };
+                        }
+                      | {
+                            __typename?: "RemovedAssignmentEvent";
+                            id: string;
+                            createdAt: any;
+                            removedAssignment: {
+                                __typename?: "Assignment";
+                                id: string;
+                                user:
+                                    | {
+                                          __typename?: "GropiusUser";
+                                          id: string;
+                                          username: string;
+                                          displayName: string;
+                                          avatar: any;
+                                      }
+                                    | {
+                                          __typename?: "IMSUser";
+                                          id: string;
+                                          username?: string | null;
+                                          displayName: string;
+                                          avatar: any;
+                                      };
+                                type?: { __typename?: "AssignmentType"; name: string; description: string } | null;
+                            };
+                            createdBy:
+                                | {
+                                      __typename?: "GropiusUser";
+                                      id: string;
+                                      username: string;
+                                      displayName: string;
+                                      avatar: any;
+                                  }
+                                | {
+                                      __typename?: "IMSUser";
+                                      id: string;
+                                      username?: string | null;
+                                      displayName: string;
+                                      avatar: any;
+                                  };
+                        }
+                      | {
+                            __typename?: "RemovedFromPinnedIssuesEvent";
+                            id: string;
+                            createdAt: any;
+                            unpinnedOn?:
+                                | { __typename?: "Component"; id: string; name: string; description: string }
+                                | { __typename?: "Project"; id: string; name: string; description: string }
+                                | null;
+                            createdBy:
+                                | {
+                                      __typename?: "GropiusUser";
+                                      id: string;
+                                      username: string;
+                                      displayName: string;
+                                      avatar: any;
+                                  }
+                                | {
+                                      __typename?: "IMSUser";
+                                      id: string;
+                                      username?: string | null;
+                                      displayName: string;
+                                      avatar: any;
+                                  };
+                        }
+                      | {
+                            __typename?: "RemovedFromTrackableEvent";
+                            id: string;
+                            createdAt: any;
+                            removedFromTrackable?:
+                                | { __typename?: "Component"; id: string; name: string; description: string }
+                                | { __typename?: "Project"; id: string; name: string; description: string }
+                                | null;
+                            createdBy:
+                                | {
+                                      __typename?: "GropiusUser";
+                                      id: string;
+                                      username: string;
+                                      displayName: string;
+                                      avatar: any;
+                                  }
+                                | {
+                                      __typename?: "IMSUser";
+                                      id: string;
+                                      username?: string | null;
+                                      displayName: string;
+                                      avatar: any;
+                                  };
+                        }
+                      | {
+                            __typename?: "RemovedIncomingRelationEvent";
+                            id: string;
+                            createdAt: any;
+                            removedRelation?: {
+                                __typename?: "IssueRelation";
+                                issue?: {
+                                    __typename?: "Issue";
+                                    title: string;
+                                    incomingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
+                                    outgoingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
+                                    state: { __typename?: "IssueState"; isOpen: boolean };
+                                    type: { __typename?: "IssueType"; iconPath: string };
+                                } | null;
+                                type?: { __typename?: "IssueRelationType"; name: string; description: string } | null;
+                            } | null;
+                            createdBy:
+                                | {
+                                      __typename?: "GropiusUser";
+                                      id: string;
+                                      username: string;
+                                      displayName: string;
+                                      avatar: any;
+                                  }
+                                | {
+                                      __typename?: "IMSUser";
+                                      id: string;
+                                      username?: string | null;
+                                      displayName: string;
+                                      avatar: any;
+                                  };
+                        }
+                      | {
+                            __typename?: "RemovedLabelEvent";
+                            id: string;
+                            createdAt: any;
+                            removedLabel?: {
+                                __typename?: "Label";
+                                name: string;
+                                description: string;
+                                color: string;
+                            } | null;
+                            createdBy:
+                                | {
+                                      __typename?: "GropiusUser";
+                                      id: string;
+                                      username: string;
+                                      displayName: string;
+                                      avatar: any;
+                                  }
+                                | {
+                                      __typename?: "IMSUser";
+                                      id: string;
+                                      username?: string | null;
+                                      displayName: string;
+                                      avatar: any;
+                                  };
+                        }
+                      | {
+                            __typename?: "RemovedOutgoingRelationEvent";
+                            id: string;
+                            createdAt: any;
+                            removedRelation?: {
+                                __typename?: "IssueRelation";
+                                relatedIssue?: {
+                                    __typename?: "Issue";
+                                    title: string;
+                                    incomingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
+                                    outgoingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
+                                    state: { __typename?: "IssueState"; isOpen: boolean };
+                                    type: { __typename?: "IssueType"; iconPath: string };
+                                } | null;
+                                type?: { __typename?: "IssueRelationType"; name: string; description: string } | null;
+                            } | null;
+                            createdBy:
+                                | {
+                                      __typename?: "GropiusUser";
+                                      id: string;
+                                      username: string;
+                                      displayName: string;
+                                      avatar: any;
+                                  }
+                                | {
+                                      __typename?: "IMSUser";
+                                      id: string;
+                                      username?: string | null;
+                                      displayName: string;
+                                      avatar: any;
+                                  };
+                        }
+                      | {
+                            __typename?: "RemovedTemplatedFieldEvent";
+                            fieldName: string;
+                            id: string;
+                            createdAt: any;
+                            createdBy:
+                                | {
+                                      __typename?: "GropiusUser";
+                                      id: string;
+                                      username: string;
+                                      displayName: string;
+                                      avatar: any;
+                                  }
+                                | {
+                                      __typename?: "IMSUser";
+                                      id: string;
+                                      username?: string | null;
+                                      displayName: string;
+                                      avatar: any;
+                                  };
+                        }
+                      | {
+                            __typename?: "SpentTimeChangedEvent";
+                            oldSpentTime?: any | null;
+                            newSpentTime?: any | null;
+                            id: string;
+                            createdAt: any;
+                            createdBy:
+                                | {
+                                      __typename?: "GropiusUser";
+                                      id: string;
+                                      username: string;
+                                      displayName: string;
+                                      avatar: any;
+                                  }
+                                | {
+                                      __typename?: "IMSUser";
+                                      id: string;
+                                      username?: string | null;
+                                      displayName: string;
+                                      avatar: any;
+                                  };
+                        }
+                      | {
+                            __typename?: "StartDateChangedEvent";
+                            oldStartDate?: any | null;
+                            newStartDate?: any | null;
+                            id: string;
+                            createdAt: any;
+                            createdBy:
+                                | {
+                                      __typename?: "GropiusUser";
+                                      id: string;
+                                      username: string;
+                                      displayName: string;
+                                      avatar: any;
+                                  }
+                                | {
+                                      __typename?: "IMSUser";
+                                      id: string;
+                                      username?: string | null;
+                                      displayName: string;
+                                      avatar: any;
+                                  };
+                        }
+                      | {
+                            __typename?: "StateChangedEvent";
+                            id: string;
+                            createdAt: any;
+                            oldState: { __typename?: "IssueState"; name: string; description: string; isOpen: boolean };
+                            newState: { __typename?: "IssueState"; name: string; description: string; isOpen: boolean };
+                            createdBy:
+                                | {
+                                      __typename?: "GropiusUser";
+                                      id: string;
+                                      username: string;
+                                      displayName: string;
+                                      avatar: any;
+                                  }
+                                | {
+                                      __typename?: "IMSUser";
+                                      id: string;
+                                      username?: string | null;
+                                      displayName: string;
+                                      avatar: any;
+                                  };
+                        }
+                      | {
+                            __typename?: "TemplateChangedEvent";
+                            id: string;
+                            createdAt: any;
+                            oldTemplate: { __typename?: "IssueTemplate"; name: string; description: string };
+                            newTemplate: { __typename?: "IssueTemplate"; name: string; description: string };
+                            createdBy:
+                                | {
+                                      __typename?: "GropiusUser";
+                                      id: string;
+                                      username: string;
+                                      displayName: string;
+                                      avatar: any;
+                                  }
+                                | {
+                                      __typename?: "IMSUser";
+                                      id: string;
+                                      username?: string | null;
+                                      displayName: string;
+                                      avatar: any;
+                                  };
+                        }
+                      | {
+                            __typename?: "TemplatedFieldChangedEvent";
+                            fieldName: string;
+                            oldValue?: any | null;
+                            newValue?: any | null;
+                            id: string;
+                            createdAt: any;
+                            createdBy:
+                                | {
+                                      __typename?: "GropiusUser";
+                                      id: string;
+                                      username: string;
+                                      displayName: string;
+                                      avatar: any;
+                                  }
+                                | {
+                                      __typename?: "IMSUser";
+                                      id: string;
+                                      username?: string | null;
+                                      displayName: string;
+                                      avatar: any;
+                                  };
+                        }
+                      | {
+                            __typename?: "TitleChangedEvent";
+                            oldTitle: string;
+                            newTitle: string;
+                            id: string;
+                            createdAt: any;
+                            createdBy:
+                                | {
+                                      __typename?: "GropiusUser";
+                                      id: string;
+                                      username: string;
+                                      displayName: string;
+                                      avatar: any;
+                                  }
+                                | {
+                                      __typename?: "IMSUser";
+                                      id: string;
+                                      username?: string | null;
+                                      displayName: string;
+                                      avatar: any;
+                                  };
+                        }
+                      | {
+                            __typename?: "TypeChangedEvent";
+                            id: string;
+                            createdAt: any;
+                            newIssueType: {
+                                __typename?: "IssueType";
+                                iconPath: string;
+                                name: string;
+                                description: string;
+                            };
+                            oldIssueType: {
+                                __typename?: "IssueType";
+                                iconPath: string;
+                                name: string;
+                                description: string;
+                            };
+                            createdBy:
+                                | {
+                                      __typename?: "GropiusUser";
+                                      id: string;
+                                      username: string;
+                                      displayName: string;
+                                      avatar: any;
+                                  }
+                                | {
+                                      __typename?: "IMSUser";
+                                      id: string;
+                                      username?: string | null;
+                                      displayName: string;
+                                      avatar: any;
+                                  };
+                        }
+                  >;
+              };
+          }
+        | { __typename?: "IssueComment" }
+        | { __typename?: "IssuePriority" }
+        | { __typename?: "IssueRelation" }
+        | { __typename?: "IssueRelationType" }
+        | { __typename?: "IssueState" }
+        | { __typename?: "IssueTemplate" }
+        | { __typename?: "IssueType" }
+        | { __typename?: "Label" }
+        | { __typename?: "OutgoingRelationTypeChangedEvent" }
+        | { __typename?: "PriorityChangedEvent" }
+        | { __typename?: "Project" }
+        | { __typename?: "ProjectPermission" }
+        | { __typename?: "RelatedByIssueEvent" }
+        | { __typename?: "Relation" }
+        | { __typename?: "RelationCondition" }
+        | { __typename?: "RelationTemplate" }
+        | { __typename?: "RemovedAffectedEntityEvent" }
+        | { __typename?: "RemovedArtefactEvent" }
+        | { __typename?: "RemovedAssignmentEvent" }
+        | { __typename?: "RemovedFromPinnedIssuesEvent" }
+        | { __typename?: "RemovedFromTrackableEvent" }
+        | { __typename?: "RemovedIncomingRelationEvent" }
+        | { __typename?: "RemovedLabelEvent" }
+        | { __typename?: "RemovedOutgoingRelationEvent" }
+        | { __typename?: "RemovedTemplatedFieldEvent" }
+        | { __typename?: "SpentTimeChangedEvent" }
+        | { __typename?: "StartDateChangedEvent" }
+        | { __typename?: "StateChangedEvent" }
+        | { __typename?: "TemplateChangedEvent" }
+        | { __typename?: "TemplatedFieldChangedEvent" }
+        | { __typename?: "TitleChangedEvent" }
+        | { __typename?: "TypeChangedEvent" }
+        | null;
+};
+
 export type DefaultIssueIconInfoFragment = {
     __typename?: "Issue";
     incomingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
@@ -16894,6 +17919,679 @@ export type DefaultIssueIconInfoFragment = {
 };
 
 export type DefaultLabelInfoFragment = { __typename?: "Label"; name: string; description: string; color: string };
+
+type DefaultTimelineItemInfo_AddedAffectedEntityEvent_Fragment = {
+    __typename?: "AddedAffectedEntityEvent";
+    id: string;
+    createdAt: any;
+    addedAffectedEntity?:
+        | { __typename: "Component"; id: string; name: string; description: string }
+        | { __typename: "ComponentVersion"; id: string; name: string; description: string }
+        | { __typename: "Interface"; id: string; name: string; description: string }
+        | { __typename: "InterfacePart"; id: string; name: string; description: string }
+        | { __typename: "InterfaceSpecification"; id: string; name: string; description: string }
+        | { __typename: "InterfaceSpecificationVersion"; id: string; name: string; description: string }
+        | { __typename: "Project"; id: string; name: string; description: string }
+        | null;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+type DefaultTimelineItemInfo_AddedArtefactEvent_Fragment = {
+    __typename?: "AddedArtefactEvent";
+    id: string;
+    createdAt: any;
+    addedArtefact?: { __typename?: "Artefact"; file: any; id: string } | null;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+type DefaultTimelineItemInfo_AddedLabelEvent_Fragment = {
+    __typename?: "AddedLabelEvent";
+    id: string;
+    createdAt: any;
+    addedLabel?: { __typename?: "Label"; name: string; description: string; color: string } | null;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+type DefaultTimelineItemInfo_AddedToPinnedIssuesEvent_Fragment = {
+    __typename?: "AddedToPinnedIssuesEvent";
+    id: string;
+    createdAt: any;
+    pinnedOn?:
+        | { __typename?: "Component"; id: string; name: string; description: string }
+        | { __typename?: "Project"; id: string; name: string; description: string }
+        | null;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+type DefaultTimelineItemInfo_AddedToTrackableEvent_Fragment = {
+    __typename?: "AddedToTrackableEvent";
+    id: string;
+    createdAt: any;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+type DefaultTimelineItemInfo_Assignment_Fragment = {
+    __typename?: "Assignment";
+    id: string;
+    createdAt: any;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+    user:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+    type?: { __typename?: "AssignmentType"; name: string; description: string } | null;
+};
+
+type DefaultTimelineItemInfo_AssignmentTypeChangedEvent_Fragment = {
+    __typename?: "AssignmentTypeChangedEvent";
+    id: string;
+    createdAt: any;
+    assignment: {
+        __typename?: "Assignment";
+        id: string;
+        user:
+            | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+            | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+        type?: { __typename?: "AssignmentType"; name: string; description: string } | null;
+    };
+    newAssignmentType?: { __typename?: "AssignmentType"; name: string; description: string } | null;
+    oldAssignmentType?: { __typename?: "AssignmentType"; name: string; description: string } | null;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+type DefaultTimelineItemInfo_Body_Fragment = {
+    __typename?: "Body";
+    id: string;
+    createdAt: any;
+    body: string;
+    bodyLastEditedAt: any;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+    bodyLastEditedBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+type DefaultTimelineItemInfo_DueDateChangedEvent_Fragment = {
+    __typename?: "DueDateChangedEvent";
+    oldDueDate?: any | null;
+    newDueDate?: any | null;
+    id: string;
+    createdAt: any;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+type DefaultTimelineItemInfo_EstimatedTimeChangedEvent_Fragment = {
+    __typename?: "EstimatedTimeChangedEvent";
+    oldEstimatedTime?: any | null;
+    newEstimatedTime?: any | null;
+    id: string;
+    createdAt: any;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+type DefaultTimelineItemInfo_IncomingRelationTypeChangedEvent_Fragment = {
+    __typename?: "IncomingRelationTypeChangedEvent";
+    id: string;
+    createdAt: any;
+    issueRelation: {
+        __typename?: "IssueRelation";
+        issue?: {
+            __typename?: "Issue";
+            title: string;
+            incomingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
+            outgoingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
+            state: { __typename?: "IssueState"; isOpen: boolean };
+            type: { __typename?: "IssueType"; iconPath: string };
+        } | null;
+        type?: { __typename?: "IssueRelationType"; name: string; description: string } | null;
+    };
+    oldRelationType?: { __typename?: "IssueRelationType"; name: string; description: string } | null;
+    newRelationTyoe?: { __typename?: "IssueRelationType"; name: string; description: string } | null;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+type DefaultTimelineItemInfo_IssueComment_Fragment = {
+    __typename?: "IssueComment";
+    isDeleted: boolean;
+    id: string;
+    createdAt: any;
+    body: string;
+    bodyLastEditedAt: any;
+    answers?: { __typename?: "Body"; id: string } | { __typename?: "IssueComment"; id: string } | null;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+    bodyLastEditedBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+type DefaultTimelineItemInfo_IssueRelation_Fragment = {
+    __typename?: "IssueRelation";
+    id: string;
+    createdAt: any;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+    relatedIssue?: {
+        __typename?: "Issue";
+        title: string;
+        incomingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
+        outgoingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
+        state: { __typename?: "IssueState"; isOpen: boolean };
+        type: { __typename?: "IssueType"; iconPath: string };
+    } | null;
+    type?: { __typename?: "IssueRelationType"; name: string; description: string } | null;
+};
+
+type DefaultTimelineItemInfo_OutgoingRelationTypeChangedEvent_Fragment = {
+    __typename?: "OutgoingRelationTypeChangedEvent";
+    id: string;
+    createdAt: any;
+    issueRelation: {
+        __typename?: "IssueRelation";
+        relatedIssue?: {
+            __typename?: "Issue";
+            title: string;
+            incomingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
+            outgoingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
+            state: { __typename?: "IssueState"; isOpen: boolean };
+            type: { __typename?: "IssueType"; iconPath: string };
+        } | null;
+        type?: { __typename?: "IssueRelationType"; name: string; description: string } | null;
+    };
+    oldRelationType?: { __typename?: "IssueRelationType"; name: string; description: string } | null;
+    newRelationTyoe?: { __typename?: "IssueRelationType"; name: string; description: string } | null;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+type DefaultTimelineItemInfo_PriorityChangedEvent_Fragment = {
+    __typename?: "PriorityChangedEvent";
+    id: string;
+    createdAt: any;
+    oldPriority?: { __typename?: "IssuePriority"; name: string; description: string } | null;
+    newPriority?: { __typename?: "IssuePriority"; name: string; description: string } | null;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+type DefaultTimelineItemInfo_RelatedByIssueEvent_Fragment = {
+    __typename?: "RelatedByIssueEvent";
+    id: string;
+    createdAt: any;
+    relation?: {
+        __typename?: "IssueRelation";
+        issue?: {
+            __typename?: "Issue";
+            title: string;
+            incomingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
+            outgoingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
+            state: { __typename?: "IssueState"; isOpen: boolean };
+            type: { __typename?: "IssueType"; iconPath: string };
+        } | null;
+        type?: { __typename?: "IssueRelationType"; name: string; description: string } | null;
+    } | null;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+type DefaultTimelineItemInfo_RemovedAffectedEntityEvent_Fragment = {
+    __typename?: "RemovedAffectedEntityEvent";
+    id: string;
+    createdAt: any;
+    removedAffectedEntity?:
+        | { __typename: "Component"; id: string; name: string; description: string }
+        | { __typename: "ComponentVersion"; id: string; name: string; description: string }
+        | { __typename: "Interface"; id: string; name: string; description: string }
+        | { __typename: "InterfacePart"; id: string; name: string; description: string }
+        | { __typename: "InterfaceSpecification"; id: string; name: string; description: string }
+        | { __typename: "InterfaceSpecificationVersion"; id: string; name: string; description: string }
+        | { __typename: "Project"; id: string; name: string; description: string }
+        | null;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+type DefaultTimelineItemInfo_RemovedArtefactEvent_Fragment = {
+    __typename?: "RemovedArtefactEvent";
+    id: string;
+    createdAt: any;
+    removedArtefact?: { __typename?: "Artefact"; file: any; id: string } | null;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+type DefaultTimelineItemInfo_RemovedAssignmentEvent_Fragment = {
+    __typename?: "RemovedAssignmentEvent";
+    id: string;
+    createdAt: any;
+    removedAssignment: {
+        __typename?: "Assignment";
+        id: string;
+        user:
+            | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+            | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+        type?: { __typename?: "AssignmentType"; name: string; description: string } | null;
+    };
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+type DefaultTimelineItemInfo_RemovedFromPinnedIssuesEvent_Fragment = {
+    __typename?: "RemovedFromPinnedIssuesEvent";
+    id: string;
+    createdAt: any;
+    unpinnedOn?:
+        | { __typename?: "Component"; id: string; name: string; description: string }
+        | { __typename?: "Project"; id: string; name: string; description: string }
+        | null;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+type DefaultTimelineItemInfo_RemovedFromTrackableEvent_Fragment = {
+    __typename?: "RemovedFromTrackableEvent";
+    id: string;
+    createdAt: any;
+    removedFromTrackable?:
+        | { __typename?: "Component"; id: string; name: string; description: string }
+        | { __typename?: "Project"; id: string; name: string; description: string }
+        | null;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+type DefaultTimelineItemInfo_RemovedIncomingRelationEvent_Fragment = {
+    __typename?: "RemovedIncomingRelationEvent";
+    id: string;
+    createdAt: any;
+    removedRelation?: {
+        __typename?: "IssueRelation";
+        issue?: {
+            __typename?: "Issue";
+            title: string;
+            incomingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
+            outgoingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
+            state: { __typename?: "IssueState"; isOpen: boolean };
+            type: { __typename?: "IssueType"; iconPath: string };
+        } | null;
+        type?: { __typename?: "IssueRelationType"; name: string; description: string } | null;
+    } | null;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+type DefaultTimelineItemInfo_RemovedLabelEvent_Fragment = {
+    __typename?: "RemovedLabelEvent";
+    id: string;
+    createdAt: any;
+    removedLabel?: { __typename?: "Label"; name: string; description: string; color: string } | null;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+type DefaultTimelineItemInfo_RemovedOutgoingRelationEvent_Fragment = {
+    __typename?: "RemovedOutgoingRelationEvent";
+    id: string;
+    createdAt: any;
+    removedRelation?: {
+        __typename?: "IssueRelation";
+        relatedIssue?: {
+            __typename?: "Issue";
+            title: string;
+            incomingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
+            outgoingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
+            state: { __typename?: "IssueState"; isOpen: boolean };
+            type: { __typename?: "IssueType"; iconPath: string };
+        } | null;
+        type?: { __typename?: "IssueRelationType"; name: string; description: string } | null;
+    } | null;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+type DefaultTimelineItemInfo_RemovedTemplatedFieldEvent_Fragment = {
+    __typename?: "RemovedTemplatedFieldEvent";
+    fieldName: string;
+    id: string;
+    createdAt: any;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+type DefaultTimelineItemInfo_SpentTimeChangedEvent_Fragment = {
+    __typename?: "SpentTimeChangedEvent";
+    oldSpentTime?: any | null;
+    newSpentTime?: any | null;
+    id: string;
+    createdAt: any;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+type DefaultTimelineItemInfo_StartDateChangedEvent_Fragment = {
+    __typename?: "StartDateChangedEvent";
+    oldStartDate?: any | null;
+    newStartDate?: any | null;
+    id: string;
+    createdAt: any;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+type DefaultTimelineItemInfo_StateChangedEvent_Fragment = {
+    __typename?: "StateChangedEvent";
+    id: string;
+    createdAt: any;
+    oldState: { __typename?: "IssueState"; name: string; description: string; isOpen: boolean };
+    newState: { __typename?: "IssueState"; name: string; description: string; isOpen: boolean };
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+type DefaultTimelineItemInfo_TemplateChangedEvent_Fragment = {
+    __typename?: "TemplateChangedEvent";
+    id: string;
+    createdAt: any;
+    oldTemplate: { __typename?: "IssueTemplate"; name: string; description: string };
+    newTemplate: { __typename?: "IssueTemplate"; name: string; description: string };
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+type DefaultTimelineItemInfo_TemplatedFieldChangedEvent_Fragment = {
+    __typename?: "TemplatedFieldChangedEvent";
+    fieldName: string;
+    oldValue?: any | null;
+    newValue?: any | null;
+    id: string;
+    createdAt: any;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+type DefaultTimelineItemInfo_TitleChangedEvent_Fragment = {
+    __typename?: "TitleChangedEvent";
+    oldTitle: string;
+    newTitle: string;
+    id: string;
+    createdAt: any;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+type DefaultTimelineItemInfo_TypeChangedEvent_Fragment = {
+    __typename?: "TypeChangedEvent";
+    id: string;
+    createdAt: any;
+    newIssueType: { __typename?: "IssueType"; iconPath: string; name: string; description: string };
+    oldIssueType: { __typename?: "IssueType"; iconPath: string; name: string; description: string };
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+export type DefaultTimelineItemInfoFragment =
+    | DefaultTimelineItemInfo_AddedAffectedEntityEvent_Fragment
+    | DefaultTimelineItemInfo_AddedArtefactEvent_Fragment
+    | DefaultTimelineItemInfo_AddedLabelEvent_Fragment
+    | DefaultTimelineItemInfo_AddedToPinnedIssuesEvent_Fragment
+    | DefaultTimelineItemInfo_AddedToTrackableEvent_Fragment
+    | DefaultTimelineItemInfo_Assignment_Fragment
+    | DefaultTimelineItemInfo_AssignmentTypeChangedEvent_Fragment
+    | DefaultTimelineItemInfo_Body_Fragment
+    | DefaultTimelineItemInfo_DueDateChangedEvent_Fragment
+    | DefaultTimelineItemInfo_EstimatedTimeChangedEvent_Fragment
+    | DefaultTimelineItemInfo_IncomingRelationTypeChangedEvent_Fragment
+    | DefaultTimelineItemInfo_IssueComment_Fragment
+    | DefaultTimelineItemInfo_IssueRelation_Fragment
+    | DefaultTimelineItemInfo_OutgoingRelationTypeChangedEvent_Fragment
+    | DefaultTimelineItemInfo_PriorityChangedEvent_Fragment
+    | DefaultTimelineItemInfo_RelatedByIssueEvent_Fragment
+    | DefaultTimelineItemInfo_RemovedAffectedEntityEvent_Fragment
+    | DefaultTimelineItemInfo_RemovedArtefactEvent_Fragment
+    | DefaultTimelineItemInfo_RemovedAssignmentEvent_Fragment
+    | DefaultTimelineItemInfo_RemovedFromPinnedIssuesEvent_Fragment
+    | DefaultTimelineItemInfo_RemovedFromTrackableEvent_Fragment
+    | DefaultTimelineItemInfo_RemovedIncomingRelationEvent_Fragment
+    | DefaultTimelineItemInfo_RemovedLabelEvent_Fragment
+    | DefaultTimelineItemInfo_RemovedOutgoingRelationEvent_Fragment
+    | DefaultTimelineItemInfo_RemovedTemplatedFieldEvent_Fragment
+    | DefaultTimelineItemInfo_SpentTimeChangedEvent_Fragment
+    | DefaultTimelineItemInfo_StartDateChangedEvent_Fragment
+    | DefaultTimelineItemInfo_StateChangedEvent_Fragment
+    | DefaultTimelineItemInfo_TemplateChangedEvent_Fragment
+    | DefaultTimelineItemInfo_TemplatedFieldChangedEvent_Fragment
+    | DefaultTimelineItemInfo_TitleChangedEvent_Fragment
+    | DefaultTimelineItemInfo_TypeChangedEvent_Fragment;
+
+export type IssueTypeTimelineInfoFragment = {
+    __typename?: "IssueType";
+    iconPath: string;
+    name: string;
+    description: string;
+};
+
+type AffectedByIssueTimelineInfo_Component_Fragment = {
+    __typename: "Component";
+    id: string;
+    name: string;
+    description: string;
+};
+
+type AffectedByIssueTimelineInfo_ComponentVersion_Fragment = {
+    __typename: "ComponentVersion";
+    id: string;
+    name: string;
+    description: string;
+};
+
+type AffectedByIssueTimelineInfo_Interface_Fragment = {
+    __typename: "Interface";
+    id: string;
+    name: string;
+    description: string;
+};
+
+type AffectedByIssueTimelineInfo_InterfacePart_Fragment = {
+    __typename: "InterfacePart";
+    id: string;
+    name: string;
+    description: string;
+};
+
+type AffectedByIssueTimelineInfo_InterfaceSpecification_Fragment = {
+    __typename: "InterfaceSpecification";
+    id: string;
+    name: string;
+    description: string;
+};
+
+type AffectedByIssueTimelineInfo_InterfaceSpecificationVersion_Fragment = {
+    __typename: "InterfaceSpecificationVersion";
+    id: string;
+    name: string;
+    description: string;
+};
+
+type AffectedByIssueTimelineInfo_Project_Fragment = {
+    __typename: "Project";
+    id: string;
+    name: string;
+    description: string;
+};
+
+export type AffectedByIssueTimelineInfoFragment =
+    | AffectedByIssueTimelineInfo_Component_Fragment
+    | AffectedByIssueTimelineInfo_ComponentVersion_Fragment
+    | AffectedByIssueTimelineInfo_Interface_Fragment
+    | AffectedByIssueTimelineInfo_InterfacePart_Fragment
+    | AffectedByIssueTimelineInfo_InterfaceSpecification_Fragment
+    | AffectedByIssueTimelineInfo_InterfaceSpecificationVersion_Fragment
+    | AffectedByIssueTimelineInfo_Project_Fragment;
+
+export type ArtefactTimelineInfoFragment = { __typename?: "Artefact"; file: any; id: string };
+
+type UserTimelineInfo_GropiusUser_Fragment = {
+    __typename?: "GropiusUser";
+    id: string;
+    username: string;
+    displayName: string;
+    avatar: any;
+};
+
+type UserTimelineInfo_ImsUser_Fragment = {
+    __typename?: "IMSUser";
+    id: string;
+    username?: string | null;
+    displayName: string;
+    avatar: any;
+};
+
+export type UserTimelineInfoFragment = UserTimelineInfo_GropiusUser_Fragment | UserTimelineInfo_ImsUser_Fragment;
+
+export type LabelTimelineInfoFragment = { __typename?: "Label"; name: string; description: string; color: string };
+
+type TrackableTimelineInfo_Component_Fragment = {
+    __typename?: "Component";
+    id: string;
+    name: string;
+    description: string;
+};
+
+type TrackableTimelineInfo_Project_Fragment = { __typename?: "Project"; id: string; name: string; description: string };
+
+export type TrackableTimelineInfoFragment =
+    | TrackableTimelineInfo_Component_Fragment
+    | TrackableTimelineInfo_Project_Fragment;
+
+export type AssignmentTimelineInfoFragment = {
+    __typename?: "Assignment";
+    id: string;
+    user:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+    type?: { __typename?: "AssignmentType"; name: string; description: string } | null;
+};
+
+export type AssignmenTypeTimelineInfoFragment = { __typename?: "AssignmentType"; name: string; description: string };
+
+type CommentTimelineInfo_Body_Fragment = {
+    __typename?: "Body";
+    body: string;
+    bodyLastEditedAt: any;
+    bodyLastEditedBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+type CommentTimelineInfo_IssueComment_Fragment = {
+    __typename?: "IssueComment";
+    body: string;
+    bodyLastEditedAt: any;
+    bodyLastEditedBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+export type CommentTimelineInfoFragment = CommentTimelineInfo_Body_Fragment | CommentTimelineInfo_IssueComment_Fragment;
+
+export type IssueRelationTypeTimelineInfoFragment = {
+    __typename?: "IssueRelationType";
+    name: string;
+    description: string;
+};
+
+export type IssueRelationTimelineInfoFragment = {
+    __typename?: "IssueRelation";
+    type?: { __typename?: "IssueRelationType"; name: string; description: string } | null;
+};
+
+export type IncomingRelationTimelineInfoFragment = {
+    __typename?: "IssueRelation";
+    issue?: {
+        __typename?: "Issue";
+        title: string;
+        incomingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
+        outgoingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
+        state: { __typename?: "IssueState"; isOpen: boolean };
+        type: { __typename?: "IssueType"; iconPath: string };
+    } | null;
+    type?: { __typename?: "IssueRelationType"; name: string; description: string } | null;
+};
+
+export type OutgoingRelationTimelineInfoFragment = {
+    __typename?: "IssueRelation";
+    relatedIssue?: {
+        __typename?: "Issue";
+        title: string;
+        incomingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
+        outgoingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
+        state: { __typename?: "IssueState"; isOpen: boolean };
+        type: { __typename?: "IssueType"; iconPath: string };
+    } | null;
+    type?: { __typename?: "IssueRelationType"; name: string; description: string } | null;
+};
+
+export type IssueTimelineInfoFragment = {
+    __typename?: "Issue";
+    title: string;
+    incomingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
+    outgoingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
+    state: { __typename?: "IssueState"; isOpen: boolean };
+    type: { __typename?: "IssueType"; iconPath: string };
+};
+
+export type IssuePriorityTimelineInfoFragment = { __typename?: "IssuePriority"; name: string; description: string };
+
+export type IssueStateTimelineInfoFragment = {
+    __typename?: "IssueState";
+    name: string;
+    description: string;
+    isOpen: boolean;
+};
+
+export type IssueTemplateTimelineInfoFragment = { __typename?: "IssueTemplate"; name: string; description: string };
 
 type OpenIssueCount_Component_Fragment = {
     __typename?: "Component";
@@ -16925,6 +18623,97 @@ type DefaultUserInfo_ImsUser_Fragment = {
 
 export type DefaultUserInfoFragment = DefaultUserInfo_GropiusUser_Fragment | DefaultUserInfo_ImsUser_Fragment;
 
+export const DefaultUserInfoFragmentDoc = gql`
+    fragment DefaultUserInfo on User {
+        id
+        username
+        displayName
+        avatar
+    }
+`;
+export const UserTimelineInfoFragmentDoc = gql`
+    fragment UserTimelineInfo on User {
+        ...DefaultUserInfo
+    }
+    ${DefaultUserInfoFragmentDoc}
+`;
+export const AffectedByIssueTimelineInfoFragmentDoc = gql`
+    fragment AffectedByIssueTimelineInfo on AffectedByIssue {
+        id
+        name
+        description
+        __typename
+    }
+`;
+export const ArtefactTimelineInfoFragmentDoc = gql`
+    fragment ArtefactTimelineInfo on Artefact {
+        file
+        id
+    }
+`;
+export const DefaultLabelInfoFragmentDoc = gql`
+    fragment DefaultLabelInfo on Label {
+        name
+        description
+        color
+    }
+`;
+export const LabelTimelineInfoFragmentDoc = gql`
+    fragment LabelTimelineInfo on Label {
+        ...DefaultLabelInfo
+    }
+    ${DefaultLabelInfoFragmentDoc}
+`;
+export const TrackableTimelineInfoFragmentDoc = gql`
+    fragment TrackableTimelineInfo on Trackable {
+        id
+        name
+        description
+    }
+`;
+export const AssignmenTypeTimelineInfoFragmentDoc = gql`
+    fragment AssignmenTypeTimelineInfo on AssignmentType {
+        name
+        description
+    }
+`;
+export const AssignmentTimelineInfoFragmentDoc = gql`
+    fragment AssignmentTimelineInfo on Assignment {
+        id
+        user {
+            ...UserTimelineInfo
+        }
+        type {
+            ...AssignmenTypeTimelineInfo
+        }
+    }
+    ${UserTimelineInfoFragmentDoc}
+    ${AssignmenTypeTimelineInfoFragmentDoc}
+`;
+export const CommentTimelineInfoFragmentDoc = gql`
+    fragment CommentTimelineInfo on Comment {
+        body
+        bodyLastEditedAt
+        bodyLastEditedBy {
+            ...UserTimelineInfo
+        }
+    }
+    ${UserTimelineInfoFragmentDoc}
+`;
+export const IssueRelationTypeTimelineInfoFragmentDoc = gql`
+    fragment IssueRelationTypeTimelineInfo on IssueRelationType {
+        name
+        description
+    }
+`;
+export const IssueRelationTimelineInfoFragmentDoc = gql`
+    fragment IssueRelationTimelineInfo on IssueRelation {
+        type {
+            ...IssueRelationTypeTimelineInfo
+        }
+    }
+    ${IssueRelationTypeTimelineInfoFragmentDoc}
+`;
 export const DefaultIssueIconInfoFragmentDoc = gql`
     fragment DefaultIssueIconInfo on Issue {
         incomingRelations {
@@ -16941,26 +18730,258 @@ export const DefaultIssueIconInfoFragmentDoc = gql`
         }
     }
 `;
-export const DefaultLabelInfoFragmentDoc = gql`
-    fragment DefaultLabelInfo on Label {
+export const IssueTimelineInfoFragmentDoc = gql`
+    fragment IssueTimelineInfo on Issue {
+        title
+        ...DefaultIssueIconInfo
+    }
+    ${DefaultIssueIconInfoFragmentDoc}
+`;
+export const IncomingRelationTimelineInfoFragmentDoc = gql`
+    fragment IncomingRelationTimelineInfo on IssueRelation {
+        ...IssueRelationTimelineInfo
+        issue {
+            ...IssueTimelineInfo
+        }
+    }
+    ${IssueRelationTimelineInfoFragmentDoc}
+    ${IssueTimelineInfoFragmentDoc}
+`;
+export const OutgoingRelationTimelineInfoFragmentDoc = gql`
+    fragment OutgoingRelationTimelineInfo on IssueRelation {
+        ...IssueRelationTimelineInfo
+        relatedIssue {
+            ...IssueTimelineInfo
+        }
+    }
+    ${IssueRelationTimelineInfoFragmentDoc}
+    ${IssueTimelineInfoFragmentDoc}
+`;
+export const IssuePriorityTimelineInfoFragmentDoc = gql`
+    fragment IssuePriorityTimelineInfo on IssuePriority {
         name
         description
-        color
+        name
     }
+`;
+export const IssueStateTimelineInfoFragmentDoc = gql`
+    fragment IssueStateTimelineInfo on IssueState {
+        name
+        description
+        isOpen
+    }
+`;
+export const IssueTemplateTimelineInfoFragmentDoc = gql`
+    fragment IssueTemplateTimelineInfo on IssueTemplate {
+        name
+        description
+    }
+`;
+export const IssueTypeTimelineInfoFragmentDoc = gql`
+    fragment IssueTypeTimelineInfo on IssueType {
+        iconPath
+        name
+        description
+    }
+`;
+export const DefaultTimelineItemInfoFragmentDoc = gql`
+    fragment DefaultTimelineItemInfo on TimelineItem {
+        id
+        createdAt
+        createdBy {
+            ...UserTimelineInfo
+        }
+        ... on AddedAffectedEntityEvent {
+            addedAffectedEntity {
+                ...AffectedByIssueTimelineInfo
+            }
+        }
+        ... on AddedArtefactEvent {
+            addedArtefact {
+                ...ArtefactTimelineInfo
+            }
+        }
+        ... on AddedLabelEvent {
+            addedLabel {
+                ...LabelTimelineInfo
+            }
+        }
+        ... on AddedToPinnedIssuesEvent {
+            pinnedOn {
+                ...TrackableTimelineInfo
+            }
+        }
+        ... on Assignment {
+            ...AssignmentTimelineInfo
+        }
+        ... on AssignmentTypeChangedEvent {
+            assignment {
+                ...AssignmentTimelineInfo
+            }
+            newAssignmentType: newType {
+                ...AssignmenTypeTimelineInfo
+            }
+            oldAssignmentType: oldType {
+                ...AssignmenTypeTimelineInfo
+            }
+        }
+        ... on Comment {
+            ...CommentTimelineInfo
+        }
+        ... on DueDateChangedEvent {
+            oldDueDate
+            newDueDate
+        }
+        ... on EstimatedTimeChangedEvent {
+            oldEstimatedTime
+            newEstimatedTime
+        }
+        ... on IncomingRelationTypeChangedEvent {
+            issueRelation {
+                ...IncomingRelationTimelineInfo
+            }
+        }
+        ... on IssueComment {
+            isDeleted
+            answers {
+                id
+            }
+        }
+        ... on IssueRelation {
+            ...OutgoingRelationTimelineInfo
+        }
+        ... on OutgoingRelationTypeChangedEvent {
+            issueRelation {
+                ...OutgoingRelationTimelineInfo
+            }
+        }
+        ... on PriorityChangedEvent {
+            oldPriority {
+                ...IssuePriorityTimelineInfo
+            }
+            newPriority {
+                ...IssuePriorityTimelineInfo
+            }
+        }
+        ... on RelatedByIssueEvent {
+            relation {
+                ...IncomingRelationTimelineInfo
+            }
+        }
+        ... on RelationTypeChangedEvent {
+            oldRelationType: oldType {
+                ...IssueRelationTypeTimelineInfo
+            }
+            newRelationTyoe: newType {
+                ...IssueRelationTypeTimelineInfo
+            }
+        }
+        ... on RemovedAffectedEntityEvent {
+            removedAffectedEntity {
+                ...AffectedByIssueTimelineInfo
+            }
+        }
+        ... on RemovedArtefactEvent {
+            removedArtefact {
+                ...ArtefactTimelineInfo
+            }
+        }
+        ... on RemovedAssignmentEvent {
+            removedAssignment {
+                ...AssignmentTimelineInfo
+            }
+        }
+        ... on RemovedFromPinnedIssuesEvent {
+            unpinnedOn {
+                ...TrackableTimelineInfo
+            }
+        }
+        ... on RemovedFromTrackableEvent {
+            removedFromTrackable {
+                ...TrackableTimelineInfo
+            }
+        }
+        ... on RemovedIncomingRelationEvent {
+            removedRelation {
+                ...IncomingRelationTimelineInfo
+            }
+        }
+        ... on RemovedLabelEvent {
+            removedLabel {
+                ...LabelTimelineInfo
+            }
+        }
+        ... on RemovedOutgoingRelationEvent {
+            removedRelation {
+                ...OutgoingRelationTimelineInfo
+            }
+        }
+        ... on RemovedTemplatedFieldEvent {
+            fieldName
+        }
+        ... on SpentTimeChangedEvent {
+            oldSpentTime
+            newSpentTime
+        }
+        ... on StartDateChangedEvent {
+            oldStartDate
+            newStartDate
+        }
+        ... on StateChangedEvent {
+            oldState {
+                ...IssueStateTimelineInfo
+            }
+            newState {
+                ...IssueStateTimelineInfo
+            }
+        }
+        ... on TemplateChangedEvent {
+            oldTemplate {
+                ...IssueTemplateTimelineInfo
+            }
+            newTemplate {
+                ...IssueTemplateTimelineInfo
+            }
+        }
+        ... on TemplatedFieldChangedEvent {
+            fieldName
+            oldValue
+            newValue
+        }
+        ... on TitleChangedEvent {
+            oldTitle
+            newTitle
+        }
+        ... on TypeChangedEvent {
+            newIssueType: newType {
+                ...IssueTypeTimelineInfo
+            }
+            oldIssueType: oldType {
+                ...IssueTypeTimelineInfo
+            }
+        }
+    }
+    ${UserTimelineInfoFragmentDoc}
+    ${AffectedByIssueTimelineInfoFragmentDoc}
+    ${ArtefactTimelineInfoFragmentDoc}
+    ${LabelTimelineInfoFragmentDoc}
+    ${TrackableTimelineInfoFragmentDoc}
+    ${AssignmentTimelineInfoFragmentDoc}
+    ${AssignmenTypeTimelineInfoFragmentDoc}
+    ${CommentTimelineInfoFragmentDoc}
+    ${IncomingRelationTimelineInfoFragmentDoc}
+    ${OutgoingRelationTimelineInfoFragmentDoc}
+    ${IssuePriorityTimelineInfoFragmentDoc}
+    ${IssueRelationTypeTimelineInfoFragmentDoc}
+    ${IssueStateTimelineInfoFragmentDoc}
+    ${IssueTemplateTimelineInfoFragmentDoc}
+    ${IssueTypeTimelineInfoFragmentDoc}
 `;
 export const OpenIssueCountFragmentDoc = gql`
     fragment OpenIssueCount on Trackable {
         openIssues: issues(filter: { state: { isOpen: { eq: true } } }) {
             totalCount
         }
-    }
-`;
-export const DefaultUserInfoFragmentDoc = gql`
-    fragment DefaultUserInfo on User {
-        id
-        username
-        displayName
-        avatar
     }
 `;
 export const GetComponentsDocument = gql`
@@ -17028,6 +19049,22 @@ export const GetIssuesDocument = gql`
     ${DefaultIssueIconInfoFragmentDoc}
     ${DefaultLabelInfoFragmentDoc}
 `;
+export const GetIssueDocument = gql`
+    query getIssue($id: ID!) {
+        node(id: $id) {
+            ... on Issue {
+                id
+                title
+                timelineItems {
+                    nodes {
+                        ...DefaultTimelineItemInfo
+                    }
+                }
+            }
+        }
+    }
+    ${DefaultTimelineItemInfoFragmentDoc}
+`;
 
 export type SdkFunctionWrapper = <T>(
     action: (requestHeaders?: Record<string, string>) => Promise<T>,
@@ -17078,6 +19115,20 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "getIssues",
+                "query"
+            );
+        },
+        getIssue(
+            variables: GetIssueQueryVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<GetIssueQuery> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<GetIssueQuery>(GetIssueDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "getIssue",
                 "query"
             );
         }

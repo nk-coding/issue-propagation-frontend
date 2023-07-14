@@ -32,6 +32,20 @@ query getIssues($filter: String!, $orderBy: IssueOrder!, $count: Int!, $skip: In
     }
 }
 
+query getIssue($id: ID!) {
+    node(id: $id) {
+        ... on Issue {
+            id
+            title
+            timelineItems {
+                nodes {
+                    ...DefaultTimelineItemInfo
+                }
+            }
+        }
+    }
+}
+
 fragment DefaultIssueIconInfo on Issue {
     incomingRelations {
         totalCount

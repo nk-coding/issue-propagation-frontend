@@ -36,8 +36,24 @@ const routes: RouteRecordRaw[] = [
             },
             {
                 path: "details",
-                name: "component-details",
-                component: () => import("../views/component/Details.vue")
+                component: () => import("../views/component/details/Details.vue"),
+                children: [
+                    {
+                        path: "",
+                        name: "component-details-general",
+                        component: () => import("../views/component/details/General.vue")
+                    },
+                    {
+                        path: "interfaces",
+                        name: "component-details-interfaces",
+                        component: () => import("../views/component/details/Interfaces.vue")
+                    },
+                    {
+                        path: "labels",
+                        name: "component-details-labels",
+                        component: () => import("../views/component/details/Labels.vue")
+                    }
+                ]
             },
             {
                 path: "issues",

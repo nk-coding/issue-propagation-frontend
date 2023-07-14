@@ -4,14 +4,13 @@
             <div v-if="idx > 0" class="mx-3 mb-3 mt-1 align-self-stretch">
                 <v-divider></v-divider>
             </div>
-            <div v-for="item in itemGroup" class="sidebar-item mb-2" @click="item.onClick">
+            <div v-for="item in itemGroup" class="sidebar-item mb-2">
                 <SideBarButton
                     v-if="'name' in item"
                     :icon="item.icon"
                     :text="item.name"
                     :color="item.color"
-                    :active="item.active"
-                    @click="item.onClick"
+                    :to="item.to"
                 ></SideBarButton>
                 <FAB v-else :color="`${item.color}-container`" @click="item.onClick" elevation="0">
                     <v-icon class="fab-icon">{{ item.icon }}</v-icon>
@@ -26,20 +25,22 @@
 <script setup lang="ts">
 import { PropType } from "vue";
 import SideBarButton from "./SideBarButton.vue";
+import { RouteLocationRaw } from "vue-router";
 
 export interface BaseSideBarItem {
     color?: string;
     icon: string;
-    onClick: () => void;
 }
 
 export interface FABSideBarItem extends BaseSideBarItem {
     description?: string;
+    onClick: () => void;
 }
 
 export interface IconSideBarItem extends BaseSideBarItem {
     name: string;
-    active: boolean;
+    to: RouteLocationRaw;
+    exact?: boolean;
 }
 
 export type SideBarItem = FABSideBarItem | IconSideBarItem;

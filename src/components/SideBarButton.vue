@@ -1,23 +1,26 @@
 <template>
-    <button class="sidebar-button" :class="{ active: active }">
-        <div class="icon-container d-flex align-center justify-center">
-            <v-expand-x-transition>
-                <div
-                    v-show="active"
-                    class="icon-pill selected-pill mx-auto"
-                    :style="`background: rgb(var(--v-theme-${color}-container))`"
-                ></div>
-            </v-expand-x-transition>
-            <div class="icon-pill overlay-pill"></div>
-            <v-icon :color="iconColor">{{ icon }}</v-icon>
-        </div>
-        <div class="button-label text-caption">
-            {{ text }}
-        </div>
-    </button>
+    <router-link :to="to" custom v-slot="{ isActive, href, navigate, isExactActive }">
+        <button class="sidebar-button" :class="{ active: isActive }" @click="navigate">
+            <div class="icon-container d-flex align-center justify-center">
+                <v-expand-x-transition>
+                    <div
+                        v-show="chooseActive(isActive, isExactActive)"
+                        class="icon-pill selected-pill mx-auto"
+                        :style="`background: rgb(var(--v-theme-${color}-container))`"
+                    ></div>
+                </v-expand-x-transition>
+                <div class="icon-pill overlay-pill"></div>
+                <v-icon :color="iconColor(chooseActive(isActive, isExactActive))">{{ icon }}</v-icon>
+            </div>
+            <div class="button-label text-caption">
+                {{ text }}
+            </div>
+        </button>
+    </router-link>
 </template>
 <script setup lang="ts">
-import { computed } from "vue";
+import { PropType } from "vue";
+import { RouteLocationRaw } from "vue-router";
 
 const props = defineProps({
     icon: {
@@ -33,22 +36,35 @@ const props = defineProps({
         required: false,
         default: "secondary"
     },
-    active: {
+    to: {
+        type: [String, Object] as PropType<RouteLocationRaw>,
+        required: false,
+        default: null
+    },
+    exact: {
         type: Boolean,
         required: false,
-        default: false
+        default: true
     }
 });
 
 defineEmits(["click"]);
 
-const iconColor = computed(() => {
-    if (props.active) {
+function iconColor(isActive: boolean): string {
+    if (isActive) {
         return `rgb(var(--v-theme-on-${props.color}-container))`;
     } else {
         return `rgb(var(--v-theme-on-surface-variant))`;
     }
-});
+}
+
+function chooseActive(isActive: boolean, isExactActive: boolean): boolean {
+    if (props.exact) {
+        return isExactActive;
+    } else {
+        return isActive;
+    }
+}
 </script>
 <style scoped>
 .icon-container {

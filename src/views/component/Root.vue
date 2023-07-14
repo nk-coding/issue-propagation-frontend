@@ -1,5 +1,10 @@
 <template>
-    <BaseLayout :title-segments="titleSegments" :tabs="tabs" :right-sidebar-items="rightSidebarItems">
+    <BaseLayout
+        :title-segments="titleSegments"
+        :tabs="tabs"
+        :right-sidebar-items="rightSidebarItems"
+        :left-sidebar-items="leftSidebarItems"
+    >
         <template #content>
             <router-view />
         </template>
@@ -38,9 +43,38 @@ const titleSegments = computed(() => [
 
 const tabs: TabSegment[] = [
     { name: "Home", path: componentPath("component") },
-    { name: "Details", path: componentPath("component-details") },
+    { name: "Details", path: componentPath("component-details-general"), exact: false },
     { name: "Issues", path: componentPath("component-issues"), exact: false }
 ];
+
+const leftSidebarItems = computed(() => {
+    if (route.path.includes("/details")) {
+        return [
+            [
+                {
+                    icon: "mdi-home",
+                    name: "General",
+                    color: "secondary",
+                    to: componentPath("component-details-general")
+                },
+                {
+                    icon: "mdi-source-commit-start",
+                    name: "Interfaces",
+                    color: "secondary",
+                    to: componentPath("component-details-interfaces")
+                },
+                {
+                    icon: "mdi-label",
+                    name: "Labels",
+                    color: "secondary",
+                    to: componentPath("component-details-labels")
+                }
+            ]
+        ];
+    } else {
+        return [];
+    }
+});
 
 const rightSidebarItems = computed(() => {
     if (route.name != "component-issues") {

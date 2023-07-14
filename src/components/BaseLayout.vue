@@ -1,9 +1,11 @@
 <template>
     <div class="root d-flex flex-column">
-        <div class="header d-flex align-center ma-2">
-            <v-btn class="mr-3 d-flex" variant="text" icon size="small" @click="router.push('/')">
-                <img src="@/assets/logo.svg" width="40" />
-            </v-btn>
+        <div class="header d-flex align-center my-2">
+            <div class="ml-5">
+                <v-btn class="d-flex" variant="text" icon size="small" @click="router.push('/')">
+                    <img src="@/assets/logo.svg" width="40" />
+                </v-btn>
+            </div>
             <slot name="header-title">
                 <div v-for="(segment, index) in titleSegments" :key="index" class="d-flex align-center">
                     <span v-if="index != 0" class="text-h6">/</span>
@@ -21,12 +23,14 @@
                 </v-tabs>
             </slot>
             <v-spacer />
-            <v-btn icon variant="outlined" size="small" @click="toggleDarkMode()">
-                <v-icon>
-                    {{ lightMode ? "mdi-weather-sunny" : "mdi-weather-night" }}
-                </v-icon>
-                <v-tooltip activator="parent" location="bottom"> Toggle light/dark mode </v-tooltip>
-            </v-btn>
+            <div class="side-bar-width">
+                <v-btn icon variant="outlined" size="small" class="mx-auto d-flex" @click="toggleDarkMode()">
+                    <v-icon>
+                        {{ lightMode ? "mdi-weather-sunny" : "mdi-weather-night" }}
+                    </v-icon>
+                    <v-tooltip activator="parent" location="bottom"> Toggle light/dark mode </v-tooltip>
+                </v-btn>
+            </div>
         </div>
         <div class="content d-flex flex-grow-1 mb-3">
             <div class="left-bar">
@@ -110,8 +114,13 @@ updateColorMode();
 }
 
 .left-bar,
-.right-bar {
+.right-bar,
+.side-bar-width {
     width: 80px;
+}
+
+.left-bar,
+.right-bar {
     height: 100%;
 }
 

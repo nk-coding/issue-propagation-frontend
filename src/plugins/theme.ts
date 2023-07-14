@@ -39,7 +39,7 @@ const surfaceColorMappings: [string, number, number][] = [
     ["surface", 98, 6],
     ["on-surface", 10, 90],
     ["surface-variant", 90, 30],
-    ["on-surface-variant", 50, 60],
+    ["on-surface-variant", 30, 80],
     ["background", 98, 6],
     ["on-background", 10, 90],
     ["inverse-surface", 20, 90],
