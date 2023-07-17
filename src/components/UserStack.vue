@@ -46,11 +46,11 @@ defineProps({
     @each $name, $value in settings.$avatar-sizes {
         &--size-#{$name} {
             .user {
-                margin-right: $value / -2;
+                margin-right: calc($value / -2);
             }
             &:hover {
                 .user {
-                    margin-right: $value / 4;
+                    margin-right: calc($value / 4);
                 }
             }
         }

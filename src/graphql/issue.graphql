@@ -37,11 +37,68 @@ query getIssue($id: ID!) {
         ... on Issue {
             id
             title
-            timelineItems {
+            createdBy {
+                ...DefaultUserInfo
+            }
+            createdAt
+            lastUpdatedAt
+            timelineItems(orderBy: { field: CREATED_AT }) {
                 nodes {
                     ...DefaultTimelineItemInfo
                 }
             }
+            artefacts {
+                nodes {
+                    ...ArtefactTimelineInfo
+                }
+            }
+            outgoingRelations {
+                nodes {
+                    id
+                    ...OutgoingRelationTimelineInfo
+                }
+                totalCount
+            }
+            incomingRelations {
+                nodes {
+                    id
+                    ...IncomingRelationTimelineInfo
+                }
+                totalCount
+            }
+            labels {
+                nodes {
+                    id
+                    ...DefaultLabelInfo
+                }
+            }
+            affects {
+                nodes {
+                    ...AffectedByIssueTimelineInfo
+                }
+            }
+            assignments {
+                nodes {
+                    id
+                    ...AssignmentTimelineInfo
+                }
+            }
+            type {
+                id
+                ...IssueTypeTimelineInfo
+            }
+            state {
+                id
+                ...IssueStateTimelineInfo
+            }
+            priority {
+                id
+                ...IssuePriorityTimelineInfo
+            }
+            estimatedTime
+            spentTime
+            startDate
+            dueDate
         }
     }
 }

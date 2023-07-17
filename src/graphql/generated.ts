@@ -16939,11 +16939,20 @@ export type GetIssueQuery = {
               __typename?: "Issue";
               id: string;
               title: string;
+              createdAt: any;
+              lastUpdatedAt: any;
+              estimatedTime?: any | null;
+              spentTime?: any | null;
+              startDate?: any | null;
+              dueDate?: any | null;
+              createdBy:
+                  | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+                  | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
               timelineItems: {
                   __typename?: "TimelineItemConnection";
                   nodes: Array<
                       | {
-                            __typename?: "AddedAffectedEntityEvent";
+                            __typename: "AddedAffectedEntityEvent";
                             id: string;
                             createdAt: any;
                             addedAffectedEntity?:
@@ -16982,7 +16991,7 @@ export type GetIssueQuery = {
                                   };
                         }
                       | {
-                            __typename?: "AddedArtefactEvent";
+                            __typename: "AddedArtefactEvent";
                             id: string;
                             createdAt: any;
                             addedArtefact?: { __typename?: "Artefact"; file: any; id: string } | null;
@@ -17003,7 +17012,7 @@ export type GetIssueQuery = {
                                   };
                         }
                       | {
-                            __typename?: "AddedLabelEvent";
+                            __typename: "AddedLabelEvent";
                             id: string;
                             createdAt: any;
                             addedLabel?: {
@@ -17029,7 +17038,7 @@ export type GetIssueQuery = {
                                   };
                         }
                       | {
-                            __typename?: "AddedToPinnedIssuesEvent";
+                            __typename: "AddedToPinnedIssuesEvent";
                             id: string;
                             createdAt: any;
                             pinnedOn?:
@@ -17053,7 +17062,7 @@ export type GetIssueQuery = {
                                   };
                         }
                       | {
-                            __typename?: "AddedToTrackableEvent";
+                            __typename: "AddedToTrackableEvent";
                             id: string;
                             createdAt: any;
                             createdBy:
@@ -17073,7 +17082,7 @@ export type GetIssueQuery = {
                                   };
                         }
                       | {
-                            __typename?: "Assignment";
+                            __typename: "Assignment";
                             id: string;
                             createdAt: any;
                             createdBy:
@@ -17109,7 +17118,7 @@ export type GetIssueQuery = {
                             type?: { __typename?: "AssignmentType"; name: string; description: string } | null;
                         }
                       | {
-                            __typename?: "AssignmentTypeChangedEvent";
+                            __typename: "AssignmentTypeChangedEvent";
                             id: string;
                             createdAt: any;
                             assignment: {
@@ -17159,7 +17168,7 @@ export type GetIssueQuery = {
                                   };
                         }
                       | {
-                            __typename?: "Body";
+                            __typename: "Body";
                             id: string;
                             createdAt: any;
                             body: string;
@@ -17196,7 +17205,7 @@ export type GetIssueQuery = {
                                   };
                         }
                       | {
-                            __typename?: "DueDateChangedEvent";
+                            __typename: "DueDateChangedEvent";
                             oldDueDate?: any | null;
                             newDueDate?: any | null;
                             id: string;
@@ -17218,7 +17227,7 @@ export type GetIssueQuery = {
                                   };
                         }
                       | {
-                            __typename?: "EstimatedTimeChangedEvent";
+                            __typename: "EstimatedTimeChangedEvent";
                             oldEstimatedTime?: any | null;
                             newEstimatedTime?: any | null;
                             id: string;
@@ -17240,7 +17249,7 @@ export type GetIssueQuery = {
                                   };
                         }
                       | {
-                            __typename?: "IncomingRelationTypeChangedEvent";
+                            __typename: "IncomingRelationTypeChangedEvent";
                             id: string;
                             createdAt: any;
                             issueRelation: {
@@ -17282,7 +17291,7 @@ export type GetIssueQuery = {
                                   };
                         }
                       | {
-                            __typename?: "IssueComment";
+                            __typename: "IssueComment";
                             isDeleted: boolean;
                             id: string;
                             createdAt: any;
@@ -17324,7 +17333,7 @@ export type GetIssueQuery = {
                                   };
                         }
                       | {
-                            __typename?: "IssueRelation";
+                            __typename: "IssueRelation";
                             id: string;
                             createdAt: any;
                             createdBy:
@@ -17353,7 +17362,7 @@ export type GetIssueQuery = {
                             type?: { __typename?: "IssueRelationType"; name: string; description: string } | null;
                         }
                       | {
-                            __typename?: "OutgoingRelationTypeChangedEvent";
+                            __typename: "OutgoingRelationTypeChangedEvent";
                             id: string;
                             createdAt: any;
                             issueRelation: {
@@ -17395,7 +17404,7 @@ export type GetIssueQuery = {
                                   };
                         }
                       | {
-                            __typename?: "PriorityChangedEvent";
+                            __typename: "PriorityChangedEvent";
                             id: string;
                             createdAt: any;
                             oldPriority?: { __typename?: "IssuePriority"; name: string; description: string } | null;
@@ -17417,7 +17426,7 @@ export type GetIssueQuery = {
                                   };
                         }
                       | {
-                            __typename?: "RelatedByIssueEvent";
+                            __typename: "RelatedByIssueEvent";
                             id: string;
                             createdAt: any;
                             relation?: {
@@ -17449,7 +17458,7 @@ export type GetIssueQuery = {
                                   };
                         }
                       | {
-                            __typename?: "RemovedAffectedEntityEvent";
+                            __typename: "RemovedAffectedEntityEvent";
                             id: string;
                             createdAt: any;
                             removedAffectedEntity?:
@@ -17488,7 +17497,7 @@ export type GetIssueQuery = {
                                   };
                         }
                       | {
-                            __typename?: "RemovedArtefactEvent";
+                            __typename: "RemovedArtefactEvent";
                             id: string;
                             createdAt: any;
                             removedArtefact?: { __typename?: "Artefact"; file: any; id: string } | null;
@@ -17509,7 +17518,7 @@ export type GetIssueQuery = {
                                   };
                         }
                       | {
-                            __typename?: "RemovedAssignmentEvent";
+                            __typename: "RemovedAssignmentEvent";
                             id: string;
                             createdAt: any;
                             removedAssignment: {
@@ -17549,7 +17558,7 @@ export type GetIssueQuery = {
                                   };
                         }
                       | {
-                            __typename?: "RemovedFromPinnedIssuesEvent";
+                            __typename: "RemovedFromPinnedIssuesEvent";
                             id: string;
                             createdAt: any;
                             unpinnedOn?:
@@ -17573,7 +17582,7 @@ export type GetIssueQuery = {
                                   };
                         }
                       | {
-                            __typename?: "RemovedFromTrackableEvent";
+                            __typename: "RemovedFromTrackableEvent";
                             id: string;
                             createdAt: any;
                             removedFromTrackable?:
@@ -17597,7 +17606,7 @@ export type GetIssueQuery = {
                                   };
                         }
                       | {
-                            __typename?: "RemovedIncomingRelationEvent";
+                            __typename: "RemovedIncomingRelationEvent";
                             id: string;
                             createdAt: any;
                             removedRelation?: {
@@ -17629,7 +17638,7 @@ export type GetIssueQuery = {
                                   };
                         }
                       | {
-                            __typename?: "RemovedLabelEvent";
+                            __typename: "RemovedLabelEvent";
                             id: string;
                             createdAt: any;
                             removedLabel?: {
@@ -17655,7 +17664,7 @@ export type GetIssueQuery = {
                                   };
                         }
                       | {
-                            __typename?: "RemovedOutgoingRelationEvent";
+                            __typename: "RemovedOutgoingRelationEvent";
                             id: string;
                             createdAt: any;
                             removedRelation?: {
@@ -17687,7 +17696,7 @@ export type GetIssueQuery = {
                                   };
                         }
                       | {
-                            __typename?: "RemovedTemplatedFieldEvent";
+                            __typename: "RemovedTemplatedFieldEvent";
                             fieldName: string;
                             id: string;
                             createdAt: any;
@@ -17708,7 +17717,7 @@ export type GetIssueQuery = {
                                   };
                         }
                       | {
-                            __typename?: "SpentTimeChangedEvent";
+                            __typename: "SpentTimeChangedEvent";
                             oldSpentTime?: any | null;
                             newSpentTime?: any | null;
                             id: string;
@@ -17730,7 +17739,7 @@ export type GetIssueQuery = {
                                   };
                         }
                       | {
-                            __typename?: "StartDateChangedEvent";
+                            __typename: "StartDateChangedEvent";
                             oldStartDate?: any | null;
                             newStartDate?: any | null;
                             id: string;
@@ -17752,7 +17761,7 @@ export type GetIssueQuery = {
                                   };
                         }
                       | {
-                            __typename?: "StateChangedEvent";
+                            __typename: "StateChangedEvent";
                             id: string;
                             createdAt: any;
                             oldState: { __typename?: "IssueState"; name: string; description: string; isOpen: boolean };
@@ -17774,7 +17783,7 @@ export type GetIssueQuery = {
                                   };
                         }
                       | {
-                            __typename?: "TemplateChangedEvent";
+                            __typename: "TemplateChangedEvent";
                             id: string;
                             createdAt: any;
                             oldTemplate: { __typename?: "IssueTemplate"; name: string; description: string };
@@ -17796,7 +17805,7 @@ export type GetIssueQuery = {
                                   };
                         }
                       | {
-                            __typename?: "TemplatedFieldChangedEvent";
+                            __typename: "TemplatedFieldChangedEvent";
                             fieldName: string;
                             oldValue?: any | null;
                             newValue?: any | null;
@@ -17819,7 +17828,7 @@ export type GetIssueQuery = {
                                   };
                         }
                       | {
-                            __typename?: "TitleChangedEvent";
+                            __typename: "TitleChangedEvent";
                             oldTitle: string;
                             newTitle: string;
                             id: string;
@@ -17841,7 +17850,7 @@ export type GetIssueQuery = {
                                   };
                         }
                       | {
-                            __typename?: "TypeChangedEvent";
+                            __typename: "TypeChangedEvent";
                             id: string;
                             createdAt: any;
                             newIssueType: {
@@ -17874,6 +17883,86 @@ export type GetIssueQuery = {
                         }
                   >;
               };
+              artefacts: {
+                  __typename?: "ArtefactConnection";
+                  nodes: Array<{ __typename?: "Artefact"; file: any; id: string }>;
+              };
+              outgoingRelations: {
+                  __typename?: "IssueRelationConnection";
+                  totalCount: number;
+                  nodes: Array<{
+                      __typename?: "IssueRelation";
+                      id: string;
+                      relatedIssue?: {
+                          __typename?: "Issue";
+                          title: string;
+                          incomingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
+                          outgoingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
+                          state: { __typename?: "IssueState"; isOpen: boolean };
+                          type: { __typename?: "IssueType"; iconPath: string };
+                      } | null;
+                      type?: { __typename?: "IssueRelationType"; name: string; description: string } | null;
+                  }>;
+              };
+              incomingRelations: {
+                  __typename?: "IssueRelationConnection";
+                  totalCount: number;
+                  nodes: Array<{
+                      __typename?: "IssueRelation";
+                      id: string;
+                      issue?: {
+                          __typename?: "Issue";
+                          title: string;
+                          incomingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
+                          outgoingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
+                          state: { __typename?: "IssueState"; isOpen: boolean };
+                          type: { __typename?: "IssueType"; iconPath: string };
+                      } | null;
+                      type?: { __typename?: "IssueRelationType"; name: string; description: string } | null;
+                  }>;
+              };
+              labels: {
+                  __typename?: "LabelConnection";
+                  nodes: Array<{ __typename?: "Label"; id: string; name: string; description: string; color: string }>;
+              };
+              affects: {
+                  __typename?: "AffectedByIssueConnection";
+                  nodes: Array<
+                      | { __typename: "Component"; id: string; name: string; description: string }
+                      | { __typename: "ComponentVersion"; id: string; name: string; description: string }
+                      | { __typename: "Interface"; id: string; name: string; description: string }
+                      | { __typename: "InterfacePart"; id: string; name: string; description: string }
+                      | { __typename: "InterfaceSpecification"; id: string; name: string; description: string }
+                      | { __typename: "InterfaceSpecificationVersion"; id: string; name: string; description: string }
+                      | { __typename: "Project"; id: string; name: string; description: string }
+                  >;
+              };
+              assignments: {
+                  __typename?: "AssignmentConnection";
+                  nodes: Array<{
+                      __typename?: "Assignment";
+                      id: string;
+                      user:
+                          | {
+                                __typename?: "GropiusUser";
+                                id: string;
+                                username: string;
+                                displayName: string;
+                                avatar: any;
+                            }
+                          | {
+                                __typename?: "IMSUser";
+                                id: string;
+                                username?: string | null;
+                                displayName: string;
+                                avatar: any;
+                            };
+                      type?: { __typename?: "AssignmentType"; name: string; description: string } | null;
+                  }>;
+              };
+              type: { __typename?: "IssueType"; id: string; iconPath: string; name: string; description: string };
+              state: { __typename?: "IssueState"; id: string; name: string; description: string; isOpen: boolean };
+              priority?: { __typename?: "IssuePriority"; id: string; name: string; description: string } | null;
           }
         | { __typename?: "IssueComment" }
         | { __typename?: "IssuePriority" }
@@ -17921,7 +18010,7 @@ export type DefaultIssueIconInfoFragment = {
 export type DefaultLabelInfoFragment = { __typename?: "Label"; name: string; description: string; color: string };
 
 type DefaultTimelineItemInfo_AddedAffectedEntityEvent_Fragment = {
-    __typename?: "AddedAffectedEntityEvent";
+    __typename: "AddedAffectedEntityEvent";
     id: string;
     createdAt: any;
     addedAffectedEntity?:
@@ -17939,7 +18028,7 @@ type DefaultTimelineItemInfo_AddedAffectedEntityEvent_Fragment = {
 };
 
 type DefaultTimelineItemInfo_AddedArtefactEvent_Fragment = {
-    __typename?: "AddedArtefactEvent";
+    __typename: "AddedArtefactEvent";
     id: string;
     createdAt: any;
     addedArtefact?: { __typename?: "Artefact"; file: any; id: string } | null;
@@ -17949,7 +18038,7 @@ type DefaultTimelineItemInfo_AddedArtefactEvent_Fragment = {
 };
 
 type DefaultTimelineItemInfo_AddedLabelEvent_Fragment = {
-    __typename?: "AddedLabelEvent";
+    __typename: "AddedLabelEvent";
     id: string;
     createdAt: any;
     addedLabel?: { __typename?: "Label"; name: string; description: string; color: string } | null;
@@ -17959,7 +18048,7 @@ type DefaultTimelineItemInfo_AddedLabelEvent_Fragment = {
 };
 
 type DefaultTimelineItemInfo_AddedToPinnedIssuesEvent_Fragment = {
-    __typename?: "AddedToPinnedIssuesEvent";
+    __typename: "AddedToPinnedIssuesEvent";
     id: string;
     createdAt: any;
     pinnedOn?:
@@ -17972,7 +18061,7 @@ type DefaultTimelineItemInfo_AddedToPinnedIssuesEvent_Fragment = {
 };
 
 type DefaultTimelineItemInfo_AddedToTrackableEvent_Fragment = {
-    __typename?: "AddedToTrackableEvent";
+    __typename: "AddedToTrackableEvent";
     id: string;
     createdAt: any;
     createdBy:
@@ -17981,7 +18070,7 @@ type DefaultTimelineItemInfo_AddedToTrackableEvent_Fragment = {
 };
 
 type DefaultTimelineItemInfo_Assignment_Fragment = {
-    __typename?: "Assignment";
+    __typename: "Assignment";
     id: string;
     createdAt: any;
     createdBy:
@@ -17994,7 +18083,7 @@ type DefaultTimelineItemInfo_Assignment_Fragment = {
 };
 
 type DefaultTimelineItemInfo_AssignmentTypeChangedEvent_Fragment = {
-    __typename?: "AssignmentTypeChangedEvent";
+    __typename: "AssignmentTypeChangedEvent";
     id: string;
     createdAt: any;
     assignment: {
@@ -18013,7 +18102,7 @@ type DefaultTimelineItemInfo_AssignmentTypeChangedEvent_Fragment = {
 };
 
 type DefaultTimelineItemInfo_Body_Fragment = {
-    __typename?: "Body";
+    __typename: "Body";
     id: string;
     createdAt: any;
     body: string;
@@ -18027,7 +18116,7 @@ type DefaultTimelineItemInfo_Body_Fragment = {
 };
 
 type DefaultTimelineItemInfo_DueDateChangedEvent_Fragment = {
-    __typename?: "DueDateChangedEvent";
+    __typename: "DueDateChangedEvent";
     oldDueDate?: any | null;
     newDueDate?: any | null;
     id: string;
@@ -18038,7 +18127,7 @@ type DefaultTimelineItemInfo_DueDateChangedEvent_Fragment = {
 };
 
 type DefaultTimelineItemInfo_EstimatedTimeChangedEvent_Fragment = {
-    __typename?: "EstimatedTimeChangedEvent";
+    __typename: "EstimatedTimeChangedEvent";
     oldEstimatedTime?: any | null;
     newEstimatedTime?: any | null;
     id: string;
@@ -18049,7 +18138,7 @@ type DefaultTimelineItemInfo_EstimatedTimeChangedEvent_Fragment = {
 };
 
 type DefaultTimelineItemInfo_IncomingRelationTypeChangedEvent_Fragment = {
-    __typename?: "IncomingRelationTypeChangedEvent";
+    __typename: "IncomingRelationTypeChangedEvent";
     id: string;
     createdAt: any;
     issueRelation: {
@@ -18072,7 +18161,7 @@ type DefaultTimelineItemInfo_IncomingRelationTypeChangedEvent_Fragment = {
 };
 
 type DefaultTimelineItemInfo_IssueComment_Fragment = {
-    __typename?: "IssueComment";
+    __typename: "IssueComment";
     isDeleted: boolean;
     id: string;
     createdAt: any;
@@ -18088,7 +18177,7 @@ type DefaultTimelineItemInfo_IssueComment_Fragment = {
 };
 
 type DefaultTimelineItemInfo_IssueRelation_Fragment = {
-    __typename?: "IssueRelation";
+    __typename: "IssueRelation";
     id: string;
     createdAt: any;
     createdBy:
@@ -18106,7 +18195,7 @@ type DefaultTimelineItemInfo_IssueRelation_Fragment = {
 };
 
 type DefaultTimelineItemInfo_OutgoingRelationTypeChangedEvent_Fragment = {
-    __typename?: "OutgoingRelationTypeChangedEvent";
+    __typename: "OutgoingRelationTypeChangedEvent";
     id: string;
     createdAt: any;
     issueRelation: {
@@ -18129,7 +18218,7 @@ type DefaultTimelineItemInfo_OutgoingRelationTypeChangedEvent_Fragment = {
 };
 
 type DefaultTimelineItemInfo_PriorityChangedEvent_Fragment = {
-    __typename?: "PriorityChangedEvent";
+    __typename: "PriorityChangedEvent";
     id: string;
     createdAt: any;
     oldPriority?: { __typename?: "IssuePriority"; name: string; description: string } | null;
@@ -18140,7 +18229,7 @@ type DefaultTimelineItemInfo_PriorityChangedEvent_Fragment = {
 };
 
 type DefaultTimelineItemInfo_RelatedByIssueEvent_Fragment = {
-    __typename?: "RelatedByIssueEvent";
+    __typename: "RelatedByIssueEvent";
     id: string;
     createdAt: any;
     relation?: {
@@ -18161,7 +18250,7 @@ type DefaultTimelineItemInfo_RelatedByIssueEvent_Fragment = {
 };
 
 type DefaultTimelineItemInfo_RemovedAffectedEntityEvent_Fragment = {
-    __typename?: "RemovedAffectedEntityEvent";
+    __typename: "RemovedAffectedEntityEvent";
     id: string;
     createdAt: any;
     removedAffectedEntity?:
@@ -18179,7 +18268,7 @@ type DefaultTimelineItemInfo_RemovedAffectedEntityEvent_Fragment = {
 };
 
 type DefaultTimelineItemInfo_RemovedArtefactEvent_Fragment = {
-    __typename?: "RemovedArtefactEvent";
+    __typename: "RemovedArtefactEvent";
     id: string;
     createdAt: any;
     removedArtefact?: { __typename?: "Artefact"; file: any; id: string } | null;
@@ -18189,7 +18278,7 @@ type DefaultTimelineItemInfo_RemovedArtefactEvent_Fragment = {
 };
 
 type DefaultTimelineItemInfo_RemovedAssignmentEvent_Fragment = {
-    __typename?: "RemovedAssignmentEvent";
+    __typename: "RemovedAssignmentEvent";
     id: string;
     createdAt: any;
     removedAssignment: {
@@ -18206,7 +18295,7 @@ type DefaultTimelineItemInfo_RemovedAssignmentEvent_Fragment = {
 };
 
 type DefaultTimelineItemInfo_RemovedFromPinnedIssuesEvent_Fragment = {
-    __typename?: "RemovedFromPinnedIssuesEvent";
+    __typename: "RemovedFromPinnedIssuesEvent";
     id: string;
     createdAt: any;
     unpinnedOn?:
@@ -18219,7 +18308,7 @@ type DefaultTimelineItemInfo_RemovedFromPinnedIssuesEvent_Fragment = {
 };
 
 type DefaultTimelineItemInfo_RemovedFromTrackableEvent_Fragment = {
-    __typename?: "RemovedFromTrackableEvent";
+    __typename: "RemovedFromTrackableEvent";
     id: string;
     createdAt: any;
     removedFromTrackable?:
@@ -18232,7 +18321,7 @@ type DefaultTimelineItemInfo_RemovedFromTrackableEvent_Fragment = {
 };
 
 type DefaultTimelineItemInfo_RemovedIncomingRelationEvent_Fragment = {
-    __typename?: "RemovedIncomingRelationEvent";
+    __typename: "RemovedIncomingRelationEvent";
     id: string;
     createdAt: any;
     removedRelation?: {
@@ -18253,7 +18342,7 @@ type DefaultTimelineItemInfo_RemovedIncomingRelationEvent_Fragment = {
 };
 
 type DefaultTimelineItemInfo_RemovedLabelEvent_Fragment = {
-    __typename?: "RemovedLabelEvent";
+    __typename: "RemovedLabelEvent";
     id: string;
     createdAt: any;
     removedLabel?: { __typename?: "Label"; name: string; description: string; color: string } | null;
@@ -18263,7 +18352,7 @@ type DefaultTimelineItemInfo_RemovedLabelEvent_Fragment = {
 };
 
 type DefaultTimelineItemInfo_RemovedOutgoingRelationEvent_Fragment = {
-    __typename?: "RemovedOutgoingRelationEvent";
+    __typename: "RemovedOutgoingRelationEvent";
     id: string;
     createdAt: any;
     removedRelation?: {
@@ -18284,7 +18373,7 @@ type DefaultTimelineItemInfo_RemovedOutgoingRelationEvent_Fragment = {
 };
 
 type DefaultTimelineItemInfo_RemovedTemplatedFieldEvent_Fragment = {
-    __typename?: "RemovedTemplatedFieldEvent";
+    __typename: "RemovedTemplatedFieldEvent";
     fieldName: string;
     id: string;
     createdAt: any;
@@ -18294,7 +18383,7 @@ type DefaultTimelineItemInfo_RemovedTemplatedFieldEvent_Fragment = {
 };
 
 type DefaultTimelineItemInfo_SpentTimeChangedEvent_Fragment = {
-    __typename?: "SpentTimeChangedEvent";
+    __typename: "SpentTimeChangedEvent";
     oldSpentTime?: any | null;
     newSpentTime?: any | null;
     id: string;
@@ -18305,7 +18394,7 @@ type DefaultTimelineItemInfo_SpentTimeChangedEvent_Fragment = {
 };
 
 type DefaultTimelineItemInfo_StartDateChangedEvent_Fragment = {
-    __typename?: "StartDateChangedEvent";
+    __typename: "StartDateChangedEvent";
     oldStartDate?: any | null;
     newStartDate?: any | null;
     id: string;
@@ -18316,7 +18405,7 @@ type DefaultTimelineItemInfo_StartDateChangedEvent_Fragment = {
 };
 
 type DefaultTimelineItemInfo_StateChangedEvent_Fragment = {
-    __typename?: "StateChangedEvent";
+    __typename: "StateChangedEvent";
     id: string;
     createdAt: any;
     oldState: { __typename?: "IssueState"; name: string; description: string; isOpen: boolean };
@@ -18327,7 +18416,7 @@ type DefaultTimelineItemInfo_StateChangedEvent_Fragment = {
 };
 
 type DefaultTimelineItemInfo_TemplateChangedEvent_Fragment = {
-    __typename?: "TemplateChangedEvent";
+    __typename: "TemplateChangedEvent";
     id: string;
     createdAt: any;
     oldTemplate: { __typename?: "IssueTemplate"; name: string; description: string };
@@ -18338,7 +18427,7 @@ type DefaultTimelineItemInfo_TemplateChangedEvent_Fragment = {
 };
 
 type DefaultTimelineItemInfo_TemplatedFieldChangedEvent_Fragment = {
-    __typename?: "TemplatedFieldChangedEvent";
+    __typename: "TemplatedFieldChangedEvent";
     fieldName: string;
     oldValue?: any | null;
     newValue?: any | null;
@@ -18350,7 +18439,7 @@ type DefaultTimelineItemInfo_TemplatedFieldChangedEvent_Fragment = {
 };
 
 type DefaultTimelineItemInfo_TitleChangedEvent_Fragment = {
-    __typename?: "TitleChangedEvent";
+    __typename: "TitleChangedEvent";
     oldTitle: string;
     newTitle: string;
     id: string;
@@ -18361,7 +18450,7 @@ type DefaultTimelineItemInfo_TitleChangedEvent_Fragment = {
 };
 
 type DefaultTimelineItemInfo_TypeChangedEvent_Fragment = {
-    __typename?: "TypeChangedEvent";
+    __typename: "TypeChangedEvent";
     id: string;
     createdAt: any;
     newIssueType: { __typename?: "IssueType"; iconPath: string; name: string; description: string };
@@ -18788,6 +18877,7 @@ export const DefaultTimelineItemInfoFragmentDoc = gql`
     fragment DefaultTimelineItemInfo on TimelineItem {
         id
         createdAt
+        __typename
         createdBy {
             ...UserTimelineInfo
         }
@@ -19055,15 +19145,82 @@ export const GetIssueDocument = gql`
             ... on Issue {
                 id
                 title
-                timelineItems {
+                createdBy {
+                    ...DefaultUserInfo
+                }
+                createdAt
+                lastUpdatedAt
+                timelineItems(orderBy: { field: CREATED_AT }) {
                     nodes {
                         ...DefaultTimelineItemInfo
                     }
                 }
+                artefacts {
+                    nodes {
+                        ...ArtefactTimelineInfo
+                    }
+                }
+                outgoingRelations {
+                    nodes {
+                        id
+                        ...OutgoingRelationTimelineInfo
+                    }
+                    totalCount
+                }
+                incomingRelations {
+                    nodes {
+                        id
+                        ...IncomingRelationTimelineInfo
+                    }
+                    totalCount
+                }
+                labels {
+                    nodes {
+                        id
+                        ...DefaultLabelInfo
+                    }
+                }
+                affects {
+                    nodes {
+                        ...AffectedByIssueTimelineInfo
+                    }
+                }
+                assignments {
+                    nodes {
+                        id
+                        ...AssignmentTimelineInfo
+                    }
+                }
+                type {
+                    id
+                    ...IssueTypeTimelineInfo
+                }
+                state {
+                    id
+                    ...IssueStateTimelineInfo
+                }
+                priority {
+                    id
+                    ...IssuePriorityTimelineInfo
+                }
+                estimatedTime
+                spentTime
+                startDate
+                dueDate
             }
         }
     }
+    ${DefaultUserInfoFragmentDoc}
     ${DefaultTimelineItemInfoFragmentDoc}
+    ${ArtefactTimelineInfoFragmentDoc}
+    ${OutgoingRelationTimelineInfoFragmentDoc}
+    ${IncomingRelationTimelineInfoFragmentDoc}
+    ${DefaultLabelInfoFragmentDoc}
+    ${AffectedByIssueTimelineInfoFragmentDoc}
+    ${AssignmentTimelineInfoFragmentDoc}
+    ${IssueTypeTimelineInfoFragmentDoc}
+    ${IssueStateTimelineInfoFragmentDoc}
+    ${IssuePriorityTimelineInfoFragmentDoc}
 `;
 
 export type SdkFunctionWrapper = <T>(

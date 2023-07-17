@@ -1,6 +1,7 @@
 fragment DefaultTimelineItemInfo on TimelineItem {
     id
     createdAt
+    __typename
     createdBy {
         ...UserTimelineInfo
     }
