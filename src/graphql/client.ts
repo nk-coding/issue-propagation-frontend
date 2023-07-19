@@ -1,8 +1,19 @@
 import { GraphQLClient } from "graphql-request";
 import { getSdk } from "./generated";
+import { useAppStore } from "@/store/app";
+
+const store = useAppStore();
 
 export function useClient() {
-    return getSdk(new GraphQLClient("/api"));
+    const headers: Record<string, string> = {};
+    if (store.token) {
+        headers.Authorization = `Bearer ${store.token}`;
+    }
+    return getSdk(
+        new GraphQLClient("/api/graphql", {
+            headers
+        })
+    );
 }
 
 export type Client = ReturnType<typeof useClient>;
