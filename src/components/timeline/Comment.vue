@@ -36,11 +36,20 @@
                                                         <v-icon>mdi-pencil</v-icon>
                                                     </template>
                                                 </v-list-item>
-                                                <v-list-item @click="" :disabled="editMode">
+                                                <v-list-item
+                                                    :disabled="editMode || item.__typename === 'Body'"
+                                                    @click=""
+                                                >
                                                     <v-list-item-title>Delete</v-list-item-title>
                                                     <template v-slot:prepend>
                                                         <v-icon>mdi-delete</v-icon>
                                                     </template>
+                                                    <ConfirmationDialog
+                                                        title="Delete comment?"
+                                                        message="Are you sure you want to delete this comment?"
+                                                        confirm-text="Delete"
+                                                        @confirm=""
+                                                    />
                                                 </v-list-item>
                                             </v-list>
                                         </v-menu>
@@ -52,7 +61,15 @@
                         <div class="mx-n3" v-if="editMode">
                             <v-divider />
                             <div class="d-flex justify-end mt-2">
-                                <v-btn @click="cancelComment" variant="outlined" color="error">Cancel</v-btn>
+                                <v-btn variant="outlined" color="error">
+                                    Cancel
+                                    <ConfirmationDialog
+                                        title="Discard changes?"
+                                        message="Are you sure you want to discard your changes?"
+                                        confirm-text="Discard"
+                                        @confirm="cancelComment"
+                                    />
+                                </v-btn>
                                 <v-btn @click="saveComment" color="primary" class="mx-3">Save</v-btn>
                             </div>
                         </div>
@@ -72,6 +89,7 @@ import { Issue } from "@/views/issue/Issue.vue";
 import Markdown from "@/components/Markdown.vue";
 import { useClient } from "@/graphql/client";
 import { withErrorMessage } from "@/util/withErrorMessage";
+import ConfirmationDialog from "@/components/ConfirmationDialog.vue";
 
 const props = defineProps({
     item: {
