@@ -1,13 +1,23 @@
 <template>
     <div class="markdown-editor-viewer">
         <Viewer v-if="!editMode" :value="valueWrapper" :plugins="plugins"></Viewer>
-        <Editor v-else :value="valueWrapper" @change="handleChange" :plugins="plugins"></Editor>
+        <Editor
+            :key="theme.current.value.dark"
+            v-else
+            :value="valueWrapper"
+            @change="handleChange"
+            :plugins="plugins"
+            :editorConfig="editorConfig"
+        ></Editor>
     </div>
 </template>
 <script setup lang="ts">
 import gfm from "@bytemd/plugin-gfm";
 import { Editor, Viewer } from "@bytemd/vue-next";
 import { ref, watch } from "vue";
+import "codemirror/theme/midnight.css";
+import { useTheme } from "vuetify/lib/framework.mjs";
+import { computed } from "vue";
 
 const props = defineProps({
     modelValue: {
@@ -24,7 +34,14 @@ const emit = defineEmits<{
     (event: "update:modelValue", value: string): void;
 }>();
 
+const theme = useTheme();
 const valueWrapper = ref(props.modelValue);
+
+const editorConfig = computed(() => {
+    return {
+        theme: theme.current.value.dark ? "midnight" : "default"
+    };
+});
 
 function handleChange(text: string) {
     valueWrapper.value = text;
@@ -59,6 +76,7 @@ const plugins = [gfm()];
     height: max(300px, 40vh);
     border: none;
     background-color: unset;
+    color: rgb(var(--v-theme-on-surface-container));
 
     .CodeMirror {
         background: none !important;
@@ -75,6 +93,14 @@ const plugins = [gfm()];
     .bytemd-toolbar-right [bytemd-tippy-path="5"] {
         display: none;
     }
+
+    & > * {
+        border-color: rgba(var(--v-border-color), var(--v-border-opacity)) !important;
+    }
+}
+
+.bytemd-body > * {
+    border-color: rgba(var(--v-border-color), var(--v-border-opacity)) !important;
 }
 </style>
 <style></style>
