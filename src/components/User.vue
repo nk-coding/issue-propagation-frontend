@@ -10,7 +10,7 @@
         />
         <div v-if="showName" :class="{ 'ml-1': showAvatar }">{{ user.displayName }}</div>
         <v-tooltip activator="parent" location="top" class="rich-tooltip">
-            <img v-if="showAvatar" :src="user.avatar" class="rounded-circle overlay-avatar" />
+            <img :src="user.avatar" class="rounded-circle overlay-avatar" />
             <div class="d-flex text-body-1">
                 <span>{{ user.displayName }}</span>
                 <span v-if="user.username" class="text-medium-emphasis">

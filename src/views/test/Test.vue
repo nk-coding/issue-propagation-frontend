@@ -6,6 +6,7 @@
         :left-sidebar-items="leftSidebarItems"
     >
         <template #content>
+            <v-btn @click="showError"> Show error </v-btn>
             <PaginatedList :sort-fields="['id', 'name']" :item-manager="itemManager">
                 <template #item="{ item }">
                     <v-list-item :title="item.name" :subtitle="item.id"></v-list-item>
@@ -19,8 +20,11 @@
 import BaseLayout from "@/components/BaseLayout.vue";
 import PaginatedList, { ItemManager } from "@/components/PaginatedList.vue";
 import { SideBarItem } from "@/components/SideBar.vue";
+import { useAppStore } from "@/store/app";
 import { ref } from "vue";
 import { reactive } from "vue";
+
+const store = useAppStore();
 
 const titleSegments = [
     { name: "Gropius", path: "/" },
@@ -56,18 +60,12 @@ const leftSidebarItems = reactive([
         {
             icon: "mdi-plus",
             name: "Add",
-            active: true,
-            onClick: () => {
-                leftSidebarItems[0][0].active = !leftSidebarItems[0][0].active;
-            }
+            to: "/"
         },
         {
             icon: "mdi-cog",
             name: "Settings",
-            active: false,
-            onClick: () => {
-                leftSidebarItems[0][1].active = !leftSidebarItems[0][1].active;
-            }
+            to: "/"
         }
     ]
 ]);
@@ -105,4 +103,10 @@ const itemManager: ItemManager<Item, string> = {
         return [currentPage, filteredItems.length];
     }
 };
+
+const errorCounter = ref(0);
+
+function showError() {
+    store.pushError(`Error ${errorCounter.value++}`);
+}
 </script>

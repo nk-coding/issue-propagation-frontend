@@ -99,6 +99,25 @@ query getIssue($id: ID!) {
             spentTime
             startDate
             dueDate
+            manageIssues: hasPermission(permission: MANAGE_ISSUES)
+            comment: hasPermission(permission: COMMENT)
+            moderator: hasPermission(permission: MODERATOR)
+        }
+    }
+}
+
+mutation updateBody($id: ID!, $body: String!) {
+    updateBody(input: { id: $id, body: $body }) {
+        body {
+            ...BodyTimelineInfo
+        }
+    }
+}
+
+mutation updateIssueComment($id: ID!, $body: String!) {
+    updateIssueComment(input: { id: $id, body: $body }) {
+        issueComment {
+            ...IssueCommentTimelineInfo
         }
     }
 }

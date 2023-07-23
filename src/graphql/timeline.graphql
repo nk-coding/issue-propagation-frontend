@@ -1,178 +1,347 @@
 fragment DefaultTimelineItemInfo on TimelineItem {
+    ... on AddedAffectedEntityEvent {
+        ...AddedAffectedEntityEventTimelineInfo
+    }
+    ... on AddedArtefactEvent {
+        ...AddedArtefactEventTimelineInfo
+    }
+    ... on AddedLabelEvent {
+        ...AddedLabelEventTimelineInfo
+    }
+    ... on AddedToPinnedIssuesEvent {
+        ...AddedToPinnedIssuesEventTimelineInfo
+    }
+    ... on Assignment {
+        ...AssignmentTimelineInfo
+    }
+    ... on AssignmentTypeChangedEvent {
+        ...AssignmentTypeChangedEventTimelineInfo
+    }
+    ... on Body {
+        ...BodyTimelineInfo
+    }
+    ... on DueDateChangedEvent {
+        ...DueDateChangedEventTimelineInfo
+    }
+    ... on EstimatedTimeChangedEvent {
+        ...EstimatedTimeChangedEventTimelineInfo
+    }
+    ... on IncomingRelationTypeChangedEvent {
+        ...IncomingRelationTypeChangedEventTimelineInfo
+    }
+    ... on IssueComment {
+        ...IssueCommentTimelineInfo
+    }
+    ... on IssueRelation {
+        ...IssueRelationTimelineInfo
+    }
+    ... on OutgoingRelationTypeChangedEvent {
+        ...OutgoingRelationTypeChangedEventTimelineInfo
+    }
+    ... on PriorityChangedEvent {
+        ...PriorityChangedEventTimelineInfo
+    }
+    ... on RelatedByIssueEvent {
+        ...RelatedByIssueEventTimelineInfo
+    }
+    ... on RelationTypeChangedEvent {
+        ...RelationTypeChangedEventTimelineInfo
+    }
+    ... on RemovedAffectedEntityEvent {
+        ...RemovedAffectedEntityEventTimelineInfo
+    }
+    ... on RemovedArtefactEvent {
+        ...RemovedArtefactEventTimelineInfo
+    }
+    ... on RemovedAssignmentEvent {
+        ...RemovedAssignmentEventTimelineInfo
+    }
+    ... on RemovedFromPinnedIssuesEvent {
+        ...RemovedFromPinnedIssuesEventTimelineInfo
+    }
+    ... on RemovedFromTrackableEvent {
+        ...RemovedFromTrackableEventTimelineInfo
+    }
+    ... on RemovedIncomingRelationEvent {
+        ...RemovedIncomingRelationEventTimelineInfo
+    }
+    ... on RemovedLabelEvent {
+        ...RemovedLabelEventTimelineInfo
+    }
+    ... on RemovedOutgoingRelationEvent {
+        ...RemovedOutgoingRelationEventTimelineInfo
+    }
+    ... on RemovedTemplatedFieldEvent {
+        ...RemovedTemplatedFieldEventTimelineInfo
+    }
+    ... on SpentTimeChangedEvent {
+        ...SpentTimeChangedEventTimelineInfo
+    }
+    ... on StartDateChangedEvent {
+        ...StartDateChangedEventTimelineInfo
+    }
+    ... on StateChangedEvent {
+        ...StateChangedEventTimelineInfo
+    }
+    ... on TemplateChangedEvent {
+        ...TemplateChangedEventTimelineInfo
+    }
+    ... on TemplatedFieldChangedEvent {
+        ...TemplatedFieldChangedEventTimelineInfo
+    }
+    ... on TitleChangedEvent {
+        ...TitleChangedEventTimelineInfo
+    }
+    ... on TypeChangedEvent {
+        ...TypeChangedEventTimelineInfo
+    }
+}
+
+fragment TimelineItemInfo on TimelineItem {
     id
     createdAt
     __typename
     createdBy {
         ...UserTimelineInfo
     }
-    ... on AddedAffectedEntityEvent {
-        addedAffectedEntity {
-            ...AffectedByIssueTimelineInfo
-        }
+}
+
+fragment AddedAffectedEntityEventTimelineInfo on AddedAffectedEntityEvent {
+    ...TimelineItemInfo
+    addedAffectedEntity {
+        ...AffectedByIssueTimelineInfo
     }
-    ... on AddedArtefactEvent {
-        addedArtefact {
-            ...ArtefactTimelineInfo
-        }
+}
+
+fragment AddedArtefactEventTimelineInfo on AddedArtefactEvent {
+    ...TimelineItemInfo
+    addedArtefact {
+        ...ArtefactTimelineInfo
     }
-    ... on AddedLabelEvent {
-        addedLabel {
-            ...LabelTimelineInfo
-        }
+}
+
+fragment AddedLabelEventTimelineInfo on AddedLabelEvent {
+    ...TimelineItemInfo
+    addedLabel {
+        ...LabelTimelineInfo
     }
-    ... on AddedToPinnedIssuesEvent {
-        pinnedOn {
-            ...TrackableTimelineInfo
-        }
+}
+
+fragment AddedToPinnedIssuesEventTimelineInfo on AddedToPinnedIssuesEvent {
+    ...TimelineItemInfo
+    pinnedOn {
+        ...TrackableTimelineInfo
     }
-    ... on Assignment {
+}
+
+fragment AssignmentTimelineInfo on Assignment {
+    ...TimelineItemInfo
+    user {
+        ...UserTimelineInfo
+    }
+    type {
+        ...AssignmenTypeTimelineInfo
+    }
+}
+
+fragment AssignmentTypeChangedEventTimelineInfo on AssignmentTypeChangedEvent {
+    ...TimelineItemInfo
+    assignment {
         ...AssignmentTimelineInfo
     }
-    ... on AssignmentTypeChangedEvent {
-        assignment {
-            ...AssignmentTimelineInfo
-        }
-        newAssignmentType: newType {
-            ...AssignmenTypeTimelineInfo
-        }
-        oldAssignmentType: oldType {
-            ...AssignmenTypeTimelineInfo
-        }
+    newAssignmentType: newType {
+        ...AssignmenTypeTimelineInfo
     }
-    ... on Comment {
-        ...CommentTimelineInfo
+    oldAssignmentType: oldType {
+        ...AssignmenTypeTimelineInfo
     }
-    ... on DueDateChangedEvent {
-        oldDueDate
-        newDueDate
+}
+
+fragment BodyTimelineInfo on Body {
+    ...TimelineItemInfo
+    ...CommentTimelineInfo
+}
+
+fragment DueDateChangedEventTimelineInfo on DueDateChangedEvent {
+    ...TimelineItemInfo
+    oldDueDate
+    newDueDate
+}
+
+fragment EstimatedTimeChangedEventTimelineInfo on EstimatedTimeChangedEvent {
+    ...TimelineItemInfo
+    oldEstimatedTime
+    newEstimatedTime
+}
+
+fragment IncomingRelationTypeChangedEventTimelineInfo on IncomingRelationTypeChangedEvent {
+    ...TimelineItemInfo
+    issueRelation {
+        ...IncomingRelationTimelineInfo
     }
-    ... on EstimatedTimeChangedEvent {
-        oldEstimatedTime
-        newEstimatedTime
+}
+
+fragment IssueCommentTimelineInfo on IssueComment {
+    ...TimelineItemInfo
+    ...CommentTimelineInfo
+    isDeleted
+    answers {
+        id
     }
-    ... on IncomingRelationTypeChangedEvent {
-        issueRelation {
-            ...IncomingRelationTimelineInfo
-        }
-    }
-    ... on IssueComment {
-        isDeleted
-        answers {
-            id
-        }
-    }
-    ... on IssueRelation {
+}
+
+fragment IssueRelationTimelineInfo on IssueRelation {
+    ...TimelineItemInfo
+    ...OutgoingRelationTimelineInfo
+}
+
+fragment OutgoingRelationTypeChangedEventTimelineInfo on OutgoingRelationTypeChangedEvent {
+    ...TimelineItemInfo
+    issueRelation {
         ...OutgoingRelationTimelineInfo
     }
-    ... on OutgoingRelationTypeChangedEvent {
-        issueRelation {
-            ...OutgoingRelationTimelineInfo
-        }
+}
+
+fragment PriorityChangedEventTimelineInfo on PriorityChangedEvent {
+    ...TimelineItemInfo
+    oldPriority {
+        ...IssuePriorityTimelineInfo
     }
-    ... on PriorityChangedEvent {
-        oldPriority {
-            ...IssuePriorityTimelineInfo
-        }
-        newPriority {
-            ...IssuePriorityTimelineInfo
-        }
+    newPriority {
+        ...IssuePriorityTimelineInfo
     }
-    ... on RelatedByIssueEvent {
-        relation {
-            ...IncomingRelationTimelineInfo
-        }
+}
+
+fragment RelatedByIssueEventTimelineInfo on RelatedByIssueEvent {
+    ...TimelineItemInfo
+    relation {
+        ...IncomingRelationTimelineInfo
     }
-    ... on RelationTypeChangedEvent {
-        oldRelationType: oldType {
-            ...IssueRelationTypeTimelineInfo
-        }
-        newRelationTyoe: newType {
-            ...IssueRelationTypeTimelineInfo
-        }
+}
+
+fragment RelationTypeChangedEventTimelineInfo on RelationTypeChangedEvent {
+    ...TimelineItemInfo
+    oldRelationType: oldType {
+        ...IssueRelationTypeTimelineInfo
     }
-    ... on RemovedAffectedEntityEvent {
-        removedAffectedEntity {
-            ...AffectedByIssueTimelineInfo
-        }
+    newRelationTyoe: newType {
+        ...IssueRelationTypeTimelineInfo
     }
-    ... on RemovedArtefactEvent {
-        removedArtefact {
-            ...ArtefactTimelineInfo
-        }
+}
+
+fragment RemovedAffectedEntityEventTimelineInfo on RemovedAffectedEntityEvent {
+    ...TimelineItemInfo
+    removedAffectedEntity {
+        ...AffectedByIssueTimelineInfo
     }
-    ... on RemovedAssignmentEvent {
-        removedAssignment {
-            ...AssignmentTimelineInfo
-        }
+}
+
+fragment RemovedArtefactEventTimelineInfo on RemovedArtefactEvent {
+    ...TimelineItemInfo
+    removedArtefact {
+        ...ArtefactTimelineInfo
     }
-    ... on RemovedFromPinnedIssuesEvent {
-        unpinnedOn {
-            ...TrackableTimelineInfo
-        }
+}
+
+fragment RemovedAssignmentEventTimelineInfo on RemovedAssignmentEvent {
+    ...TimelineItemInfo
+    removedAssignment {
+        ...AssignmentTimelineInfo
     }
-    ... on RemovedFromTrackableEvent {
-        removedFromTrackable {
-            ...TrackableTimelineInfo
-        }
+}
+
+fragment RemovedFromPinnedIssuesEventTimelineInfo on RemovedFromPinnedIssuesEvent {
+    ...TimelineItemInfo
+    unpinnedOn {
+        ...TrackableTimelineInfo
     }
-    ... on RemovedIncomingRelationEvent {
-        removedRelation {
-            ...IncomingRelationTimelineInfo
-        }
+}
+
+fragment RemovedFromTrackableEventTimelineInfo on RemovedFromTrackableEvent {
+    ...TimelineItemInfo
+    removedFromTrackable {
+        ...TrackableTimelineInfo
     }
-    ... on RemovedLabelEvent {
-        removedLabel {
-            ...LabelTimelineInfo
-        }
+}
+
+fragment RemovedIncomingRelationEventTimelineInfo on RemovedIncomingRelationEvent {
+    ...TimelineItemInfo
+    removedRelation {
+        ...IncomingRelationTimelineInfo
     }
-    ... on RemovedOutgoingRelationEvent {
-        removedRelation {
-            ...OutgoingRelationTimelineInfo
-        }
+}
+
+fragment RemovedLabelEventTimelineInfo on RemovedLabelEvent {
+    ...TimelineItemInfo
+    removedLabel {
+        ...LabelTimelineInfo
     }
-    ... on RemovedTemplatedFieldEvent {
-        fieldName
+}
+
+fragment RemovedOutgoingRelationEventTimelineInfo on RemovedOutgoingRelationEvent {
+    ...TimelineItemInfo
+    removedRelation {
+        ...OutgoingRelationTimelineInfo
     }
-    ... on SpentTimeChangedEvent {
-        oldSpentTime
-        newSpentTime
+}
+
+fragment RemovedTemplatedFieldEventTimelineInfo on RemovedTemplatedFieldEvent {
+    ...TimelineItemInfo
+    fieldName
+}
+
+fragment SpentTimeChangedEventTimelineInfo on SpentTimeChangedEvent {
+    ...TimelineItemInfo
+    oldSpentTime
+    newSpentTime
+}
+
+fragment StartDateChangedEventTimelineInfo on StartDateChangedEvent {
+    ...TimelineItemInfo
+    oldStartDate
+    newStartDate
+}
+
+fragment StateChangedEventTimelineInfo on StateChangedEvent {
+    ...TimelineItemInfo
+    oldState {
+        ...IssueStateTimelineInfo
     }
-    ... on StartDateChangedEvent {
-        oldStartDate
-        newStartDate
+    newState {
+        ...IssueStateTimelineInfo
     }
-    ... on StateChangedEvent {
-        oldState {
-            ...IssueStateTimelineInfo
-        }
-        newState {
-            ...IssueStateTimelineInfo
-        }
+}
+
+fragment TemplateChangedEventTimelineInfo on TemplateChangedEvent {
+    ...TimelineItemInfo
+    oldTemplate {
+        ...IssueTemplateTimelineInfo
     }
-    ... on TemplateChangedEvent {
-        oldTemplate {
-            ...IssueTemplateTimelineInfo
-        }
-        newTemplate {
-            ...IssueTemplateTimelineInfo
-        }
+    newTemplate {
+        ...IssueTemplateTimelineInfo
     }
-    ... on TemplatedFieldChangedEvent {
-        fieldName
-        oldValue
-        newValue
+}
+
+fragment TemplatedFieldChangedEventTimelineInfo on TemplatedFieldChangedEvent {
+    ...TimelineItemInfo
+    fieldName
+    oldValue
+    newValue
+}
+
+fragment TitleChangedEventTimelineInfo on TitleChangedEvent {
+    ...TimelineItemInfo
+    oldTitle
+    newTitle
+}
+
+fragment TypeChangedEventTimelineInfo on TypeChangedEvent {
+    ...TimelineItemInfo
+    newIssueType: newType {
+        ...IssueTypeTimelineInfo
     }
-    ... on TitleChangedEvent {
-        oldTitle
-        newTitle
-    }
-    ... on TypeChangedEvent {
-        newIssueType: newType {
-            ...IssueTypeTimelineInfo
-        }
-        oldIssueType: oldType {
-            ...IssueTypeTimelineInfo
-        }
+    oldIssueType: oldType {
+        ...IssueTypeTimelineInfo
     }
 }
 
@@ -208,16 +377,6 @@ fragment TrackableTimelineInfo on Trackable {
     description
 }
 
-fragment AssignmentTimelineInfo on Assignment {
-    id
-    user {
-        ...UserTimelineInfo
-    }
-    type {
-        ...AssignmenTypeTimelineInfo
-    }
-}
-
 fragment AssignmenTypeTimelineInfo on AssignmentType {
     name
     description
@@ -236,21 +395,21 @@ fragment IssueRelationTypeTimelineInfo on IssueRelationType {
     description
 }
 
-fragment IssueRelationTimelineInfo on IssueRelation {
+fragment IssueRelationTimelineInfoBase on IssueRelation {
     type {
         ...IssueRelationTypeTimelineInfo
     }
 }
 
 fragment IncomingRelationTimelineInfo on IssueRelation {
-    ...IssueRelationTimelineInfo
+    ...IssueRelationTimelineInfoBase
     issue {
         ...IssueTimelineInfo
     }
 }
 
 fragment OutgoingRelationTimelineInfo on IssueRelation {
-    ...IssueRelationTimelineInfo
+    ...IssueRelationTimelineInfoBase
     relatedIssue {
         ...IssueTimelineInfo
     }

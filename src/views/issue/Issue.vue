@@ -36,17 +36,21 @@ import TimelineItem from "@/components/timeline/TimelineItem";
 import IssueIcon from "@/components/IssueIcon.vue";
 import User from "@/components/User.vue";
 import RelativeTime from "@/components/RelativeTime.vue";
+import { provide } from "vue";
+import { withErrorMessage } from "@/util/withErrorMessage";
 
-type Issue = NodeReturnType<"getIssue", "Issue">;
+export type Issue = NodeReturnType<"getIssue", "Issue">;
 
 const client = useClient();
 const route = useRoute();
 const issueId = computed(() => route.params.issue as string);
 
 const { state: issue, isReady } = useAsyncState(async () => {
-    const res = await client.getIssue({ id: issueId.value });
+    const res = await withErrorMessage(() => client.getIssue({ id: issueId.value }), "Error loading issue");
     return res.node as Issue;
 }, null);
+
+provide("issue", issue);
 </script>
 <style scoped lang="scss">
 .fill-height {

@@ -16945,6 +16945,9 @@ export type GetIssueQuery = {
               spentTime?: any | null;
               startDate?: any | null;
               dueDate?: any | null;
+              manageIssues?: boolean | null;
+              comment?: boolean | null;
+              moderator?: boolean | null;
               createdBy:
                   | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
                   | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
@@ -17061,45 +17064,11 @@ export type GetIssueQuery = {
                                       avatar: any;
                                   };
                         }
-                      | {
-                            __typename: "AddedToTrackableEvent";
-                            id: string;
-                            createdAt: any;
-                            createdBy:
-                                | {
-                                      __typename?: "GropiusUser";
-                                      id: string;
-                                      username: string;
-                                      displayName: string;
-                                      avatar: any;
-                                  }
-                                | {
-                                      __typename?: "IMSUser";
-                                      id: string;
-                                      username?: string | null;
-                                      displayName: string;
-                                      avatar: any;
-                                  };
-                        }
+                      | { __typename?: "AddedToTrackableEvent" }
                       | {
                             __typename: "Assignment";
                             id: string;
                             createdAt: any;
-                            createdBy:
-                                | {
-                                      __typename?: "GropiusUser";
-                                      id: string;
-                                      username: string;
-                                      displayName: string;
-                                      avatar: any;
-                                  }
-                                | {
-                                      __typename?: "IMSUser";
-                                      id: string;
-                                      username?: string | null;
-                                      displayName: string;
-                                      avatar: any;
-                                  };
                             user:
                                 | {
                                       __typename?: "GropiusUser";
@@ -17116,14 +17085,30 @@ export type GetIssueQuery = {
                                       avatar: any;
                                   };
                             type?: { __typename?: "AssignmentType"; name: string; description: string } | null;
+                            createdBy:
+                                | {
+                                      __typename?: "GropiusUser";
+                                      id: string;
+                                      username: string;
+                                      displayName: string;
+                                      avatar: any;
+                                  }
+                                | {
+                                      __typename?: "IMSUser";
+                                      id: string;
+                                      username?: string | null;
+                                      displayName: string;
+                                      avatar: any;
+                                  };
                         }
                       | {
                             __typename: "AssignmentTypeChangedEvent";
                             id: string;
                             createdAt: any;
                             assignment: {
-                                __typename?: "Assignment";
+                                __typename: "Assignment";
                                 id: string;
+                                createdAt: any;
                                 user:
                                     | {
                                           __typename?: "GropiusUser";
@@ -17140,6 +17125,21 @@ export type GetIssueQuery = {
                                           avatar: any;
                                       };
                                 type?: { __typename?: "AssignmentType"; name: string; description: string } | null;
+                                createdBy:
+                                    | {
+                                          __typename?: "GropiusUser";
+                                          id: string;
+                                          username: string;
+                                          displayName: string;
+                                          avatar: any;
+                                      }
+                                    | {
+                                          __typename?: "IMSUser";
+                                          id: string;
+                                          username?: string | null;
+                                          displayName: string;
+                                          avatar: any;
+                                      };
                             };
                             newAssignmentType?: {
                                 __typename?: "AssignmentType";
@@ -17522,8 +17522,9 @@ export type GetIssueQuery = {
                             id: string;
                             createdAt: any;
                             removedAssignment: {
-                                __typename?: "Assignment";
+                                __typename: "Assignment";
                                 id: string;
+                                createdAt: any;
                                 user:
                                     | {
                                           __typename?: "GropiusUser";
@@ -17540,6 +17541,21 @@ export type GetIssueQuery = {
                                           avatar: any;
                                       };
                                 type?: { __typename?: "AssignmentType"; name: string; description: string } | null;
+                                createdBy:
+                                    | {
+                                          __typename?: "GropiusUser";
+                                          id: string;
+                                          username: string;
+                                          displayName: string;
+                                          avatar: any;
+                                      }
+                                    | {
+                                          __typename?: "IMSUser";
+                                          id: string;
+                                          username?: string | null;
+                                          displayName: string;
+                                          avatar: any;
+                                      };
                             };
                             createdBy:
                                 | {
@@ -17940,8 +17956,9 @@ export type GetIssueQuery = {
               assignments: {
                   __typename?: "AssignmentConnection";
                   nodes: Array<{
-                      __typename?: "Assignment";
+                      __typename: "Assignment";
                       id: string;
+                      createdAt: any;
                       user:
                           | {
                                 __typename?: "GropiusUser";
@@ -17958,6 +17975,21 @@ export type GetIssueQuery = {
                                 avatar: any;
                             };
                       type?: { __typename?: "AssignmentType"; name: string; description: string } | null;
+                      createdBy:
+                          | {
+                                __typename?: "GropiusUser";
+                                id: string;
+                                username: string;
+                                displayName: string;
+                                avatar: any;
+                            }
+                          | {
+                                __typename?: "IMSUser";
+                                id: string;
+                                username?: string | null;
+                                displayName: string;
+                                avatar: any;
+                            };
                   }>;
               };
               type: { __typename?: "IssueType"; id: string; iconPath: string; name: string; description: string };
@@ -17997,6 +18029,58 @@ export type GetIssueQuery = {
         | { __typename?: "TitleChangedEvent" }
         | { __typename?: "TypeChangedEvent" }
         | null;
+};
+
+export type UpdateBodyMutationVariables = Exact<{
+    id: Scalars["ID"]["input"];
+    body: Scalars["String"]["input"];
+}>;
+
+export type UpdateBodyMutation = {
+    __typename?: "Mutation";
+    updateBody?: {
+        __typename?: "UpdateBodyPayload";
+        body?: {
+            __typename: "Body";
+            id: string;
+            createdAt: any;
+            body: string;
+            bodyLastEditedAt: any;
+            createdBy:
+                | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+                | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+            bodyLastEditedBy:
+                | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+                | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+        } | null;
+    } | null;
+};
+
+export type UpdateIssueCommentMutationVariables = Exact<{
+    id: Scalars["ID"]["input"];
+    body: Scalars["String"]["input"];
+}>;
+
+export type UpdateIssueCommentMutation = {
+    __typename?: "Mutation";
+    updateIssueComment?: {
+        __typename?: "UpdateIssueCommentPayload";
+        issueComment?: {
+            __typename: "IssueComment";
+            isDeleted: boolean;
+            id: string;
+            createdAt: any;
+            body: string;
+            bodyLastEditedAt: any;
+            answers?: { __typename?: "Body"; id: string } | { __typename?: "IssueComment"; id: string } | null;
+            createdBy:
+                | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+                | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+            bodyLastEditedBy:
+                | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+                | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+        } | null;
+    } | null;
 };
 
 export type DefaultIssueIconInfoFragment = {
@@ -18060,26 +18144,19 @@ type DefaultTimelineItemInfo_AddedToPinnedIssuesEvent_Fragment = {
         | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
 };
 
-type DefaultTimelineItemInfo_AddedToTrackableEvent_Fragment = {
-    __typename: "AddedToTrackableEvent";
-    id: string;
-    createdAt: any;
-    createdBy:
-        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
-        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
-};
+type DefaultTimelineItemInfo_AddedToTrackableEvent_Fragment = { __typename?: "AddedToTrackableEvent" };
 
 type DefaultTimelineItemInfo_Assignment_Fragment = {
     __typename: "Assignment";
     id: string;
     createdAt: any;
-    createdBy:
-        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
-        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
     user:
         | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
         | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
     type?: { __typename?: "AssignmentType"; name: string; description: string } | null;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
 };
 
 type DefaultTimelineItemInfo_AssignmentTypeChangedEvent_Fragment = {
@@ -18087,12 +18164,16 @@ type DefaultTimelineItemInfo_AssignmentTypeChangedEvent_Fragment = {
     id: string;
     createdAt: any;
     assignment: {
-        __typename?: "Assignment";
+        __typename: "Assignment";
         id: string;
+        createdAt: any;
         user:
             | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
             | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
         type?: { __typename?: "AssignmentType"; name: string; description: string } | null;
+        createdBy:
+            | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+            | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
     };
     newAssignmentType?: { __typename?: "AssignmentType"; name: string; description: string } | null;
     oldAssignmentType?: { __typename?: "AssignmentType"; name: string; description: string } | null;
@@ -18282,12 +18363,16 @@ type DefaultTimelineItemInfo_RemovedAssignmentEvent_Fragment = {
     id: string;
     createdAt: any;
     removedAssignment: {
-        __typename?: "Assignment";
+        __typename: "Assignment";
         id: string;
+        createdAt: any;
         user:
             | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
             | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
         type?: { __typename?: "AssignmentType"; name: string; description: string } | null;
+        createdBy:
+            | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+            | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
     };
     createdBy:
         | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
@@ -18494,6 +18579,800 @@ export type DefaultTimelineItemInfoFragment =
     | DefaultTimelineItemInfo_TitleChangedEvent_Fragment
     | DefaultTimelineItemInfo_TypeChangedEvent_Fragment;
 
+type TimelineItemInfo_AddedAffectedEntityEvent_Fragment = {
+    __typename: "AddedAffectedEntityEvent";
+    id: string;
+    createdAt: any;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+type TimelineItemInfo_AddedArtefactEvent_Fragment = {
+    __typename: "AddedArtefactEvent";
+    id: string;
+    createdAt: any;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+type TimelineItemInfo_AddedLabelEvent_Fragment = {
+    __typename: "AddedLabelEvent";
+    id: string;
+    createdAt: any;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+type TimelineItemInfo_AddedToPinnedIssuesEvent_Fragment = {
+    __typename: "AddedToPinnedIssuesEvent";
+    id: string;
+    createdAt: any;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+type TimelineItemInfo_AddedToTrackableEvent_Fragment = {
+    __typename: "AddedToTrackableEvent";
+    id: string;
+    createdAt: any;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+type TimelineItemInfo_Assignment_Fragment = {
+    __typename: "Assignment";
+    id: string;
+    createdAt: any;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+type TimelineItemInfo_AssignmentTypeChangedEvent_Fragment = {
+    __typename: "AssignmentTypeChangedEvent";
+    id: string;
+    createdAt: any;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+type TimelineItemInfo_Body_Fragment = {
+    __typename: "Body";
+    id: string;
+    createdAt: any;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+type TimelineItemInfo_DueDateChangedEvent_Fragment = {
+    __typename: "DueDateChangedEvent";
+    id: string;
+    createdAt: any;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+type TimelineItemInfo_EstimatedTimeChangedEvent_Fragment = {
+    __typename: "EstimatedTimeChangedEvent";
+    id: string;
+    createdAt: any;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+type TimelineItemInfo_IncomingRelationTypeChangedEvent_Fragment = {
+    __typename: "IncomingRelationTypeChangedEvent";
+    id: string;
+    createdAt: any;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+type TimelineItemInfo_IssueComment_Fragment = {
+    __typename: "IssueComment";
+    id: string;
+    createdAt: any;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+type TimelineItemInfo_IssueRelation_Fragment = {
+    __typename: "IssueRelation";
+    id: string;
+    createdAt: any;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+type TimelineItemInfo_OutgoingRelationTypeChangedEvent_Fragment = {
+    __typename: "OutgoingRelationTypeChangedEvent";
+    id: string;
+    createdAt: any;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+type TimelineItemInfo_PriorityChangedEvent_Fragment = {
+    __typename: "PriorityChangedEvent";
+    id: string;
+    createdAt: any;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+type TimelineItemInfo_RelatedByIssueEvent_Fragment = {
+    __typename: "RelatedByIssueEvent";
+    id: string;
+    createdAt: any;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+type TimelineItemInfo_RemovedAffectedEntityEvent_Fragment = {
+    __typename: "RemovedAffectedEntityEvent";
+    id: string;
+    createdAt: any;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+type TimelineItemInfo_RemovedArtefactEvent_Fragment = {
+    __typename: "RemovedArtefactEvent";
+    id: string;
+    createdAt: any;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+type TimelineItemInfo_RemovedAssignmentEvent_Fragment = {
+    __typename: "RemovedAssignmentEvent";
+    id: string;
+    createdAt: any;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+type TimelineItemInfo_RemovedFromPinnedIssuesEvent_Fragment = {
+    __typename: "RemovedFromPinnedIssuesEvent";
+    id: string;
+    createdAt: any;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+type TimelineItemInfo_RemovedFromTrackableEvent_Fragment = {
+    __typename: "RemovedFromTrackableEvent";
+    id: string;
+    createdAt: any;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+type TimelineItemInfo_RemovedIncomingRelationEvent_Fragment = {
+    __typename: "RemovedIncomingRelationEvent";
+    id: string;
+    createdAt: any;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+type TimelineItemInfo_RemovedLabelEvent_Fragment = {
+    __typename: "RemovedLabelEvent";
+    id: string;
+    createdAt: any;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+type TimelineItemInfo_RemovedOutgoingRelationEvent_Fragment = {
+    __typename: "RemovedOutgoingRelationEvent";
+    id: string;
+    createdAt: any;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+type TimelineItemInfo_RemovedTemplatedFieldEvent_Fragment = {
+    __typename: "RemovedTemplatedFieldEvent";
+    id: string;
+    createdAt: any;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+type TimelineItemInfo_SpentTimeChangedEvent_Fragment = {
+    __typename: "SpentTimeChangedEvent";
+    id: string;
+    createdAt: any;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+type TimelineItemInfo_StartDateChangedEvent_Fragment = {
+    __typename: "StartDateChangedEvent";
+    id: string;
+    createdAt: any;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+type TimelineItemInfo_StateChangedEvent_Fragment = {
+    __typename: "StateChangedEvent";
+    id: string;
+    createdAt: any;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+type TimelineItemInfo_TemplateChangedEvent_Fragment = {
+    __typename: "TemplateChangedEvent";
+    id: string;
+    createdAt: any;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+type TimelineItemInfo_TemplatedFieldChangedEvent_Fragment = {
+    __typename: "TemplatedFieldChangedEvent";
+    id: string;
+    createdAt: any;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+type TimelineItemInfo_TitleChangedEvent_Fragment = {
+    __typename: "TitleChangedEvent";
+    id: string;
+    createdAt: any;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+type TimelineItemInfo_TypeChangedEvent_Fragment = {
+    __typename: "TypeChangedEvent";
+    id: string;
+    createdAt: any;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+export type TimelineItemInfoFragment =
+    | TimelineItemInfo_AddedAffectedEntityEvent_Fragment
+    | TimelineItemInfo_AddedArtefactEvent_Fragment
+    | TimelineItemInfo_AddedLabelEvent_Fragment
+    | TimelineItemInfo_AddedToPinnedIssuesEvent_Fragment
+    | TimelineItemInfo_AddedToTrackableEvent_Fragment
+    | TimelineItemInfo_Assignment_Fragment
+    | TimelineItemInfo_AssignmentTypeChangedEvent_Fragment
+    | TimelineItemInfo_Body_Fragment
+    | TimelineItemInfo_DueDateChangedEvent_Fragment
+    | TimelineItemInfo_EstimatedTimeChangedEvent_Fragment
+    | TimelineItemInfo_IncomingRelationTypeChangedEvent_Fragment
+    | TimelineItemInfo_IssueComment_Fragment
+    | TimelineItemInfo_IssueRelation_Fragment
+    | TimelineItemInfo_OutgoingRelationTypeChangedEvent_Fragment
+    | TimelineItemInfo_PriorityChangedEvent_Fragment
+    | TimelineItemInfo_RelatedByIssueEvent_Fragment
+    | TimelineItemInfo_RemovedAffectedEntityEvent_Fragment
+    | TimelineItemInfo_RemovedArtefactEvent_Fragment
+    | TimelineItemInfo_RemovedAssignmentEvent_Fragment
+    | TimelineItemInfo_RemovedFromPinnedIssuesEvent_Fragment
+    | TimelineItemInfo_RemovedFromTrackableEvent_Fragment
+    | TimelineItemInfo_RemovedIncomingRelationEvent_Fragment
+    | TimelineItemInfo_RemovedLabelEvent_Fragment
+    | TimelineItemInfo_RemovedOutgoingRelationEvent_Fragment
+    | TimelineItemInfo_RemovedTemplatedFieldEvent_Fragment
+    | TimelineItemInfo_SpentTimeChangedEvent_Fragment
+    | TimelineItemInfo_StartDateChangedEvent_Fragment
+    | TimelineItemInfo_StateChangedEvent_Fragment
+    | TimelineItemInfo_TemplateChangedEvent_Fragment
+    | TimelineItemInfo_TemplatedFieldChangedEvent_Fragment
+    | TimelineItemInfo_TitleChangedEvent_Fragment
+    | TimelineItemInfo_TypeChangedEvent_Fragment;
+
+export type AddedAffectedEntityEventTimelineInfoFragment = {
+    __typename: "AddedAffectedEntityEvent";
+    id: string;
+    createdAt: any;
+    addedAffectedEntity?:
+        | { __typename: "Component"; id: string; name: string; description: string }
+        | { __typename: "ComponentVersion"; id: string; name: string; description: string }
+        | { __typename: "Interface"; id: string; name: string; description: string }
+        | { __typename: "InterfacePart"; id: string; name: string; description: string }
+        | { __typename: "InterfaceSpecification"; id: string; name: string; description: string }
+        | { __typename: "InterfaceSpecificationVersion"; id: string; name: string; description: string }
+        | { __typename: "Project"; id: string; name: string; description: string }
+        | null;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+export type AddedArtefactEventTimelineInfoFragment = {
+    __typename: "AddedArtefactEvent";
+    id: string;
+    createdAt: any;
+    addedArtefact?: { __typename?: "Artefact"; file: any; id: string } | null;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+export type AddedLabelEventTimelineInfoFragment = {
+    __typename: "AddedLabelEvent";
+    id: string;
+    createdAt: any;
+    addedLabel?: { __typename?: "Label"; name: string; description: string; color: string } | null;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+export type AddedToPinnedIssuesEventTimelineInfoFragment = {
+    __typename: "AddedToPinnedIssuesEvent";
+    id: string;
+    createdAt: any;
+    pinnedOn?:
+        | { __typename?: "Component"; id: string; name: string; description: string }
+        | { __typename?: "Project"; id: string; name: string; description: string }
+        | null;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+export type AssignmentTimelineInfoFragment = {
+    __typename: "Assignment";
+    id: string;
+    createdAt: any;
+    user:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+    type?: { __typename?: "AssignmentType"; name: string; description: string } | null;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+export type AssignmentTypeChangedEventTimelineInfoFragment = {
+    __typename: "AssignmentTypeChangedEvent";
+    id: string;
+    createdAt: any;
+    assignment: {
+        __typename: "Assignment";
+        id: string;
+        createdAt: any;
+        user:
+            | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+            | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+        type?: { __typename?: "AssignmentType"; name: string; description: string } | null;
+        createdBy:
+            | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+            | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+    };
+    newAssignmentType?: { __typename?: "AssignmentType"; name: string; description: string } | null;
+    oldAssignmentType?: { __typename?: "AssignmentType"; name: string; description: string } | null;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+export type BodyTimelineInfoFragment = {
+    __typename: "Body";
+    id: string;
+    createdAt: any;
+    body: string;
+    bodyLastEditedAt: any;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+    bodyLastEditedBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+export type DueDateChangedEventTimelineInfoFragment = {
+    __typename: "DueDateChangedEvent";
+    oldDueDate?: any | null;
+    newDueDate?: any | null;
+    id: string;
+    createdAt: any;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+export type EstimatedTimeChangedEventTimelineInfoFragment = {
+    __typename: "EstimatedTimeChangedEvent";
+    oldEstimatedTime?: any | null;
+    newEstimatedTime?: any | null;
+    id: string;
+    createdAt: any;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+export type IncomingRelationTypeChangedEventTimelineInfoFragment = {
+    __typename: "IncomingRelationTypeChangedEvent";
+    id: string;
+    createdAt: any;
+    issueRelation: {
+        __typename?: "IssueRelation";
+        issue?: {
+            __typename?: "Issue";
+            title: string;
+            incomingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
+            outgoingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
+            state: { __typename?: "IssueState"; isOpen: boolean };
+            type: { __typename?: "IssueType"; iconPath: string };
+        } | null;
+        type?: { __typename?: "IssueRelationType"; name: string; description: string } | null;
+    };
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+export type IssueCommentTimelineInfoFragment = {
+    __typename: "IssueComment";
+    isDeleted: boolean;
+    id: string;
+    createdAt: any;
+    body: string;
+    bodyLastEditedAt: any;
+    answers?: { __typename?: "Body"; id: string } | { __typename?: "IssueComment"; id: string } | null;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+    bodyLastEditedBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+export type IssueRelationTimelineInfoFragment = {
+    __typename: "IssueRelation";
+    id: string;
+    createdAt: any;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+    relatedIssue?: {
+        __typename?: "Issue";
+        title: string;
+        incomingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
+        outgoingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
+        state: { __typename?: "IssueState"; isOpen: boolean };
+        type: { __typename?: "IssueType"; iconPath: string };
+    } | null;
+    type?: { __typename?: "IssueRelationType"; name: string; description: string } | null;
+};
+
+export type OutgoingRelationTypeChangedEventTimelineInfoFragment = {
+    __typename: "OutgoingRelationTypeChangedEvent";
+    id: string;
+    createdAt: any;
+    issueRelation: {
+        __typename?: "IssueRelation";
+        relatedIssue?: {
+            __typename?: "Issue";
+            title: string;
+            incomingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
+            outgoingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
+            state: { __typename?: "IssueState"; isOpen: boolean };
+            type: { __typename?: "IssueType"; iconPath: string };
+        } | null;
+        type?: { __typename?: "IssueRelationType"; name: string; description: string } | null;
+    };
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+export type PriorityChangedEventTimelineInfoFragment = {
+    __typename: "PriorityChangedEvent";
+    id: string;
+    createdAt: any;
+    oldPriority?: { __typename?: "IssuePriority"; name: string; description: string } | null;
+    newPriority?: { __typename?: "IssuePriority"; name: string; description: string } | null;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+export type RelatedByIssueEventTimelineInfoFragment = {
+    __typename: "RelatedByIssueEvent";
+    id: string;
+    createdAt: any;
+    relation?: {
+        __typename?: "IssueRelation";
+        issue?: {
+            __typename?: "Issue";
+            title: string;
+            incomingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
+            outgoingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
+            state: { __typename?: "IssueState"; isOpen: boolean };
+            type: { __typename?: "IssueType"; iconPath: string };
+        } | null;
+        type?: { __typename?: "IssueRelationType"; name: string; description: string } | null;
+    } | null;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+type RelationTypeChangedEventTimelineInfo_IncomingRelationTypeChangedEvent_Fragment = {
+    __typename: "IncomingRelationTypeChangedEvent";
+    id: string;
+    createdAt: any;
+    oldRelationType?: { __typename?: "IssueRelationType"; name: string; description: string } | null;
+    newRelationTyoe?: { __typename?: "IssueRelationType"; name: string; description: string } | null;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+type RelationTypeChangedEventTimelineInfo_OutgoingRelationTypeChangedEvent_Fragment = {
+    __typename: "OutgoingRelationTypeChangedEvent";
+    id: string;
+    createdAt: any;
+    oldRelationType?: { __typename?: "IssueRelationType"; name: string; description: string } | null;
+    newRelationTyoe?: { __typename?: "IssueRelationType"; name: string; description: string } | null;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+export type RelationTypeChangedEventTimelineInfoFragment =
+    | RelationTypeChangedEventTimelineInfo_IncomingRelationTypeChangedEvent_Fragment
+    | RelationTypeChangedEventTimelineInfo_OutgoingRelationTypeChangedEvent_Fragment;
+
+export type RemovedAffectedEntityEventTimelineInfoFragment = {
+    __typename: "RemovedAffectedEntityEvent";
+    id: string;
+    createdAt: any;
+    removedAffectedEntity?:
+        | { __typename: "Component"; id: string; name: string; description: string }
+        | { __typename: "ComponentVersion"; id: string; name: string; description: string }
+        | { __typename: "Interface"; id: string; name: string; description: string }
+        | { __typename: "InterfacePart"; id: string; name: string; description: string }
+        | { __typename: "InterfaceSpecification"; id: string; name: string; description: string }
+        | { __typename: "InterfaceSpecificationVersion"; id: string; name: string; description: string }
+        | { __typename: "Project"; id: string; name: string; description: string }
+        | null;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+export type RemovedArtefactEventTimelineInfoFragment = {
+    __typename: "RemovedArtefactEvent";
+    id: string;
+    createdAt: any;
+    removedArtefact?: { __typename?: "Artefact"; file: any; id: string } | null;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+export type RemovedAssignmentEventTimelineInfoFragment = {
+    __typename: "RemovedAssignmentEvent";
+    id: string;
+    createdAt: any;
+    removedAssignment: {
+        __typename: "Assignment";
+        id: string;
+        createdAt: any;
+        user:
+            | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+            | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+        type?: { __typename?: "AssignmentType"; name: string; description: string } | null;
+        createdBy:
+            | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+            | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+    };
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+export type RemovedFromPinnedIssuesEventTimelineInfoFragment = {
+    __typename: "RemovedFromPinnedIssuesEvent";
+    id: string;
+    createdAt: any;
+    unpinnedOn?:
+        | { __typename?: "Component"; id: string; name: string; description: string }
+        | { __typename?: "Project"; id: string; name: string; description: string }
+        | null;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+export type RemovedFromTrackableEventTimelineInfoFragment = {
+    __typename: "RemovedFromTrackableEvent";
+    id: string;
+    createdAt: any;
+    removedFromTrackable?:
+        | { __typename?: "Component"; id: string; name: string; description: string }
+        | { __typename?: "Project"; id: string; name: string; description: string }
+        | null;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+export type RemovedIncomingRelationEventTimelineInfoFragment = {
+    __typename: "RemovedIncomingRelationEvent";
+    id: string;
+    createdAt: any;
+    removedRelation?: {
+        __typename?: "IssueRelation";
+        issue?: {
+            __typename?: "Issue";
+            title: string;
+            incomingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
+            outgoingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
+            state: { __typename?: "IssueState"; isOpen: boolean };
+            type: { __typename?: "IssueType"; iconPath: string };
+        } | null;
+        type?: { __typename?: "IssueRelationType"; name: string; description: string } | null;
+    } | null;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+export type RemovedLabelEventTimelineInfoFragment = {
+    __typename: "RemovedLabelEvent";
+    id: string;
+    createdAt: any;
+    removedLabel?: { __typename?: "Label"; name: string; description: string; color: string } | null;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+export type RemovedOutgoingRelationEventTimelineInfoFragment = {
+    __typename: "RemovedOutgoingRelationEvent";
+    id: string;
+    createdAt: any;
+    removedRelation?: {
+        __typename?: "IssueRelation";
+        relatedIssue?: {
+            __typename?: "Issue";
+            title: string;
+            incomingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
+            outgoingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
+            state: { __typename?: "IssueState"; isOpen: boolean };
+            type: { __typename?: "IssueType"; iconPath: string };
+        } | null;
+        type?: { __typename?: "IssueRelationType"; name: string; description: string } | null;
+    } | null;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+export type RemovedTemplatedFieldEventTimelineInfoFragment = {
+    __typename: "RemovedTemplatedFieldEvent";
+    fieldName: string;
+    id: string;
+    createdAt: any;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+export type SpentTimeChangedEventTimelineInfoFragment = {
+    __typename: "SpentTimeChangedEvent";
+    oldSpentTime?: any | null;
+    newSpentTime?: any | null;
+    id: string;
+    createdAt: any;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+export type StartDateChangedEventTimelineInfoFragment = {
+    __typename: "StartDateChangedEvent";
+    oldStartDate?: any | null;
+    newStartDate?: any | null;
+    id: string;
+    createdAt: any;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+export type StateChangedEventTimelineInfoFragment = {
+    __typename: "StateChangedEvent";
+    id: string;
+    createdAt: any;
+    oldState: { __typename?: "IssueState"; name: string; description: string; isOpen: boolean };
+    newState: { __typename?: "IssueState"; name: string; description: string; isOpen: boolean };
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+export type TemplateChangedEventTimelineInfoFragment = {
+    __typename: "TemplateChangedEvent";
+    id: string;
+    createdAt: any;
+    oldTemplate: { __typename?: "IssueTemplate"; name: string; description: string };
+    newTemplate: { __typename?: "IssueTemplate"; name: string; description: string };
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+export type TemplatedFieldChangedEventTimelineInfoFragment = {
+    __typename: "TemplatedFieldChangedEvent";
+    fieldName: string;
+    oldValue?: any | null;
+    newValue?: any | null;
+    id: string;
+    createdAt: any;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+export type TitleChangedEventTimelineInfoFragment = {
+    __typename: "TitleChangedEvent";
+    oldTitle: string;
+    newTitle: string;
+    id: string;
+    createdAt: any;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
+export type TypeChangedEventTimelineInfoFragment = {
+    __typename: "TypeChangedEvent";
+    id: string;
+    createdAt: any;
+    newIssueType: { __typename?: "IssueType"; iconPath: string; name: string; description: string };
+    oldIssueType: { __typename?: "IssueType"; iconPath: string; name: string; description: string };
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
 export type IssueTypeTimelineInfoFragment = {
     __typename?: "IssueType";
     iconPath: string;
@@ -18594,15 +19473,6 @@ export type TrackableTimelineInfoFragment =
     | TrackableTimelineInfo_Component_Fragment
     | TrackableTimelineInfo_Project_Fragment;
 
-export type AssignmentTimelineInfoFragment = {
-    __typename?: "Assignment";
-    id: string;
-    user:
-        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
-        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
-    type?: { __typename?: "AssignmentType"; name: string; description: string } | null;
-};
-
 export type AssignmenTypeTimelineInfoFragment = { __typename?: "AssignmentType"; name: string; description: string };
 
 type CommentTimelineInfo_Body_Fragment = {
@@ -18631,7 +19501,7 @@ export type IssueRelationTypeTimelineInfoFragment = {
     description: string;
 };
 
-export type IssueRelationTimelineInfoFragment = {
+export type IssueRelationTimelineInfoBaseFragment = {
     __typename?: "IssueRelation";
     type?: { __typename?: "IssueRelationType"; name: string; description: string } | null;
 };
@@ -18726,6 +19596,17 @@ export const UserTimelineInfoFragmentDoc = gql`
     }
     ${DefaultUserInfoFragmentDoc}
 `;
+export const TimelineItemInfoFragmentDoc = gql`
+    fragment TimelineItemInfo on TimelineItem {
+        id
+        createdAt
+        __typename
+        createdBy {
+            ...UserTimelineInfo
+        }
+    }
+    ${UserTimelineInfoFragmentDoc}
+`;
 export const AffectedByIssueTimelineInfoFragmentDoc = gql`
     fragment AffectedByIssueTimelineInfo on AffectedByIssue {
         id
@@ -18734,11 +19615,31 @@ export const AffectedByIssueTimelineInfoFragmentDoc = gql`
         __typename
     }
 `;
+export const AddedAffectedEntityEventTimelineInfoFragmentDoc = gql`
+    fragment AddedAffectedEntityEventTimelineInfo on AddedAffectedEntityEvent {
+        ...TimelineItemInfo
+        addedAffectedEntity {
+            ...AffectedByIssueTimelineInfo
+        }
+    }
+    ${TimelineItemInfoFragmentDoc}
+    ${AffectedByIssueTimelineInfoFragmentDoc}
+`;
 export const ArtefactTimelineInfoFragmentDoc = gql`
     fragment ArtefactTimelineInfo on Artefact {
         file
         id
     }
+`;
+export const AddedArtefactEventTimelineInfoFragmentDoc = gql`
+    fragment AddedArtefactEventTimelineInfo on AddedArtefactEvent {
+        ...TimelineItemInfo
+        addedArtefact {
+            ...ArtefactTimelineInfo
+        }
+    }
+    ${TimelineItemInfoFragmentDoc}
+    ${ArtefactTimelineInfoFragmentDoc}
 `;
 export const DefaultLabelInfoFragmentDoc = gql`
     fragment DefaultLabelInfo on Label {
@@ -18753,12 +19654,32 @@ export const LabelTimelineInfoFragmentDoc = gql`
     }
     ${DefaultLabelInfoFragmentDoc}
 `;
+export const AddedLabelEventTimelineInfoFragmentDoc = gql`
+    fragment AddedLabelEventTimelineInfo on AddedLabelEvent {
+        ...TimelineItemInfo
+        addedLabel {
+            ...LabelTimelineInfo
+        }
+    }
+    ${TimelineItemInfoFragmentDoc}
+    ${LabelTimelineInfoFragmentDoc}
+`;
 export const TrackableTimelineInfoFragmentDoc = gql`
     fragment TrackableTimelineInfo on Trackable {
         id
         name
         description
     }
+`;
+export const AddedToPinnedIssuesEventTimelineInfoFragmentDoc = gql`
+    fragment AddedToPinnedIssuesEventTimelineInfo on AddedToPinnedIssuesEvent {
+        ...TimelineItemInfo
+        pinnedOn {
+            ...TrackableTimelineInfo
+        }
+    }
+    ${TimelineItemInfoFragmentDoc}
+    ${TrackableTimelineInfoFragmentDoc}
 `;
 export const AssignmenTypeTimelineInfoFragmentDoc = gql`
     fragment AssignmenTypeTimelineInfo on AssignmentType {
@@ -18768,7 +19689,7 @@ export const AssignmenTypeTimelineInfoFragmentDoc = gql`
 `;
 export const AssignmentTimelineInfoFragmentDoc = gql`
     fragment AssignmentTimelineInfo on Assignment {
-        id
+        ...TimelineItemInfo
         user {
             ...UserTimelineInfo
         }
@@ -18776,7 +19697,25 @@ export const AssignmentTimelineInfoFragmentDoc = gql`
             ...AssignmenTypeTimelineInfo
         }
     }
+    ${TimelineItemInfoFragmentDoc}
     ${UserTimelineInfoFragmentDoc}
+    ${AssignmenTypeTimelineInfoFragmentDoc}
+`;
+export const AssignmentTypeChangedEventTimelineInfoFragmentDoc = gql`
+    fragment AssignmentTypeChangedEventTimelineInfo on AssignmentTypeChangedEvent {
+        ...TimelineItemInfo
+        assignment {
+            ...AssignmentTimelineInfo
+        }
+        newAssignmentType: newType {
+            ...AssignmenTypeTimelineInfo
+        }
+        oldAssignmentType: oldType {
+            ...AssignmenTypeTimelineInfo
+        }
+    }
+    ${TimelineItemInfoFragmentDoc}
+    ${AssignmentTimelineInfoFragmentDoc}
     ${AssignmenTypeTimelineInfoFragmentDoc}
 `;
 export const CommentTimelineInfoFragmentDoc = gql`
@@ -18789,14 +19728,38 @@ export const CommentTimelineInfoFragmentDoc = gql`
     }
     ${UserTimelineInfoFragmentDoc}
 `;
+export const BodyTimelineInfoFragmentDoc = gql`
+    fragment BodyTimelineInfo on Body {
+        ...TimelineItemInfo
+        ...CommentTimelineInfo
+    }
+    ${TimelineItemInfoFragmentDoc}
+    ${CommentTimelineInfoFragmentDoc}
+`;
+export const DueDateChangedEventTimelineInfoFragmentDoc = gql`
+    fragment DueDateChangedEventTimelineInfo on DueDateChangedEvent {
+        ...TimelineItemInfo
+        oldDueDate
+        newDueDate
+    }
+    ${TimelineItemInfoFragmentDoc}
+`;
+export const EstimatedTimeChangedEventTimelineInfoFragmentDoc = gql`
+    fragment EstimatedTimeChangedEventTimelineInfo on EstimatedTimeChangedEvent {
+        ...TimelineItemInfo
+        oldEstimatedTime
+        newEstimatedTime
+    }
+    ${TimelineItemInfoFragmentDoc}
+`;
 export const IssueRelationTypeTimelineInfoFragmentDoc = gql`
     fragment IssueRelationTypeTimelineInfo on IssueRelationType {
         name
         description
     }
 `;
-export const IssueRelationTimelineInfoFragmentDoc = gql`
-    fragment IssueRelationTimelineInfo on IssueRelation {
+export const IssueRelationTimelineInfoBaseFragmentDoc = gql`
+    fragment IssueRelationTimelineInfoBase on IssueRelation {
         type {
             ...IssueRelationTypeTimelineInfo
         }
@@ -18828,23 +19791,63 @@ export const IssueTimelineInfoFragmentDoc = gql`
 `;
 export const IncomingRelationTimelineInfoFragmentDoc = gql`
     fragment IncomingRelationTimelineInfo on IssueRelation {
-        ...IssueRelationTimelineInfo
+        ...IssueRelationTimelineInfoBase
         issue {
             ...IssueTimelineInfo
         }
     }
-    ${IssueRelationTimelineInfoFragmentDoc}
+    ${IssueRelationTimelineInfoBaseFragmentDoc}
     ${IssueTimelineInfoFragmentDoc}
+`;
+export const IncomingRelationTypeChangedEventTimelineInfoFragmentDoc = gql`
+    fragment IncomingRelationTypeChangedEventTimelineInfo on IncomingRelationTypeChangedEvent {
+        ...TimelineItemInfo
+        issueRelation {
+            ...IncomingRelationTimelineInfo
+        }
+    }
+    ${TimelineItemInfoFragmentDoc}
+    ${IncomingRelationTimelineInfoFragmentDoc}
+`;
+export const IssueCommentTimelineInfoFragmentDoc = gql`
+    fragment IssueCommentTimelineInfo on IssueComment {
+        ...TimelineItemInfo
+        ...CommentTimelineInfo
+        isDeleted
+        answers {
+            id
+        }
+    }
+    ${TimelineItemInfoFragmentDoc}
+    ${CommentTimelineInfoFragmentDoc}
 `;
 export const OutgoingRelationTimelineInfoFragmentDoc = gql`
     fragment OutgoingRelationTimelineInfo on IssueRelation {
-        ...IssueRelationTimelineInfo
+        ...IssueRelationTimelineInfoBase
         relatedIssue {
             ...IssueTimelineInfo
         }
     }
-    ${IssueRelationTimelineInfoFragmentDoc}
+    ${IssueRelationTimelineInfoBaseFragmentDoc}
     ${IssueTimelineInfoFragmentDoc}
+`;
+export const IssueRelationTimelineInfoFragmentDoc = gql`
+    fragment IssueRelationTimelineInfo on IssueRelation {
+        ...TimelineItemInfo
+        ...OutgoingRelationTimelineInfo
+    }
+    ${TimelineItemInfoFragmentDoc}
+    ${OutgoingRelationTimelineInfoFragmentDoc}
+`;
+export const OutgoingRelationTypeChangedEventTimelineInfoFragmentDoc = gql`
+    fragment OutgoingRelationTypeChangedEventTimelineInfo on OutgoingRelationTypeChangedEvent {
+        ...TimelineItemInfo
+        issueRelation {
+            ...OutgoingRelationTimelineInfo
+        }
+    }
+    ${TimelineItemInfoFragmentDoc}
+    ${OutgoingRelationTimelineInfoFragmentDoc}
 `;
 export const IssuePriorityTimelineInfoFragmentDoc = gql`
     fragment IssuePriorityTimelineInfo on IssuePriority {
@@ -18853,6 +19856,145 @@ export const IssuePriorityTimelineInfoFragmentDoc = gql`
         name
     }
 `;
+export const PriorityChangedEventTimelineInfoFragmentDoc = gql`
+    fragment PriorityChangedEventTimelineInfo on PriorityChangedEvent {
+        ...TimelineItemInfo
+        oldPriority {
+            ...IssuePriorityTimelineInfo
+        }
+        newPriority {
+            ...IssuePriorityTimelineInfo
+        }
+    }
+    ${TimelineItemInfoFragmentDoc}
+    ${IssuePriorityTimelineInfoFragmentDoc}
+`;
+export const RelatedByIssueEventTimelineInfoFragmentDoc = gql`
+    fragment RelatedByIssueEventTimelineInfo on RelatedByIssueEvent {
+        ...TimelineItemInfo
+        relation {
+            ...IncomingRelationTimelineInfo
+        }
+    }
+    ${TimelineItemInfoFragmentDoc}
+    ${IncomingRelationTimelineInfoFragmentDoc}
+`;
+export const RelationTypeChangedEventTimelineInfoFragmentDoc = gql`
+    fragment RelationTypeChangedEventTimelineInfo on RelationTypeChangedEvent {
+        ...TimelineItemInfo
+        oldRelationType: oldType {
+            ...IssueRelationTypeTimelineInfo
+        }
+        newRelationTyoe: newType {
+            ...IssueRelationTypeTimelineInfo
+        }
+    }
+    ${TimelineItemInfoFragmentDoc}
+    ${IssueRelationTypeTimelineInfoFragmentDoc}
+`;
+export const RemovedAffectedEntityEventTimelineInfoFragmentDoc = gql`
+    fragment RemovedAffectedEntityEventTimelineInfo on RemovedAffectedEntityEvent {
+        ...TimelineItemInfo
+        removedAffectedEntity {
+            ...AffectedByIssueTimelineInfo
+        }
+    }
+    ${TimelineItemInfoFragmentDoc}
+    ${AffectedByIssueTimelineInfoFragmentDoc}
+`;
+export const RemovedArtefactEventTimelineInfoFragmentDoc = gql`
+    fragment RemovedArtefactEventTimelineInfo on RemovedArtefactEvent {
+        ...TimelineItemInfo
+        removedArtefact {
+            ...ArtefactTimelineInfo
+        }
+    }
+    ${TimelineItemInfoFragmentDoc}
+    ${ArtefactTimelineInfoFragmentDoc}
+`;
+export const RemovedAssignmentEventTimelineInfoFragmentDoc = gql`
+    fragment RemovedAssignmentEventTimelineInfo on RemovedAssignmentEvent {
+        ...TimelineItemInfo
+        removedAssignment {
+            ...AssignmentTimelineInfo
+        }
+    }
+    ${TimelineItemInfoFragmentDoc}
+    ${AssignmentTimelineInfoFragmentDoc}
+`;
+export const RemovedFromPinnedIssuesEventTimelineInfoFragmentDoc = gql`
+    fragment RemovedFromPinnedIssuesEventTimelineInfo on RemovedFromPinnedIssuesEvent {
+        ...TimelineItemInfo
+        unpinnedOn {
+            ...TrackableTimelineInfo
+        }
+    }
+    ${TimelineItemInfoFragmentDoc}
+    ${TrackableTimelineInfoFragmentDoc}
+`;
+export const RemovedFromTrackableEventTimelineInfoFragmentDoc = gql`
+    fragment RemovedFromTrackableEventTimelineInfo on RemovedFromTrackableEvent {
+        ...TimelineItemInfo
+        removedFromTrackable {
+            ...TrackableTimelineInfo
+        }
+    }
+    ${TimelineItemInfoFragmentDoc}
+    ${TrackableTimelineInfoFragmentDoc}
+`;
+export const RemovedIncomingRelationEventTimelineInfoFragmentDoc = gql`
+    fragment RemovedIncomingRelationEventTimelineInfo on RemovedIncomingRelationEvent {
+        ...TimelineItemInfo
+        removedRelation {
+            ...IncomingRelationTimelineInfo
+        }
+    }
+    ${TimelineItemInfoFragmentDoc}
+    ${IncomingRelationTimelineInfoFragmentDoc}
+`;
+export const RemovedLabelEventTimelineInfoFragmentDoc = gql`
+    fragment RemovedLabelEventTimelineInfo on RemovedLabelEvent {
+        ...TimelineItemInfo
+        removedLabel {
+            ...LabelTimelineInfo
+        }
+    }
+    ${TimelineItemInfoFragmentDoc}
+    ${LabelTimelineInfoFragmentDoc}
+`;
+export const RemovedOutgoingRelationEventTimelineInfoFragmentDoc = gql`
+    fragment RemovedOutgoingRelationEventTimelineInfo on RemovedOutgoingRelationEvent {
+        ...TimelineItemInfo
+        removedRelation {
+            ...OutgoingRelationTimelineInfo
+        }
+    }
+    ${TimelineItemInfoFragmentDoc}
+    ${OutgoingRelationTimelineInfoFragmentDoc}
+`;
+export const RemovedTemplatedFieldEventTimelineInfoFragmentDoc = gql`
+    fragment RemovedTemplatedFieldEventTimelineInfo on RemovedTemplatedFieldEvent {
+        ...TimelineItemInfo
+        fieldName
+    }
+    ${TimelineItemInfoFragmentDoc}
+`;
+export const SpentTimeChangedEventTimelineInfoFragmentDoc = gql`
+    fragment SpentTimeChangedEventTimelineInfo on SpentTimeChangedEvent {
+        ...TimelineItemInfo
+        oldSpentTime
+        newSpentTime
+    }
+    ${TimelineItemInfoFragmentDoc}
+`;
+export const StartDateChangedEventTimelineInfoFragmentDoc = gql`
+    fragment StartDateChangedEventTimelineInfo on StartDateChangedEvent {
+        ...TimelineItemInfo
+        oldStartDate
+        newStartDate
+    }
+    ${TimelineItemInfoFragmentDoc}
+`;
 export const IssueStateTimelineInfoFragmentDoc = gql`
     fragment IssueStateTimelineInfo on IssueState {
         name
@@ -18860,11 +20002,54 @@ export const IssueStateTimelineInfoFragmentDoc = gql`
         isOpen
     }
 `;
+export const StateChangedEventTimelineInfoFragmentDoc = gql`
+    fragment StateChangedEventTimelineInfo on StateChangedEvent {
+        ...TimelineItemInfo
+        oldState {
+            ...IssueStateTimelineInfo
+        }
+        newState {
+            ...IssueStateTimelineInfo
+        }
+    }
+    ${TimelineItemInfoFragmentDoc}
+    ${IssueStateTimelineInfoFragmentDoc}
+`;
 export const IssueTemplateTimelineInfoFragmentDoc = gql`
     fragment IssueTemplateTimelineInfo on IssueTemplate {
         name
         description
     }
+`;
+export const TemplateChangedEventTimelineInfoFragmentDoc = gql`
+    fragment TemplateChangedEventTimelineInfo on TemplateChangedEvent {
+        ...TimelineItemInfo
+        oldTemplate {
+            ...IssueTemplateTimelineInfo
+        }
+        newTemplate {
+            ...IssueTemplateTimelineInfo
+        }
+    }
+    ${TimelineItemInfoFragmentDoc}
+    ${IssueTemplateTimelineInfoFragmentDoc}
+`;
+export const TemplatedFieldChangedEventTimelineInfoFragmentDoc = gql`
+    fragment TemplatedFieldChangedEventTimelineInfo on TemplatedFieldChangedEvent {
+        ...TimelineItemInfo
+        fieldName
+        oldValue
+        newValue
+    }
+    ${TimelineItemInfoFragmentDoc}
+`;
+export const TitleChangedEventTimelineInfoFragmentDoc = gql`
+    fragment TitleChangedEventTimelineInfo on TitleChangedEvent {
+        ...TimelineItemInfo
+        oldTitle
+        newTitle
+    }
+    ${TimelineItemInfoFragmentDoc}
 `;
 export const IssueTypeTimelineInfoFragmentDoc = gql`
     fragment IssueTypeTimelineInfo on IssueType {
@@ -18873,199 +20058,150 @@ export const IssueTypeTimelineInfoFragmentDoc = gql`
         description
     }
 `;
+export const TypeChangedEventTimelineInfoFragmentDoc = gql`
+    fragment TypeChangedEventTimelineInfo on TypeChangedEvent {
+        ...TimelineItemInfo
+        newIssueType: newType {
+            ...IssueTypeTimelineInfo
+        }
+        oldIssueType: oldType {
+            ...IssueTypeTimelineInfo
+        }
+    }
+    ${TimelineItemInfoFragmentDoc}
+    ${IssueTypeTimelineInfoFragmentDoc}
+`;
 export const DefaultTimelineItemInfoFragmentDoc = gql`
     fragment DefaultTimelineItemInfo on TimelineItem {
-        id
-        createdAt
-        __typename
-        createdBy {
-            ...UserTimelineInfo
-        }
         ... on AddedAffectedEntityEvent {
-            addedAffectedEntity {
-                ...AffectedByIssueTimelineInfo
-            }
+            ...AddedAffectedEntityEventTimelineInfo
         }
         ... on AddedArtefactEvent {
-            addedArtefact {
-                ...ArtefactTimelineInfo
-            }
+            ...AddedArtefactEventTimelineInfo
         }
         ... on AddedLabelEvent {
-            addedLabel {
-                ...LabelTimelineInfo
-            }
+            ...AddedLabelEventTimelineInfo
         }
         ... on AddedToPinnedIssuesEvent {
-            pinnedOn {
-                ...TrackableTimelineInfo
-            }
+            ...AddedToPinnedIssuesEventTimelineInfo
         }
         ... on Assignment {
             ...AssignmentTimelineInfo
         }
         ... on AssignmentTypeChangedEvent {
-            assignment {
-                ...AssignmentTimelineInfo
-            }
-            newAssignmentType: newType {
-                ...AssignmenTypeTimelineInfo
-            }
-            oldAssignmentType: oldType {
-                ...AssignmenTypeTimelineInfo
-            }
+            ...AssignmentTypeChangedEventTimelineInfo
         }
-        ... on Comment {
-            ...CommentTimelineInfo
+        ... on Body {
+            ...BodyTimelineInfo
         }
         ... on DueDateChangedEvent {
-            oldDueDate
-            newDueDate
+            ...DueDateChangedEventTimelineInfo
         }
         ... on EstimatedTimeChangedEvent {
-            oldEstimatedTime
-            newEstimatedTime
+            ...EstimatedTimeChangedEventTimelineInfo
         }
         ... on IncomingRelationTypeChangedEvent {
-            issueRelation {
-                ...IncomingRelationTimelineInfo
-            }
+            ...IncomingRelationTypeChangedEventTimelineInfo
         }
         ... on IssueComment {
-            isDeleted
-            answers {
-                id
-            }
+            ...IssueCommentTimelineInfo
         }
         ... on IssueRelation {
-            ...OutgoingRelationTimelineInfo
+            ...IssueRelationTimelineInfo
         }
         ... on OutgoingRelationTypeChangedEvent {
-            issueRelation {
-                ...OutgoingRelationTimelineInfo
-            }
+            ...OutgoingRelationTypeChangedEventTimelineInfo
         }
         ... on PriorityChangedEvent {
-            oldPriority {
-                ...IssuePriorityTimelineInfo
-            }
-            newPriority {
-                ...IssuePriorityTimelineInfo
-            }
+            ...PriorityChangedEventTimelineInfo
         }
         ... on RelatedByIssueEvent {
-            relation {
-                ...IncomingRelationTimelineInfo
-            }
+            ...RelatedByIssueEventTimelineInfo
         }
         ... on RelationTypeChangedEvent {
-            oldRelationType: oldType {
-                ...IssueRelationTypeTimelineInfo
-            }
-            newRelationTyoe: newType {
-                ...IssueRelationTypeTimelineInfo
-            }
+            ...RelationTypeChangedEventTimelineInfo
         }
         ... on RemovedAffectedEntityEvent {
-            removedAffectedEntity {
-                ...AffectedByIssueTimelineInfo
-            }
+            ...RemovedAffectedEntityEventTimelineInfo
         }
         ... on RemovedArtefactEvent {
-            removedArtefact {
-                ...ArtefactTimelineInfo
-            }
+            ...RemovedArtefactEventTimelineInfo
         }
         ... on RemovedAssignmentEvent {
-            removedAssignment {
-                ...AssignmentTimelineInfo
-            }
+            ...RemovedAssignmentEventTimelineInfo
         }
         ... on RemovedFromPinnedIssuesEvent {
-            unpinnedOn {
-                ...TrackableTimelineInfo
-            }
+            ...RemovedFromPinnedIssuesEventTimelineInfo
         }
         ... on RemovedFromTrackableEvent {
-            removedFromTrackable {
-                ...TrackableTimelineInfo
-            }
+            ...RemovedFromTrackableEventTimelineInfo
         }
         ... on RemovedIncomingRelationEvent {
-            removedRelation {
-                ...IncomingRelationTimelineInfo
-            }
+            ...RemovedIncomingRelationEventTimelineInfo
         }
         ... on RemovedLabelEvent {
-            removedLabel {
-                ...LabelTimelineInfo
-            }
+            ...RemovedLabelEventTimelineInfo
         }
         ... on RemovedOutgoingRelationEvent {
-            removedRelation {
-                ...OutgoingRelationTimelineInfo
-            }
+            ...RemovedOutgoingRelationEventTimelineInfo
         }
         ... on RemovedTemplatedFieldEvent {
-            fieldName
+            ...RemovedTemplatedFieldEventTimelineInfo
         }
         ... on SpentTimeChangedEvent {
-            oldSpentTime
-            newSpentTime
+            ...SpentTimeChangedEventTimelineInfo
         }
         ... on StartDateChangedEvent {
-            oldStartDate
-            newStartDate
+            ...StartDateChangedEventTimelineInfo
         }
         ... on StateChangedEvent {
-            oldState {
-                ...IssueStateTimelineInfo
-            }
-            newState {
-                ...IssueStateTimelineInfo
-            }
+            ...StateChangedEventTimelineInfo
         }
         ... on TemplateChangedEvent {
-            oldTemplate {
-                ...IssueTemplateTimelineInfo
-            }
-            newTemplate {
-                ...IssueTemplateTimelineInfo
-            }
+            ...TemplateChangedEventTimelineInfo
         }
         ... on TemplatedFieldChangedEvent {
-            fieldName
-            oldValue
-            newValue
+            ...TemplatedFieldChangedEventTimelineInfo
         }
         ... on TitleChangedEvent {
-            oldTitle
-            newTitle
+            ...TitleChangedEventTimelineInfo
         }
         ... on TypeChangedEvent {
-            newIssueType: newType {
-                ...IssueTypeTimelineInfo
-            }
-            oldIssueType: oldType {
-                ...IssueTypeTimelineInfo
-            }
+            ...TypeChangedEventTimelineInfo
         }
     }
-    ${UserTimelineInfoFragmentDoc}
-    ${AffectedByIssueTimelineInfoFragmentDoc}
-    ${ArtefactTimelineInfoFragmentDoc}
-    ${LabelTimelineInfoFragmentDoc}
-    ${TrackableTimelineInfoFragmentDoc}
+    ${AddedAffectedEntityEventTimelineInfoFragmentDoc}
+    ${AddedArtefactEventTimelineInfoFragmentDoc}
+    ${AddedLabelEventTimelineInfoFragmentDoc}
+    ${AddedToPinnedIssuesEventTimelineInfoFragmentDoc}
     ${AssignmentTimelineInfoFragmentDoc}
-    ${AssignmenTypeTimelineInfoFragmentDoc}
-    ${CommentTimelineInfoFragmentDoc}
-    ${IncomingRelationTimelineInfoFragmentDoc}
-    ${OutgoingRelationTimelineInfoFragmentDoc}
-    ${IssuePriorityTimelineInfoFragmentDoc}
-    ${IssueRelationTypeTimelineInfoFragmentDoc}
-    ${IssueStateTimelineInfoFragmentDoc}
-    ${IssueTemplateTimelineInfoFragmentDoc}
-    ${IssueTypeTimelineInfoFragmentDoc}
+    ${AssignmentTypeChangedEventTimelineInfoFragmentDoc}
+    ${BodyTimelineInfoFragmentDoc}
+    ${DueDateChangedEventTimelineInfoFragmentDoc}
+    ${EstimatedTimeChangedEventTimelineInfoFragmentDoc}
+    ${IncomingRelationTypeChangedEventTimelineInfoFragmentDoc}
+    ${IssueCommentTimelineInfoFragmentDoc}
+    ${IssueRelationTimelineInfoFragmentDoc}
+    ${OutgoingRelationTypeChangedEventTimelineInfoFragmentDoc}
+    ${PriorityChangedEventTimelineInfoFragmentDoc}
+    ${RelatedByIssueEventTimelineInfoFragmentDoc}
+    ${RelationTypeChangedEventTimelineInfoFragmentDoc}
+    ${RemovedAffectedEntityEventTimelineInfoFragmentDoc}
+    ${RemovedArtefactEventTimelineInfoFragmentDoc}
+    ${RemovedAssignmentEventTimelineInfoFragmentDoc}
+    ${RemovedFromPinnedIssuesEventTimelineInfoFragmentDoc}
+    ${RemovedFromTrackableEventTimelineInfoFragmentDoc}
+    ${RemovedIncomingRelationEventTimelineInfoFragmentDoc}
+    ${RemovedLabelEventTimelineInfoFragmentDoc}
+    ${RemovedOutgoingRelationEventTimelineInfoFragmentDoc}
+    ${RemovedTemplatedFieldEventTimelineInfoFragmentDoc}
+    ${SpentTimeChangedEventTimelineInfoFragmentDoc}
+    ${StartDateChangedEventTimelineInfoFragmentDoc}
+    ${StateChangedEventTimelineInfoFragmentDoc}
+    ${TemplateChangedEventTimelineInfoFragmentDoc}
+    ${TemplatedFieldChangedEventTimelineInfoFragmentDoc}
+    ${TitleChangedEventTimelineInfoFragmentDoc}
+    ${TypeChangedEventTimelineInfoFragmentDoc}
 `;
 export const OpenIssueCountFragmentDoc = gql`
     fragment OpenIssueCount on Trackable {
@@ -19207,6 +20343,9 @@ export const GetIssueDocument = gql`
                 spentTime
                 startDate
                 dueDate
+                manageIssues: hasPermission(permission: MANAGE_ISSUES)
+                comment: hasPermission(permission: COMMENT)
+                moderator: hasPermission(permission: MODERATOR)
             }
         }
     }
@@ -19221,6 +20360,26 @@ export const GetIssueDocument = gql`
     ${IssueTypeTimelineInfoFragmentDoc}
     ${IssueStateTimelineInfoFragmentDoc}
     ${IssuePriorityTimelineInfoFragmentDoc}
+`;
+export const UpdateBodyDocument = gql`
+    mutation updateBody($id: ID!, $body: String!) {
+        updateBody(input: { id: $id, body: $body }) {
+            body {
+                ...BodyTimelineInfo
+            }
+        }
+    }
+    ${BodyTimelineInfoFragmentDoc}
+`;
+export const UpdateIssueCommentDocument = gql`
+    mutation updateIssueComment($id: ID!, $body: String!) {
+        updateIssueComment(input: { id: $id, body: $body }) {
+            issueComment {
+                ...IssueCommentTimelineInfo
+            }
+        }
+    }
+    ${IssueCommentTimelineInfoFragmentDoc}
 `;
 
 export type SdkFunctionWrapper = <T>(
@@ -19287,6 +20446,34 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                     }),
                 "getIssue",
                 "query"
+            );
+        },
+        updateBody(
+            variables: UpdateBodyMutationVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<UpdateBodyMutation> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<UpdateBodyMutation>(UpdateBodyDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "updateBody",
+                "mutation"
+            );
+        },
+        updateIssueComment(
+            variables: UpdateIssueCommentMutationVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<UpdateIssueCommentMutation> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<UpdateIssueCommentMutation>(UpdateIssueCommentDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "updateIssueComment",
+                "mutation"
             );
         }
     };

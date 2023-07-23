@@ -17,6 +17,7 @@ import { NodeReturnType, useClient } from "@/graphql/client";
 import { useAsyncState } from "@vueuse/core";
 import { computed } from "vue";
 import { RouteLocationRaw, useRoute } from "vue-router";
+import { withErrorMessage } from "@/util/withErrorMessage";
 
 type Component = NodeReturnType<"getComponent", "Component">;
 
@@ -25,7 +26,7 @@ const route = useRoute();
 const componentId = computed(() => route.params.trackable as string);
 
 const { state: component, isReady } = useAsyncState(async () => {
-    const res = await client.getComponent({ id: componentId.value });
+    const res = await withErrorMessage(() => client.getComponent({ id: componentId.value }), "Error loading component");
     return res.node as Component;
 }, null);
 

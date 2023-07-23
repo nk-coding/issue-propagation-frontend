@@ -42,7 +42,7 @@ export default defineConfig({
                 changeOrigin: true,
                 secure: false,
                 ws: true,
-                ignorePath: true
+                rewrite: (path) => path.replace(/^\/api\/login/, '')
             }
         }
     }
