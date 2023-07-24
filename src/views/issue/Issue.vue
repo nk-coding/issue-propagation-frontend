@@ -18,7 +18,16 @@
         </div>
         <div class="content d-flex flex-fill">
             <div class="timeline">
-                <TimelineItem v-for="item in issue.timelineItems.nodes" :item="item" />
+                <TimelineItem v-for="item in timeline" :item="item" />
+                <TimelineBreak />
+                <Comment
+                    v-if="store.isLoggedIn"
+                    :item="newCommentItem"
+                    :newComment="true"
+                    class="mt-3"
+                    @addItem="addComment"
+                />
+                <div class="pt-3" />
             </div>
             <v-sheet class="sidebar ml-8 mr-3 mb-3" color="surface-container-high" rounded="xl">
                 Hello world
@@ -29,7 +38,7 @@
 </template>
 <script setup lang="ts">
 import { NodeReturnType, useClient } from "@/graphql/client";
-import { computed } from "vue";
+import { computed, ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import { useAsyncState } from "@vueuse/core";
 import TimelineItem from "@/components/timeline/TimelineItem";
@@ -38,11 +47,18 @@ import User from "@/components/User.vue";
 import RelativeTime from "@/components/RelativeTime.vue";
 import { provide } from "vue";
 import { withErrorMessage } from "@/util/withErrorMessage";
+import TimelineBreak from "@/components/timeline/TimelineBreak.vue";
+import { useAppStore } from "@/store/app";
+import Comment from "@/components/timeline/Comment.vue";
+import { reactive } from "vue";
+import { IssueCommentTimelineInfoFragment } from "@/graphql/generated";
+import { TimelineItemType } from "@/components/timeline/TimelineItemBase.vue";
 
 export type Issue = NodeReturnType<"getIssue", "Issue">;
 
 const client = useClient();
 const route = useRoute();
+const store = useAppStore();
 const issueId = computed(() => route.params.issue as string);
 
 const { state: issue, isReady } = useAsyncState(async () => {
@@ -51,6 +67,27 @@ const { state: issue, isReady } = useAsyncState(async () => {
 }, null);
 
 provide("issue", issue);
+
+const timeline = reactive<TimelineItemType<any>[]>([]);
+
+watch(isReady, () => {
+    if (isReady.value) {
+        timeline.splice(0, timeline.length);
+        timeline.push(...issue.value!.timelineItems.nodes);
+    }
+});
+
+const newCommentItem = computed(() => {
+    return {
+        __typename: "IssueComment",
+        body: "",
+        createdBy: store.user
+    } as TimelineItemType<"IssueComment">;
+});
+
+function addComment(comment: TimelineItemType<"IssueComment">) {
+    timeline.push(comment);
+}
 </script>
 <style scoped lang="scss">
 .fill-height {
@@ -61,9 +98,11 @@ provide("issue", issue);
     position: relative;
     overflow: auto;
 }
+
 .timeline {
     flex: 1 1;
 }
+
 .sidebar {
     position: sticky;
     top: 0;

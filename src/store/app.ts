@@ -1,23 +1,31 @@
 // Utilities
 import { defineStore } from "pinia";
 import axios from "axios";
-import { reactive } from "vue";
+import { useClient } from "@/graphql/client";
+import { DefaultUserInfoFragment } from "@/graphql/generated";
 
 export const useAppStore = defineStore("app", {
     state: () => ({
-        user: undefined,
+        user: undefined as undefined | DefaultUserInfoFragment,
         token: undefined as string | undefined,
         errors: [] as string[]
     }),
     getters: {
         isLoggedIn(): boolean {
-            return !!this.token;
+            return !!this.token && !!this.user;
         }
     },
     actions: {
         async loginDemoUser() {
-            const tokenResponse = await axios.get("/api/login/token?username=test-user");
+            const tokenResponse = await axios.get(`/api/login/token`, {
+                params: {
+                    username: "test-user"
+                }
+            });
             this.token = tokenResponse.data;
+            const client = useClient();
+            const currentUser = await client.getCurrentUser();
+            this.user = currentUser.currentUser ?? undefined;
         },
         pushError(error: string) {
             this.errors = [...this.errors, error];
@@ -27,6 +35,3 @@ export const useAppStore = defineStore("app", {
         }
     }
 });
-
-//TODO remove debug code
-useAppStore().loginDemoUser();

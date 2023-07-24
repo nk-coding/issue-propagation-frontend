@@ -122,6 +122,14 @@ mutation updateIssueComment($id: ID!, $body: String!) {
     }
 }
 
+mutation createIssueComment($issue: ID!, $body: String!) {
+    createIssueComment(input: { issue: $issue, body: $body }) {
+        issueComment {
+            ...IssueCommentTimelineInfo
+        }
+    }
+}
+
 fragment DefaultIssueIconInfo on Issue {
     incomingRelations {
         totalCount

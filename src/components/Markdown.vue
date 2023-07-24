@@ -73,7 +73,7 @@ const plugins = [gfm()];
 }
 
 .bytemd {
-    height: max(300px, 40vh);
+    height: max(300px, 30vh);
     border: none;
     background-color: unset;
     color: rgb(var(--v-theme-on-surface-container));

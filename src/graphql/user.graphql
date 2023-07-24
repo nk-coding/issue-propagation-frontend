@@ -1,3 +1,9 @@
+query getCurrentUser {
+    currentUser {
+        ...DefaultUserInfo
+    }
+}
+
 fragment DefaultUserInfo on User {
     id
     username

@@ -11,6 +11,9 @@ fragment DefaultTimelineItemInfo on TimelineItem {
     ... on AddedToPinnedIssuesEvent {
         ...AddedToPinnedIssuesEventTimelineInfo
     }
+    ... on AddedToTrackableEvent {
+        ...AddedToTrackableEventTimelineInfo
+    }
     ... on Assignment {
         ...AssignmentTimelineInfo
     }
@@ -130,6 +133,13 @@ fragment AddedLabelEventTimelineInfo on AddedLabelEvent {
 fragment AddedToPinnedIssuesEventTimelineInfo on AddedToPinnedIssuesEvent {
     ...TimelineItemInfo
     pinnedOn {
+        ...TrackableTimelineInfo
+    }
+}
+
+fragment AddedToTrackableEventTimelineInfo on AddedToTrackableEvent {
+    ...TimelineItemInfo
+    addedToTrackable {
         ...TrackableTimelineInfo
     }
 }

@@ -1,6 +1,11 @@
 <template>
     <TimelineItemBase>
-        <div class="d-flex align-start mb-6">
+        <div
+            class="d-flex align-start"
+            :class="{
+                'mb-6': !newComment
+            }"
+        >
             <User :user="item.createdBy" :show-name="false" size="xx-large"></User>
             <v-hover>
                 <template v-slot:default="{ isHovering, props }">
@@ -9,6 +14,7 @@
                             class="d-flex align-center mx-n3 mt-n3 px-3 py-1 comment-top-bar"
                             color="surface-container"
                             rounded="lg"
+                            v-if="!newComment"
                         >
                             <div class="text-variant text-subtitle d-flex align-center flex-1-1">
                                 <User :user="item.createdBy" :show-avatar="false"></User>
@@ -57,20 +63,23 @@
                                 </div>
                             </v-fade-transition>
                         </v-sheet>
-                        <Markdown :editMode="editMode" v-model="item.body" />
+                        <Markdown :editMode="editMode" v-model="itemBody" />
                         <div class="mx-n3" v-if="editMode">
                             <v-divider />
                             <div class="d-flex justify-end mt-2">
-                                <v-btn variant="outlined" color="error">
-                                    Cancel
-                                    <ConfirmationDialog
-                                        title="Discard changes?"
-                                        message="Are you sure you want to discard your changes?"
-                                        confirm-text="Discard"
-                                        @confirm="cancelComment"
-                                    />
-                                </v-btn>
-                                <v-btn @click="saveComment" color="primary" class="mx-3">Save</v-btn>
+                                <template v-if="!newComment">
+                                    <v-btn variant="outlined" color="error">
+                                        Cancel
+                                        <ConfirmationDialog
+                                            title="Discard changes?"
+                                            message="Are you sure you want to discard your changes?"
+                                            confirm-text="Discard"
+                                            @confirm="cancelComment"
+                                        />
+                                    </v-btn>
+                                    <v-btn @click="saveComment" color="primary" class="mx-3">Save</v-btn>
+                                </template>
+                                <v-btn v-else @click="createComment" color="primary" class="mx-3"> Comment </v-btn>
                             </div>
                         </div>
                     </v-sheet>
@@ -95,19 +104,24 @@ const props = defineProps({
     item: {
         type: Object as PropType<TimelineItemType<"IssueComment"> | TimelineItemType<"Body">>,
         required: true
+    },
+    newComment: {
+        type: Boolean,
+        default: false
     }
 });
-
-const emit = defineEmits(["updateItem"]);
+const emit = defineEmits<{
+    (event: "updateItem", value: TimelineItemType<"IssueComment"> | TimelineItemType<"Body">): void;
+    (event: "addItem", value: TimelineItemType<"IssueComment">): void;
+}>();
 
 const issue = inject<Ref<Issue | null>>("issue");
 const menuOpen = ref(false);
-const editMode = ref(false);
-const textBackup = ref("");
+const editMode = ref(props.newComment);
+const itemBody = ref(props.item.body);
 const client = useClient();
 
 function activateEditMode() {
-    textBackup.value = props.item.body;
     editMode.value = true;
 }
 
@@ -117,19 +131,28 @@ async function saveComment() {
             () => client.updateBody({ id: props.item.id, body: props.item.body }),
             "Error updating body"
         );
-        emit("updateItem", newBody.updateBody);
+        emit("updateItem", newBody.updateBody?.body!);
     } else {
         const newComment = await withErrorMessage(
             () => client.updateIssueComment({ id: props.item.id, body: props.item.body }),
             "Error updating comment"
         );
-        emit("updateItem", newComment.updateIssueComment);
+        emit("updateItem", newComment.updateIssueComment?.issueComment!);
     }
     editMode.value = false;
 }
 
+async function createComment() {
+    const newComment = await withErrorMessage(
+        () => client.createIssueComment({ issue: issue?.value?.id!, body: itemBody.value }),
+        "Error creating comment"
+    );
+    emit("addItem", newComment.createIssueComment?.issueComment!);
+    itemBody.value = "";
+}
+
 function cancelComment() {
-    props.item.body = textBackup.value;
+    itemBody.value = props.item.body;
     editMode.value = false;
 }
 </script>

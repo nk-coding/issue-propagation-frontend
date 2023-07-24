@@ -12795,6 +12795,8 @@ export type Query = {
     componentTemplates: ComponentTemplateConnection;
     /** Query for nodes of type Component */
     components: ComponentConnection;
+    /** The current authenticated user */
+    currentUser?: Maybe<GropiusUser>;
     /** Query for nodes of type IMSTemplate */
     imsTemplates: ImsTemplateConnection;
     /** Query for nodes of type IMS */
@@ -17064,7 +17066,30 @@ export type GetIssueQuery = {
                                       avatar: any;
                                   };
                         }
-                      | { __typename?: "AddedToTrackableEvent" }
+                      | {
+                            __typename: "AddedToTrackableEvent";
+                            id: string;
+                            createdAt: any;
+                            addedToTrackable?:
+                                | { __typename?: "Component"; id: string; name: string; description: string }
+                                | { __typename?: "Project"; id: string; name: string; description: string }
+                                | null;
+                            createdBy:
+                                | {
+                                      __typename?: "GropiusUser";
+                                      id: string;
+                                      username: string;
+                                      displayName: string;
+                                      avatar: any;
+                                  }
+                                | {
+                                      __typename?: "IMSUser";
+                                      id: string;
+                                      username?: string | null;
+                                      displayName: string;
+                                      avatar: any;
+                                  };
+                        }
                       | {
                             __typename: "Assignment";
                             id: string;
@@ -18083,6 +18108,33 @@ export type UpdateIssueCommentMutation = {
     } | null;
 };
 
+export type CreateIssueCommentMutationVariables = Exact<{
+    issue: Scalars["ID"]["input"];
+    body: Scalars["String"]["input"];
+}>;
+
+export type CreateIssueCommentMutation = {
+    __typename?: "Mutation";
+    createIssueComment?: {
+        __typename?: "CreateIssueCommentPayload";
+        issueComment?: {
+            __typename: "IssueComment";
+            isDeleted: boolean;
+            id: string;
+            createdAt: any;
+            body: string;
+            bodyLastEditedAt: any;
+            answers?: { __typename?: "Body"; id: string } | { __typename?: "IssueComment"; id: string } | null;
+            createdBy:
+                | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+                | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+            bodyLastEditedBy:
+                | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+                | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+        } | null;
+    } | null;
+};
+
 export type DefaultIssueIconInfoFragment = {
     __typename?: "Issue";
     incomingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
@@ -18144,7 +18196,18 @@ type DefaultTimelineItemInfo_AddedToPinnedIssuesEvent_Fragment = {
         | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
 };
 
-type DefaultTimelineItemInfo_AddedToTrackableEvent_Fragment = { __typename?: "AddedToTrackableEvent" };
+type DefaultTimelineItemInfo_AddedToTrackableEvent_Fragment = {
+    __typename: "AddedToTrackableEvent";
+    id: string;
+    createdAt: any;
+    addedToTrackable?:
+        | { __typename?: "Component"; id: string; name: string; description: string }
+        | { __typename?: "Project"; id: string; name: string; description: string }
+        | null;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
 
 type DefaultTimelineItemInfo_Assignment_Fragment = {
     __typename: "Assignment";
@@ -18952,6 +19015,19 @@ export type AddedToPinnedIssuesEventTimelineInfoFragment = {
         | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
 };
 
+export type AddedToTrackableEventTimelineInfoFragment = {
+    __typename: "AddedToTrackableEvent";
+    id: string;
+    createdAt: any;
+    addedToTrackable?:
+        | { __typename?: "Component"; id: string; name: string; description: string }
+        | { __typename?: "Project"; id: string; name: string; description: string }
+        | null;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+};
+
 export type AssignmentTimelineInfoFragment = {
     __typename: "Assignment";
     id: string;
@@ -19564,6 +19640,13 @@ type OpenIssueCount_Project_Fragment = {
 
 export type OpenIssueCountFragment = OpenIssueCount_Component_Fragment | OpenIssueCount_Project_Fragment;
 
+export type GetCurrentUserQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetCurrentUserQuery = {
+    __typename?: "Query";
+    currentUser?: { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any } | null;
+};
+
 type DefaultUserInfo_GropiusUser_Fragment = {
     __typename?: "GropiusUser";
     id: string;
@@ -19675,6 +19758,16 @@ export const AddedToPinnedIssuesEventTimelineInfoFragmentDoc = gql`
     fragment AddedToPinnedIssuesEventTimelineInfo on AddedToPinnedIssuesEvent {
         ...TimelineItemInfo
         pinnedOn {
+            ...TrackableTimelineInfo
+        }
+    }
+    ${TimelineItemInfoFragmentDoc}
+    ${TrackableTimelineInfoFragmentDoc}
+`;
+export const AddedToTrackableEventTimelineInfoFragmentDoc = gql`
+    fragment AddedToTrackableEventTimelineInfo on AddedToTrackableEvent {
+        ...TimelineItemInfo
+        addedToTrackable {
             ...TrackableTimelineInfo
         }
     }
@@ -20085,6 +20178,9 @@ export const DefaultTimelineItemInfoFragmentDoc = gql`
         ... on AddedToPinnedIssuesEvent {
             ...AddedToPinnedIssuesEventTimelineInfo
         }
+        ... on AddedToTrackableEvent {
+            ...AddedToTrackableEventTimelineInfo
+        }
         ... on Assignment {
             ...AssignmentTimelineInfo
         }
@@ -20174,6 +20270,7 @@ export const DefaultTimelineItemInfoFragmentDoc = gql`
     ${AddedArtefactEventTimelineInfoFragmentDoc}
     ${AddedLabelEventTimelineInfoFragmentDoc}
     ${AddedToPinnedIssuesEventTimelineInfoFragmentDoc}
+    ${AddedToTrackableEventTimelineInfoFragmentDoc}
     ${AssignmentTimelineInfoFragmentDoc}
     ${AssignmentTypeChangedEventTimelineInfoFragmentDoc}
     ${BodyTimelineInfoFragmentDoc}
@@ -20381,6 +20478,24 @@ export const UpdateIssueCommentDocument = gql`
     }
     ${IssueCommentTimelineInfoFragmentDoc}
 `;
+export const CreateIssueCommentDocument = gql`
+    mutation createIssueComment($issue: ID!, $body: String!) {
+        createIssueComment(input: { issue: $issue, body: $body }) {
+            issueComment {
+                ...IssueCommentTimelineInfo
+            }
+        }
+    }
+    ${IssueCommentTimelineInfoFragmentDoc}
+`;
+export const GetCurrentUserDocument = gql`
+    query getCurrentUser {
+        currentUser {
+            ...DefaultUserInfo
+        }
+    }
+    ${DefaultUserInfoFragmentDoc}
+`;
 
 export type SdkFunctionWrapper = <T>(
     action: (requestHeaders?: Record<string, string>) => Promise<T>,
@@ -20474,6 +20589,34 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                     }),
                 "updateIssueComment",
                 "mutation"
+            );
+        },
+        createIssueComment(
+            variables: CreateIssueCommentMutationVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<CreateIssueCommentMutation> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<CreateIssueCommentMutation>(CreateIssueCommentDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "createIssueComment",
+                "mutation"
+            );
+        },
+        getCurrentUser(
+            variables?: GetCurrentUserQueryVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<GetCurrentUserQuery> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<GetCurrentUserQuery>(GetCurrentUserDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "getCurrentUser",
+                "query"
             );
         }
     };

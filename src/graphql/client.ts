@@ -2,9 +2,13 @@ import { GraphQLClient } from "graphql-request";
 import { getSdk } from "./generated";
 import { useAppStore } from "@/store/app";
 
-const store = useAppStore();
-
 export function useClient() {
+    const store = useAppStore();
+    // remove demo code
+    if (!store.isLoggedIn) {
+        store.loginDemoUser();
+    }
+
     const headers: Record<string, string> = {};
     if (store.token) {
         headers.Authorization = `Bearer ${store.token}`;
