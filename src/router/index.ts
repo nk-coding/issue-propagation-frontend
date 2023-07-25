@@ -21,7 +21,7 @@ const routes: RouteRecordRaw[] = [
             },
             {
                 path: "imss",
-                component: () => import("../views/home/IMSs.vue")
+                component: () => import("../views/home/Imss.vue")
             }
         ]
     },
