@@ -9,7 +9,7 @@
                 </slot>
             </div>
             <slot name="subtitle">
-                <div class="text-variant text-body-2">{{ subtitle }}</div>
+                <div class="text-medium-emphasis text-body-2">{{ subtitle }}</div>
             </slot>
         </div>
         <slot name="append" />

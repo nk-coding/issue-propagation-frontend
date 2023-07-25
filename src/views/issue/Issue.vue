@@ -5,7 +5,7 @@
                 <IssueIcon :issue="issue" height="50px" class="mr-3"></IssueIcon>
                 <div>
                     <div class="text-h4">{{ issue.title }}</div>
-                    <div class="d-flex align-center text-variant text-subtitle-1">
+                    <div class="d-flex align-center text-medium-emphasis text-subtitle-1">
                         Opened by&nbsp;
                         <User :user="issue.createdBy" />
                         &nbsp;

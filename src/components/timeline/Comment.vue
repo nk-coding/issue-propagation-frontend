@@ -3,7 +3,7 @@
         <div
             class="d-flex align-start"
             :class="{
-                'mb-6': !newComment
+                'mb-5': !newComment
             }"
         >
             <User :user="item.createdBy" :show-name="false" size="xx-large"></User>
@@ -22,9 +22,8 @@
                             rounded="lg"
                         >
                             <div
-                                class="text-subtitle d-flex align-center flex-1-1"
+                                class="text-subtitle text-medium-emphasis d-flex align-center flex-1-1"
                                 :class="{
-                                    'text-variant': !selected,
                                     'text-on-primary-container': selected,
                                     'text-decoration-line-through': isDeleted
                                 }"
@@ -99,7 +98,7 @@
                                 >
                                     <div class="flex-1-1 answer-wrapper">
                                         <div
-                                            class="text-variant text-subtitle d-flex flex-1-1"
+                                            class="text-medium-emphasis text-subtitle d-flex flex-1-1"
                                             :class="{
                                                 'text-decoration-line-through': isItemDeleted(answers)
                                             }"
@@ -111,7 +110,9 @@
                                         <div v-if="!isItemDeleted(answers)" class="answer-text">
                                             {{ markdownToText(answers.body) }}
                                         </div>
-                                        <div v-else class="text-variant font-italic answer-text">{{ deletedText }}</div>
+                                        <div v-else class="text-medium-emphasis font-italic answer-text">
+                                            {{ deletedText }}
+                                        </div>
                                     </div>
                                     <v-btn
                                         v-if="newComment"
@@ -129,7 +130,7 @@
                             </div>
                         </v-expand-transition>
                         <Markdown v-if="!isDeleted" v-model="itemBody" :edit-mode="editMode" class="mt-2 ml-1" />
-                        <div v-else class="mt-2 ml-1 text-variant font-italic">{{ deletedText }}</div>
+                        <div v-else class="mt-2 ml-1 text-medium-emphasis font-italic">{{ deletedText }}</div>
                         <div v-if="editMode" class="mx-n3">
                             <v-divider />
                             <div class="d-flex justify-end mt-2">

@@ -8,11 +8,11 @@
                 [`avatar--size-${size}`]: true
             }"
         />
-        <div v-if="showName" :class="{ 'ml-1': showAvatar }">{{ user.displayName }}</div>
+        <div v-if="showName" class="text-high-emphasis" :class="{ 'ml-1': showAvatar }">{{ user.displayName }}</div>
         <v-tooltip activator="parent" location="top" class="rich-tooltip">
             <img :src="user.avatar" class="rounded-circle overlay-avatar" />
-            <div class="d-flex text-body-1">
-                <span>{{ user.displayName }}</span>
+            <div class="d-flex text-body-1 text-on-surface">
+                <span class="text-on-surface">{{ user.displayName }}</span>
                 <span v-if="user.username" class="text-medium-emphasis">
                     &nbsp;·
                     {{ user.username }}

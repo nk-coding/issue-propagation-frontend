@@ -13,21 +13,21 @@
                             class="pa-3"
                         />
                     </div>
-                    <div class="text-variant icon-container d-flex align-center">
+                    <div class="text-medium-emphasis icon-container d-flex align-center">
                         <v-icon color="issue-incoming" class="triangle-right mr-1" size="x-small">mdi-triangle</v-icon>
                         {{ item.incomingRelations.totalCount }}
                     </div>
-                    <div class="text-variant icon-container d-flex align-center">
+                    <div class="text-medium-emphasis icon-container d-flex align-center">
                         {{ item.outgoingRelations.totalCount }}
                         <v-icon color="issue-outgoing" class="triangle-right ml-1" size="x-small">mdi-triangle</v-icon>
                     </div>
-                    <div class="text-variant icon-container">
+                    <div class="text-medium-emphasis icon-container">
                         <v-icon>mdi-comment-outline</v-icon>
                         {{ item.issueComments.totalCount }}
                     </div>
                 </template>
                 <template #subtitle>
-                    <div class="d-flex align-center text-variant text-body-2">
+                    <div class="d-flex align-center text-medium-emphasis text-body-2">
                         was created&nbsp;
                         <RelativeTime :time="item.createdAt" />
                         &nbsp;by&nbsp;

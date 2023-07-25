@@ -50,10 +50,6 @@ html,
         0 1px 8px 0 var(--v-shadow-key-penumbra-opacity, rgba(0, 0, 0, 0.12)) !important;
 }
 
-.text-variant {
-    color: rgb(var(--v-theme-on-surface-variant));
-}
-
 .border-medium-emphasis {
     --v-border-opacity: var(--v-medium-emphasis-opacity) !important;
 }
