@@ -90,6 +90,22 @@ const routes: RouteRecordRaw[] = [
                 path: "issues",
                 name: "project-issues",
                 component: () => import("../views/issue/Issues.vue")
+            },
+            {
+                path: "issues",
+                component: () => import("../views/RouterOnly.vue"),
+                children: [
+                    {
+                        path: "",
+                        name: "project-issues",
+                        component: () => import("../views/issue/Issues.vue")
+                    },
+                    {
+                        path: ":issue",
+                        name: "project-issue",
+                        component: () => import("../views/issue/Issue.vue")
+                    }
+                ]
             }
         ]
     },
