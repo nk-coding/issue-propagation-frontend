@@ -18136,6 +18136,32 @@ export type CreateIssueCommentMutation = {
     } | null;
 };
 
+export type DeleteIssueCommentMutationVariables = Exact<{
+    id: Scalars["ID"]["input"];
+}>;
+
+export type DeleteIssueCommentMutation = {
+    __typename?: "Mutation";
+    deleteIssueComment?: {
+        __typename?: "DeleteIssueCommentPayload";
+        issueComment?: {
+            __typename: "IssueComment";
+            isDeleted: boolean;
+            id: string;
+            createdAt: any;
+            body: string;
+            bodyLastEditedAt: any;
+            answers?: { __typename?: "Body"; id: string } | { __typename?: "IssueComment"; id: string } | null;
+            createdBy:
+                | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+                | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+            bodyLastEditedBy:
+                | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+                | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+        } | null;
+    } | null;
+};
+
 export type DefaultIssueIconInfoFragment = {
     __typename?: "Issue";
     incomingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
@@ -20489,6 +20515,16 @@ export const CreateIssueCommentDocument = gql`
     }
     ${IssueCommentTimelineInfoFragmentDoc}
 `;
+export const DeleteIssueCommentDocument = gql`
+    mutation deleteIssueComment($id: ID!) {
+        deleteIssueComment(input: { id: $id }) {
+            issueComment {
+                ...IssueCommentTimelineInfo
+            }
+        }
+    }
+    ${IssueCommentTimelineInfoFragmentDoc}
+`;
 export const GetCurrentUserDocument = gql`
     query getCurrentUser {
         currentUser {
@@ -20603,6 +20639,20 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "createIssueComment",
+                "mutation"
+            );
+        },
+        deleteIssueComment(
+            variables: DeleteIssueCommentMutationVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<DeleteIssueCommentMutation> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<DeleteIssueCommentMutation>(DeleteIssueCommentDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "deleteIssueComment",
                 "mutation"
             );
         },

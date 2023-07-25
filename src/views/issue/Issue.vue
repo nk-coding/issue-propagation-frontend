@@ -23,6 +23,7 @@
                     :item="item"
                     :selected="item.id == selectedItem"
                     @replyTo="replyToComment"
+                    @updateItem="updateItem"
                     :ref="(el: any) => registerItemElement(item.id, el)"
                 />
                 <TimelineBreak />
@@ -59,7 +60,6 @@ import TimelineBreak from "@/components/timeline/TimelineBreak.vue";
 import { useAppStore } from "@/store/app";
 import Comment from "@/components/timeline/Comment.vue";
 import { reactive } from "vue";
-import { IssueCommentTimelineInfoFragment } from "@/graphql/generated";
 import { TimelineItemType } from "@/components/timeline/TimelineItemBase.vue";
 import { nextTick } from "vue";
 
@@ -125,6 +125,13 @@ watch([isReady, selectedItem], async ([newIsReady], [oldIsReady]) => {
         itemElementLookup.get(selectedItem.value)?.scrollIntoView({ behavior });
     }
 });
+
+function updateItem(item: TimelineItemType<any>) {
+    const index = timeline.findIndex((i) => i.id == item.id);
+    if (index != -1) {
+        timeline.splice(index, 1, item);
+    }
+}
 </script>
 <style scoped lang="scss">
 .fill-height {

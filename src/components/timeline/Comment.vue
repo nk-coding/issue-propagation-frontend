@@ -25,7 +25,8 @@
                                 class="text-subtitle d-flex align-center flex-1-1"
                                 :class="{
                                     'text-variant': !selected,
-                                    'text-on-primary-container': selected
+                                    'text-on-primary-container': selected,
+                                    'text-decoration-line-through': isDeleted
                                 }"
                             >
                                 <User :user="item.createdBy" :show-avatar="false"></User>
@@ -35,7 +36,14 @@
                             <v-spacer />
                             <v-fade-transition>
                                 <div v-show="issue?.comment && (isHovering || menuOpen)">
-                                    <v-btn icon variant="text" density="comfortable" color="tertiary" @click="reply">
+                                    <v-btn
+                                        icon
+                                        variant="text"
+                                        density="comfortable"
+                                        color="tertiary"
+                                        @click="reply"
+                                        :disabled="isDeleted || !issue?.comment"
+                                    >
                                         <v-icon>mdi-reply</v-icon>
                                         <v-tooltip activator="parent" location="top"> Reply </v-tooltip>
                                     </v-btn>
@@ -47,14 +55,17 @@
                                             @update:model-value="(isOpen) => (menuOpen = isOpen)"
                                         >
                                             <v-list>
-                                                <v-list-item @click="activateEditMode" :disabled="editMode">
+                                                <v-list-item
+                                                    @click="activateEditMode"
+                                                    :disabled="editMode || isDeleted"
+                                                >
                                                     <v-list-item-title>Edit</v-list-item-title>
                                                     <template v-slot:prepend>
                                                         <v-icon>mdi-pencil</v-icon>
                                                     </template>
                                                 </v-list-item>
                                                 <v-list-item
-                                                    :disabled="editMode || item.__typename === 'Body'"
+                                                    :disabled="editMode || item.__typename === 'Body' || isDeleted"
                                                     @click=""
                                                 >
                                                     <v-list-item-title>Delete</v-list-item-title>
@@ -65,7 +76,7 @@
                                                         title="Delete comment?"
                                                         message="Are you sure you want to delete this comment?"
                                                         confirm-text="Delete"
-                                                        @confirm=""
+                                                        @confirm="deleteComment"
                                                     />
                                                 </v-list-item>
                                             </v-list>
@@ -87,12 +98,20 @@
                                     }"
                                 >
                                     <div class="flex-1-1 answer-wrapper">
-                                        <div class="text-variant text-subtitle d-flex flex-1-1">
+                                        <div
+                                            class="text-variant text-subtitle d-flex flex-1-1"
+                                            :class="{
+                                                'text-decoration-line-through': isItemDeleted(answers)
+                                            }"
+                                        >
                                             <User :user="answers.createdBy"></User>
                                             &nbsp;commented&nbsp;
                                             <RelativeTime :time="answers.createdAt"></RelativeTime>
                                         </div>
-                                        <div class="answer-text">{{ markdownToText(answers.body) }}</div>
+                                        <div v-if="!isItemDeleted(answers)" class="answer-text">
+                                            {{ markdownToText(answers.body) }}
+                                        </div>
+                                        <div v-else class="text-variant font-italic answer-text">{{ deletedText }}</div>
                                     </div>
                                     <v-btn
                                         v-if="newComment"
@@ -109,7 +128,8 @@
                                 </v-card>
                             </div>
                         </v-expand-transition>
-                        <Markdown :editMode="editMode" v-model="itemBody" class="mt-2 ml-1" />
+                        <Markdown :editMode="editMode" v-model="itemBody" class="mt-2 ml-1" v-if="!isDeleted" />
+                        <div v-else class="mt-2 ml-1 text-variant font-italic">{{ deletedText }}</div>
                         <div class="mx-n3" v-if="editMode">
                             <v-divider />
                             <div class="d-flex justify-end mt-2">
@@ -178,6 +198,8 @@ const itemBody = ref(props.item.body);
 const client = useClient();
 const router = useRouter();
 
+const deletedText = "This comment has been deleted";
+
 const answersId = computed(() => {
     const item = props.item;
     if (item.__typename === "IssueComment" && issue != undefined && item.answers?.id != undefined) {
@@ -192,6 +214,14 @@ const answers = computed(() => {
     }
     return null;
 });
+const isDeleted = computed(() => {
+    const item = props.item;
+    return isItemDeleted(item);
+});
+
+function isItemDeleted(item: Comment) {
+    return item.__typename === "IssueComment" && item.isDeleted;
+}
 
 function activateEditMode() {
     editMode.value = true;
@@ -242,6 +272,14 @@ function selectAnswers() {
             item: answersId.value
         }
     });
+}
+
+async function deleteComment() {
+    const newItem = await withErrorMessage(
+        () => client.deleteIssueComment({ id: props.item.id }),
+        "Error deleting comment"
+    );
+    emit("updateItem", newItem.deleteIssueComment?.issueComment!);
 }
 </script>
 <style scoped>

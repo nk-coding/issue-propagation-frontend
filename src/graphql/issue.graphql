@@ -130,6 +130,14 @@ mutation createIssueComment($issue: ID!, $body: String!, $answers: ID) {
     }
 }
 
+mutation deleteIssueComment($id: ID!) {
+    deleteIssueComment(input: { id: $id }) {
+        issueComment {
+            ...IssueCommentTimelineInfo
+        }
+    }
+}
+
 fragment DefaultIssueIconInfo on Issue {
     incomingRelations {
         totalCount
