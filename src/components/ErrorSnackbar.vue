@@ -1,5 +1,5 @@
 <template>
-    <v-snackbar v-model="showSnackbar" :timeout="2500" @after-leave="showError" color="inverse-surface">
+    <v-snackbar v-model="showSnackbar" :timeout="2500" color="inverse-surface" @after-leave="showError">
         {{ currentError }}
     </v-snackbar>
 </template>

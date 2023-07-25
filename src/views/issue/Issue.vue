@@ -20,18 +20,18 @@
             <div class="timeline">
                 <TimelineItem
                     v-for="item in timeline"
+                    :ref="(el: any) => registerItemElement(item.id, el)"
                     :item="item"
                     :selected="item.id == selectedItem"
                     @replyTo="replyToComment"
                     @updateItem="updateItem"
-                    :ref="(el: any) => registerItemElement(item.id, el)"
                 />
                 <TimelineBreak />
                 <Comment
                     v-if="store.isLoggedIn"
                     ref="newComment"
                     :item="newCommentItem"
-                    :newComment="true"
+                    :new-comment="true"
                     class="mt-3"
                     @addItem="addComment"
                     @resetAnswers="resetAnswers"

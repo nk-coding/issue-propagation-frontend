@@ -1,5 +1,5 @@
 <template>
-    <router-link :to="to" custom v-slot="{ isActive, href, navigate, isExactActive }">
+    <router-link v-slot="{ isActive, href, navigate, isExactActive }" :to="to" custom>
         <button class="sidebar-button" :class="{ active: isActive }" @click="navigate">
             <div class="icon-container d-flex align-center justify-center">
                 <v-expand-x-transition>

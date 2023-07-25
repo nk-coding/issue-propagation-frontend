@@ -8,7 +8,7 @@
         >
             <User :user="item.createdBy" :show-name="false" size="xx-large"></User>
             <v-hover>
-                <template v-slot:default="{ isHovering, props }">
+                <template #default="{ isHovering, props }">
                     <v-sheet
                         :border="selected ? 'primary-container md medium-emphasis' : true"
                         class="flex-1-1 ml-2 comment-card pa-3"
@@ -16,10 +16,10 @@
                         v-bind="props"
                     >
                         <v-sheet
+                            v-if="!newComment"
                             class="d-flex align-center mx-n3 mt-n3 px-3 py-1 comment-top-bar"
                             :color="selected ? 'primary-container' : 'surface-container'"
                             rounded="lg"
-                            v-if="!newComment"
                         >
                             <div
                                 class="text-subtitle d-flex align-center flex-1-1"
@@ -41,8 +41,8 @@
                                         variant="text"
                                         density="comfortable"
                                         color="tertiary"
-                                        @click="reply"
                                         :disabled="isDeleted || !issue?.comment"
+                                        @click="reply"
                                     >
                                         <v-icon>mdi-reply</v-icon>
                                         <v-tooltip activator="parent" location="top"> Reply </v-tooltip>
@@ -56,11 +56,11 @@
                                         >
                                             <v-list>
                                                 <v-list-item
-                                                    @click="activateEditMode"
                                                     :disabled="editMode || isDeleted"
+                                                    @click="activateEditMode"
                                                 >
                                                     <v-list-item-title>Edit</v-list-item-title>
-                                                    <template v-slot:prepend>
+                                                    <template #prepend>
                                                         <v-icon>mdi-pencil</v-icon>
                                                     </template>
                                                 </v-list-item>
@@ -69,7 +69,7 @@
                                                     @click=""
                                                 >
                                                     <v-list-item-title>Delete</v-list-item-title>
-                                                    <template v-slot:prepend>
+                                                    <template #prepend>
                                                         <v-icon>mdi-delete</v-icon>
                                                     </template>
                                                     <ConfirmationDialog
@@ -91,11 +91,11 @@
                                     color="surface-container"
                                     rounded="lg"
                                     elevation="1"
-                                    @click="selectAnswers"
                                     class="answer-card pa-3 d-flex align-center"
                                     :class="{
                                         'mt-3': !newComment
                                     }"
+                                    @click="selectAnswers"
                                 >
                                     <div class="flex-1-1 answer-wrapper">
                                         <div
@@ -128,9 +128,9 @@
                                 </v-card>
                             </div>
                         </v-expand-transition>
-                        <Markdown :editMode="editMode" v-model="itemBody" class="mt-2 ml-1" v-if="!isDeleted" />
+                        <Markdown v-if="!isDeleted" v-model="itemBody" :edit-mode="editMode" class="mt-2 ml-1" />
                         <div v-else class="mt-2 ml-1 text-variant font-italic">{{ deletedText }}</div>
-                        <div class="mx-n3" v-if="editMode">
+                        <div v-if="editMode" class="mx-n3">
                             <v-divider />
                             <div class="d-flex justify-end mt-2">
                                 <template v-if="!newComment">
@@ -143,9 +143,9 @@
                                             @confirm="cancelComment"
                                         />
                                     </v-btn>
-                                    <v-btn @click="saveComment" color="primary" class="mx-3">Save</v-btn>
+                                    <v-btn color="primary" class="mx-3" @click="saveComment">Save</v-btn>
                                 </template>
-                                <v-btn v-else @click="createComment" color="primary" class="mx-3"> Comment </v-btn>
+                                <v-btn v-else color="primary" class="mx-3" @click="createComment"> Comment </v-btn>
                             </div>
                         </div>
                     </v-sheet>

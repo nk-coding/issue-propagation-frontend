@@ -2,12 +2,12 @@
     <div class="markdown-editor-viewer">
         <Viewer v-if="!editMode" :value="valueWrapper" :plugins="plugins"></Viewer>
         <Editor
-            :key="theme.current.value.dark"
             v-else
+            :key="theme.current.value.dark"
             :value="valueWrapper"
-            @change="handleChange"
             :plugins="plugins"
-            :editorConfig="editorConfig"
+            :editor-config="editorConfig"
+            @change="handleChange"
         ></Editor>
     </div>
 </template>

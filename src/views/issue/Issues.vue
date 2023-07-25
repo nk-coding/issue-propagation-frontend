@@ -2,10 +2,10 @@
     <PaginatedList :item-manager="itemManager" :sort-fields="Object.keys(sortFields)" @item-selected="selectIssue">
         <template #item="{ item }">
             <ListItem :title="item.title" :subtitle="item.title">
-                <template v-slot:prepend>
+                <template #prepend>
                     <IssueIcon :issue="item" height="40px" class="mr-2 flex-0-0" />
                 </template>
-                <template v-slot:append>
+                <template #append>
                     <div class="mr-7 user-stack-container">
                         <UserStack
                             :users="item.assignments.nodes.map((assignment) => assignment.user)"
@@ -26,7 +26,7 @@
                         {{ item.issueComments.totalCount }}
                     </div>
                 </template>
-                <template v-slot:subtitle>
+                <template #subtitle>
                     <div class="d-flex align-center text-variant text-body-2">
                         was created&nbsp;
                         <RelativeTime :time="item.createdAt" />
@@ -34,7 +34,7 @@
                         <User :user="item.createdBy" size="small" />
                     </div>
                 </template>
-                <template v-slot:title-append>
+                <template #title-append>
                     <Label
                         v-for="(label, idx) in item.labels.nodes"
                         :key="idx"

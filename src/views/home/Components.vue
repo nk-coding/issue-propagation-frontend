@@ -2,7 +2,7 @@
     <PaginatedList :item-manager="itemManager" :sort-fields="Object.keys(sortFields)" @item-selected="selectComponent">
         <template #item="{ item }">
             <ListItem :title="item.name" :subtitle="item.description">
-                <template v-slot:append>
+                <template #append>
                     <div class="text-medium-emphasis issue-container">
                         <v-icon>mdi-alert-circle-outline</v-icon>
                         {{ item.openIssues.totalCount }}
