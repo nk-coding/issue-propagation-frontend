@@ -1,10 +1,10 @@
 <template>
-    <div>
+    <span>
         {{ formatRelativeTime(new Date(), new Date(time)) }}
         <v-tooltip activator="parent" location="bottom">
             {{ formatAbsoluteTime(new Date(time)) }}
         </v-tooltip>
-    </div>
+    </span>
 </template>
 <script lang="ts" setup>
 defineProps({

@@ -27,7 +27,7 @@
                     </div>
                 </template>
                 <template #subtitle>
-                    <div class="d-flex align-center text-medium-emphasis text-body-2">
+                    <div class="text-medium-emphasis text-body-2">
                         was created&nbsp;
                         <RelativeTime :time="item.createdAt" />
                         &nbsp;by&nbsp;

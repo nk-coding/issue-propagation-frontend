@@ -1,6 +1,6 @@
 <template>
     <IconTimelineItem :icon="icon">
-        <div class="d-flex align-center text-medium-emphasis">
+        <div class="text-medium-emphasis">
             <User :user="item.createdBy" />
             <slot />
             <RelativeTime :time="item.createdAt" />

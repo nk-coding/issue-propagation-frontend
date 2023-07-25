@@ -1,14 +1,14 @@
 <template>
-    <div class="d-flex align-center">
+    <span class="user-wrapper">
         <img
             v-if="showAvatar"
             :src="user.avatar"
-            class="rounded-circle avatar"
+            class="rounded-circle avatar inline-avatar"
             :class="{
                 [`avatar--size-${size}`]: true
             }"
         />
-        <div v-if="showName" class="text-high-emphasis" :class="{ 'ml-1': showAvatar }">{{ user.displayName }}</div>
+        <span v-if="showName" class="text-high-emphasis" :class="{ 'ml-1': showAvatar }">{{ user.displayName }}</span>
         <v-tooltip activator="parent" location="top" class="rich-tooltip">
             <img :src="user.avatar" class="rounded-circle overlay-avatar" />
             <div class="d-flex text-body-1 text-on-surface">
@@ -19,7 +19,7 @@
                 </span>
             </div>
         </v-tooltip>
-    </div>
+    </span>
 </template>
 <script setup lang="ts">
 import { DefaultUserInfoFragment } from "@/graphql/generated";
@@ -61,5 +61,14 @@ defineProps({
 
 .overlay-avatar {
     height: 50px;
+}
+
+.inline-avatar {
+    vertical-align: middle;
+    display: inline;
+}
+
+.user-wrapper {
+    display: inline-block;
 }
 </style>

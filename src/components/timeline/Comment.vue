@@ -22,7 +22,7 @@
                             rounded="lg"
                         >
                             <div
-                                class="text-subtitle text-medium-emphasis d-flex align-center flex-1-1"
+                                class="text-subtitle text-medium-emphasis flex-1-1"
                                 :class="{
                                     'text-on-primary-container': selected,
                                     'text-decoration-line-through': isDeleted
@@ -98,7 +98,7 @@
                                 >
                                     <div class="flex-1-1 answer-wrapper">
                                         <div
-                                            class="text-medium-emphasis text-subtitle d-flex flex-1-1"
+                                            class="text-medium-emphasis text-subtitle flex-1-1"
                                             :class="{
                                                 'text-decoration-line-through': isItemDeleted(answers)
                                             }"
