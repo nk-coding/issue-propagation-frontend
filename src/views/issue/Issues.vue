@@ -52,7 +52,7 @@ import { NodeReturnType, useClient } from "@/graphql/client";
 import { computed } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import PaginatedList, { ItemManager } from "@/components/PaginatedList.vue";
-import ListItem from "../component/ListItem.vue";
+import ListItem from "@/components/ListItem.vue";
 import { IssueOrderField, OrderDirection } from "@/graphql/generated";
 import RelativeTime from "@/components/RelativeTime.vue";
 import User from "@/components/User.vue";

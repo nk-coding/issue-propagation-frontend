@@ -17,7 +17,7 @@ import PaginatedList, { ItemManager } from "@/components/PaginatedList.vue";
 import { ClientReturnType, useClient } from "@/graphql/client";
 import { ComponentOrderField, OrderDirection } from "@/graphql/generated";
 import { useRouter } from "vue-router";
-import ListItem from "../component/ListItem.vue";
+import ListItem from "@/components/ListItem.vue";
 
 type Component = ClientReturnType<"getComponents">["components"]["nodes"][0];
 

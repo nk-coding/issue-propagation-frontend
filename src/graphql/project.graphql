@@ -1,0 +1,22 @@
+query getProjects($filter: String!, $orderBy: ProjectOrder!, $count: Int!, $skip: Int!) {
+    projects(filter: { name: { contains: $filter } }, orderBy: $orderBy, first: $count, skip: $skip) {
+        nodes {
+            id
+            name
+            description
+            ...OpenIssueCount
+        }
+        totalCount
+    }
+}
+
+query getProject($id: ID!) {
+    node(id: $id) {
+        id
+        ... on Project {
+            name
+            description
+            ...OpenIssueCount
+        }
+    }
+}
