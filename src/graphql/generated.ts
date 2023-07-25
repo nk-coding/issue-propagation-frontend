@@ -18111,6 +18111,7 @@ export type UpdateIssueCommentMutation = {
 export type CreateIssueCommentMutationVariables = Exact<{
     issue: Scalars["ID"]["input"];
     body: Scalars["String"]["input"];
+    answers?: InputMaybe<Scalars["ID"]["input"]>;
 }>;
 
 export type CreateIssueCommentMutation = {
@@ -20479,8 +20480,8 @@ export const UpdateIssueCommentDocument = gql`
     ${IssueCommentTimelineInfoFragmentDoc}
 `;
 export const CreateIssueCommentDocument = gql`
-    mutation createIssueComment($issue: ID!, $body: String!) {
-        createIssueComment(input: { issue: $issue, body: $body }) {
+    mutation createIssueComment($issue: ID!, $body: String!, $answers: ID) {
+        createIssueComment(input: { issue: $issue, body: $body, answers: $answers }) {
             issueComment {
                 ...IssueCommentTimelineInfo
             }

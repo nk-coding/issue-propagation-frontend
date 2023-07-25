@@ -122,8 +122,8 @@ mutation updateIssueComment($id: ID!, $body: String!) {
     }
 }
 
-mutation createIssueComment($issue: ID!, $body: String!) {
-    createIssueComment(input: { issue: $issue, body: $body }) {
+mutation createIssueComment($issue: ID!, $body: String!, $answers: ID) {
+    createIssueComment(input: { issue: $issue, body: $body, answers: $answers }) {
         issueComment {
             ...IssueCommentTimelineInfo
         }

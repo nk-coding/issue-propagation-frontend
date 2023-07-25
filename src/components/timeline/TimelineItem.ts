@@ -3,6 +3,7 @@ import Comment from "./Comment.vue";
 
 type TimelineItemProps = {
     item: any;
+    selected: boolean;
 };
 
 type TimelineItemEvents = {
@@ -16,7 +17,8 @@ const timelineItems: Record<string, Component> = {
 
 export default function TimelineItem(props: TimelineItemProps, context: SetupContext<TimelineItemEvents>) {
     const item = props.item;
-    return h(timelineItems[item.__typename] ?? "TODO", { item });
+    const selected = props.selected;
+    return h(timelineItems[item.__typename] ?? "TODO", { item, selected });
 }
 
 TimelineItem.props = {
@@ -24,8 +26,4 @@ TimelineItem.props = {
         type: Object,
         required: true
     }
-};
-
-TimelineItem.emits = {
-    updateItem: (newItem: any) => true
 };

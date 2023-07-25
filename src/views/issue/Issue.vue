@@ -18,14 +18,22 @@
         </div>
         <div class="content d-flex flex-fill">
             <div class="timeline">
-                <TimelineItem v-for="item in timeline" :item="item" />
+                <TimelineItem
+                    v-for="item in timeline"
+                    :item="item"
+                    :selected="item.id == selectedItem"
+                    @replyTo="replyToComment"
+                    :ref="(el: any) => registerItemElement(item.id, el)"
+                />
                 <TimelineBreak />
                 <Comment
                     v-if="store.isLoggedIn"
+                    ref="newComment"
                     :item="newCommentItem"
                     :newComment="true"
                     class="mt-3"
                     @addItem="addComment"
+                    @resetAnswers="resetAnswers"
                 />
                 <div class="pt-3" />
             </div>
@@ -53,6 +61,7 @@ import Comment from "@/components/timeline/Comment.vue";
 import { reactive } from "vue";
 import { IssueCommentTimelineInfoFragment } from "@/graphql/generated";
 import { TimelineItemType } from "@/components/timeline/TimelineItemBase.vue";
+import { nextTick } from "vue";
 
 export type Issue = NodeReturnType<"getIssue", "Issue">;
 
@@ -60,15 +69,28 @@ const client = useClient();
 const route = useRoute();
 const store = useAppStore();
 const issueId = computed(() => route.params.issue as string);
+const selectedItem = computed(() => route.query.item as string | undefined);
 
 const { state: issue, isReady } = useAsyncState(async () => {
     const res = await withErrorMessage(() => client.getIssue({ id: issueId.value }), "Error loading issue");
     return res.node as Issue;
 }, null);
 
-provide("issue", issue);
-
 const timeline = reactive<TimelineItemType<any>[]>([]);
+const answers = ref<string | null>(null);
+const newCommentItem = computed(() => {
+    return {
+        __typename: "IssueComment",
+        body: "",
+        createdBy: store.user,
+        answers: answers.value ? { id: answers.value } : undefined
+    } as TimelineItemType<"IssueComment">;
+});
+const newComment = ref<any>(null);
+
+const itemElementLookup = new Map<string, any>();
+
+provide("issue", issue);
 
 watch(isReady, () => {
     if (isReady.value) {
@@ -77,17 +99,32 @@ watch(isReady, () => {
     }
 });
 
-const newCommentItem = computed(() => {
-    return {
-        __typename: "IssueComment",
-        body: "",
-        createdBy: store.user
-    } as TimelineItemType<"IssueComment">;
-});
-
 function addComment(comment: TimelineItemType<"IssueComment">) {
     timeline.push(comment);
+    answers.value = null;
 }
+
+async function replyToComment(id: string) {
+    answers.value = id;
+    await nextTick();
+    newComment.value?.$el?.scrollIntoView({ behavior: "smooth", block: "end" });
+}
+
+function resetAnswers() {
+    answers.value = null;
+}
+
+function registerItemElement(id: string, element: any) {
+    itemElementLookup.set(id, element);
+}
+
+watch([isReady, selectedItem], async ([newIsReady], [oldIsReady]) => {
+    await nextTick();
+    if (isReady.value && selectedItem.value) {
+        const behavior = oldIsReady ? "smooth" : "auto";
+        itemElementLookup.get(selectedItem.value)?.scrollIntoView({ behavior });
+    }
+});
 </script>
 <style scoped lang="scss">
 .fill-height {
@@ -101,6 +138,7 @@ function addComment(comment: TimelineItemType<"IssueComment">) {
 
 .timeline {
     flex: 1 1;
+    min-width: 0;
 }
 
 .sidebar {
