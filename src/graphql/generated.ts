@@ -18265,12 +18265,262 @@ export type DefaultIssueStateInfoFragment = {
     isOpen: boolean;
 };
 
+export type SearchIssueStatesQueryVariables = Exact<{
+    issue: Scalars["ID"]["input"];
+    filter: Scalars["String"]["input"];
+    count: Scalars["Int"]["input"];
+}>;
+
+export type SearchIssueStatesQuery = {
+    __typename?: "Query";
+    node?:
+        | { __typename?: "AddedAffectedEntityEvent" }
+        | { __typename?: "AddedArtefactEvent" }
+        | { __typename?: "AddedLabelEvent" }
+        | { __typename?: "AddedToPinnedIssuesEvent" }
+        | { __typename?: "AddedToTrackableEvent" }
+        | { __typename?: "Artefact" }
+        | { __typename?: "ArtefactTemplate" }
+        | { __typename?: "Assignment" }
+        | { __typename?: "AssignmentType" }
+        | { __typename?: "AssignmentTypeChangedEvent" }
+        | { __typename?: "Body" }
+        | { __typename?: "Component" }
+        | { __typename?: "ComponentPermission" }
+        | { __typename?: "ComponentTemplate" }
+        | { __typename?: "ComponentVersion" }
+        | { __typename?: "ComponentVersionTemplate" }
+        | { __typename?: "DueDateChangedEvent" }
+        | { __typename?: "EstimatedTimeChangedEvent" }
+        | { __typename?: "GlobalPermission" }
+        | { __typename?: "GropiusUser" }
+        | { __typename?: "IMS" }
+        | { __typename?: "IMSIssue" }
+        | { __typename?: "IMSIssueTemplate" }
+        | { __typename?: "IMSPermission" }
+        | { __typename?: "IMSProject" }
+        | { __typename?: "IMSProjectTemplate" }
+        | { __typename?: "IMSTemplate" }
+        | { __typename?: "IMSUser" }
+        | { __typename?: "IMSUserTemplate" }
+        | { __typename?: "IncomingRelationTypeChangedEvent" }
+        | { __typename?: "Interface" }
+        | { __typename?: "InterfaceDefinition" }
+        | { __typename?: "InterfaceDefinitionTemplate" }
+        | { __typename?: "InterfacePart" }
+        | { __typename?: "InterfacePartTemplate" }
+        | { __typename?: "InterfaceSpecification" }
+        | { __typename?: "InterfaceSpecificationDerivationCondition" }
+        | { __typename?: "InterfaceSpecificationTemplate" }
+        | { __typename?: "InterfaceSpecificationVersion" }
+        | { __typename?: "InterfaceSpecificationVersionTemplate" }
+        | { __typename?: "InterfaceTemplate" }
+        | { __typename?: "IntraComponentDependencyParticipant" }
+        | { __typename?: "IntraComponentDependencySpecification" }
+        | {
+              __typename?: "Issue";
+              template: {
+                  __typename?: "IssueTemplate";
+                  issueStates: {
+                      __typename?: "IssueStateConnection";
+                      nodes: Array<{
+                          __typename?: "IssueState";
+                          id: string;
+                          name: string;
+                          description: string;
+                          isOpen: boolean;
+                      }>;
+                  };
+              };
+          }
+        | { __typename?: "IssueComment" }
+        | { __typename?: "IssuePriority" }
+        | { __typename?: "IssueRelation" }
+        | { __typename?: "IssueRelationType" }
+        | { __typename?: "IssueState" }
+        | { __typename?: "IssueTemplate" }
+        | { __typename?: "IssueType" }
+        | { __typename?: "Label" }
+        | { __typename?: "OutgoingRelationTypeChangedEvent" }
+        | { __typename?: "PriorityChangedEvent" }
+        | { __typename?: "Project" }
+        | { __typename?: "ProjectPermission" }
+        | { __typename?: "RelatedByIssueEvent" }
+        | { __typename?: "Relation" }
+        | { __typename?: "RelationCondition" }
+        | { __typename?: "RelationTemplate" }
+        | { __typename?: "RemovedAffectedEntityEvent" }
+        | { __typename?: "RemovedArtefactEvent" }
+        | { __typename?: "RemovedAssignmentEvent" }
+        | { __typename?: "RemovedFromPinnedIssuesEvent" }
+        | { __typename?: "RemovedFromTrackableEvent" }
+        | { __typename?: "RemovedIncomingRelationEvent" }
+        | { __typename?: "RemovedLabelEvent" }
+        | { __typename?: "RemovedOutgoingRelationEvent" }
+        | { __typename?: "RemovedTemplatedFieldEvent" }
+        | { __typename?: "SpentTimeChangedEvent" }
+        | { __typename?: "StartDateChangedEvent" }
+        | { __typename?: "StateChangedEvent" }
+        | { __typename?: "TemplateChangedEvent" }
+        | { __typename?: "TemplatedFieldChangedEvent" }
+        | { __typename?: "TitleChangedEvent" }
+        | { __typename?: "TypeChangedEvent" }
+        | null;
+};
+
+export type ChangeIssueStateMutationVariables = Exact<{
+    issue: Scalars["ID"]["input"];
+    state: Scalars["ID"]["input"];
+}>;
+
+export type ChangeIssueStateMutation = {
+    __typename?: "Mutation";
+    changeIssueState?: {
+        __typename?: "ChangeIssueStatePayload";
+        stateChangedEvent?: {
+            __typename: "StateChangedEvent";
+            id: string;
+            createdAt: any;
+            oldState: { __typename?: "IssueState"; id: string; name: string; description: string; isOpen: boolean };
+            newState: { __typename?: "IssueState"; id: string; name: string; description: string; isOpen: boolean };
+            createdBy:
+                | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+                | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+        } | null;
+    } | null;
+};
+
 export type DefaultIssueTypeInfoFragment = {
     __typename?: "IssueType";
     id: string;
     name: string;
     description: string;
     iconPath: string;
+};
+
+export type SearchIssueTypesQueryVariables = Exact<{
+    issue: Scalars["ID"]["input"];
+    filter: Scalars["String"]["input"];
+    count: Scalars["Int"]["input"];
+}>;
+
+export type SearchIssueTypesQuery = {
+    __typename?: "Query";
+    node?:
+        | { __typename?: "AddedAffectedEntityEvent" }
+        | { __typename?: "AddedArtefactEvent" }
+        | { __typename?: "AddedLabelEvent" }
+        | { __typename?: "AddedToPinnedIssuesEvent" }
+        | { __typename?: "AddedToTrackableEvent" }
+        | { __typename?: "Artefact" }
+        | { __typename?: "ArtefactTemplate" }
+        | { __typename?: "Assignment" }
+        | { __typename?: "AssignmentType" }
+        | { __typename?: "AssignmentTypeChangedEvent" }
+        | { __typename?: "Body" }
+        | { __typename?: "Component" }
+        | { __typename?: "ComponentPermission" }
+        | { __typename?: "ComponentTemplate" }
+        | { __typename?: "ComponentVersion" }
+        | { __typename?: "ComponentVersionTemplate" }
+        | { __typename?: "DueDateChangedEvent" }
+        | { __typename?: "EstimatedTimeChangedEvent" }
+        | { __typename?: "GlobalPermission" }
+        | { __typename?: "GropiusUser" }
+        | { __typename?: "IMS" }
+        | { __typename?: "IMSIssue" }
+        | { __typename?: "IMSIssueTemplate" }
+        | { __typename?: "IMSPermission" }
+        | { __typename?: "IMSProject" }
+        | { __typename?: "IMSProjectTemplate" }
+        | { __typename?: "IMSTemplate" }
+        | { __typename?: "IMSUser" }
+        | { __typename?: "IMSUserTemplate" }
+        | { __typename?: "IncomingRelationTypeChangedEvent" }
+        | { __typename?: "Interface" }
+        | { __typename?: "InterfaceDefinition" }
+        | { __typename?: "InterfaceDefinitionTemplate" }
+        | { __typename?: "InterfacePart" }
+        | { __typename?: "InterfacePartTemplate" }
+        | { __typename?: "InterfaceSpecification" }
+        | { __typename?: "InterfaceSpecificationDerivationCondition" }
+        | { __typename?: "InterfaceSpecificationTemplate" }
+        | { __typename?: "InterfaceSpecificationVersion" }
+        | { __typename?: "InterfaceSpecificationVersionTemplate" }
+        | { __typename?: "InterfaceTemplate" }
+        | { __typename?: "IntraComponentDependencyParticipant" }
+        | { __typename?: "IntraComponentDependencySpecification" }
+        | {
+              __typename?: "Issue";
+              template: {
+                  __typename?: "IssueTemplate";
+                  issueTypes: {
+                      __typename?: "IssueTypeConnection";
+                      nodes: Array<{
+                          __typename?: "IssueType";
+                          id: string;
+                          name: string;
+                          description: string;
+                          iconPath: string;
+                      }>;
+                  };
+              };
+          }
+        | { __typename?: "IssueComment" }
+        | { __typename?: "IssuePriority" }
+        | { __typename?: "IssueRelation" }
+        | { __typename?: "IssueRelationType" }
+        | { __typename?: "IssueState" }
+        | { __typename?: "IssueTemplate" }
+        | { __typename?: "IssueType" }
+        | { __typename?: "Label" }
+        | { __typename?: "OutgoingRelationTypeChangedEvent" }
+        | { __typename?: "PriorityChangedEvent" }
+        | { __typename?: "Project" }
+        | { __typename?: "ProjectPermission" }
+        | { __typename?: "RelatedByIssueEvent" }
+        | { __typename?: "Relation" }
+        | { __typename?: "RelationCondition" }
+        | { __typename?: "RelationTemplate" }
+        | { __typename?: "RemovedAffectedEntityEvent" }
+        | { __typename?: "RemovedArtefactEvent" }
+        | { __typename?: "RemovedAssignmentEvent" }
+        | { __typename?: "RemovedFromPinnedIssuesEvent" }
+        | { __typename?: "RemovedFromTrackableEvent" }
+        | { __typename?: "RemovedIncomingRelationEvent" }
+        | { __typename?: "RemovedLabelEvent" }
+        | { __typename?: "RemovedOutgoingRelationEvent" }
+        | { __typename?: "RemovedTemplatedFieldEvent" }
+        | { __typename?: "SpentTimeChangedEvent" }
+        | { __typename?: "StartDateChangedEvent" }
+        | { __typename?: "StateChangedEvent" }
+        | { __typename?: "TemplateChangedEvent" }
+        | { __typename?: "TemplatedFieldChangedEvent" }
+        | { __typename?: "TitleChangedEvent" }
+        | { __typename?: "TypeChangedEvent" }
+        | null;
+};
+
+export type ChangeIssueTypeMutationVariables = Exact<{
+    issue: Scalars["ID"]["input"];
+    type: Scalars["ID"]["input"];
+}>;
+
+export type ChangeIssueTypeMutation = {
+    __typename?: "Mutation";
+    changeIssueType?: {
+        __typename?: "ChangeIssueTypePayload";
+        typeChangedEvent?: {
+            __typename: "TypeChangedEvent";
+            id: string;
+            createdAt: any;
+            newIssueType: { __typename?: "IssueType"; id: string; name: string; description: string; iconPath: string };
+            oldIssueType: { __typename?: "IssueType"; id: string; name: string; description: string; iconPath: string };
+            createdBy:
+                | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+                | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+        } | null;
+    } | null;
 };
 
 export type DefaultLabelInfoFragment = {
@@ -20967,6 +21217,58 @@ export const DeleteIssueCommentDocument = gql`
     }
     ${IssueCommentTimelineInfoFragmentDoc}
 `;
+export const SearchIssueStatesDocument = gql`
+    query searchIssueStates($issue: ID!, $filter: String!, $count: Int!) {
+        node(id: $issue) {
+            ... on Issue {
+                template {
+                    issueStates(filter: { name: { contains: $filter } }, first: $count, orderBy: { field: NAME }) {
+                        nodes {
+                            ...DefaultIssueStateInfo
+                        }
+                    }
+                }
+            }
+        }
+    }
+    ${DefaultIssueStateInfoFragmentDoc}
+`;
+export const ChangeIssueStateDocument = gql`
+    mutation changeIssueState($issue: ID!, $state: ID!) {
+        changeIssueState(input: { issue: $issue, state: $state }) {
+            stateChangedEvent {
+                ...StateChangedEventTimelineInfo
+            }
+        }
+    }
+    ${StateChangedEventTimelineInfoFragmentDoc}
+`;
+export const SearchIssueTypesDocument = gql`
+    query searchIssueTypes($issue: ID!, $filter: String!, $count: Int!) {
+        node(id: $issue) {
+            ... on Issue {
+                template {
+                    issueTypes(filter: { name: { contains: $filter } }, first: $count, orderBy: { field: NAME }) {
+                        nodes {
+                            ...DefaultIssueTypeInfo
+                        }
+                    }
+                }
+            }
+        }
+    }
+    ${DefaultIssueTypeInfoFragmentDoc}
+`;
+export const ChangeIssueTypeDocument = gql`
+    mutation changeIssueType($issue: ID!, $type: ID!) {
+        changeIssueType(input: { issue: $issue, type: $type }) {
+            typeChangedEvent {
+                ...TypeChangedEventTimelineInfo
+            }
+        }
+    }
+    ${TypeChangedEventTimelineInfoFragmentDoc}
+`;
 export const SearchLabelsDocument = gql`
     query searchLabels($issue: ID!, $filter: String!, $count: Int!) {
         node(id: $issue) {
@@ -21160,6 +21462,62 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "deleteIssueComment",
+                "mutation"
+            );
+        },
+        searchIssueStates(
+            variables: SearchIssueStatesQueryVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<SearchIssueStatesQuery> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<SearchIssueStatesQuery>(SearchIssueStatesDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "searchIssueStates",
+                "query"
+            );
+        },
+        changeIssueState(
+            variables: ChangeIssueStateMutationVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<ChangeIssueStateMutation> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<ChangeIssueStateMutation>(ChangeIssueStateDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "changeIssueState",
+                "mutation"
+            );
+        },
+        searchIssueTypes(
+            variables: SearchIssueTypesQueryVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<SearchIssueTypesQuery> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<SearchIssueTypesQuery>(SearchIssueTypesDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "searchIssueTypes",
+                "query"
+            );
+        },
+        changeIssueType(
+            variables: ChangeIssueTypeMutationVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<ChangeIssueTypeMutation> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<ChangeIssueTypeMutation>(ChangeIssueTypeDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "changeIssueType",
                 "mutation"
             );
         },

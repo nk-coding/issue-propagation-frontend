@@ -4,3 +4,25 @@ fragment DefaultIssueStateInfo on IssueState {
     description
     isOpen
 }
+
+query searchIssueStates($issue: ID!, $filter: String!, $count: Int!) {
+    node(id: $issue) {
+        ... on Issue {
+            template {
+                issueStates(filter: { name: { contains: $filter } }, first: $count, orderBy: { field: NAME }) {
+                    nodes {
+                        ...DefaultIssueStateInfo
+                    }
+                }
+            }
+        }
+    }
+}
+
+mutation changeIssueState($issue: ID!, $state: ID!) {
+    changeIssueState(input: { issue: $issue, state: $state }) {
+        stateChangedEvent {
+            ...StateChangedEventTimelineInfo
+        }
+    }
+}

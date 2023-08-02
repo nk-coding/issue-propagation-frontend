@@ -26,7 +26,7 @@ defineProps({
 .inline-type-icon {
     vertical-align: middle;
     display: inline;
-    width: map.get(settings.$avatar-sizes, "default");
+    width: map.get(settings.$avatar-sizes, "large");
 }
 
 .type-wrapper {

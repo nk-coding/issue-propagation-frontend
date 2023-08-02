@@ -53,4 +53,8 @@ html,
 .border-medium-emphasis {
     --v-border-opacity: var(--v-medium-emphasis-opacity) !important;
 }
+
+.full-opacity {
+    opacity: 1 !important;
+}
 </style>

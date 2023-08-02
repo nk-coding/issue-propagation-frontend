@@ -1,5 +1,9 @@
 <template>
     <v-sheet
+        v-click-outside="{
+            handler: onClickOutside,
+            closeConditional: () => !closeHierarchy
+        }"
         class="ma-2 compartment-sheet"
         :class="{
             'px-4 py-2': editMode,
@@ -24,6 +28,7 @@
             <slot name="display"></slot>
         </div>
         <v-overlay
+            v-if="closeHierarchy"
             :model-value="editMode"
             @click:outside="onClickOutside"
             contained
@@ -43,7 +48,6 @@
             :activator="undefined"
             ref="confirmationDialog"
             @confirm="closeEditMode"
-            @cancel="cancel"
         />
     </v-sheet>
 </template>
@@ -68,6 +72,10 @@ const props = defineProps({
     hasUnsavedChanges: {
         type: Boolean,
         default: false
+    },
+    closeHierarchy: {
+        type: Boolean,
+        default: true
     }
 });
 
@@ -78,7 +86,6 @@ const emit = defineEmits<{
 const editMode = ref(false);
 const confirmationDialog = ref<InstanceType<typeof ConfirmationDialog>>();
 const compartmentSheet = ref<VSheet>();
-const preventClickOutside = ref(false);
 
 function onClickOutside(e: MouseEvent) {
     if (editMode.value) {
@@ -86,7 +93,6 @@ function onClickOutside(e: MouseEvent) {
             return;
         }
         if (props.hasUnsavedChanges) {
-            preventClickOutside.value = true;
             confirmationDialog.value!.dialog = true;
         } else {
             closeEditMode();
@@ -95,13 +101,8 @@ function onClickOutside(e: MouseEvent) {
 }
 
 function closeEditMode() {
-    preventClickOutside.value = false;
     editMode.value = false;
     emit("close");
-}
-
-function cancel() {
-    preventClickOutside.value = false;
 }
 </script>
 <style scoped>

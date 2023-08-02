@@ -3,6 +3,8 @@ import Comment from "./Comment.vue";
 import AddedLabelEvent from "./AddedLabelEvent.vue";
 import RemovedLabelEvent from "./RemovedLabelEvent.vue";
 import TitleChangedEvent from "./TitleChangedEvent.vue";
+import TypeChangedEvent from "./TypeChangedEvent.vue";
+import StateChangedEvent from "./StateChangedEvent.vue";
 
 type TimelineItemProps = {
     item: any;
@@ -18,7 +20,9 @@ const timelineItems: Record<string, Component> = {
     Body: Comment,
     AddedLabelEvent: AddedLabelEvent,
     RemovedLabelEvent: RemovedLabelEvent,
-    TitleChangedEvent: TitleChangedEvent
+    TitleChangedEvent: TitleChangedEvent,
+    TypeChangedEvent: TypeChangedEvent,
+    StateChangedEvent: StateChangedEvent
 };
 
 export default function TimelineItem(props: TimelineItemProps, context: SetupContext<TimelineItemEvents>) {

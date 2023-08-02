@@ -39,15 +39,72 @@
                 <div class="pt-3" />
             </div>
             <v-sheet class="sidebar ml-8 mr-3 mb-3" color="surface-container" rounded="xl">
-                <EditableCompartment name="Type" :editable="!!issue.manageIssues">
+                <EditableCompartment name="Type" :editable="!!issue.manageIssues" :close-hierarchy="false">
                     <template #display>
                         <IssueType :type="issue.type" />
                     </template>
+                    <template #edit>
+                        <FetchingAutocomplete
+                            :fetch="searchIssueTypes"
+                            variant="outlined"
+                            density="comfortable"
+                            label="Type"
+                            auto-select-first
+                            item-title="name"
+                            item-value="id"
+                            autofocus
+                            menu
+                            :initial-items="[issue.type]"
+                            :model-value="issue.type.id"
+                            @update:model-value="updateIssueType"
+                        >
+                            <template #item="{ props, item }">
+                                <v-list-item :title="item.raw.name" :subtitle="item.raw.description" v-bind="props">
+                                    <template #prepend>
+                                        <IssueTypeIcon
+                                            :path="item.raw.iconPath"
+                                            fill="rgb(var(--v-theme-primary))"
+                                            class="type-icon mr-2"
+                                        />
+                                    </template>
+                                </v-list-item>
+                            </template>
+                        </FetchingAutocomplete>
+                    </template>
                 </EditableCompartment>
                 <v-divider />
-                <EditableCompartment name="State" :editable="!!issue.manageIssues">
+                <EditableCompartment name="State" :editable="!!issue.manageIssues" :close-hierarchy="false">
                     <template #display>
                         <IssueState :state="issue.state" />
+                    </template>
+                    <template #edit>
+                        <FetchingAutocomplete
+                            :fetch="searchIssueStates"
+                            variant="outlined"
+                            density="comfortable"
+                            label="State"
+                            auto-select-first
+                            item-title="name"
+                            item-value="id"
+                            autofocus
+                            menu
+                            :initial-items="[issue.state]"
+                            :model-value="issue.state.id"
+                            @update:model-value="updateIssueState"
+                        >
+                            <template #item="{ props, item }">
+                                <v-list-item :title="item.raw.name" :subtitle="item.raw.description" v-bind="props">
+                                    <template #prepend>
+                                        <v-icon
+                                            :color="item.raw.isOpen ? 'issue-open' : 'issue-closed'"
+                                            class="full-opacity"
+                                        >
+                                            mdi-circle
+                                        </v-icon>
+                                    </template>
+                                </v-list-item>
+                            </template>
+                        </FetchingAutocomplete>
                     </template>
                 </EditableCompartment>
                 <v-divider />
@@ -81,12 +138,13 @@
                             item-title="name"
                             item-value="id"
                             multiple
+                            menu
                             v-model="addedLabels"
                         >
                             <template #item="{ props, item: label }">
                                 <v-list-item :title="label.raw.name" :subtitle="label.raw.description" v-bind="props">
                                     <template #prepend>
-                                        <v-icon :color="label.raw.color" class="mr-2"> mdi-circle </v-icon>
+                                        <v-icon :color="label.raw.color" class="full-opacity"> mdi-circle </v-icon>
                                     </template>
                                 </v-list-item>
                             </template>
@@ -99,7 +157,7 @@
                         <Assignment
                             v-for="assignment in issue.assignments.nodes"
                             :assignment="assignment"
-                            class="d-block"
+                            class="d-block my-2"
                         />
                     </template>
                 </EditableCompartment>
@@ -130,7 +188,9 @@ import IssueType from "@/components/info/IssueType.vue";
 import Assignment from "@/components/info/Assignment.vue";
 import ListItem from "@/components/ListItem.vue";
 import FetchingAutocomplete from "@/components/FetchingAutocomplete.vue";
-import { DefaultLabelInfoFragment } from "@/graphql/generated";
+import { DefaultIssueStateInfoFragment, DefaultLabelInfoFragment } from "@/graphql/generated";
+import { DefaultIssueTypeInfoFragment } from "@/graphql/generated";
+import IssueTypeIcon from "@/components/IssueTypeIcon.vue";
 
 export type Issue = NodeReturnType<"getIssue", "Issue">;
 
@@ -201,6 +261,46 @@ function updateItem(item: TimelineItemType<any>) {
     }
 }
 
+async function searchIssueTypes(filter: string, count: number): Promise<DefaultIssueTypeInfoFragment[]> {
+    const searchedIssue = await withErrorMessage(async () => {
+        const res = await client.searchIssueTypes({ issue: issueId.value, filter, count });
+        return res.node as NodeReturnType<"searchIssueTypes", "Issue">;
+    }, "Error searching issue types");
+    return searchedIssue.template.issueTypes.nodes;
+}
+
+async function updateIssueType(type: string | null) {
+    if (!type) {
+        return;
+    }
+    const event = await withErrorMessage(async () => {
+        const res = await client.changeIssueType({ issue: issueId.value, type });
+        return res.changeIssueType!.typeChangedEvent!;
+    }, "Error updating issue type");
+    timeline.value.push(event);
+    issue.value!.type = event.newIssueType;
+}
+
+async function searchIssueStates(filter: string, count: number): Promise<DefaultIssueStateInfoFragment[]> {
+    const searchedIssue = await withErrorMessage(async () => {
+        const res = await client.searchIssueStates({ issue: issueId.value, filter, count });
+        return res.node as NodeReturnType<"searchIssueStates", "Issue">;
+    }, "Error searching issue states");
+    return searchedIssue.template.issueStates.nodes;
+}
+
+async function updateIssueState(state: string | null) {
+    if (!state) {
+        return;
+    }
+    const event = await withErrorMessage(async () => {
+        const res = await client.changeIssueState({ issue: issueId.value, state });
+        return res.changeIssueState!.stateChangedEvent!;
+    }, "Error updating issue state");
+    timeline.value.push(event);
+    issue.value!.state = event.newState;
+}
+
 async function searchLabels(filter: string, count: number): Promise<DefaultLabelInfoFragment[]> {
     const searchedIssue = await withErrorMessage(async () => {
         const res = await client.searchLabels({ issue: issueId.value, filter, count });
@@ -241,6 +341,14 @@ async function removeLabel(labelId: string) {
 }
 </script>
 <style scoped lang="scss">
+@use "@/styles/settings.scss";
+@use "sass:map";
+
+.type-icon {
+    width: map.get(settings.$avatar-sizes, "large");
+    height: map.get(settings.$avatar-sizes, "large");
+}
+
 .fill-height {
     height: 100%;
 }
