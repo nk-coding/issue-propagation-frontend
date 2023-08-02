@@ -21,7 +21,7 @@
 <script setup lang="ts">
 import { DefaultUserInfoFragment } from "@/graphql/generated";
 import { PropType } from "vue";
-import User from "./User.vue";
+import User from "./info/User.vue";
 
 defineProps({
     users: {

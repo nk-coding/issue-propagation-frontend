@@ -1,5 +1,5 @@
 <template>
-    <div class="d-flex align-center mx-3 my-2">
+    <div class="d-flex align-center my-2">
         <slot name="prepend" />
         <div class="flex-1-1">
             <div class="mb-1 d-flex align-center">

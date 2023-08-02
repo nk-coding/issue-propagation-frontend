@@ -1,0 +1,6 @@
+fragment DefaultIssueStateInfo on IssueState {
+    id
+    name
+    description
+    isOpen
+}

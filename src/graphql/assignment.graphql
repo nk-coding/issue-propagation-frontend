@@ -1,0 +1,15 @@
+fragment DefaultAssignmentInfo on Assignment {
+    id
+    user {
+        ...UserTimelineInfo
+    }
+    type {
+        ...DefaultAssignmentTypeInfo
+    }
+}
+
+fragment DefaultAssignmentTypeInfo on AssignmentType {
+    id
+    name
+    description
+}

@@ -10,7 +10,7 @@
 import { PropType } from "vue";
 import { TimelineItemType } from "./TimelineItemBase.vue";
 import DefaultIconTimelineItem from "./DefaultIconTimelineItem.vue";
-import Label from "../Label.vue";
+import Label from "../info/Label.vue";
 
 defineProps({
     item: {

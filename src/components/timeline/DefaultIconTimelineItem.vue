@@ -10,7 +10,7 @@
 <script setup lang="ts">
 import { PropType } from "vue";
 import IconTimelineItem from "./IconTimelineItem.vue";
-import User from "@/components/User.vue";
+import User from "@/components/info/User.vue";
 import { TimelineItemType } from "./TimelineItemBase.vue";
 import RelativeTime from "../RelativeTime.vue";
 

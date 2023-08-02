@@ -35,18 +35,11 @@
                             <v-spacer />
                             <v-fade-transition>
                                 <div v-show="issue?.comment && (isHovering || menuOpen)">
-                                    <v-btn
-                                        icon
-                                        variant="text"
-                                        density="comfortable"
-                                        color="tertiary"
-                                        :disabled="isDeleted || !issue?.comment"
-                                        @click="reply"
-                                    >
+                                    <IconButton :disabled="isDeleted || !issue?.comment" @click="reply">
                                         <v-icon>mdi-reply</v-icon>
                                         <v-tooltip activator="parent" location="top"> Reply </v-tooltip>
-                                    </v-btn>
-                                    <v-btn icon variant="text" density="comfortable" color="tertiary">
+                                    </IconButton>
+                                    <IconButton>
                                         <v-icon>mdi-dots-vertical</v-icon>
                                         <v-menu
                                             activator="parent"
@@ -80,7 +73,7 @@
                                                 </v-list-item>
                                             </v-list>
                                         </v-menu>
-                                    </v-btn>
+                                    </IconButton>
                                 </div>
                             </v-fade-transition>
                         </v-sheet>
@@ -158,7 +151,7 @@
 <script setup lang="ts">
 import { PropType, Ref, inject, ref, computed } from "vue";
 import TimelineItemBase, { TimelineItemType } from "./TimelineItemBase.vue";
-import User from "@/components/User.vue";
+import User from "@/components/info/User.vue";
 import "bytemd/dist/index.css";
 import RelativeTime from "../RelativeTime.vue";
 import { Issue } from "@/views/issue/Issue.vue";

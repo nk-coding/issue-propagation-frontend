@@ -1,6 +1,5 @@
 <template>
-    <svg viewBox="0 0 100 100" preserve-aspect-ratio="">
-        <path :d="issue.type.iconPath" :fill="iconFill" />
+    <IssueTypeIcon :path="issue.type.iconPath" :fill="iconFill">
         <polygon
             v-if="issue.incomingRelations.totalCount > 0"
             fill="rgb(var(--v-theme-issue-incoming))"
@@ -13,12 +12,13 @@
             points="24 11 24 21 31 16"
             transform="scale(3.125)"
         ></polygon>
-    </svg>
+    </IssueTypeIcon>
 </template>
 <script setup lang="ts">
 import { DefaultIssueIconInfoFragment } from "@/graphql/generated";
 import { computed } from "vue";
 import { PropType } from "vue";
+import IssueTypeIcon from "./IssueTypeIcon.vue";
 
 const props = defineProps({
     issue: {

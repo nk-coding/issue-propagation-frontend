@@ -4,20 +4,26 @@ import { useAppStore } from "@/store/app";
 
 export function useClient() {
     const store = useAppStore();
-    // remove demo code
-    if (!store.isLoggedIn) {
-        store.loginDemoUser();
+    const client = new GraphQLClient("/api/graphql");
+
+    function setHeaders() {
+        const headers: Record<string, string> = {};
+        if (store.token) {
+            headers.Authorization = `Bearer ${store.token}`;
+        }
+        client.setHeaders(headers);
     }
 
-    const headers: Record<string, string> = {};
-    if (store.token) {
-        headers.Authorization = `Bearer ${store.token}`;
+    // remove demo code
+    if (!store.token) {
+        store.loginDemoUser().then(() => {
+            setHeaders();
+        });
+    } else {
+        setHeaders();
     }
-    return getSdk(
-        new GraphQLClient("/api/graphql", {
-            headers
-        })
-    );
+
+    return getSdk(client);
 }
 
 export type Client = ReturnType<typeof useClient>;

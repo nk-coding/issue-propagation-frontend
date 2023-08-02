@@ -1,0 +1,6 @@
+fragment DefaultIssueTypeInfo on IssueType {
+    id
+    name
+    description
+    iconPath
+}

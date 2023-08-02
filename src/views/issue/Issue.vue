@@ -38,9 +38,71 @@
                 />
                 <div class="pt-3" />
             </div>
-            <v-sheet class="sidebar ml-8 mr-3 mb-3" color="surface-container-high" rounded="xl">
-                Hello world
-                <div style="height: 500px" class="ma-5">content placeholder</div>
+            <v-sheet class="sidebar ml-8 mr-3 mb-3" color="surface-container" rounded="xl">
+                <EditableCompartment name="Type" :editable="!!issue.manageIssues">
+                    <template #display>
+                        <IssueType :type="issue.type" />
+                    </template>
+                </EditableCompartment>
+                <v-divider />
+                <EditableCompartment name="State" :editable="!!issue.manageIssues">
+                    <template #display>
+                        <IssueState :state="issue.state" />
+                    </template>
+                </EditableCompartment>
+                <v-divider />
+                <EditableCompartment name="Labels" :editable="!!issue.manageIssues">
+                    <template #display>
+                        <Label v-for="label in labels" :label="label" />
+                    </template>
+                    <template #edit>
+                        <div v-for="label in labels">
+                            <ListItem :title="label.name" :subtitle="label.description">
+                                <template #prepend>
+                                    <v-icon :color="label.color" class="mr-2"> mdi-circle </v-icon>
+                                </template>
+                                <template #append>
+                                    <IconButton @click="() => removeLabel(label.id)">
+                                        <v-icon>mdi-close</v-icon>
+                                    </IconButton>
+                                </template>
+                            </ListItem>
+                            <v-divider />
+                        </div>
+                        <FetchingAutocomplete
+                            :fetch="searchLabels"
+                            :dependencies="[labels]"
+                            variant="outlined"
+                            density="comfortable"
+                            class="mt-3 mb-n3"
+                            label="Add label"
+                            autofocus
+                            auto-select-first
+                            item-title="name"
+                            item-value="id"
+                            multiple
+                            v-model="addedLabels"
+                        >
+                            <template #item="{ props, item: label }">
+                                <v-list-item :title="label.raw.name" :subtitle="label.raw.description" v-bind="props">
+                                    <template #prepend>
+                                        <v-icon :color="label.raw.color" class="mr-2"> mdi-circle </v-icon>
+                                    </template>
+                                </v-list-item>
+                            </template>
+                        </FetchingAutocomplete>
+                    </template>
+                </EditableCompartment>
+                <v-divider />
+                <EditableCompartment name="Assignees" :editable="!!issue.manageIssues">
+                    <template #display>
+                        <Assignment
+                            v-for="assignment in issue.assignments.nodes"
+                            :assignment="assignment"
+                            class="d-block"
+                        />
+                    </template>
+                </EditableCompartment>
             </v-sheet>
         </div>
     </div>
@@ -52,16 +114,23 @@ import { useRoute } from "vue-router";
 import { useAsyncState } from "@vueuse/core";
 import TimelineItem from "@/components/timeline/TimelineItem";
 import IssueIcon from "@/components/IssueIcon.vue";
-import User from "@/components/User.vue";
+import User from "@/components/info/User.vue";
 import RelativeTime from "@/components/RelativeTime.vue";
 import { provide } from "vue";
 import { withErrorMessage } from "@/util/withErrorMessage";
 import TimelineBreak from "@/components/timeline/TimelineBreak.vue";
 import { useAppStore } from "@/store/app";
 import Comment from "@/components/timeline/Comment.vue";
-import { reactive } from "vue";
 import { TimelineItemType } from "@/components/timeline/TimelineItemBase.vue";
 import { nextTick } from "vue";
+import EditableCompartment from "@/components/EditableCompartment.vue";
+import Label from "@/components/info/Label.vue";
+import IssueState from "@/components/info/IssueState.vue";
+import IssueType from "@/components/info/IssueType.vue";
+import Assignment from "@/components/info/Assignment.vue";
+import ListItem from "@/components/ListItem.vue";
+import FetchingAutocomplete from "@/components/FetchingAutocomplete.vue";
+import { DefaultLabelInfoFragment } from "@/graphql/generated";
 
 export type Issue = NodeReturnType<"getIssue", "Issue">;
 
@@ -71,12 +140,15 @@ const store = useAppStore();
 const issueId = computed(() => route.params.issue as string);
 const selectedItem = computed(() => route.query.item as string | undefined);
 
-const { state: issue, isReady } = useAsyncState(async () => {
-    const res = await withErrorMessage(() => client.getIssue({ id: issueId.value }), "Error loading issue");
-    return res.node as Issue;
-}, null);
+const { state: issue, isReady } = useAsyncState(
+    async () => {
+        const res = await withErrorMessage(() => client.getIssue({ id: issueId.value }), "Error loading issue");
+        return res.node as Issue;
+    },
+    null,
+    { shallow: false }
+);
 
-const timeline = reactive<TimelineItemType<any>[]>([]);
 const answers = ref<string | null>(null);
 const newCommentItem = computed(() => {
     return {
@@ -86,21 +158,17 @@ const newCommentItem = computed(() => {
         answers: answers.value ? { id: answers.value } : undefined
     } as TimelineItemType<"IssueComment">;
 });
-const newComment = ref<any>(null);
+const newComment = ref<InstanceType<typeof Comment> | null>(null);
 
 const itemElementLookup = new Map<string, any>();
 
 provide("issue", issue);
 
-watch(isReady, () => {
-    if (isReady.value) {
-        timeline.splice(0, timeline.length);
-        timeline.push(...issue.value!.timelineItems.nodes);
-    }
-});
+const timeline = computed(() => issue.value!.timelineItems.nodes);
+const labels = computed(() => issue.value!.labels.nodes);
 
 function addComment(comment: TimelineItemType<"IssueComment">) {
-    timeline.push(comment);
+    timeline.value.push(comment);
     answers.value = null;
 }
 
@@ -127,9 +195,48 @@ watch([isReady, selectedItem], async ([newIsReady], [oldIsReady]) => {
 });
 
 function updateItem(item: TimelineItemType<any>) {
-    const index = timeline.findIndex((i) => i.id == item.id);
+    const index = timeline.value.findIndex((i) => i.id == item.id);
     if (index != -1) {
-        timeline.splice(index, 1, item);
+        timeline.value.splice(index, 1, item);
+    }
+}
+
+async function searchLabels(filter: string, count: number): Promise<DefaultLabelInfoFragment[]> {
+    const searchedIssue = await withErrorMessage(async () => {
+        const res = await client.searchLabels({ issue: issueId.value, filter, count });
+        return res.node as NodeReturnType<"searchLabels", "Issue">;
+    }, "Error searching labels");
+    const searchedLabels = new Map(
+        searchedIssue.trackables.nodes.flatMap((trackable) => trackable.labels.nodes.map((label) => [label.id, label]))
+    );
+    const currentLabels = new Set(labels.value.map((label) => label.id));
+    return [...searchedLabels.values()].filter((label) => !currentLabels.has(label.id));
+}
+
+const addedLabels = ref<string[]>([]);
+watch(addedLabels, async (newLabels) => {
+    if (newLabels.length > 0) {
+        for (const labelId of newLabels) {
+            const event = await withErrorMessage(async () => {
+                const res = await client.addLabelToIssue({ issue: issueId.value, label: labelId });
+                return res.addLabelToIssue!.addedLabelEvent!;
+            }, "Error adding label to issue");
+            timeline.value.push(event);
+            labels.value.push(event.addedLabel!);
+        }
+        addedLabels.value = [];
+    }
+});
+
+async function removeLabel(labelId: string) {
+    const event = await withErrorMessage(async () => {
+        const res = await client.removeLabelFromIssue({ issue: issueId.value, label: labelId });
+        return res.removeLabelFromIssue!.removedLabelEvent!;
+    }, "Error removing label from issue");
+    timeline.value.push(event);
+    const index = labels.value.findIndex((label) => label.id == labelId);
+    if (index != -1) {
+        labels.value.splice(index, 1);
     }
 }
 </script>
@@ -152,7 +259,7 @@ function updateItem(item: TimelineItemType<any>) {
     position: sticky;
     top: 0;
     right: 0;
-    min-width: min(40%, 300px);
+    width: min(40%, 350px);
     max-height: calc(100% - 12px);
     height: fit-content;
     overflow-y: auto;

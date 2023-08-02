@@ -68,7 +68,6 @@ query getIssue($id: ID!) {
             }
             labels {
                 nodes {
-                    id
                     ...DefaultLabelInfo
                 }
             }
@@ -79,21 +78,17 @@ query getIssue($id: ID!) {
             }
             assignments {
                 nodes {
-                    id
                     ...AssignmentTimelineInfo
                 }
             }
             type {
-                id
-                ...IssueTypeTimelineInfo
+                ...DefaultIssueTypeInfo
             }
             state {
-                id
-                ...IssueStateTimelineInfo
+                ...DefaultIssueStateInfo
             }
             priority {
-                id
-                ...IssuePriorityTimelineInfo
+                ...DefaultIssuePriorityInfo
             }
             estimatedTime
             spentTime

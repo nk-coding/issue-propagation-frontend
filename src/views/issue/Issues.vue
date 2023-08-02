@@ -55,9 +55,9 @@ import PaginatedList, { ItemManager } from "@/components/PaginatedList.vue";
 import ListItem from "@/components/ListItem.vue";
 import { IssueOrderField, OrderDirection } from "@/graphql/generated";
 import RelativeTime from "@/components/RelativeTime.vue";
-import User from "@/components/User.vue";
+import User from "@/components/info/User.vue";
 import IssueIcon from "@/components/IssueIcon.vue";
-import Label from "@/components/Label.vue";
+import Label from "@/components/info/Label.vue";
 import UserStack from "@/components/UserStack.vue";
 
 type Trackable = NodeReturnType<"getIssues", "Component">;

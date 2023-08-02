@@ -1,5 +1,38 @@
 fragment DefaultLabelInfo on Label {
+    id
     name
     description
     color
+}
+
+query searchLabels($issue: ID!, $filter: String!, $count: Int!) {
+    node(id: $issue) {
+        ... on Issue {
+            trackables {
+                nodes {
+                    labels(filter: { name: { contains: $filter } }, first: $count, orderBy: { field: NAME }) {
+                        nodes {
+                            ...DefaultLabelInfo
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+mutation addLabelToIssue($issue: ID!, $label: ID!) {
+    addLabelToIssue(input: { issue: $issue, label: $label }) {
+        addedLabelEvent {
+            ...AddedLabelEventTimelineInfo
+        }
+    }
+}
+
+mutation removeLabelFromIssue($issue: ID!, $label: ID!) {
+    removeLabelFromIssue(input: { issue: $issue, label: $label }) {
+        removedLabelEvent {
+            ...RemovedLabelEventTimelineInfo
+        }
+    }
 }

@@ -13,13 +13,13 @@ export default createVuetify({
     theme: {
         themes: {
             light: {
-                colors: generateThemeColors("#00ffff", false),
+                colors: generateThemeColors("#2196f3", false),
                 variables: {
                     ...themeIndependentVariables
                 }
             },
             dark: {
-                colors: generateThemeColors("#00ffff", true),
+                colors: generateThemeColors("#2196f3", true),
                 variables: {
                     ...themeIndependentVariables
                 }
@@ -29,7 +29,8 @@ export default createVuetify({
     },
     blueprint: md3,
     aliases: {
-        FAB: VBtn
+        FAB: VBtn,
+        IconButton: VBtn
     },
     defaults: {
         VTextField: {
@@ -45,6 +46,12 @@ export default createVuetify({
             height: "56px",
             minWidth: 0,
             rounded: "lger"
+        },
+        IconButton: {
+            icon: true,
+            variant: "text",
+            color: "tertiary",
+            density: "comfortable"
         }
     }
 });

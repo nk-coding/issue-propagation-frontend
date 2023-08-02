@@ -48,4 +48,8 @@ function confirm() {
     dialog.value = false;
     emit("confirm");
 }
+
+defineExpose({
+    dialog
+});
 </script>

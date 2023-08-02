@@ -1,0 +1,6 @@
+fragment DefaultIssuePriorityInfo on IssuePriority {
+    id
+    name
+    description
+    value
+}
