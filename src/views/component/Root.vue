@@ -18,12 +18,15 @@ import { useAsyncState } from "@vueuse/core";
 import { computed } from "vue";
 import { RouteLocationRaw, useRoute } from "vue-router";
 import { withErrorMessage } from "@/util/withErrorMessage";
+import { inject } from "vue";
+import { eventBusKey } from "@/util/keys";
 
 type Component = NodeReturnType<"getComponent", "Component">;
 
 const client = useClient();
 const route = useRoute();
 const componentId = computed(() => route.params.trackable as string);
+const eventBus = inject(eventBusKey);
 
 const { state: component, isReady } = useAsyncState(async () => {
     const res = await withErrorMessage(() => client.getComponent({ id: componentId.value }), "Error loading component");
@@ -87,7 +90,9 @@ const rightSidebarItems = computed(() => {
                     icon: "mdi-plus",
                     description: `Create issue`,
                     color: "secondary",
-                    onClick: () => {}
+                    onClick: () => {
+                        eventBus?.emit("create-issue", undefined);
+                    }
                 }
             ]
         ];

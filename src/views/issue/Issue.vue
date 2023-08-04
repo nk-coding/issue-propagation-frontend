@@ -191,6 +191,7 @@ import FetchingAutocomplete from "@/components/FetchingAutocomplete.vue";
 import { DefaultIssueStateInfoFragment, DefaultLabelInfoFragment } from "@/graphql/generated";
 import { DefaultIssueTypeInfoFragment } from "@/graphql/generated";
 import IssueTypeIcon from "@/components/IssueTypeIcon.vue";
+import { issueKey } from "@/util/keys";
 
 export type Issue = NodeReturnType<"getIssue", "Issue">;
 
@@ -222,7 +223,7 @@ const newComment = ref<InstanceType<typeof Comment> | null>(null);
 
 const itemElementLookup = new Map<string, any>();
 
-provide("issue", issue);
+provide(issueKey, issue);
 
 const timeline = computed(() => issue.value!.timelineItems.nodes);
 const labels = computed(() => issue.value!.labels.nodes);

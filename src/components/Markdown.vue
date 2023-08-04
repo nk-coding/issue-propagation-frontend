@@ -18,6 +18,7 @@ import { ref, watch } from "vue";
 import "codemirror/theme/midnight.css";
 import { useTheme } from "vuetify/lib/framework.mjs";
 import { computed } from "vue";
+import "bytemd/dist/index.css";
 
 const props = defineProps({
     modelValue: {

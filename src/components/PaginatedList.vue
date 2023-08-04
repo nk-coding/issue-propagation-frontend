@@ -33,6 +33,7 @@
                 <v-pagination v-model="currentPage" :length="pageCount" class="pagination"></v-pagination>
             </div>
         </div>
+        <slot/>
     </div>
 </template>
 <script setup lang="ts" generic="T, S extends string">

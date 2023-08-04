@@ -108,7 +108,9 @@ function updateColorMode() {
 
 updateColorMode();
 </script>
-<style scoped>
+<style scoped lang="scss">
+@use "@/styles/settings.scss";
+
 .root {
     width: 100%;
     height: 100%;
@@ -118,7 +120,7 @@ updateColorMode();
 .left-bar,
 .right-bar,
 .side-bar-width {
-    width: 80px;
+    width: settings.$side-bar-width;
 }
 
 .left-bar,
@@ -137,9 +139,5 @@ updateColorMode();
 
 .main-sheet {
     overflow: hidden;
-}
-
-.full-width {
-    width: 100%;
 }
 </style>

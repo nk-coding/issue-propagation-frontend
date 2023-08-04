@@ -35,7 +35,8 @@ export default createVuetify({
     defaults: {
         VTextField: {
             variant: "outlined",
-            density: "comfortable"
+            density: "comfortable",
+            color: "primary"
         },
         VSelect: {
             variant: "outlined",

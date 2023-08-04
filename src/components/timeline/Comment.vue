@@ -149,18 +149,17 @@
     </TimelineItemBase>
 </template>
 <script setup lang="ts">
-import { PropType, Ref, inject, ref, computed } from "vue";
+import { PropType, inject, ref, computed } from "vue";
 import TimelineItemBase, { TimelineItemType } from "./TimelineItemBase.vue";
 import User from "@/components/info/User.vue";
-import "bytemd/dist/index.css";
 import RelativeTime from "../RelativeTime.vue";
-import { Issue } from "@/views/issue/Issue.vue";
 import Markdown from "@/components/Markdown.vue";
 import { useClient } from "@/graphql/client";
 import { withErrorMessage } from "@/util/withErrorMessage";
 import ConfirmationDialog from "@/components/ConfirmationDialog.vue";
 import { markdownToText } from "@/util/markdownToText";
 import { useRouter } from "vue-router";
+import { issueKey } from "@/util/keys";
 
 type Comment = TimelineItemType<"IssueComment"> | TimelineItemType<"Body">;
 
@@ -185,7 +184,7 @@ const emit = defineEmits<{
     (event: "resetAnswers"): void;
 }>();
 
-const issue = inject<Ref<Issue | null>>("issue");
+const issue = inject(issueKey);
 const menuOpen = ref(false);
 const editMode = ref(props.newComment);
 const itemBody = ref(props.item.body);

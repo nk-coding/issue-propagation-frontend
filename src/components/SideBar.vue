@@ -53,9 +53,6 @@ const props = defineProps({
 });
 </script>
 <style scoped>
-.full-width {
-    width: 100%;
-}
 .fab-icon {
     --v-icon-size-multiplier: 1;
 }

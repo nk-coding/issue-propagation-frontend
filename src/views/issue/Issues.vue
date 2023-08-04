@@ -45,11 +45,27 @@
                 </template>
             </ListItem>
         </template>
+        <v-dialog v-model="createIssueDialog" persistent width="auto">
+            <v-card color="surface-elevated-3" rounded="lger" class="pa-3 create-issue-dialog">
+                <v-card-title class="p4-3">Create issue</v-card-title>
+                <div class="pa-4">
+                    <v-text-field v-model="newIssueTitle" label="Title" color="primary"/>
+                    <SimpleField :model-value="newIssueBody" variant="outlined" label="Body" color="primary" class="markdown-field">
+                        <Markdown v-model="newIssueBody" edit-mode class="full-width ma-2"/>
+                    </SimpleField>
+                </div>
+                <v-card-actions>
+                    <v-spacer />
+                    <v-btn variant="text" color="" @click="cancelCreateIssue">Cancel</v-btn>
+                    <v-btn variant="text" color="primary" @click="createIssue">Create issue</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
     </PaginatedList>
 </template>
 <script lang="ts" setup>
 import { NodeReturnType, useClient } from "@/graphql/client";
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import PaginatedList, { ItemManager } from "@/components/PaginatedList.vue";
 import ListItem from "@/components/ListItem.vue";
@@ -59,6 +75,9 @@ import User from "@/components/info/User.vue";
 import IssueIcon from "@/components/IssueIcon.vue";
 import Label from "@/components/info/Label.vue";
 import UserStack from "@/components/UserStack.vue";
+import Markdown from "@/components/Markdown.vue";
+import { onEvent } from "@/util/eventBus";
+import SimpleField from "@/components/SimpleField.vue";
 
 type Trackable = NodeReturnType<"getIssues", "Component">;
 type Issue = Trackable["issues"]["nodes"][0];
@@ -74,6 +93,13 @@ const sortFields = {
     Title: IssueOrderField.Title,
     Updated: IssueOrderField.LastUpdatedAt
 };
+
+const createIssueDialog = ref(false);
+const newIssueTitle = ref("");
+const newIssueBody = ref("");
+const newIssueTemplate = ref<undefined | string>(undefined);
+const newIssueType = ref<undefined | string>(undefined);
+const newIssueState = ref<undefined | string>(undefined);
 
 const itemManager: ItemManager<Issue, keyof typeof sortFields> = {
     filterLocal: function (item: Issue, filter: string): boolean {
@@ -107,9 +133,21 @@ function selectIssue(issue: any) {
         params: { issue: issue.id, trackable: trackableId.value }
     });
 }
+
+onEvent("create-issue", () => {
+    createIssueDialog.value = true;
+});
+
+async function createIssue() {
+    createIssueDialog.value = false;
+}
+
+function cancelCreateIssue() {
+    createIssueDialog.value = false;
+}
 </script>
 <style scoped lang="scss">
-@use "@/styles/settings";
+@use "@/styles/settings.scss";
 .icon-container {
     min-width: settings.$icon-with-number-width;
 }
@@ -118,5 +156,13 @@ function selectIssue(issue: any) {
 }
 .user-stack-container {
     background: transparent;
+}
+
+.create-issue-dialog {
+    width: min(1000px, calc(100vw - 3 * settings.$side-bar-width));
+}
+
+:deep(.markdown-field .v-field-label) {
+    top: 65px;
 }
 </style>

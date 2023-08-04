@@ -3,7 +3,13 @@
 </template>
 
 <script lang="ts" setup>
-//
+import mitt from 'mitt';
+import { Events } from './util/useEventBus';
+import { provide } from 'vue';
+import { eventBusKey } from './util/keys';
+
+const eventBus = mitt<Events>()
+provide(eventBusKey, eventBus)
 </script>
 <style>
 body,
@@ -57,4 +63,9 @@ html,
 .full-opacity {
     opacity: 1 !important;
 }
+
+.full-width {
+    width: 100%;
+}
 </style>
+./util/eventBus
