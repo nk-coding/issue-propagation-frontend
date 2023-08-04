@@ -1,4 +1,14 @@
-import { Scheme, argbFromHex, themeFromSourceColor, hexFromArgb } from "@material/material-color-utilities";
+import {
+    Scheme,
+    argbFromHex,
+    themeFromSourceColor,
+    hexFromArgb,
+    alphaFromArgb,
+    redFromArgb,
+    greenFromArgb,
+    blueFromArgb,
+    argbFromRgb
+} from "@material/material-color-utilities";
 
 interface ThemeColors {
     [key: string]: string;
@@ -46,6 +56,23 @@ const surfaceColorMappings: [string, number, number][] = [
     ["on-inverse-surface", 95, 20]
 ];
 
+const elevationMappings = [1, 3, 6, 8, 12];
+
+function splitColor(color: number): [number, number, number, number] {
+    return [alphaFromArgb(color), redFromArgb(color), greenFromArgb(color), blueFromArgb(color)];
+}
+
+function calculateElevatedSurfaceColor(surface: number, tint: number, elevation: number): number {
+    const [_alpha, red, green, blue] = splitColor(surface);
+    const [_tintAlpha, tintRed, tintGreen, tintBlue] = splitColor(tint);
+    const elevationDp = elevationMappings[elevation - 1];
+    const tintAlpha = (4.5 * Math.log(elevationDp + 1) + 2) / 100;
+    const newRed = Math.round((1 - tintAlpha) * red + tintAlpha * tintRed);
+    const newGreen = Math.round((1 - tintAlpha) * green + tintAlpha * tintGreen);
+    const newBlue = Math.round((1 - tintAlpha) * blue + tintAlpha * tintBlue);
+    return argbFromRgb(newRed, newGreen, newBlue);
+}
+
 export function generateThemeColors(color: string, dark: boolean): ThemeColors {
     const theme = themeFromSourceColor(argbFromHex(color));
     const scheme = dark ? theme.schemes.dark : theme.schemes.light;
@@ -57,6 +84,17 @@ export function generateThemeColors(color: string, dark: boolean): ThemeColors {
         const value = dark ? darkValue : lightValue;
         colors[key] = hexFromArgb(theme.palettes.neutral.tone(value));
     });
+
+    const surfaceValue = dark ? 6 : 98;
+    const surface = theme.palettes.neutral.tone(surfaceValue);
+    const tintValue = dark ? 80 : 40;
+    const tint = theme.palettes.primary.tone(tintValue);
+
+    for (let i = 1; i <= 5; i++) {
+        colors[`surface-elevated-${i}`] = hexFromArgb(calculateElevatedSurfaceColor(surface, tint, i));
+        colors[`on-surface-elevated-${i}`] = colors[`on-surface`];
+    }
+
     return {
         ...colors,
         ...commonColors

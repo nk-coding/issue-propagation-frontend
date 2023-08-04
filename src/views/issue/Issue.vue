@@ -28,7 +28,7 @@
                 />
                 <TimelineBreak />
                 <Comment
-                    v-if="store.isLoggedIn"
+                    v-if="issue.comment"
                     ref="newComment"
                     :item="newCommentItem"
                     :new-comment="true"

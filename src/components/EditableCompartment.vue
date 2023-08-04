@@ -9,7 +9,7 @@
             'px-4 py-2': editMode,
             'pl-2': !editMode
         }"
-        :color="editMode ? 'primary-container' : 'surface-container'"
+        :color="editMode ? 'surface-elevated-3' : 'surface-container'"
         rounded="xl"
         :elevation="editMode ? 5 : 0"
         ref="compartmentSheet"
