@@ -4,18 +4,22 @@
             <v-form @submit.prevent="createIssue">
                 <v-card-title class="p4-3">Create issue</v-card-title>
                 <div class="pa-4">
-                    <v-text-field v-bind="title" label="Title" />
-                    <IssueTemplateAutocomplete v-bind="template" />
-                    <IssueTypeAutocomplete
-                        v-bind="type"
-                        :template="template.modelValue"
-                        :disabled="!template.modelValue"
-                    />
-                    <IssueStateAutocomplete
-                        v-bind="state"
-                        :template="template.modelValue"
-                        :disabled="!template.modelValue"
-                    />
+                    <v-text-field v-bind="title" label="Title" class="mb-1" />
+                    <div class="d-flex flex-wrap mx-n2">
+                        <IssueTemplateAutocomplete v-bind="template" class="wrap-input mx-2 mb-1 flex-1-1-0" />
+                        <IssueTypeAutocomplete
+                            v-bind="type"
+                            :template="template.modelValue"
+                            :disabled="!template.modelValue"
+                            class="wrap-input mx-2 mb-1 flex-1-1-0"
+                        />
+                        <IssueStateAutocomplete
+                            v-bind="state"
+                            :template="template.modelValue"
+                            :disabled="!template.modelValue"
+                            class="wrap-input mx-2 mb-1 flex-1-1-0"
+                        />
+                    </div>
                     <SimpleField
                         :model-value="body"
                         variant="outlined"
@@ -28,7 +32,15 @@
                 </div>
                 <v-card-actions>
                     <v-spacer />
-                    <v-btn variant="text" color="" @click="cancelCreateIssue">Cancel</v-btn>
+                    <v-btn variant="text" color="">
+                        Cancel
+                        <ConfirmationDialog
+                            title="Discard issue?"
+                            message="Are you sure you want to discard this issue?"
+                            confirm-text="Discard"
+                            @confirm="cancelCreateIssue"
+                        />
+                    </v-btn>
                     <v-btn variant="text" color="primary" type="submit">Create issue</v-btn>
                 </v-card-actions>
             </v-form>
@@ -49,6 +61,7 @@ import { wrapBinds } from "@/util/vuetifyFormConfig";
 import { withErrorMessage } from "@/util/withErrorMessage";
 import { useClient } from "@/graphql/client";
 import { toTypedSchema } from "@vee-validate/yup";
+import ConfirmationDialog from "./ConfirmationDialog.vue";
 
 const createIssueDialog = ref(false);
 const body = ref("");
@@ -121,6 +134,10 @@ function cancelCreateIssue() {
 @use "@/styles/settings.scss";
 .create-issue-dialog {
     width: min(1000px, calc(100vw - 3 * settings.$side-bar-width));
+}
+
+.wrap-input {
+    min-width: 200px;
 }
 
 :deep(.markdown-field .v-field-label) {

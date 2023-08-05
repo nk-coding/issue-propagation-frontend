@@ -67,5 +67,9 @@ html,
 .full-width {
     width: 100%;
 }
+
+.flex-1-1-0 {
+    flex: 1 1 0 !important;
+}
 </style>
 ./util/eventBus
