@@ -4,7 +4,19 @@
             <v-form @submit.prevent="createIssue">
                 <v-card-title class="p4-3">Create issue</v-card-title>
                 <div class="pa-4">
-                    <v-text-field v-bind="title" label="Title" class="mb-1" />
+                    <div class="d-flex">
+                        <v-card
+                            variant="outlined"
+                            rounded="default"
+                            height="52px"
+                            width="52px"
+                            class="mr-2 icon-container"
+                            v-if="icon"
+                        >
+                            <IssueIcon :issue="icon" class="issue-icon" />
+                        </v-card>
+                        <v-text-field v-bind="title" label="Title" class="mb-1" />
+                    </div>
                     <div class="d-flex flex-wrap mx-n2">
                         <IssueTemplateAutocomplete v-bind="template" class="wrap-input mx-2 mb-1 flex-1-1-0" />
                         <IssueTypeAutocomplete
@@ -12,12 +24,14 @@
                             :template="template.modelValue"
                             :disabled="!template.modelValue"
                             class="wrap-input mx-2 mb-1 flex-1-1-0"
+                            @selected-items="onSelectedTypes"
                         />
                         <IssueStateAutocomplete
                             v-bind="state"
                             :template="template.modelValue"
                             :disabled="!template.modelValue"
                             class="wrap-input mx-2 mb-1 flex-1-1-0"
+                            @selected-items="onSelectedStates"
                         />
                     </div>
                     <SimpleField
@@ -62,10 +76,15 @@ import { withErrorMessage } from "@/util/withErrorMessage";
 import { useClient } from "@/graphql/client";
 import { toTypedSchema } from "@vee-validate/yup";
 import ConfirmationDialog from "./ConfirmationDialog.vue";
+import IssueIcon from "../IssueIcon.vue";
+import { DefaultIssueIconInfoFragment } from "@/graphql/generated";
+import { computed } from "vue";
 
 const createIssueDialog = ref(false);
 const body = ref("");
 const client = useClient();
+const typePath = ref<string | undefined>(undefined);
+const isOpen = ref<boolean | undefined>(undefined);
 
 const emit = defineEmits<{
     (event: "created-issue", issue: { id: string }): void;
@@ -98,6 +117,26 @@ const template = defineBinds("template");
 const type = defineBinds("type");
 const state = defineBinds("state");
 
+const icon = computed<DefaultIssueIconInfoFragment | undefined>(() => {
+    if (typePath.value != undefined && isOpen.value != undefined) {
+        return {
+            type: {
+                iconPath: typePath.value
+            },
+            state: {
+                isOpen: isOpen.value
+            },
+            incomingRelations: {
+                totalCount: 0
+            },
+            outgoingRelations: {
+                totalCount: 0
+            }
+        };
+    }
+    return undefined;
+});
+
 onEvent("create-issue", () => {
     resetForm();
     createIssueDialog.value = true;
@@ -129,6 +168,22 @@ const createIssue = handleSubmit(async (state) => {
 function cancelCreateIssue() {
     createIssueDialog.value = false;
 }
+
+function onSelectedTypes(types: { iconPath: string }[]) {
+    if (types.length > 0) {
+        typePath.value = types[0].iconPath;
+    } else {
+        typePath.value = undefined;
+    }
+}
+
+function onSelectedStates(states: { isOpen: boolean }[]) {
+    if (states.length > 0) {
+        isOpen.value = states[0].isOpen;
+    } else {
+        isOpen.value = undefined;
+    }
+}
 </script>
 <style scoped lang="scss">
 @use "@/styles/settings.scss";
@@ -138,6 +193,16 @@ function cancelCreateIssue() {
 
 .wrap-input {
     min-width: 200px;
+}
+
+.issue-icon {
+    height: 50px;
+    width: 50px;
+    margin: 1px;
+}
+
+.icon-container {
+    color: rgba(var(--v-theme-on-surface), 0.38);
 }
 
 :deep(.markdown-field .v-field-label) {

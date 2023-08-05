@@ -1,5 +1,5 @@
 <template>
-    <FetchingAutocomplete :fetch="searchIssueStates" :dependencies="[template]" label="State" item-title="name">
+    <FetchingAutocomplete :fetch="searchIssueStates" :dependency="template" label="State" item-title="name">
         <template #item="{ props, item }">
             <v-list-item :title="item.raw.name" :subtitle="item.raw.description" v-bind="props">
                 <template #prepend>

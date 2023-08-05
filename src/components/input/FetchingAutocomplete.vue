@@ -4,17 +4,15 @@
         v-model:search="search"
         item-value="id"
         @update:focused="resetSearch"
-        @update:model-value="resetSearch"
+        @update:model-value="selectedElement"
     >
         <template v-for="(_, name) in $slots" v-slot:[name]="slotData">
             <slot :name="name" v-bind="slotData" />
         </template>
     </v-autocomplete>
 </template>
-<script setup lang="ts" generic="T">
-import { onMounted } from "vue";
-import { Ref, watch } from "vue";
-import { PropType, ref } from "vue";
+<script setup lang="ts" generic="T extends { id: string }">
+import { onMounted, nextTick, Ref, watch, ref, PropType } from "vue";
 import { VAutocomplete } from "vuetify/lib/components/index.mjs";
 
 const props = defineProps({
@@ -22,8 +20,8 @@ const props = defineProps({
         type: Function as PropType<(filter: string, count: number) => Promise<T[]>>,
         required: true
     },
-    dependencies: {
-        type: Array as PropType<unknown[]>,
+    dependency: {
+        type: [String, Number, Array, Object],
         required: false,
         default: () => []
     },
@@ -33,6 +31,10 @@ const props = defineProps({
         default: () => []
     }
 });
+
+const emit = defineEmits<{
+    (event: "selected-items", value: T[]): void;
+}>();
 
 const items = ref(props.initialItems) as Ref<T[]>;
 const search = ref<undefined | string>("");
@@ -47,8 +49,8 @@ watch(search, async (search) => {
 });
 
 watch(
-    () => props.dependencies,
-    async () => {
+    () => props.dependency,
+    async (newDep, oldDep) => {
         await updateSearch(search.value ?? "");
     }
 );
@@ -61,6 +63,22 @@ async function updateSearch(search: string) {
 async function resetSearch() {
     updatedModelValue.value = true;
     updateSearch("");
+}
+
+function selectedElement(value: any) {
+    let ids: string[];
+    if (typeof value === "string") {
+        ids = [value];
+    } else if (Array.isArray(value)) {
+        ids = value;
+    } else {
+        ids = [];
+    }
+    emit(
+        "selected-items",
+        items.value.filter((item) => ids.includes(item.id))
+    );
+    resetSearch();
 }
 
 onMounted(async () => {

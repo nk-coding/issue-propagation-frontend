@@ -91,7 +91,7 @@
                         </div>
                         <FetchingAutocomplete
                             :fetch="searchLabels"
-                            :dependencies="[labels]"
+                            :dependency="[labels]"
                             variant="outlined"
                             density="comfortable"
                             class="mt-3 mb-n3"
