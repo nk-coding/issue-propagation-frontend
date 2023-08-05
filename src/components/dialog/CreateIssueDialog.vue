@@ -34,21 +34,16 @@
                             @selected-items="onSelectedStates"
                         />
                     </div>
-                    <SimpleField
-                        :model-value="body"
-                        variant="outlined"
-                        label="Body"
-                        color="primary"
-                        class="markdown-field"
-                    >
-                        <Markdown v-model="body" edit-mode class="full-width ma-2" />
+                    <SimpleField v-bind="body" variant="outlined" label="Body" color="primary" class="markdown-field">
+                        <Markdown v-bind="body" edit-mode class="full-width ma-2" />
                     </SimpleField>
                 </div>
                 <v-card-actions>
                     <v-spacer />
-                    <v-btn variant="text" color="">
+                    <v-btn variant="text" color="" @click="!isDirty && cancelCreateIssue()">
                         Cancel
                         <ConfirmationDialog
+                            v-if="isDirty"
                             title="Discard issue?"
                             message="Are you sure you want to discard this issue?"
                             confirm-text="Discard"
@@ -70,7 +65,7 @@ import { onEvent } from "@/util/eventBus";
 import IssueTypeAutocomplete from "../input/IssueTypeAutocomplete.vue";
 import IssueStateAutocomplete from "../input/IssueStateAutocomplete.vue";
 import * as yup from "yup";
-import { useForm } from "vee-validate";
+import { useForm, useIsFormDirty } from "vee-validate";
 import { wrapBinds } from "@/util/vuetifyFormConfig";
 import { withErrorMessage } from "@/util/withErrorMessage";
 import { useClient } from "@/graphql/client";
@@ -81,7 +76,6 @@ import { DefaultIssueIconInfoFragment } from "@/graphql/generated";
 import { computed } from "vue";
 
 const createIssueDialog = ref(false);
-const body = ref("");
 const client = useClient();
 const typePath = ref<string | undefined>(undefined);
 const isOpen = ref<boolean | undefined>(undefined);
@@ -102,13 +96,15 @@ const schema = toTypedSchema(
         title: yup.string().required().label("Title"),
         template: yup.string().required().label("Template"),
         type: yup.string().required().label("Type"),
-        state: yup.string().required().label("State")
+        state: yup.string().required().label("State"),
+        body: yup.string().label("Body")
     })
 );
 
 const { defineComponentBinds, resetForm, handleSubmit, setValues } = useForm({
     validationSchema: schema
 });
+const isDirty = useIsFormDirty();
 
 const defineBinds = wrapBinds(defineComponentBinds);
 
@@ -116,6 +112,7 @@ const title = defineBinds("title");
 const template = defineBinds("template");
 const type = defineBinds("type");
 const state = defineBinds("state");
+const body = defineBinds("body");
 
 const icon = computed<DefaultIssueIconInfoFragment | undefined>(() => {
     if (typePath.value != undefined && isOpen.value != undefined) {
@@ -153,8 +150,8 @@ const createIssue = handleSubmit(async (state) => {
     const issue = await withErrorMessage(async () => {
         const res = await client.createIssue({
             input: {
-                body: body.value,
                 ...state,
+                body: state.body ?? "",
                 templatedFields: [],
                 trackables: [props.trackable]
             }

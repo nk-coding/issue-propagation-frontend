@@ -122,19 +122,26 @@
                                 </v-card>
                             </div>
                         </v-expand-transition>
-                        <Markdown v-if="!isDeleted" v-model="itemBody" :edit-mode="editMode" class="mt-2 ml-1" />
+                        <Markdown
+                            v-if="!isDeleted"
+                            v-model="itemBody"
+                            @update:model-value="hasChanged = true"
+                            :edit-mode="editMode"
+                            class="mt-2 ml-1"
+                        />
                         <div v-else class="mt-2 ml-1 text-medium-emphasis font-italic">{{ deletedText }}</div>
                         <div v-if="editMode" class="mx-n3">
                             <v-divider />
                             <div class="d-flex justify-end mt-2">
                                 <template v-if="!newComment">
-                                    <v-btn variant="outlined" color="error">
+                                    <v-btn variant="outlined" color="error" @click="!hasChanged && cancelComment()">
                                         Cancel
                                         <ConfirmationDialog
                                             title="Discard changes?"
                                             message="Are you sure you want to discard your changes?"
                                             confirm-text="Discard"
                                             @confirm="cancelComment"
+                                            v-if="hasChanged"
                                         />
                                     </v-btn>
                                     <v-btn color="primary" class="mx-3" @click="saveComment">Save</v-btn>
@@ -188,6 +195,7 @@ const issue = inject(issueKey);
 const menuOpen = ref(false);
 const editMode = ref(props.newComment);
 const itemBody = ref(props.item.body);
+const hasChanged = ref(false);
 const client = useClient();
 const router = useRouter();
 

@@ -82,7 +82,7 @@
                                     <v-icon :color="label.color" class="mr-2"> mdi-circle </v-icon>
                                 </template>
                                 <template #append>
-                                    <IconButton @click="() => removeLabel(label.id)">
+                                    <IconButton @click="removeLabel(label.id)">
                                         <v-icon>mdi-close</v-icon>
                                     </IconButton>
                                 </template>
