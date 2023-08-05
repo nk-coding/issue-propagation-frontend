@@ -42,6 +42,10 @@ export default createVuetify({
             variant: "outlined",
             density: "comfortable"
         },
+        VAutocomplete: {
+            variant: "outlined",
+            density: "comfortable"
+        },
         FAB: {
             width: "56px",
             height: "56px",

@@ -15,6 +15,7 @@
     "@bytemd/vue-next": "^1.21.0",
     "@material/material-color-utilities": "^0.2.7",
     "@mdi/font": "7.0.96",
+    "@vee-validate/yup": "^4.11.1",
     "@vueuse/core": "^10.2.1",
     "axios": "^1.4.0",
     "codemirror": "^5.65.14",
@@ -27,10 +28,12 @@
     "remark": "^14.0.3",
     "roboto-fontface": "*",
     "strip-markdown": "^5.0.1",
+    "vee-validate": "^4.11.1",
     "vue": "^3.2.0",
     "vue-router": "^4.0.0",
     "vuetify": "^3.0.0",
-    "webfontloader": "^1.0.0"
+    "webfontloader": "^1.0.0",
+    "yup": "^1.2.0"
   },
   "devDependencies": {
     "@babel/types": "^7.21.4",

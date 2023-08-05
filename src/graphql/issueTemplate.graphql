@@ -1,0 +1,13 @@
+fragment DefaultIssueTemplateInfo on IssueTemplate {
+    id
+    name
+    description
+}
+
+query searchIssueTemplates($filter: String!, $count: Int!) {
+    issueTemplates(filter: { name: { contains: $filter } }, first: $count, orderBy: { field: NAME }) {
+        nodes {
+            ...DefaultIssueTemplateInfo
+        }
+    }
+}

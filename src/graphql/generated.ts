@@ -18099,6 +18099,7 @@ export type GetIssueQuery = {
                   description: string;
                   value: number;
               } | null;
+              template: { __typename?: "IssueTemplate"; id: string; name: string; description: string };
           }
         | { __typename?: "IssueComment" }
         | { __typename?: "IssuePriority" }
@@ -18241,6 +18242,15 @@ export type DeleteIssueCommentMutation = {
     } | null;
 };
 
+export type CreateIssueMutationVariables = Exact<{
+    input: CreateIssueInput;
+}>;
+
+export type CreateIssueMutation = {
+    __typename?: "Mutation";
+    createIssue?: { __typename?: "CreateIssuePayload"; issue?: { __typename?: "Issue"; id: string } | null } | null;
+};
+
 export type DefaultIssueIconInfoFragment = {
     __typename?: "Issue";
     incomingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
@@ -18266,7 +18276,7 @@ export type DefaultIssueStateInfoFragment = {
 };
 
 export type SearchIssueStatesQueryVariables = Exact<{
-    issue: Scalars["ID"]["input"];
+    template: Scalars["ID"]["input"];
     filter: Scalars["String"]["input"];
     count: Scalars["Int"]["input"];
 }>;
@@ -18317,28 +18327,25 @@ export type SearchIssueStatesQuery = {
         | { __typename?: "InterfaceTemplate" }
         | { __typename?: "IntraComponentDependencyParticipant" }
         | { __typename?: "IntraComponentDependencySpecification" }
-        | {
-              __typename?: "Issue";
-              template: {
-                  __typename?: "IssueTemplate";
-                  issueStates: {
-                      __typename?: "IssueStateConnection";
-                      nodes: Array<{
-                          __typename?: "IssueState";
-                          id: string;
-                          name: string;
-                          description: string;
-                          isOpen: boolean;
-                      }>;
-                  };
-              };
-          }
+        | { __typename?: "Issue" }
         | { __typename?: "IssueComment" }
         | { __typename?: "IssuePriority" }
         | { __typename?: "IssueRelation" }
         | { __typename?: "IssueRelationType" }
         | { __typename?: "IssueState" }
-        | { __typename?: "IssueTemplate" }
+        | {
+              __typename?: "IssueTemplate";
+              issueStates: {
+                  __typename?: "IssueStateConnection";
+                  nodes: Array<{
+                      __typename?: "IssueState";
+                      id: string;
+                      name: string;
+                      description: string;
+                      isOpen: boolean;
+                  }>;
+              };
+          }
         | { __typename?: "IssueType" }
         | { __typename?: "Label" }
         | { __typename?: "OutgoingRelationTypeChangedEvent" }
@@ -18390,6 +18397,26 @@ export type ChangeIssueStateMutation = {
     } | null;
 };
 
+export type DefaultIssueTemplateInfoFragment = {
+    __typename?: "IssueTemplate";
+    id: string;
+    name: string;
+    description: string;
+};
+
+export type SearchIssueTemplatesQueryVariables = Exact<{
+    filter: Scalars["String"]["input"];
+    count: Scalars["Int"]["input"];
+}>;
+
+export type SearchIssueTemplatesQuery = {
+    __typename?: "Query";
+    issueTemplates: {
+        __typename?: "IssueTemplateConnection";
+        nodes: Array<{ __typename?: "IssueTemplate"; id: string; name: string; description: string }>;
+    };
+};
+
 export type DefaultIssueTypeInfoFragment = {
     __typename?: "IssueType";
     id: string;
@@ -18399,7 +18426,7 @@ export type DefaultIssueTypeInfoFragment = {
 };
 
 export type SearchIssueTypesQueryVariables = Exact<{
-    issue: Scalars["ID"]["input"];
+    template: Scalars["ID"]["input"];
     filter: Scalars["String"]["input"];
     count: Scalars["Int"]["input"];
 }>;
@@ -18450,28 +18477,25 @@ export type SearchIssueTypesQuery = {
         | { __typename?: "InterfaceTemplate" }
         | { __typename?: "IntraComponentDependencyParticipant" }
         | { __typename?: "IntraComponentDependencySpecification" }
-        | {
-              __typename?: "Issue";
-              template: {
-                  __typename?: "IssueTemplate";
-                  issueTypes: {
-                      __typename?: "IssueTypeConnection";
-                      nodes: Array<{
-                          __typename?: "IssueType";
-                          id: string;
-                          name: string;
-                          description: string;
-                          iconPath: string;
-                      }>;
-                  };
-              };
-          }
+        | { __typename?: "Issue" }
         | { __typename?: "IssueComment" }
         | { __typename?: "IssuePriority" }
         | { __typename?: "IssueRelation" }
         | { __typename?: "IssueRelationType" }
         | { __typename?: "IssueState" }
-        | { __typename?: "IssueTemplate" }
+        | {
+              __typename?: "IssueTemplate";
+              issueTypes: {
+                  __typename?: "IssueTypeConnection";
+                  nodes: Array<{
+                      __typename?: "IssueType";
+                      id: string;
+                      name: string;
+                      description: string;
+                      iconPath: string;
+                  }>;
+              };
+          }
         | { __typename?: "IssueType" }
         | { __typename?: "Label" }
         | { __typename?: "OutgoingRelationTypeChangedEvent" }
@@ -20353,6 +20377,13 @@ type DefaultUserInfo_ImsUser_Fragment = {
 
 export type DefaultUserInfoFragment = DefaultUserInfo_GropiusUser_Fragment | DefaultUserInfo_ImsUser_Fragment;
 
+export const DefaultIssueTemplateInfoFragmentDoc = gql`
+    fragment DefaultIssueTemplateInfo on IssueTemplate {
+        id
+        name
+        description
+    }
+`;
 export const DefaultUserInfoFragmentDoc = gql`
     fragment DefaultUserInfo on User {
         id
@@ -21155,6 +21186,9 @@ export const GetIssueDocument = gql`
                 priority {
                     ...DefaultIssuePriorityInfo
                 }
+                template {
+                    ...DefaultIssueTemplateInfo
+                }
                 estimatedTime
                 spentTime
                 startDate
@@ -21176,6 +21210,7 @@ export const GetIssueDocument = gql`
     ${DefaultIssueTypeInfoFragmentDoc}
     ${DefaultIssueStateInfoFragmentDoc}
     ${DefaultIssuePriorityInfoFragmentDoc}
+    ${DefaultIssueTemplateInfoFragmentDoc}
 `;
 export const UpdateBodyDocument = gql`
     mutation updateBody($id: ID!, $body: String!) {
@@ -21217,15 +21252,22 @@ export const DeleteIssueCommentDocument = gql`
     }
     ${IssueCommentTimelineInfoFragmentDoc}
 `;
+export const CreateIssueDocument = gql`
+    mutation createIssue($input: CreateIssueInput!) {
+        createIssue(input: $input) {
+            issue {
+                id
+            }
+        }
+    }
+`;
 export const SearchIssueStatesDocument = gql`
-    query searchIssueStates($issue: ID!, $filter: String!, $count: Int!) {
-        node(id: $issue) {
-            ... on Issue {
-                template {
-                    issueStates(filter: { name: { contains: $filter } }, first: $count, orderBy: { field: NAME }) {
-                        nodes {
-                            ...DefaultIssueStateInfo
-                        }
+    query searchIssueStates($template: ID!, $filter: String!, $count: Int!) {
+        node(id: $template) {
+            ... on IssueTemplate {
+                issueStates(filter: { name: { contains: $filter } }, first: $count, orderBy: { field: NAME }) {
+                    nodes {
+                        ...DefaultIssueStateInfo
                     }
                 }
             }
@@ -21243,15 +21285,23 @@ export const ChangeIssueStateDocument = gql`
     }
     ${StateChangedEventTimelineInfoFragmentDoc}
 `;
+export const SearchIssueTemplatesDocument = gql`
+    query searchIssueTemplates($filter: String!, $count: Int!) {
+        issueTemplates(filter: { name: { contains: $filter } }, first: $count, orderBy: { field: NAME }) {
+            nodes {
+                ...DefaultIssueTemplateInfo
+            }
+        }
+    }
+    ${DefaultIssueTemplateInfoFragmentDoc}
+`;
 export const SearchIssueTypesDocument = gql`
-    query searchIssueTypes($issue: ID!, $filter: String!, $count: Int!) {
-        node(id: $issue) {
-            ... on Issue {
-                template {
-                    issueTypes(filter: { name: { contains: $filter } }, first: $count, orderBy: { field: NAME }) {
-                        nodes {
-                            ...DefaultIssueTypeInfo
-                        }
+    query searchIssueTypes($template: ID!, $filter: String!, $count: Int!) {
+        node(id: $template) {
+            ... on IssueTemplate {
+                issueTypes(filter: { name: { contains: $filter } }, first: $count, orderBy: { field: NAME }) {
+                    nodes {
+                        ...DefaultIssueTypeInfo
                     }
                 }
             }
@@ -21465,6 +21515,20 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                 "mutation"
             );
         },
+        createIssue(
+            variables: CreateIssueMutationVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<CreateIssueMutation> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<CreateIssueMutation>(CreateIssueDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "createIssue",
+                "mutation"
+            );
+        },
         searchIssueStates(
             variables: SearchIssueStatesQueryVariables,
             requestHeaders?: GraphQLClientRequestHeaders
@@ -21491,6 +21555,20 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                     }),
                 "changeIssueState",
                 "mutation"
+            );
+        },
+        searchIssueTemplates(
+            variables: SearchIssueTemplatesQueryVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<SearchIssueTemplatesQuery> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<SearchIssueTemplatesQuery>(SearchIssueTemplatesDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "searchIssueTemplates",
+                "query"
             );
         },
         searchIssueTypes(

@@ -3,13 +3,13 @@
 </template>
 
 <script lang="ts" setup>
-import mitt from 'mitt';
-import { Events } from './util/useEventBus';
-import { provide } from 'vue';
-import { eventBusKey } from './util/keys';
+import mitt from "mitt";
+import { Events } from "./util/eventBus";
+import { provide } from "vue";
+import { eventBusKey } from "./util/keys";
 
-const eventBus = mitt<Events>()
-provide(eventBusKey, eventBus)
+const eventBus = mitt<Events>();
+provide(eventBusKey, eventBus);
 </script>
 <style>
 body,

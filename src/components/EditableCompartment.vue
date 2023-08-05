@@ -53,7 +53,7 @@
 </template>
 <script setup lang="ts">
 import { ref } from "vue";
-import ConfirmationDialog from "./ConfirmationDialog.vue";
+import ConfirmationDialog from "./dialog/ConfirmationDialog.vue";
 import { VSheet } from "vuetify/lib/components/index.mjs";
 
 const props = defineProps({

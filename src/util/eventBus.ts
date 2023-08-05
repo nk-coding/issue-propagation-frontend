@@ -3,7 +3,7 @@ import { eventBusKey } from "./keys";
 
 export type Events = {
     "create-issue": undefined;
-}
+};
 
 export function onEvent(event: keyof Events, handler: (event: Events[keyof Events]) => void) {
     const eventBus = inject(eventBusKey);

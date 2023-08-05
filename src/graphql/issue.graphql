@@ -90,6 +90,9 @@ query getIssue($id: ID!) {
             priority {
                 ...DefaultIssuePriorityInfo
             }
+            template {
+                ...DefaultIssueTemplateInfo
+            }
             estimatedTime
             spentTime
             startDate
@@ -129,6 +132,14 @@ mutation deleteIssueComment($id: ID!) {
     deleteIssueComment(input: { id: $id }) {
         issueComment {
             ...IssueCommentTimelineInfo
+        }
+    }
+}
+
+mutation createIssue($input: CreateIssueInput!) {
+    createIssue(input: $input) {
+        issue {
+            id
         }
     }
 }

@@ -156,7 +156,7 @@ import RelativeTime from "../RelativeTime.vue";
 import Markdown from "@/components/Markdown.vue";
 import { useClient } from "@/graphql/client";
 import { withErrorMessage } from "@/util/withErrorMessage";
-import ConfirmationDialog from "@/components/ConfirmationDialog.vue";
+import ConfirmationDialog from "@/components/dialog/ConfirmationDialog.vue";
 import { markdownToText } from "@/util/markdownToText";
 import { useRouter } from "vue-router";
 import { issueKey } from "@/util/keys";
