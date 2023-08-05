@@ -92,6 +92,7 @@
                         <FetchingAutocomplete
                             :fetch="searchLabels"
                             :dependency="[labels]"
+                            v-model="addedLabels"
                             variant="outlined"
                             density="comfortable"
                             class="mt-3 mb-n3"
@@ -102,7 +103,6 @@
                             item-value="id"
                             multiple
                             menu
-                            v-model="addedLabels"
                         >
                             <template #item="{ props, item: label }">
                                 <v-list-item :title="label.raw.name" :subtitle="label.raw.description" v-bind="props">

@@ -1,5 +1,6 @@
 <template>
     <v-sheet
+        ref="compartmentSheet"
         v-click-outside="{
             handler: onClickOutside,
             closeConditional: () => !closeHierarchy
@@ -12,7 +13,6 @@
         :color="editMode ? 'surface-elevated-3' : 'surface-container'"
         rounded="xl"
         :elevation="editMode ? 5 : 0"
-        ref="compartmentSheet"
     >
         <div class="d-flex align-center text-subtitle-2 title">
             {{ name }}
@@ -30,7 +30,6 @@
         <v-overlay
             v-if="closeHierarchy"
             :model-value="editMode"
-            @click:outside="onClickOutside"
             contained
             persistent
             :close-on-back="false"
@@ -39,14 +38,15 @@
             :scrim="false"
             :transition="undefined"
             class="pseudo-overlay"
+            @click:outside="onClickOutside"
         >
             <div class="pseudo-overlay-content"></div>
         </v-overlay>
         <ConfirmationDialog
+            ref="confirmationDialog"
             title="Discard changes"
             message="Discard unsaved changes?"
             :activator="undefined"
-            ref="confirmationDialog"
             @confirm="closeEditMode"
         />
     </v-sheet>

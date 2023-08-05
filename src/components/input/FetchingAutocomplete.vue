@@ -1,12 +1,12 @@
 <template>
     <v-autocomplete
-        :items="items"
         v-model:search="search"
+        :items="items"
         item-value="id"
         @update:focused="resetSearch"
         @update:model-value="selectedElement"
     >
-        <template v-for="(_, name) in $slots" v-slot:[name]="slotData">
+        <template v-for="(_, name) in $slots" #[name]="slotData">
             <slot :name="name" v-bind="slotData" />
         </template>
     </v-autocomplete>

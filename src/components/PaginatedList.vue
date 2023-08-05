@@ -25,7 +25,7 @@
         <div class="list-container flex-grow-1 px-3">
             <div v-for="(item, index) in currentItems">
                 <v-divider v-if="index != 0" />
-                <v-card variant="text" rounded="0" @click="$emit('itemSelected', item)" class="px-3">
+                <v-card variant="text" rounded="0" class="px-3" @click="$emit('itemSelected', item)">
                     <slot name="item" :item="item" />
                 </v-card>
             </div>

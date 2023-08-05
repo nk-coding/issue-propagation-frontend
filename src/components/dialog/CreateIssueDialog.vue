@@ -6,12 +6,12 @@
                 <div class="pa-4">
                     <div class="d-flex">
                         <v-card
+                            v-if="icon"
                             variant="outlined"
                             rounded="default"
                             height="52px"
                             width="52px"
                             class="mr-2 icon-container"
-                            v-if="icon"
                         >
                             <IssueIcon :issue="icon" class="issue-icon" />
                         </v-card>

@@ -1,10 +1,10 @@
 <template>
     <v-field
-        @focusin="focused = true"
-        @focusout="focused = false"
         :active="focused || !!modelValue"
         :focused="focused"
         :model-value="'test'"
+        @focusin="focused = true"
+        @focusout="focused = false"
     >
         <slot />
     </v-field>

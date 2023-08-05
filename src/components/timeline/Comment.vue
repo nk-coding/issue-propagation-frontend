@@ -125,9 +125,9 @@
                         <Markdown
                             v-if="!isDeleted"
                             v-model="itemBody"
-                            @update:model-value="hasChanged = true"
                             :edit-mode="editMode"
                             class="mt-2 ml-1"
+                            @update:model-value="hasChanged = true"
                         />
                         <div v-else class="mt-2 ml-1 text-medium-emphasis font-italic">{{ deletedText }}</div>
                         <div v-if="editMode" class="mx-n3">
@@ -137,11 +137,11 @@
                                     <v-btn variant="outlined" color="error" @click="!hasChanged && cancelComment()">
                                         Cancel
                                         <ConfirmationDialog
+                                            v-if="hasChanged"
                                             title="Discard changes?"
                                             message="Are you sure you want to discard your changes?"
                                             confirm-text="Discard"
                                             @confirm="cancelComment"
-                                            v-if="hasChanged"
                                         />
                                     </v-btn>
                                     <v-btn color="primary" class="mx-3" @click="saveComment">Save</v-btn>
