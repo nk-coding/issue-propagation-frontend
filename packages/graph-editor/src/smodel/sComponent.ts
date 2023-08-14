@@ -19,8 +19,8 @@ export class SComponent extends SIssueAffected implements Component, LinearAnima
                 this.style.shape,
                 {
                     ...label.size,
-                    x: 0,
-                    y: 0
+                    x: this.x - label.size.width / 2,
+                    y: this.y - label.size.height / 2
                 },
                 this.style
             );

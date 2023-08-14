@@ -5,6 +5,7 @@ import { SComponent } from "../smodel/sComponent";
 import { SLabel } from "../smodel/sLabel";
 import { LineEngine } from "../line/engine/lineEngine";
 import { Math2D } from "../line/math";
+import { wrapForeignElement } from "./util";
 
 @injectable()
 export class ComponentView implements IView {
@@ -21,18 +22,17 @@ export class ComponentView implements IView {
         const shape = model.shape;
         const component = svg(
             "g",
-            {
-                attrs: {
-                    transform: `translate(${shape.innerBounds.x},${shape.innerBounds.y})`
-                }
-            },
+            null,
             svg("path", {
                 attrs: {
-                    d: LineEngine.DEFAULT.toPathString(shape.outline, {x: 0, y: 0}),
+                    d: LineEngine.DEFAULT.toPathString(shape.outline, { x: 0, y: 0 }),
                     ...model.generateShapeAttrs()
                 }
             }),
-            context.renderElement(nameLabel!),
+            wrapForeignElement(context.renderElement(nameLabel!), {
+                x: model.x - shape.innerBounds.width / 2,
+                y: model.y - shape.innerBounds.height / 2
+            })
         );
         return svg("g", null, component, ...interfaces);
     }

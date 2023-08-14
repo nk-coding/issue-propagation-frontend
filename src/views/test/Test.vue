@@ -6,21 +6,20 @@
         :left-sidebar-items="leftSidebarItems"
     >
         <template #content>
-            <div id="graph-editor"/>
+            <GraphEditor :graph="graph" v-model:layout="layout" />
         </template>
     </BaseLayout>
 </template>
 
 <script lang="ts" setup>
-import "reflect-metadata";
 import BaseLayout from "@/components/BaseLayout.vue";
 import PaginatedList, { ItemManager } from "@/components/PaginatedList.vue";
 import { SideBarItem } from "@/components/SideBar.vue";
 import { useAppStore } from "@/store/app";
-import { GraphModelSource, createContainer } from "@gropius/graph-editor";
+import { Graph, GraphLayout, GraphModelSource, createContainer } from "@gropius/graph-editor";
 import { ref } from "vue";
 import { reactive } from "vue";
-import { TYPES } from "sprotty";
+import GraphEditor from "@/components/GraphEditor.vue";
 
 const store = useAppStore();
 
@@ -108,40 +107,74 @@ function showError() {
     store.pushError(`Error ${errorCounter.value++}`);
 }
 
-class ModelSource extends GraphModelSource {
-
-}
-
-const container = createContainer("graph-editor");
-container.bind(ModelSource).toSelf().inSingletonScope();
-container.bind(TYPES.ModelSource).toService(ModelSource);
-const modelSource = container.get(ModelSource);
-modelSource.updateGraph({
-    graph: {
-        components: [
-            {
-                id: "1",
-                name: "Component 1",
-                style: {
-                    shape: "ellipse",
-                    fill: {
-                        color: "#00ffff"
-                    }
+const graph = ref<Graph>({
+    components: [
+        {
+            id: "1",
+            name: "Component 1",
+            style: {
+                shape: "circle",
+                fill: {
+                    color: "#00ffff"
                 },
-                interfaces: [],
-                issueTypes: []
-            }
-        ],
-        relations: [],
-        issueRelations: []
+                stroke: {
+                    color: "green",
+                    width: 5,
+                    dash: [10, 10]
+                }
+            },
+            interfaces: [],
+            issueTypes: []
+        },
+        {
+            id: "2",
+            name: "Component 2 and this is a very long and very stupid name",
+            style: {
+                shape: "ellipse",
+                fill: {
+                    color: "#00ffff"
+                }
+            },
+            interfaces: [],
+            issueTypes: []
+        },
+        {
+            id: "3",
+            name: "C3",
+            style: {
+                shape: "ellipse",
+                fill: {
+                    color: "#00ffff"
+                },
+                stroke: {
+                    width: 3
+                }
+            },
+            interfaces: [],
+            issueTypes: []
+        },
+    ],
+    relations: [],
+    issueRelations: []
+});
+const layout = ref<GraphLayout>({
+    "1": {
+        pos: {
+            x: 0,
+            y: 0
+        }
     },
-    layout: {
-        "1": {
-            pos: {
-                x: 0,
-                y: 0
-            }
+    "2": {
+        pos: {
+            x: 0,
+            y: 150
+        }
+    },
+    "3": {
+        pos: {
+            x: 0,
+            y: 250
         }
     }
-})
+});
 </script>

@@ -5,12 +5,21 @@ import { VNode } from "snabbdom";
 
 @injectable()
 export class RootView implements IView {
-
     render(model: Readonly<SRoot>, context: RenderingContext, _args?: IViewArgs | undefined): VNode {
         const transform = `scale(${model.zoom}) translate(${-model.scroll.x},${-model.scroll.y})`;
         return svg(
             "svg",
-            null,
+            {
+                ns: "http://www.w3.org/2000/svg",
+                style: {
+                    "--diagram-zoom": `${model.zoom}`,
+                    "--diagram-zoom-normalized": `${
+                        model.zoom / Math.pow(2, Math.round(Math.log2(model.zoom) / 2) * 2)
+                    }`,
+                    "--diagram-scroll-x": `${model.scroll.x}px`,
+                    "--diagram-scroll-y": `${model.scroll.y}px`
+                }
+            },
             svg("style", null, model.generateStyle()),
             svg(
                 "g",
@@ -26,5 +35,4 @@ export class RootView implements IView {
             )
         );
     }
-
 }

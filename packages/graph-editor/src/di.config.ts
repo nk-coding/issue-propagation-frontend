@@ -31,6 +31,7 @@ import { LabelView } from "./views/labelView";
 import { zorderModule } from "./features/zorder/di.config";
 import { updateModule } from "./features/update/di.config";
 import { SLabel } from "./smodel/sLabel";
+import { boundsModule } from "./features/bounds/di.config";
 
 const diagramModule = new ContainerModule((bind, unbind, isBound, rebind) => {
     const context = { bind, unbind, isBound, rebind };
@@ -60,7 +61,7 @@ export function createContainer(widgetId: string): Container {
         exclude: [sprottyUpdateModule, sprottyMoveModule, sprottyZOrderModule, decorationModule, undoRedoModule]
     });
 
-    container.load(zorderModule, updateModule);
+    container.load(zorderModule, updateModule, boundsModule);
 
     container.load(diagramModule);
 
