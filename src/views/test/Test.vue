@@ -6,23 +6,21 @@
         :left-sidebar-items="leftSidebarItems"
     >
         <template #content>
-            <v-btn @click="showError"> Show error </v-btn>
-            <PaginatedList :sort-fields="['id', 'name']" :item-manager="itemManager">
-                <template #item="{ item }">
-                    <v-list-item :title="item.name" :subtitle="item.id"></v-list-item>
-                </template>
-            </PaginatedList>
+            <div id="graph-editor"/>
         </template>
     </BaseLayout>
 </template>
 
 <script lang="ts" setup>
+import "reflect-metadata";
 import BaseLayout from "@/components/BaseLayout.vue";
 import PaginatedList, { ItemManager } from "@/components/PaginatedList.vue";
 import { SideBarItem } from "@/components/SideBar.vue";
 import { useAppStore } from "@/store/app";
+import { GraphModelSource, createContainer } from "@gropius/graph-editor";
 import { ref } from "vue";
 import { reactive } from "vue";
+import { TYPES } from "sprotty";
 
 const store = useAppStore();
 
@@ -109,4 +107,41 @@ const errorCounter = ref(0);
 function showError() {
     store.pushError(`Error ${errorCounter.value++}`);
 }
+
+class ModelSource extends GraphModelSource {
+
+}
+
+const container = createContainer("graph-editor");
+container.bind(ModelSource).toSelf().inSingletonScope();
+container.bind(TYPES.ModelSource).toService(ModelSource);
+const modelSource = container.get(ModelSource);
+modelSource.updateGraph({
+    graph: {
+        components: [
+            {
+                id: "1",
+                name: "Component 1",
+                style: {
+                    shape: "ellipse",
+                    fill: {
+                        color: "#00ffff"
+                    }
+                },
+                interfaces: [],
+                issueTypes: []
+            }
+        ],
+        relations: [],
+        issueRelations: []
+    },
+    layout: {
+        "1": {
+            pos: {
+                x: 0,
+                y: 0
+            }
+        }
+    }
+})
 </script>
