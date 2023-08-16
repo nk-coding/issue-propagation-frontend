@@ -123,7 +123,17 @@ const graph = ref<Graph>({
                     dash: [10, 10]
                 }
             },
-            interfaces: [],
+            interfaces: [
+                {
+                    id: "1_1",
+                    name: "Interface 1",
+                    style: {
+                        shape: "circle",
+                        stroke: {}
+                    },
+                    issueTypes: []
+                }
+            ],
             issueTypes: []
         },
         {
@@ -135,7 +145,17 @@ const graph = ref<Graph>({
                     color: "#00ffff"
                 }
             },
-            interfaces: [],
+            interfaces: [
+                {
+                    id: "2_1",
+                    name: "Interface 2",
+                    style: {
+                        shape: "circle",
+                        stroke: {}
+                    },
+                    issueTypes: []
+                }
+            ],
             issueTypes: []
         },
         {
@@ -152,7 +172,7 @@ const graph = ref<Graph>({
             },
             interfaces: [],
             issueTypes: []
-        },
+        }
     ],
     relations: [],
     issueRelations: []
@@ -164,10 +184,22 @@ const layout = ref<GraphLayout>({
             y: 0
         }
     },
+    "1_1": {
+        pos: {
+            x: -100,
+            y: -200
+        }
+    },
     "2": {
         pos: {
             x: 0,
             y: 150
+        }
+    },
+    "2_1": {
+        pos: {
+            x: 200,
+            y: -50
         }
     },
     "3": {

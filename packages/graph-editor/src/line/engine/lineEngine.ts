@@ -76,16 +76,23 @@ export class LineEngine {
         if (line.segments.length == 0) {
             return line.start;
         }
-        let segmentIndex: number;
-        let relativePosition: number;
-        segmentIndex = this.calcSegmentIndex(position, line.segments.length);
-        relativePosition = position * line.segments.length - segmentIndex;
-        
+        const segmentIndex = this.calcSegmentIndex(position, line.segments.length);
+        const relativePosition = position * line.segments.length - segmentIndex;
+
         const segmentStartPos = segmentIndex == 0 ? line.start : line.segments[segmentIndex - 1].end;
         const lineSegment = line.segments[segmentIndex];
         const engine = this.getEngine(lineSegment);
         const localPoint = engine.getPoint(relativePosition, distance, lineSegment, segmentStartPos);
         return localPoint;
+    }
+
+    getNormal(position: number, line: Line): Point {
+        const segmentIndex = this.calcSegmentIndex(position, line.segments.length);
+        const relativePosition = position * line.segments.length - segmentIndex;
+        const lineSegment = line.segments[segmentIndex];
+        const engine = this.getEngine(lineSegment);
+        const segmentStartPos = segmentIndex == 0 ? line.start : line.segments[segmentIndex - 1].end;
+        return engine.getNormalVector(relativePosition, lineSegment, segmentStartPos);
     }
 
     toPathString(line: Line, offset: Point): string {

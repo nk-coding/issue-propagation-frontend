@@ -9,9 +9,7 @@ export function wrapForeignElement(element: VNode | undefined, offset: Point): V
             attrs: {
                 width: "100vw",
                 height: "100vh",
-                x: 0,
-                y: 0,
-                transform: `translate(${offset.x}, ${offset.y})`
+                ...offset
             }
         },
         element

@@ -1,20 +1,47 @@
-import { LocalModelSource } from "sprotty";
+import { ActionHandlerRegistry, LocalModelSource } from "sprotty";
 import {
     Graph,
     GraphLayout,
     ComponentVersion,
     Interface as GropiusInterface,
     Relation as GropiusRelation
-} from "./gropiusModel";
-import { Root } from "./model/root";
-import { Component } from "./model/component";
-import { Interface } from "./model/interface";
-import { Label } from "./model/label";
-import { Relation } from "./model/relation";
+} from "../gropiusModel";
+import { Root } from "../model/root";
+import { Component } from "../model/component";
+import { Interface } from "../model/interface";
+import { Label } from "../model/label";
+import { Relation } from "../model/relation";
+import { UpdateLayoutAction } from "../features/move/updateLayoutAction";
+import { Action, SModelElement, UpdateModelAction } from "sprotty-protocol";
 
 export abstract class GraphModelSource extends LocalModelSource {
     private layout?: GraphLayout;
     private graph?: Graph;
+
+    protected abstract layoutUpdated(partialUpdate: GraphLayout, resultingLayout: GraphLayout): void;
+
+    override initialize(registry: ActionHandlerRegistry): void {
+        super.initialize(registry);
+
+        registry.register(UpdateLayoutAction.KIND, this);
+    }
+
+    override handle(action: Action): void {
+        switch (action.kind) {
+            case UpdateLayoutAction.KIND: {
+                const update = action as UpdateLayoutAction;
+                this.layout = {
+                    ...(this.layout ?? {}),
+                    ...update.partialLayout
+                };
+                this.layoutUpdated(update.partialLayout, this.layout!);
+                this.updateLayoutPartially(update.partialLayout);
+            }
+            default: {
+                super.handle(action);
+            }
+        }
+    }
 
     updateGraph(graphAndLayout: { graph?: Graph; layout?: GraphLayout }) {
         const { graph, layout } = graphAndLayout;
@@ -112,6 +139,29 @@ export abstract class GraphModelSource extends LocalModelSource {
             return interfaceLayout;
         } else {
             return { pos: { x: 0, y: 0 } };
+        }
+    }
+
+    private updateLayoutPartially(partialLayout: GraphLayout)  {
+        this.updateLayoutRecursively(this.model, partialLayout);
+        this.actionDispatcher.dispatch(UpdateModelAction.create(this.model, { animate: false }));
+    }
+
+    private updateLayoutRecursively(element: SModelElement, partialLayout: GraphLayout) {
+        const children = element.children;
+        if (element.id in partialLayout) {
+            const layout = partialLayout[element.id];
+            if (element.type === Component.TYPE || element.type === Interface.TYPE) {
+                const component = element as Component | Interface;
+                const typedLayout = layout as { pos: { x: number; y: number } };
+                component.x = typedLayout.pos.x;
+                component.y = typedLayout.pos.y;
+            }
+        }
+        if (children != undefined) {
+            for (const child of children) {
+                this.updateLayoutRecursively(child, partialLayout);
+            }
         }
     }
 }

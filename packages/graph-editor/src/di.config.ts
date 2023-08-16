@@ -7,11 +7,10 @@ import {
     moveModule as sprottyMoveModule,
     zorderModule as sprottyZOrderModule,
     moveFeature,
-    TYPES,
     decorationModule,
-    registerModelElement,
     undoRedoModule,
-    boundsFeature
+    boundsFeature,
+    TYPES
 } from "sprotty";
 import { Container, ContainerModule } from "inversify";
 import { Root } from "./model/root";
@@ -32,9 +31,13 @@ import { zorderModule } from "./features/zorder/di.config";
 import { updateModule } from "./features/update/di.config";
 import { SLabel } from "./smodel/sLabel";
 import { boundsModule } from "./features/bounds/di.config";
+import { moveModule } from "./features/move/di.config";
+import { CommandStack } from "./base/commandStack";
 
 const diagramModule = new ContainerModule((bind, unbind, isBound, rebind) => {
     const context = { bind, unbind, isBound, rebind };
+
+    rebind(TYPES.ICommandStack).to(CommandStack).inSingletonScope();
 
     configureModelElement(context, Root.TYPE, SRoot, RootView);
     configureModelElement(context, Component.TYPE, SComponent, ComponentView, {
@@ -61,7 +64,7 @@ export function createContainer(widgetId: string): Container {
         exclude: [sprottyUpdateModule, sprottyMoveModule, sprottyZOrderModule, decorationModule, undoRedoModule]
     });
 
-    container.load(zorderModule, updateModule, boundsModule);
+    container.load(zorderModule, updateModule, boundsModule, moveModule);
 
     container.load(diagramModule);
 

@@ -1,3 +1,3 @@
 export * from "./di.config";
 export * from "./gropiusModel";
-export * from "./modelSource";
+export * from "./base/modelSource";

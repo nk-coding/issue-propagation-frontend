@@ -8,7 +8,7 @@ import "reflect-metadata";
 import { Graph, GraphLayout, GraphModelSource, createContainer } from "@gropius/graph-editor";
 import { TYPES } from "sprotty";
 import { PropType, onMounted, shallowRef, watch, nextTick, ref } from "vue";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 
 const props = defineProps({
     graph: {
@@ -25,7 +25,11 @@ const emit = defineEmits<{
     (event: "update:layout", value: GraphLayout): void;
 }>();
 
-class ModelSource extends GraphModelSource {}
+class ModelSource extends GraphModelSource {
+    protected layoutUpdated(partialUpdate: GraphLayout, resultingLayout: GraphLayout): void {
+        // TODO
+    }
+}
 
 const editorId = ref(`graph-editor-${uuidv4()}`);
 const modelSource = shallowRef<ModelSource | undefined>();
@@ -71,11 +75,11 @@ watch(
     flex: 1;
     border-style: none;
     border-width: 0px;
-    outline: none;;
+    outline: none;
     --diagram-grid: rgba(var(--v-theme-on-surface), var(--v-disabled-opacity));
 }
 
 :deep(.sprotty path) {
-   --shape-stroke-color: rgb(var(--v-theme-on-surface));
+    --shape-stroke-color: rgb(var(--v-theme-on-surface));
 }
 </style>

@@ -1,10 +1,9 @@
 import { injectable } from "inversify";
 import { VNode } from "snabbdom";
-import { IView, IViewArgs, RenderingContext, svg } from "sprotty";
+import { IView, RenderingContext, svg } from "sprotty";
 import { SComponent } from "../smodel/sComponent";
 import { SLabel } from "../smodel/sLabel";
 import { LineEngine } from "../line/engine/lineEngine";
-import { Math2D } from "../line/math";
 import { wrapForeignElement } from "./util";
 
 @injectable()
@@ -30,8 +29,8 @@ export class ComponentView implements IView {
                 }
             }),
             wrapForeignElement(context.renderElement(nameLabel!), {
-                x: model.x - shape.innerBounds.width / 2,
-                y: model.y - shape.innerBounds.height / 2
+                x: model.x - nameLabel!.size.width / 2,
+                y: model.y - nameLabel!.size.height / 2
             })
         );
         return svg("g", null, component, ...interfaces);

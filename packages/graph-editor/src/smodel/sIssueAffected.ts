@@ -1,9 +1,10 @@
-import { Selectable } from "sprotty";
+import { Locateable, Selectable } from "sprotty";
 import { ShapeStyle, StrokeStyle } from "../gropiusModel";
 import { IssueAffected } from "../model/issueAffected";
 import { SNamedElement } from "./sNamedElement";
+import { Point } from "sprotty-protocol";
 
-export abstract class SIssueAffected extends SNamedElement implements IssueAffected, Selectable {
+export abstract class SIssueAffected extends SNamedElement implements IssueAffected, Selectable, Locateable {
     style!: ShapeStyle;
     x!: number;
     y!: number;
@@ -15,6 +16,8 @@ export abstract class SIssueAffected extends SNamedElement implements IssueAffec
         if (this.style.fill != undefined) {
             const fill = this.style.fill;
             res.fill = fill.color;
+        } else {
+            res.fill = "transparent";
         }
         if (this.style.stroke != undefined) {
             const stroke = this.style.stroke;
@@ -26,6 +29,10 @@ export abstract class SIssueAffected extends SNamedElement implements IssueAffec
             res.stroke = stroke.color ?? "var(--shape-stroke-color)";
         }
         return res;
+    }
+
+    get position(): Point {
+        return { x: this.x, y: this.y };
     }
 }
 

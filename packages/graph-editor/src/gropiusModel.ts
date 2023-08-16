@@ -33,13 +33,15 @@ export interface Relation extends Node {
     style: StrokeStyle;
 }
 
-export interface IssueRelation {}
-
-export interface Interface extends IssueAffected {
+export interface IssueRelation {
     from: string;
     to: string;
     fromType: string;
     toType: string;
+}
+
+export interface Interface extends IssueAffected {
+    
 }
 
 export interface StrokeStyle {
@@ -52,7 +54,7 @@ export interface StrokeStyle {
 
 export namespace StrokeStyle {
     export function strokeWidth(style: StrokeStyle): number {
-        return style.stroke?.width ?? 1;
+        return style.stroke?.width ?? 2;
     }
 }
 

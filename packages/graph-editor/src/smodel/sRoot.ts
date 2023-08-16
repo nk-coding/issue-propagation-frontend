@@ -24,6 +24,10 @@ export class SRoot extends ViewportRootElement {
                   calc(var(--diagram-scroll-y) * -1 * var(--diagram-zoom)) /
                   calc(150px * var(--diagram-zoom-normalized)) calc(150px * var(--diagram-zoom-normalized));
             }
+
+            .sprotty foreignObject {
+                pointer-events: none;
+            }
         `;
     }
 }
