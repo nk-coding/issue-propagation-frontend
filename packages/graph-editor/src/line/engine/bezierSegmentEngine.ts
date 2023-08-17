@@ -35,6 +35,8 @@ export class BezierSegmentEngine extends SegmentEngine<BezierSegment> {
     }
 
     override toPathString(segment: BezierSegment, offset: Point): string {
-        return `C ${segment.startControlPoint.x + offset.x} ${segment.startControlPoint.y + offset.y} ${segment.endControlPoint.x + offset.x} ${segment.endControlPoint.y + offset.y} ${segment.end.x + offset.x} ${segment.end.y + offset.y}`
+        return `C ${segment.startControlPoint.x + offset.x} ${segment.startControlPoint.y + offset.y} ${
+            segment.endControlPoint.x + offset.x
+        } ${segment.endControlPoint.y + offset.y} ${segment.end.x + offset.x} ${segment.end.y + offset.y}`;
     }
 }

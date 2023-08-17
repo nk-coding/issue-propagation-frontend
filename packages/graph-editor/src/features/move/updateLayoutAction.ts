@@ -3,7 +3,7 @@ import { GraphLayout } from "../../gropiusModel";
 
 export interface UpdateLayoutAction extends Action {
     kind: typeof UpdateLayoutAction.KIND;
-    partialLayout: GraphLayout 
+    partialLayout: GraphLayout;
 }
 
 export namespace UpdateLayoutAction {

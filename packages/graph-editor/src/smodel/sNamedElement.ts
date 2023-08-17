@@ -2,12 +2,12 @@ import { SElement } from "./sElement";
 import { SLabel } from "./sLabel";
 
 export abstract class SNamedElement extends SElement {
-    nameLabel!: SLabel
+    nameLabel!: SLabel;
 
     constructor() {
-        super()
+        super();
         this.cachedProperty<SLabel>("nameLabel", () => {
-            return this.children.find(child => child.type === "label") as SLabel
-        })
+            return this.children.find((child) => child.type === "label") as SLabel;
+        });
     }
 }

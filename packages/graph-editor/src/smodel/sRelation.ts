@@ -6,5 +6,5 @@ export class SRelation extends SNamedElement implements Relation {
     declare type: typeof Relation.TYPE;
     start!: string;
     end!: string;
-    style!: StrokeStyle
+    style!: StrokeStyle;
 }

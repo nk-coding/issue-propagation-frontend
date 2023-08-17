@@ -5,9 +5,10 @@ import { SComponent } from "../smodel/sComponent";
 import { SLabel } from "../smodel/sLabel";
 import { LineEngine } from "../line/engine/lineEngine";
 import { wrapForeignElement } from "./util";
+import { IssueAffectedView } from "./issueAffectedView";
 
 @injectable()
-export class ComponentView implements IView {
+export class ComponentView extends IssueAffectedView implements IView {
     render(model: Readonly<SComponent>, context: RenderingContext, args?: {} | undefined): VNode | undefined {
         let nameLabel: SLabel | undefined;
         const interfaces: (VNode | undefined)[] = [];

@@ -5,9 +5,10 @@ import { Bounds } from "sprotty-protocol";
 @injectable()
 export class HiddenBoundsUpdater extends SprottyHiddenBoundsUpdater {
     protected override getBounds(elm: Node, element: BoundsAware): Bounds {
-        if(this.isSVGGraphicsElement(elm)) {
+        if (this.isSVGGraphicsElement(elm)) {
             return super.getBounds(elm, element);
-        } if (this.isHtmlElement(elm)) {
+        }
+        if (this.isHtmlElement(elm)) {
             return elm.getBoundingClientRect();
         } else {
             this.logger.error(this, `Cannot get bounds for element`, elm);
@@ -16,11 +17,10 @@ export class HiddenBoundsUpdater extends SprottyHiddenBoundsUpdater {
     }
 
     private isSVGGraphicsElement(node: Node): node is SVGGraphicsElement {
-        return typeof (node as SVGGraphicsElement).getBBox === 'function';
+        return typeof (node as SVGGraphicsElement).getBBox === "function";
     }
 
     private isHtmlElement(node: Node): node is HTMLElement {
         return "getBoundingClientRect" in node;
     }
 }
-

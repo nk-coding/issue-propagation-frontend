@@ -28,14 +28,8 @@ export class CommandStack extends SprottyCommandStack {
         operation: (context: CommandExecutionContext) => CommandReturn,
         beforeResolve: (command: ICommand, context: CommandExecutionContext) => void
     ): void {
-        if (
-            (command instanceof UpdateModelCommand) &&
-            this.lastContext != undefined
-        ) {
-            CancelableCommandExecutionContext.setCanceled(
-                this.lastContext,
-                false
-            );
+        if (command instanceof UpdateModelCommand && this.lastContext != undefined) {
+            CancelableCommandExecutionContext.setCanceled(this.lastContext, false);
         }
         super.handleCommand(command, operation, beforeResolve);
     }

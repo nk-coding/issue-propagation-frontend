@@ -12,8 +12,8 @@ const INTERFACE_SHAPE_SIZE = 40;
 export class SInterface extends SIssueAffected implements Interface, LinearAnimatable {
     declare type: typeof Interface.TYPE;
     readonly animatedFields = interfaceAnimatedFields;
-    shape!: Shape;
-    pos!: Point
+    override shape!: Shape;
+    pos!: Point;
 
     constructor() {
         super();
@@ -30,7 +30,7 @@ export class SInterface extends SIssueAffected implements Interface, LinearAnima
             );
         });
         this.cachedProperty<Point>("pos", () => {
-            const parent = this.parent as SComponent
+            const parent = this.parent as SComponent;
             return {
                 x: this.x + parent.x,
                 y: this.y + parent.y

@@ -40,9 +40,7 @@ export interface IssueRelation {
     toType: string;
 }
 
-export interface Interface extends IssueAffected {
-    
-}
+export interface Interface extends IssueAffected {}
 
 export interface StrokeStyle {
     stroke?: {

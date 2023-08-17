@@ -4,7 +4,6 @@ import { Shape } from "../shape";
 import { EllipseEngine } from "./ellipseEngine";
 
 export class CircleEngine extends EllipseEngine {
-
     override generateForBounds(bounds: Bounds, style: ShapeStyle): Shape {
         const strokeWidth = StrokeStyle.strokeWidth(style);
         const radius = Math.min(bounds.width, bounds.height) / 2 - strokeWidth / 2;
@@ -19,8 +18,8 @@ export class CircleEngine extends EllipseEngine {
                 height: innerSize * 2
             },
             shape: "circle",
-            outline: this.outline(center, radius, radius),
-        }
+            outline: this.outline(center, radius, radius)
+        };
     }
 
     override generateForInnerBounds(bounds: Bounds, style: ShapeStyle): Shape {
@@ -37,8 +36,7 @@ export class CircleEngine extends EllipseEngine {
             },
             innerBounds: bounds,
             shape: "circle",
-            outline: this.outline(center, radius, radius),
-        }
+            outline: this.outline(center, radius, radius)
+        };
     }
-
 }

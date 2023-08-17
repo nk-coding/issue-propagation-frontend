@@ -8,11 +8,12 @@ import { wrapForeignElement } from "./util";
 import { SComponent } from "../smodel/sComponent";
 import { Bounds } from "sprotty-protocol";
 import { Math2D } from "../line/math";
+import { IssueAffectedView } from "./issueAffectedView";
 
 const MAX_CONTROL_POINT_DISTANCE = 75;
 
 @injectable()
-export class InterfaceView implements IView {
+export class InterfaceView extends IssueAffectedView implements IView {
     render(model: Readonly<SInterface>, context: RenderingContext, args?: {} | undefined): VNode | undefined {
         let nameLabel: SLabel | undefined;
         for (const child of model.children) {

@@ -1,4 +1,12 @@
-import { MouseListener, SModelElement, SModelRoot, findParentByFeature, isSelectable, isViewport, moveFeature } from "sprotty";
+import {
+    MouseListener,
+    SModelElement,
+    SModelRoot,
+    findParentByFeature,
+    isSelectable,
+    isViewport,
+    moveFeature
+} from "sprotty";
 import { Action, Point } from "sprotty-protocol";
 import { MoveHandler } from "./moveHandler";
 import { Component } from "../../model/component";
@@ -9,7 +17,6 @@ import { ElementMoveHandler } from "./elementMoveHandler";
 import { SRoot } from "../../smodel/sRoot";
 
 export class MoveMouseListener extends MouseListener {
-
     private startPosition?: Point;
     private moveHandler?: MoveHandler;
     private targetElement?: Element;
@@ -37,12 +44,7 @@ export class MoveMouseListener extends MouseListener {
             const root = target.root as SRoot;
             if (this.moveHandler != undefined && root.changeRevision != this.changeRevision) {
                 const translation = this.calculateTranslation(target, event);
-                const result = this.moveHandler.generateAction(
-                    translation.x,
-                    translation.y,
-                    false,
-                    event
-                );
+                const result = this.moveHandler.generateAction(translation.x, translation.y, false, event);
                 this.changeRevision = root.changeRevision;
                 return [result];
             }
@@ -69,12 +71,7 @@ export class MoveMouseListener extends MouseListener {
             return [];
         }
         const translation = this.calculateTranslation(target, event);
-        const result = this.moveHandler.generateAction(
-            translation.x,
-            translation.y,
-            true,
-            event
-        );
+        const result = this.moveHandler.generateAction(translation.x, translation.y, true, event);
         this.moveHandler = undefined;
         this.startPosition = undefined;
         return [result];
@@ -95,7 +92,7 @@ export class MoveMouseListener extends MouseListener {
                 return true;
             }
         });
-        return new ElementMoveHandler(toMove)
+        return new ElementMoveHandler(toMove);
     }
 
     private calculateTranslation(target: SModelElement, event: MouseEvent): Point {

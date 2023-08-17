@@ -53,6 +53,6 @@ export class LineSegmentEngine extends SegmentEngine<LineSegment> {
     }
 
     override toPathString(segment: LineSegment, offset: Point): string {
-        return `L ${segment.end.x + offset.x} ${segment.end.y + offset.y}`
+        return `L ${segment.end.x + offset.x} ${segment.end.y + offset.y}`;
     }
 }

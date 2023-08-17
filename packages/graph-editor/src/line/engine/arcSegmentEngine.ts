@@ -135,7 +135,9 @@ export class ArcSegmentEngine extends SegmentEngine<ArcSegment> {
     }
 
     override toPathString(segment: ArcSegment, offset: Point): string {
-        return `A ${segment.radiusX} ${segment.radiusY} 0 0 ${segment.clockwise ? '0' : '1'} ${segment.end.x + offset.x} ${segment.end.y + offset.y}`
+        return `A ${segment.radiusX} ${segment.radiusY} 0 0 ${segment.clockwise ? "0" : "1"} ${
+            segment.end.x + offset.x
+        } ${segment.end.y + offset.y}`;
     }
 }
 

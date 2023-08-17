@@ -9,7 +9,7 @@ const componentAnimatedFields = new Set(SIssueAffected.defaultAnimatedFields);
 export class SComponent extends SIssueAffected implements Component, LinearAnimatable {
     declare type: typeof Component.TYPE;
     readonly animatedFields = componentAnimatedFields;
-    shape!: Shape;
+    override shape!: Shape;
 
     constructor() {
         super();

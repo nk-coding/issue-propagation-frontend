@@ -3,13 +3,15 @@ import { ShapeStyle, StrokeStyle } from "../gropiusModel";
 import { IssueAffected } from "../model/issueAffected";
 import { SNamedElement } from "./sNamedElement";
 import { Point } from "sprotty-protocol";
+import { Shape } from "../shape/shape";
 
 export abstract class SIssueAffected extends SNamedElement implements IssueAffected, Selectable, Locateable {
     style!: ShapeStyle;
     x!: number;
     y!: number;
     version?: string;
-    selected = false
+    selected = false;
+    abstract shape: Shape;
 
     generateShapeAttrs(): Record<string, number | string> {
         const res: Record<string, number | string> = {};

@@ -10,8 +10,8 @@ export class ShapeGenerator {
 
     private engines = new Map<GropiusShape, ShapeEngine>([
         ["circle", new CircleEngine()],
-        ["ellipse", new EllipseEngine()],
-    ]); 
+        ["ellipse", new EllipseEngine()]
+    ]);
 
     generateForBounds(shape: GropiusShape, bounds: Bounds, style: ShapeStyle): Shape {
         const engine = this.getEngine(shape);

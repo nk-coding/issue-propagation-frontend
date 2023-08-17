@@ -7,7 +7,7 @@ export interface Component extends IssueAffected {
 
 export namespace Component {
     export const TYPE = "component";
-    
+
     export function is(element: Element): element is Component {
         return element.type === TYPE;
     }

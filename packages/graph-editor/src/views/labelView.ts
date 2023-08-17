@@ -10,7 +10,7 @@ export class LabelView implements IView {
             "span",
             {
                 class: {
-                    "label": true,
+                    label: true
                 }
             },
             model.text

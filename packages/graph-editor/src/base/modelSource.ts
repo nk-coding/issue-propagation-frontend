@@ -142,7 +142,7 @@ export abstract class GraphModelSource extends LocalModelSource {
         }
     }
 
-    private updateLayoutPartially(partialLayout: GraphLayout)  {
+    private updateLayoutPartially(partialLayout: GraphLayout) {
         this.updateLayoutRecursively(this.model, partialLayout);
         this.actionDispatcher.dispatch(UpdateModelAction.create(this.model, { animate: false }));
     }
