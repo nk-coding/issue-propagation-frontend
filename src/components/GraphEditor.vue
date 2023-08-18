@@ -1,6 +1,6 @@
 <template>
     <div class="sprotty-wrapper">
-        <div :id="editorId" class="sprotty" />
+        <div id="graph-editor" class="sprotty" />
     </div>
 </template>
 <script setup lang="ts">
@@ -35,7 +35,7 @@ const editorId = ref(`graph-editor-${uuidv4()}`);
 const modelSource = shallowRef<ModelSource | undefined>();
 
 onMounted(async () => {
-    const container = createContainer(editorId.value);
+    const container = createContainer("graph-editor");
     container.bind(ModelSource).toSelf().inSingletonScope();
     container.bind(TYPES.ModelSource).toService(ModelSource);
     modelSource.value = container.get(ModelSource);

@@ -2,10 +2,11 @@ import { VNode } from "snabbdom";
 import { SIssueAffected } from "../smodel/sIssueAffected";
 import { LineEngine } from "../line/engine/lineEngine";
 import { wrapForeignElement } from "./util";
-import { html } from "sprotty";
+import { RenderingContext } from "sprotty";
+import { SVersionChip } from "../smodel/sVersionChip";
 
 export abstract class IssueAffectedView {
-    renderVersionLabel(model: Readonly<SIssueAffected>): VNode | undefined {
+    renderVersionLabel(context: RenderingContext, model: Readonly<SIssueAffected>, versionChip: SVersionChip): VNode | undefined {
         const version = model.version;
         if (version == undefined) {
             return undefined;
@@ -19,13 +20,7 @@ export abstract class IssueAffectedView {
         const topRightProjected = LineEngine.DEFAULT.projectPoint(topRight, shape.outline).pos;
         const labelPos = LineEngine.DEFAULT.getPoint(topRightProjected, 0, shape.outline);
         return wrapForeignElement(
-            html(
-                "span",
-                {
-                    class: { "version-chip": true }
-                },
-                version
-            ),
+            context.renderElement(versionChip),
             labelPos
         );
     }

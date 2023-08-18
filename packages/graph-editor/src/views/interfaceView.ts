@@ -9,6 +9,7 @@ import { SComponent } from "../smodel/sComponent";
 import { Bounds } from "sprotty-protocol";
 import { Math2D } from "../line/math";
 import { IssueAffectedView } from "./issueAffectedView";
+import { SVersionChip } from "../smodel/sVersionChip";
 
 const MAX_CONTROL_POINT_DISTANCE = 75;
 
@@ -16,9 +17,14 @@ const MAX_CONTROL_POINT_DISTANCE = 75;
 export class InterfaceView extends IssueAffectedView implements IView {
     render(model: Readonly<SInterface>, context: RenderingContext, args?: {} | undefined): VNode | undefined {
         let nameLabel: SLabel | undefined;
+        const otherChildren: (VNode | undefined)[] = [];
         for (const child of model.children) {
             if (child instanceof SLabel) {
                 nameLabel = child;
+            } else if (child instanceof SVersionChip) {
+                otherChildren.push(this.renderVersionLabel(context, model, child));
+            } else {
+                otherChildren.push(context.renderElement(child));
             }
         }
         const shape = model.shape;
@@ -38,7 +44,7 @@ export class InterfaceView extends IssueAffectedView implements IView {
                 y: model.pos.y + model.shape.bounds.height / 2 + 5
             })
         );
-        return svg("g", null, interfaceView, connectionLine);
+        return svg("g", null, interfaceView, connectionLine, ...otherChildren);
     }
 
     private renderConnectionLine(model: Readonly<SInterface>, parent: SComponent): VNode {

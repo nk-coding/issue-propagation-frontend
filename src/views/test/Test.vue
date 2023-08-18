@@ -112,6 +112,7 @@ const graph = ref<Graph>({
         {
             id: "1",
             name: "Component 1",
+            version: "1.0.0",
             style: {
                 shape: "circle",
                 fill: {
@@ -127,6 +128,7 @@ const graph = ref<Graph>({
                 {
                     id: "1_1",
                     name: "Interface 1",
+                    version: "1.0.0",
                     style: {
                         shape: "circle",
                         stroke: {}
@@ -139,6 +141,7 @@ const graph = ref<Graph>({
         {
             id: "2",
             name: "Component 2 and this is a very long and very stupid name",
+            version: "1.0.0",
             style: {
                 shape: "ellipse",
                 fill: {
@@ -149,6 +152,7 @@ const graph = ref<Graph>({
                 {
                     id: "2_1",
                     name: "Interface 2",
+                    version: "1.0.0",
                     style: {
                         shape: "circle",
                         stroke: {}
@@ -161,6 +165,7 @@ const graph = ref<Graph>({
         {
             id: "3",
             name: "C3",
+            version: "1.0.0",
             style: {
                 shape: "ellipse",
                 fill: {

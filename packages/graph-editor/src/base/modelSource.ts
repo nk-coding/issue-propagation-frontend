@@ -13,6 +13,8 @@ import { Label } from "../model/label";
 import { Relation } from "../model/relation";
 import { UpdateLayoutAction } from "../features/move/updateLayoutAction";
 import { Action, SModelElement, UpdateModelAction } from "sprotty-protocol";
+import { Element } from "../model/element";
+import { VersionChip } from "../model/versionChip";
 
 export abstract class GraphModelSource extends LocalModelSource {
     private layout?: GraphLayout;
@@ -78,29 +80,40 @@ export abstract class GraphModelSource extends LocalModelSource {
     }
 
     private createComponent(component: ComponentVersion, layout: GraphLayout): Component {
-        const pos = this.extractionComponentLayout(component.id, layout).pos;
-        const interfaces = component.interfaces.map((i) => this.createInterface(i, layout));
+        const pos = this.extractComponentLayout(component.id, layout).pos;
+        const children: Element[] = component.interfaces.map((i) => this.createInterface(i, layout));
+        let version: VersionChip | undefined;
+        if (component.version != undefined) {
+            version = this.createVersionChip(component.version, component.id);
+        }
+        if (component.version != undefined) {
+            children.push(this.createVersionChip(component.version, component.id));
+        }
+        children.push(this.createNameLabel(component.name, component.id));
         return {
             type: "component",
             id: component.id,
-            version: component.version,
             style: component.style,
             x: pos.x,
             y: pos.y,
-            children: [...interfaces, this.createNameLabel(component.name, component.id)]
+            children
         };
     }
 
     private createInterface(gropiusInterface: GropiusInterface, layout: GraphLayout): Interface {
         const pos = this.extractInterfaceLayout(gropiusInterface.id, layout).pos;
+        const children: Element[] = [];
+        if (gropiusInterface.version != undefined) {
+            children.push(this.createVersionChip(gropiusInterface.version, gropiusInterface.id));
+        }
+        children.push(this.createNameLabel(gropiusInterface.name, gropiusInterface.id));
         return {
             type: "interface",
             id: gropiusInterface.id,
-            version: gropiusInterface.version,
             style: gropiusInterface.style,
             x: pos.x,
             y: pos.y,
-            children: [this.createNameLabel(gropiusInterface.name, gropiusInterface.id)]
+            children
         };
     }
 
@@ -124,7 +137,16 @@ export abstract class GraphModelSource extends LocalModelSource {
         };
     }
 
-    private extractionComponentLayout(id: string, layout: GraphLayout) {
+    private createVersionChip(version: string, parentId: string): VersionChip {
+        return {
+            type: "versionChip",
+            id: `${parentId}-version`,
+            version,
+            children: []
+        };
+    }
+
+    private extractComponentLayout(id: string, layout: GraphLayout) {
         const componentLayout = layout[id];
         if (componentLayout != undefined && "pos" in componentLayout) {
             return componentLayout;
