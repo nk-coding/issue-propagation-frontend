@@ -1,6 +1,6 @@
 <template>
     <div class="sprotty-wrapper">
-        <div id="graph-editor" class="sprotty" />
+        <div :id="editorId" class="sprotty" />
     </div>
 </template>
 <script setup lang="ts">
@@ -35,7 +35,7 @@ const editorId = ref(`graph-editor-${uuidv4()}`);
 const modelSource = shallowRef<ModelSource | undefined>();
 
 onMounted(async () => {
-    const container = createContainer("graph-editor");
+    const container = createContainer(editorId.value);
     container.bind(ModelSource).toSelf().inSingletonScope();
     container.bind(TYPES.ModelSource).toService(ModelSource);
     modelSource.value = container.get(ModelSource);
@@ -76,10 +76,9 @@ watch(
     border-style: none;
     border-width: 0px;
     outline: none;
-    --diagram-grid: rgba(var(--v-theme-on-surface), var(--v-disabled-opacity));
-}
-
-:deep(.sprotty path) {
+    --diagram-grid: rgba(var(--v-theme-on-surface), 0.2);
     --shape-stroke-color: rgb(var(--v-theme-on-surface));
+    --version-chip-background: rgb(var(--v-theme-primary-container));
+    --version-chip-color: rgb(var(--v-theme-on-primary-container));
 }
 </style>

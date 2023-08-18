@@ -8,13 +8,12 @@ import { wrapForeignElement } from "./util";
 import { SComponent } from "../smodel/sComponent";
 import { Bounds } from "sprotty-protocol";
 import { Math2D } from "../line/math";
-import { IssueAffectedView } from "./issueAffectedView";
 import { SVersionChip } from "../smodel/sVersionChip";
 
 const MAX_CONTROL_POINT_DISTANCE = 75;
 
 @injectable()
-export class InterfaceView extends IssueAffectedView implements IView {
+export class InterfaceView implements IView {
     render(model: Readonly<SInterface>, context: RenderingContext, args?: {} | undefined): VNode | undefined {
         let nameLabel: SLabel | undefined;
         const otherChildren: (VNode | undefined)[] = [];
@@ -22,7 +21,7 @@ export class InterfaceView extends IssueAffectedView implements IView {
             if (child instanceof SLabel) {
                 nameLabel = child;
             } else if (child instanceof SVersionChip) {
-                otherChildren.push(this.renderVersionLabel(context, model, child));
+                otherChildren.push(model.renderVersionLabel(context, child));
             } else {
                 otherChildren.push(context.renderElement(child));
             }

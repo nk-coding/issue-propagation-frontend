@@ -10,8 +10,7 @@ import {
     decorationModule,
     undoRedoModule,
     boundsFeature,
-    TYPES,
-    ConsoleLogger
+    TYPES
 } from "sprotty";
 import { Container, ContainerModule } from "inversify";
 import { Root } from "./model/root";
@@ -42,7 +41,6 @@ const diagramModule = new ContainerModule((bind, unbind, isBound, rebind) => {
     const context = { bind, unbind, isBound, rebind };
 
     rebind(TYPES.ICommandStack).to(CommandStack).inSingletonScope();
-    rebind(TYPES.ILogger).toConstantValue(new ConsoleLogger());
 
     configureModelElement(context, Root.TYPE, SRoot, RootView);
     configureModelElement(context, Component.TYPE, SComponent, ComponentView, {
@@ -55,7 +53,9 @@ const diagramModule = new ContainerModule((bind, unbind, isBound, rebind) => {
     configureModelElement(context, Label.TYPE, SLabel, LabelView, {
         enable: [boundsFeature]
     });
-    configureModelElement(context, VersionChip.TYPE, SVersionChip, VersionChipView)
+    configureModelElement(context, VersionChip.TYPE, SVersionChip, VersionChipView, {
+        enable: [boundsFeature]
+    });
 });
 
 /**

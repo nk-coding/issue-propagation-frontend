@@ -115,14 +115,7 @@ const graph = ref<Graph>({
             version: "1.0.0",
             style: {
                 shape: "circle",
-                fill: {
-                    color: "#00ffff"
-                },
-                stroke: {
-                    color: "green",
-                    width: 5,
-                    dash: [10, 10]
-                }
+                stroke: {}
             },
             interfaces: [
                 {
@@ -144,9 +137,7 @@ const graph = ref<Graph>({
             version: "1.0.0",
             style: {
                 shape: "ellipse",
-                fill: {
-                    color: "#00ffff"
-                }
+                stroke: {}
             },
             interfaces: [
                 {
@@ -168,11 +159,7 @@ const graph = ref<Graph>({
             version: "1.0.0",
             style: {
                 shape: "ellipse",
-                fill: {
-                    color: "#00ffff"
-                },
                 stroke: {
-                    width: 3
                 }
             },
             interfaces: [],

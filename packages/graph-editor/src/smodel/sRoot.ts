@@ -8,7 +8,7 @@ export class SRoot extends ViewportRootElement {
 
     generateStyle(): string {
         return `
-            .label {
+            .sprotty .label {
                 display: inline-block;
                 min-width: 50px;
                 max-width: 200px;
@@ -27,6 +27,15 @@ export class SRoot extends ViewportRootElement {
 
             .sprotty foreignObject {
                 pointer-events: none;
+            }
+
+            .sprotty .version-chip {
+                user-select: none;
+                background: var(--version-chip-background);
+                color: var(--version-chip-color);
+                border-radius: 9999px;
+                padding: 5px 0.5em;
+                font-size: 0.75em;
             }
         `;
     }
