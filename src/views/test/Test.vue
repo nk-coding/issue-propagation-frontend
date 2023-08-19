@@ -112,7 +112,7 @@ const graph = ref<Graph>({
         {
             id: "1",
             name: "Component 1",
-            version: "1.0.0",
+            version: "2.1.0",
             style: {
                 shape: "circle",
                 stroke: {}
@@ -121,9 +121,9 @@ const graph = ref<Graph>({
                 {
                     id: "1_1",
                     name: "Interface 1",
-                    version: "1.0.0",
+                    version: "0.1",
                     style: {
-                        shape: "circle",
+                        shape: "rhombus",
                         stroke: {}
                     },
                     issueTypes: []
@@ -134,18 +134,19 @@ const graph = ref<Graph>({
         {
             id: "2",
             name: "Component 2 and this is a very long and very stupid name",
-            version: "1.0.0",
+            version: "2.0",
             style: {
-                shape: "ellipse",
+                shape: "rect",
+                radius: 10,
                 stroke: {}
             },
             interfaces: [
                 {
                     id: "2_1",
                     name: "Interface 2",
-                    version: "1.0.0",
                     style: {
-                        shape: "circle",
+                        shape: "rect",
+                        radius: 10,
                         stroke: {}
                     },
                     issueTypes: []
@@ -155,10 +156,10 @@ const graph = ref<Graph>({
         },
         {
             id: "3",
-            name: "C3",
-            version: "1.0.0",
+            name: "Testing",
             style: {
-                shape: "ellipse",
+                shape: "rhombus",
+                radius: 3,
                 stroke: {
                 }
             },
@@ -197,7 +198,7 @@ const layout = ref<GraphLayout>({
     "3": {
         pos: {
             x: 0,
-            y: 250
+            y: 300
         }
     }
 });

@@ -27,7 +27,7 @@ export class ComponentView implements IView {
             null,
             svg("path", {
                 attrs: {
-                    d: LineEngine.DEFAULT.toPathString(shape.outline, { x: 0, y: 0 }),
+                    d: LineEngine.DEFAULT.toPathString(shape.outline),
                     ...model.generateShapeAttrs()
                 }
             }),

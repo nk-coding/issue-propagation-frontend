@@ -4,13 +4,17 @@ import { Bounds } from "sprotty-protocol";
 import { Shape } from "./shape";
 import { EllipseEngine } from "./engines/ellipseEngine";
 import { CircleEngine } from "./engines/circleEngine";
+import { RectEngine } from "./engines/rectEngine";
+import { RhombusEngine } from "./engines/rhombusEngine";
 
 export class ShapeGenerator {
     static DEFAULT = new ShapeGenerator();
 
     private engines = new Map<GropiusShape, ShapeEngine>([
         ["circle", new CircleEngine()],
-        ["ellipse", new EllipseEngine()]
+        ["ellipse", new EllipseEngine()],
+        ["rect", new RectEngine()],
+        ["rhombus", new RhombusEngine()]
     ]);
 
     generateForBounds(shape: GropiusShape, bounds: Bounds, style: ShapeStyle): Shape {

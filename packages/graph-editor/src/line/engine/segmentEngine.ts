@@ -39,7 +39,7 @@ export abstract class SegmentEngine<T extends Segment> {
      */
     abstract getNormalVector(position: number, segment: T, segmentStartPoint: Point): Point;
 
-    abstract toPathString(segment: T, offset: Point): string;
+    abstract toPathString(segment: T): string;
 }
 
 /**

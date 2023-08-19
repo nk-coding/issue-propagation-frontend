@@ -67,16 +67,7 @@ export interface ShapeStyle extends StrokeStyle, FillStyle {
     radius?: number;
 }
 
-export type Shape =
-    | "rect"
-    | "circle"
-    | "ellipse"
-    | "diamond"
-    | "triangle"
-    | "hexagon"
-    | "rect"
-    | "parallelogram"
-    | "trapeze";
+export type Shape = "rect" | "circle" | "ellipse" | "rhombus" | "triangle" | "hexagon" | "parallelogram" | "trapeze";
 
 export interface GraphLayout {
     [id: string]:

@@ -11,18 +11,9 @@ export class EllipseEngine extends ShapeEngine {
         const strokeWidth = StrokeStyle.strokeWidth(style);
         const sqrt2half = Math.sqrt(2) / 2;
         const borderSize = this.calculate45DegreeStrokeVector(bounds, strokeWidth);
-        const innerSize = {
-            width: sqrt2half * bounds.width - 2 * borderSize.x,
-            height: sqrt2half * bounds.height - 2 * borderSize.y
-        };
         const center = Bounds.center(bounds);
         return {
             bounds,
-            innerBounds: {
-                ...innerSize,
-                x: center.x - innerSize.width / 2,
-                y: center.y - innerSize.height / 2
-            },
             shape: "ellipse",
             outline: this.outline(center, bounds.width - strokeWidth / 2, bounds.height - strokeWidth / 2)
         };
@@ -33,8 +24,8 @@ export class EllipseEngine extends ShapeEngine {
         const sqrt2half = Math.sqrt(2) / 2;
         const borderSize = this.calculate45DegreeStrokeVector(bounds, strokeWidth);
         const outerSize = {
-            width: (bounds.width + 2 * borderSize.x) / sqrt2half,
-            height: (bounds.height + 2 * borderSize.y) / sqrt2half
+            width: (bounds.width + 2 * borderSize.x) / sqrt2half + 2 * ShapeEngine.DEFAULT_MARGIN,
+            height: (bounds.height + 2 * borderSize.y) / sqrt2half + 2 * ShapeEngine.DEFAULT_MARGIN
         };
         const center = Bounds.center(bounds);
         return {
@@ -43,7 +34,6 @@ export class EllipseEngine extends ShapeEngine {
                 x: center.x - outerSize.width / 2,
                 y: center.y - outerSize.height / 2
             },
-            innerBounds: bounds,
             shape: "ellipse",
             outline: this.outline(center, outerSize.width / 2 - strokeWidth / 2, outerSize.height / 2 - strokeWidth / 2)
         };

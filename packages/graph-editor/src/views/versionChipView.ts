@@ -11,7 +11,7 @@ export class VersionChipView implements IView {
             {
                 class: { "version-chip": true }
             },
-            model.version
+            "v" + model.version
         );
     }
 }

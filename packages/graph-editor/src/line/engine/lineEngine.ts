@@ -8,6 +8,7 @@ import { ArcSegmentEngine } from "./arcSegmentEngine";
 import { BezierSegmentEngine } from "./bezierSegmentEngine";
 import { LineSegmentEngine } from "./lineSegmentEngine";
 import { SegmentEngine } from "./segmentEngine";
+import { Math2D } from "../math";
 
 /**
  * Helper to get closest points to a line, and calculate the position of a point on the line
@@ -17,6 +18,8 @@ export class LineEngine {
      * Default instance, can be shared as the engine is stateless
      */
     static DEFAULT = new LineEngine();
+
+    private static readonly EPSILON = 0.00001;
 
     /**
      * Map of all known engines
@@ -89,18 +92,37 @@ export class LineEngine {
     getNormal(position: number, line: Line): Point {
         const segmentIndex = this.calcSegmentIndex(position, line.segments.length);
         const relativePosition = position * line.segments.length - segmentIndex;
-        const lineSegment = line.segments[segmentIndex];
+        if (relativePosition < LineEngine.EPSILON && (segmentIndex > 0 || Line.isClosed(line))) {
+            const prevNormal = this.getNormalInternal(segmentIndex - 1, 1, line);
+            const currentNormal = this.getNormalInternal(segmentIndex, relativePosition, line);
+            return Math2D.add(prevNormal, currentNormal);
+        } else if (
+            relativePosition > 1 - LineEngine.EPSILON &&
+            (segmentIndex < line.segments.length - 1 || Line.isClosed(line))
+        ) {
+            const nextNormal = this.getNormalInternal(segmentIndex + 1, 0, line);
+            const currentNormal = this.getNormalInternal(segmentIndex, relativePosition, line);
+            return Math2D.add(nextNormal, currentNormal);
+        } else {
+            return this.getNormalInternal(segmentIndex, relativePosition, line);
+        }
+    }
+
+    private getNormalInternal(segmentIndex: number, relativePosition: number, line: Line) {
+        const normalizedSegmentIndex = (segmentIndex + line.segments.length) % line.segments.length;
+        const lineSegment = line.segments[normalizedSegmentIndex];
         const engine = this.getEngine(lineSegment);
-        const segmentStartPos = segmentIndex == 0 ? line.start : line.segments[segmentIndex - 1].end;
+        const segmentStartPos =
+            normalizedSegmentIndex == 0 ? line.start : line.segments[normalizedSegmentIndex - 1].end;
         return engine.getNormalVector(relativePosition, lineSegment, segmentStartPos);
     }
 
-    toPathString(line: Line, offset: Point): string {
+    toPathString(line: Line): string {
         const startPosition = line.start;
-        let path = `M ${startPosition.x + offset.x} ${startPosition.y + offset.y}`;
+        let path = `M ${startPosition.x} ${startPosition.y}`;
         for (const segment of line.segments) {
             const engine = this.getEngine(segment);
-            path += engine.toPathString(segment, offset);
+            path += engine.toPathString(segment);
         }
         path += "Z";
         return path;

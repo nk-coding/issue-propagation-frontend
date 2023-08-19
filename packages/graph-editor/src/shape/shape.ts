@@ -4,7 +4,6 @@ import { Shape as GropiusShape } from "../gropiusModel";
 
 export interface Shape {
     bounds: Bounds;
-    innerBounds: Bounds;
     shape: GropiusShape;
     outline: Line;
 }

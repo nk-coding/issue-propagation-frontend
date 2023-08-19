@@ -16,3 +16,9 @@ export interface Line {
      */
     segments: Segment[];
 }
+
+export namespace Line {
+    export function isClosed(line: Line): boolean {
+        return line.start.x === line.segments.at(-1)!.end.x && line.start.y === line.segments.at(-1)!.end.y;
+    }
+}

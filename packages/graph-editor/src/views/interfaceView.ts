@@ -34,7 +34,7 @@ export class InterfaceView implements IView {
             null,
             svg("path", {
                 attrs: {
-                    d: LineEngine.DEFAULT.toPathString(shape.outline, { x: 0, y: 0 }),
+                    d: LineEngine.DEFAULT.toPathString(shape.outline),
                     ...model.generateShapeAttrs()
                 }
             }),
@@ -50,11 +50,10 @@ export class InterfaceView implements IView {
         const shape = model.shape;
         const parentShape = parent.shape;
         const center = Bounds.center(shape.bounds);
-        const parentCenter = Bounds.center(parentShape.bounds);
-        const startPos = LineEngine.DEFAULT.projectPoint(parentCenter, shape.outline).pos;
         const endPos = LineEngine.DEFAULT.projectPoint(center, parentShape.outline).pos;
-        const startPoint = LineEngine.DEFAULT.getPoint(startPos, 0, shape.outline);
         const endPoint = LineEngine.DEFAULT.getPoint(endPos, 0, parentShape.outline);
+        const startPos = LineEngine.DEFAULT.projectPoint(endPoint, shape.outline).pos;
+        const startPoint = LineEngine.DEFAULT.getPoint(startPos, 0, shape.outline);
         const startVector = LineEngine.DEFAULT.getNormal(startPos, shape.outline);
         const endVector = LineEngine.DEFAULT.getNormal(endPos, parentShape.outline);
         const discance = Math2D.distance(startPoint, endPoint);
