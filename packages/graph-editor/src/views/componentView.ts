@@ -25,12 +25,7 @@ export class ComponentView implements IView {
         const component = svg(
             "g",
             null,
-            svg("path", {
-                attrs: {
-                    d: LineEngine.DEFAULT.toPathString(shape.outline),
-                    ...model.generateShapeAttrs()
-                }
-            }),
+            ...model.generateShape(),
             wrapForeignElement(context.renderElement(nameLabel!), {
                 x: model.x - nameLabel!.size.width / 2,
                 y: model.y - nameLabel!.size.height / 2

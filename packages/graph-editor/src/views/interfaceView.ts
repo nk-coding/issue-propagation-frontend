@@ -32,12 +32,7 @@ export class InterfaceView implements IView {
         const interfaceView = svg(
             "g",
             null,
-            svg("path", {
-                attrs: {
-                    d: LineEngine.DEFAULT.toPathString(shape.outline),
-                    ...model.generateShapeAttrs()
-                }
-            }),
+            ...model.generateShape(),
             wrapForeignElement(context.renderElement(nameLabel!), {
                 x: model.pos.x - nameLabel!.size.width / 2,
                 y: model.pos.y + model.shape.bounds.height / 2 + 5

@@ -1,4 +1,4 @@
-import { Locateable, RenderingContext, Selectable } from "sprotty";
+import { Locateable, RenderingContext, Selectable, svg } from "sprotty";
 import { VNode } from "snabbdom";
 import { ShapeStyle, StrokeStyle } from "../gropiusModel";
 import { IssueAffected } from "../model/issueAffected";
@@ -35,6 +35,32 @@ export abstract class SIssueAffected extends SNamedElement implements IssueAffec
             res.stroke = stroke.color ?? "var(--shape-stroke-color)";
         }
         return res;
+    }
+
+    generateShape(): VNode[] {
+        const result: VNode[] = [];
+        const pathString = LineEngine.DEFAULT.toPathString(this.shape.outline);
+        result.push(
+            svg("path", {
+                attrs: {
+                    d: pathString,
+                    ...this.generateShapeAttrs()
+                }
+            })
+        );
+        if (this.selected) {
+            result.push(
+                svg("path", {
+                    attrs: {
+                        d: pathString
+                    },
+                    class: {
+                        "selected-shape": true
+                    }
+                })
+            );
+        }
+        return result;
     }
 
     renderVersionLabel(context: RenderingContext, versionChip: SVersionChip): VNode | undefined {

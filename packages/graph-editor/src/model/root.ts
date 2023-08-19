@@ -2,6 +2,7 @@ import { Element } from "./element";
 
 export interface Root extends Element {
     type: typeof Root.TYPE;
+    animated?: boolean;
 }
 
 export namespace Root {

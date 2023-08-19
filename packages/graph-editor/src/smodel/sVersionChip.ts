@@ -1,6 +1,5 @@
 import { VersionChip } from "../model/versionChip";
-import { SHtmlElement } from "./SHtmlElement";
-import { SElement } from "./sElement";
+import { SHtmlElement } from "./sHtmlElement";
 
 export class SVersionChip extends SHtmlElement implements VersionChip {
     declare type: typeof VersionChip.TYPE;

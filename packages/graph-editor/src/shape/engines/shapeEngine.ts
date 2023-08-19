@@ -3,7 +3,7 @@ import { Shape } from "../shape";
 import { ShapeStyle } from "../../gropiusModel";
 
 export abstract class ShapeEngine {
-    static readonly DEFAULT_MARGIN = 0;
+    static readonly DEFAULT_MARGIN = 5;
 
     abstract generateForBounds(bounds: Bounds, style: ShapeStyle): Shape;
     abstract generateForInnerBounds(bounds: Bounds, style: ShapeStyle): Shape;

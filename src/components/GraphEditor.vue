@@ -80,5 +80,7 @@ watch(
     --shape-stroke-color: rgb(var(--v-theme-on-surface));
     --version-chip-background: rgb(var(--v-theme-primary-container));
     --version-chip-color: rgb(var(--v-theme-on-primary-container));
+    --selected-shape-stroke-color: rgb(var(--v-theme-primary));
+    --selected-shape-fill-color: rgba(var(--v-theme-primary), 0.2);
 }
 </style>

@@ -3,6 +3,7 @@ import { Root } from "../model/root";
 
 export class SRoot extends ViewportRootElement {
     override type: typeof Root.TYPE = Root.TYPE;
+    animated?: boolean;
 
     changeRevision = 0;
 
@@ -36,6 +37,13 @@ export class SRoot extends ViewportRootElement {
                 border-radius: 9999px;
                 padding: 5px 0.5em;
                 font-size: 0.75em;
+            }
+
+            .sprotty .selected-shape {
+                fill: var(--selected-shape-fill-color);
+                stroke: var(--selected-shape-stroke-color);
+                stroke-width: calc(6px / var(--diagram-zoom));
+                stroke-dasharray: calc(16px / var(--diagram-zoom));
             }
         `;
     }

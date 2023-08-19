@@ -25,7 +25,7 @@ import { SRoot } from "../../smodel/sRoot";
 @injectable()
 export class UpdateModelCommand extends BaseUpdateModelCommand {
     protected override computeAnimation(
-        newRoot: SModelRoot,
+        newRoot: SRoot,
         matchResult: MatchResult,
         context: CommandExecutionContext
     ): SModelRoot | Animation {
@@ -42,7 +42,7 @@ export class UpdateModelCommand extends BaseUpdateModelCommand {
             }
         });
         const animations: Animation[] = [];
-        if (elementAnimations.length > 0) {
+        if (elementAnimations.length > 0 && (newRoot.animated ?? true)) {
             animations.push(new LinearInterpolationAnimation(newRoot, elementAnimations, context));
         }
         const fadeAnimation = super.computeAnimation(newRoot, remainingMatchResult, context);
@@ -94,6 +94,11 @@ export class UpdateModelCommand extends BaseUpdateModelCommand {
             }
         }
         return undefined;
+    }
+
+    protected override updateElement(left: SModelElement, right: SModelElement, animationData: any): void {
+        console.log("update");
+        super.updateElement(left, right, animationData);
     }
 
     protected override performUpdate(
