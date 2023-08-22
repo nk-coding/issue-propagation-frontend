@@ -97,7 +97,6 @@ export class UpdateModelCommand extends BaseUpdateModelCommand {
     }
 
     protected override updateElement(left: SModelElement, right: SModelElement, animationData: any): void {
-        console.log("update");
         super.updateElement(left, right, animationData);
     }
 

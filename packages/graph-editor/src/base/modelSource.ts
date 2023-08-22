@@ -4,7 +4,8 @@ import {
     GraphLayout,
     ComponentVersion,
     Interface as GropiusInterface,
-    Relation as GropiusRelation
+    Relation as GropiusRelation,
+    IssueType as GropiusIssueType
 } from "../gropiusModel";
 import { Root } from "../model/root";
 import { Component } from "../model/component";
@@ -14,7 +15,8 @@ import { Relation } from "../model/relation";
 import { UpdateLayoutAction } from "../features/move/updateLayoutAction";
 import { Action, SModelElement, UpdateModelAction } from "sprotty-protocol";
 import { Element } from "../model/element";
-import { VersionChip } from "../model/versionChip";
+import { Chip } from "../model/chip";
+import { IssueType } from "../model/issueType";
 
 export abstract class GraphModelSource extends LocalModelSource {
     private layout?: GraphLayout;
@@ -82,13 +84,14 @@ export abstract class GraphModelSource extends LocalModelSource {
     private createComponent(component: ComponentVersion, layout: GraphLayout): Component {
         const pos = this.extractComponentLayout(component.id, layout).pos;
         const children: Element[] = component.interfaces.map((i) => this.createInterface(i, layout));
-        let version: VersionChip | undefined;
+        let version: Chip | undefined;
         if (component.version != undefined) {
-            version = this.createVersionChip(component.version, component.id);
+            version = this.createChip(component.version, component.id);
         }
         if (component.version != undefined) {
-            children.push(this.createVersionChip(component.version, component.id));
+            children.push(this.createChip(component.version, component.id));
         }
+        children.push(...component.issueTypes.map((issueType) => this.createIssueType(issueType)));
         children.push(this.createNameLabel(component.name, component.id));
         return {
             type: "component",
@@ -104,8 +107,9 @@ export abstract class GraphModelSource extends LocalModelSource {
         const pos = this.extractInterfaceLayout(gropiusInterface.id, layout).pos;
         const children: Element[] = [];
         if (gropiusInterface.version != undefined) {
-            children.push(this.createVersionChip(gropiusInterface.version, gropiusInterface.id));
+            children.push(this.createChip(gropiusInterface.version, gropiusInterface.id));
         }
+        children.push(...gropiusInterface.issueTypes.map((issueType) => this.createIssueType(issueType)));
         children.push(this.createNameLabel(gropiusInterface.name, gropiusInterface.id));
         return {
             type: "interface",
@@ -137,12 +141,27 @@ export abstract class GraphModelSource extends LocalModelSource {
         };
     }
 
-    private createVersionChip(version: string, parentId: string): VersionChip {
+    private createChip(version: string, parentId: string): Chip {
         return {
-            type: "versionChip",
+            type: "chip",
             id: `${parentId}-version`,
-            version,
+            text: `v${version}`,
             children: []
+        };
+    }
+
+    private createIssueType(type: GropiusIssueType): IssueType {
+        const countChip: Chip = {
+            type: Chip.TYPE,
+            id: `${type.id}-count`,
+            text: `${type.count}`,
+            children: []
+        };
+        return {
+            type: IssueType.TYPE,
+            id: type.id,
+            iconPath: type.iconPath,
+            children: [countChip]
         };
     }
 

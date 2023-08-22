@@ -33,9 +33,12 @@ import { SLabel } from "./smodel/sLabel";
 import { boundsModule } from "./features/bounds/di.config";
 import { moveModule } from "./features/move/di.config";
 import { CommandStack } from "./base/commandStack";
-import { VersionChip } from "./model/versionChip";
-import { SVersionChip } from "./smodel/sVersionChip";
-import { VersionChipView } from "./views/versionChipView";
+import { Chip } from "./model/chip";
+import { SChip } from "./smodel/sChip";
+import { ChipView } from "./views/chipView";
+import { IssueType } from "./model/issueType";
+import { SIssueType } from "./smodel/sIssueType";
+import { IssueTypeView } from "./views/issueTypeView";
 
 const diagramModule = new ContainerModule((bind, unbind, isBound, rebind) => {
     const context = { bind, unbind, isBound, rebind };
@@ -49,11 +52,12 @@ const diagramModule = new ContainerModule((bind, unbind, isBound, rebind) => {
     configureModelElement(context, Interface.TYPE, SInterface, InterfaceView, {
         enable: [selectFeature, moveFeature]
     });
+    configureModelElement(context, IssueType.TYPE, SIssueType, IssueTypeView);
     configureModelElement(context, Relation.TYPE, SRelation, RelationView);
     configureModelElement(context, Label.TYPE, SLabel, LabelView, {
         enable: [boundsFeature]
     });
-    configureModelElement(context, VersionChip.TYPE, SVersionChip, VersionChipView, {
+    configureModelElement(context, Chip.TYPE, SChip, ChipView, {
         enable: [boundsFeature]
     });
 });

@@ -16,6 +16,7 @@ export class SRoot extends ViewportRootElement {
                 word-wrap: break-word;
                 text-align: center;
                 user-select: none;
+                font-size: 1.2em;
             }
 
             .sprotty svg {
@@ -30,13 +31,24 @@ export class SRoot extends ViewportRootElement {
                 pointer-events: none;
             }
 
-            .sprotty .version-chip {
+            .sprotty .chip {
                 user-select: none;
+                border-radius: 9999px;
+                display: table;
+                min-height: 0;
+                line-height: 1;
+            }
+
+            .sprotty .issue-affected .chip {
+                font-size: 0.75em;
+                padding: 5px 0.5em;
                 background: var(--version-chip-background);
                 color: var(--version-chip-color);
-                border-radius: 9999px;
-                padding: 5px 0.5em;
-                font-size: 0.75em;
+            }
+
+            .sprotty .issue-affected .issue-type .chip {
+                font-size: 0.6em;
+                padding: 3px 0.5em;
             }
 
             .sprotty .selected-shape {
@@ -44,6 +56,21 @@ export class SRoot extends ViewportRootElement {
                 stroke: var(--selected-shape-stroke-color);
                 stroke-width: calc(6px / var(--diagram-zoom));
                 stroke-dasharray: calc(16px / var(--diagram-zoom));
+                cursor: pointer;
+            }
+
+            .sprotty .shape {
+                cursor: pointer;
+            }
+
+            .sprotty .issue-type-folder {
+                stroke: var(--shape-stroke-color);
+                stroke-width: 2px;
+                fill: none;
+            }
+
+            .sprotty .issue-type-icon {
+                fill: var(--shape-stroke-color);
             }
         `;
     }

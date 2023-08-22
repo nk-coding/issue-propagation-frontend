@@ -1,0 +1,15 @@
+import { name } from "sprotty";
+import { Element } from "./element";
+
+export interface IssueType extends Element {
+    type: typeof IssueType.TYPE;
+    iconPath: string;
+}
+
+export namespace IssueType {
+    export const TYPE = "issueType";
+
+    export function is(element: Element): element is IssueType {
+        return element.type === TYPE;
+    }
+}

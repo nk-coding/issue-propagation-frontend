@@ -3,9 +3,9 @@ import { VNode } from "snabbdom";
 import { IView, RenderingContext, svg } from "sprotty";
 import { SComponent } from "../smodel/sComponent";
 import { SLabel } from "../smodel/sLabel";
-import { LineEngine } from "../line/engine/lineEngine";
 import { wrapForeignElement } from "./util";
-import { SVersionChip } from "../smodel/sVersionChip";
+import { SChip } from "../smodel/sChip";
+import { SInterface } from "../smodel/sInterface";
 
 @injectable()
 export class ComponentView implements IView {
@@ -15,13 +15,18 @@ export class ComponentView implements IView {
         for (const child of model.children) {
             if (child instanceof SLabel) {
                 nameLabel = child;
-            } else if (child instanceof SVersionChip) {
+            } else if (child instanceof SChip) {
                 otherChildren.push(model.renderVersionLabel(context, child));
-            } else {
+            } else if (child instanceof SInterface) {
                 otherChildren.push(context.renderElement(child));
             }
         }
-        const shape = model.shape;
+        otherChildren.push(
+            ...model.renderIssueTypes(context, {
+                x: model.x,
+                y: model.y + model.shape.bounds.height / 2 + 5
+            })
+        );
         const component = svg(
             "g",
             null,
@@ -31,6 +36,16 @@ export class ComponentView implements IView {
                 y: model.y - nameLabel!.size.height / 2
             })
         );
-        return svg("g", null, component, ...otherChildren);
+        return svg(
+            "g",
+            {
+                class: {
+                    component: true,
+                    "issue-affected": true
+                }
+            },
+            component,
+            ...otherChildren
+        );
     }
 }

@@ -13,6 +13,7 @@ export interface Node {
 export interface IssueType extends Node {
     name: string;
     iconPath: string;
+    count: number;
 }
 
 export interface IssueAffected extends Node {

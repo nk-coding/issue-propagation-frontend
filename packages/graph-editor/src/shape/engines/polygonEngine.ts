@@ -64,7 +64,10 @@ export abstract class PolygonEngine extends ShapeEngine {
             const lengthToCenter = Math.sqrt(modifiedRadius * modifiedRadius + lengthAtStroke * lengthAtStroke);
             const start = Math2D.add(current, Math2D.scaleTo(toLast, lengthAtStroke));
             const end = Math2D.add(current, Math2D.scaleTo(toNext, lengthAtStroke));
-            const center = Math2D.add(current, Math2D.scaleTo(Math2D.add(toLast, toNext), lengthToCenter));
+            const center = Math2D.add(
+                current,
+                Math2D.scaleTo(Math2D.add(Math2D.normalize(toLast), Math2D.normalize(toNext)), lengthToCenter)
+            );
             roundedCorners.push({
                 start,
                 end,

@@ -8,7 +8,7 @@ import { wrapForeignElement } from "./util";
 import { SComponent } from "../smodel/sComponent";
 import { Bounds } from "sprotty-protocol";
 import { Math2D } from "../line/math";
-import { SVersionChip } from "../smodel/sVersionChip";
+import { SChip } from "../smodel/sChip";
 
 const MAX_CONTROL_POINT_DISTANCE = 75;
 
@@ -20,13 +20,16 @@ export class InterfaceView implements IView {
         for (const child of model.children) {
             if (child instanceof SLabel) {
                 nameLabel = child;
-            } else if (child instanceof SVersionChip) {
+            } else if (child instanceof SChip) {
                 otherChildren.push(model.renderVersionLabel(context, child));
-            } else {
-                otherChildren.push(context.renderElement(child));
             }
         }
-        const shape = model.shape;
+        otherChildren.push(
+            ...model.renderIssueTypes(context, {
+                x: model.pos.x,
+                y: model.pos.y + model.shape.bounds.height / 2 + 10 + nameLabel!.size.height
+            })
+        );
         const parent = model.parent as SComponent;
         const connectionLine = this.renderConnectionLine(model, parent);
         const interfaceView = svg(
@@ -38,7 +41,18 @@ export class InterfaceView implements IView {
                 y: model.pos.y + model.shape.bounds.height / 2 + 5
             })
         );
-        return svg("g", null, interfaceView, connectionLine, ...otherChildren);
+        return svg(
+            "g",
+            {
+                class: {
+                    interface: true,
+                    "issue-affected": true
+                }
+            },
+            interfaceView,
+            connectionLine,
+            ...otherChildren
+        );
     }
 
     private renderConnectionLine(model: Readonly<SInterface>, parent: SComponent): VNode {
@@ -51,8 +65,8 @@ export class InterfaceView implements IView {
         const startPoint = LineEngine.DEFAULT.getPoint(startPos, 0, shape.outline);
         const startVector = LineEngine.DEFAULT.getNormal(startPos, shape.outline);
         const endVector = LineEngine.DEFAULT.getNormal(endPos, parentShape.outline);
-        const discance = Math2D.distance(startPoint, endPoint);
-        const controlPointDistance = Math.min(discance / 2, MAX_CONTROL_POINT_DISTANCE);
+        const distance = Math2D.distance(startPoint, endPoint);
+        const controlPointDistance = Math.min(distance / 2, MAX_CONTROL_POINT_DISTANCE);
         const controlPoint1 = Math2D.add(startPoint, Math2D.scaleTo(startVector, controlPointDistance));
         const controlPoint2 = Math2D.add(endPoint, Math2D.scaleTo(endVector, controlPointDistance));
         return svg("path", {
