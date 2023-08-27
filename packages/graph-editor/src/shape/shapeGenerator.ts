@@ -6,6 +6,7 @@ import { EllipseEngine } from "./engines/ellipseEngine";
 import { CircleEngine } from "./engines/circleEngine";
 import { RectEngine } from "./engines/rectEngine";
 import { RhombusEngine } from "./engines/rhombusEngine";
+import { HexagonEngine } from "./engines/hexagonEngine";
 
 export class ShapeGenerator {
     static DEFAULT = new ShapeGenerator();
@@ -14,7 +15,8 @@ export class ShapeGenerator {
         ["circle", new CircleEngine()],
         ["ellipse", new EllipseEngine()],
         ["rect", new RectEngine()],
-        ["rhombus", new RhombusEngine()]
+        ["rhombus", new RhombusEngine()],
+        ["hexagon", new HexagonEngine()]
     ]);
 
     generateForBounds(shape: GropiusShape, bounds: Bounds, style: ShapeStyle): Shape {

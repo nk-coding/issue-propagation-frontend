@@ -1,13 +1,19 @@
 <template>
     <div class="sprotty-wrapper">
         <div :id="editorId" class="sprotty" />
+        <div class="ui-container">
+            <v-btn icon @click="format" variant="text">
+                <v-icon icon="mdi-auto-fix"/>
+                <v-tooltip activator="parent" location="bottom"> Auto-layout </v-tooltip>
+            </v-btn>
+        </div>
     </div>
 </template>
 <script setup lang="ts">
 import "reflect-metadata";
 import { Graph, GraphLayout, GraphModelSource, createContainer } from "@gropius/graph-editor";
 import { TYPES } from "sprotty";
-import { PropType, onMounted, shallowRef, watch, nextTick, ref } from "vue";
+import { PropType, onMounted, shallowRef, watch, ref } from "vue";
 import { v4 as uuidv4 } from "uuid";
 
 const props = defineProps({
@@ -54,10 +60,21 @@ watch(
         modelSource.value!.updateGraph({ layout: props.layout });
     }
 );
+
+function format() {
+    modelSource.value!.autolayout();
+}
 </script>
 <style scoped>
 .sprotty-wrapper {
     height: 100%;
+    position: relative;
+}
+
+.ui-container {
+    position: absolute;
+    top: 0;
+    right: 0;
 }
 
 /* Sprotty */

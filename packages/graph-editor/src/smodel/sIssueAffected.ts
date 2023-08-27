@@ -71,16 +71,16 @@ export abstract class SIssueAffected extends SNamedElement implements IssueAffec
     renderVersionLabel(context: RenderingContext, chip: SChip): VNode | undefined {
         const shape = this.shape;
         const shapeBounds = shape.bounds;
-        const topRight = {
-            x: shapeBounds.x + shapeBounds.width,
+        const topLeft = {
+            x: shapeBounds.x,
             y: shapeBounds.y
         };
-        const topRightProjected = LineEngine.DEFAULT.projectPoint(topRight, shape.outline).pos;
-        const labelPos = LineEngine.DEFAULT.getPoint(topRightProjected, 0, shape.outline);
+        const topLeftProjected = LineEngine.DEFAULT.projectPoint(topLeft, shape.outline).pos;
+        const labelPos = LineEngine.DEFAULT.getPoint(topLeftProjected, 0, shape.outline);
         return wrapForeignElement(
             context.renderElement(chip),
             Math2D.add(labelPos, {
-                x: -chip.size.width / 3,
+                x: (-chip.size.width / 3) * 2,
                 y: -chip.size.height / 2
             })
         );

@@ -13,10 +13,11 @@ import { Interface } from "../model/interface";
 import { Label } from "../model/label";
 import { Relation } from "../model/relation";
 import { UpdateLayoutAction } from "../features/move/updateLayoutAction";
-import { Action, SModelElement, UpdateModelAction } from "sprotty-protocol";
+import { Action, Point, SModelElement, UpdateModelAction } from "sprotty-protocol";
 import { Element } from "../model/element";
 import { Chip } from "../model/chip";
 import { IssueType } from "../model/issueType";
+import { LayoutEngine } from "./layoutEngine";
 
 export abstract class GraphModelSource extends LocalModelSource {
     private layout?: GraphLayout;
@@ -61,6 +62,18 @@ export abstract class GraphModelSource extends LocalModelSource {
             this.layout = layout;
         }
         this.rebuildRoot();
+    }
+
+    async autolayout(): Promise<void> {
+        if (this.graph == undefined) {
+            throw new Error("Graph must be set");
+        }
+        const layoutEngine = new LayoutEngine(this.graph);
+        const coordinates = await layoutEngine.layout();
+        coordinates.forEach((pos, id) => {
+            this.layout![id] = { pos };
+        });
+        this.updateGraph({ layout: this.layout });
     }
 
     private rebuildRoot() {
