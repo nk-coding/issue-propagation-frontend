@@ -11,7 +11,7 @@ export class CircleEngine extends EllipseEngine {
         const center = Bounds.center(bounds);
         return {
             bounds,
-            shape: "circle",
+            shape: "CIRCLE",
             outline: this.outline(center, radius, radius)
         };
     }
@@ -31,7 +31,7 @@ export class CircleEngine extends EllipseEngine {
                 width: outerRadius * 2,
                 height: outerRadius * 2
             },
-            shape: "circle",
+            shape: "CIRCLE",
             outline: this.outline(center, radius, radius)
         };
     }

@@ -1,11 +1,13 @@
 import { injectable } from "inversify";
 import { VNode } from "snabbdom";
-import { IView, IViewArgs, RenderingContext, svg } from "sprotty";
+import { IView, RenderingContext, svg } from "sprotty";
 import { SRelation } from "../smodel/sRelation";
 import { SIssueAffected } from "../smodel/sIssueAffected";
 import { Bounds } from "sprotty-protocol";
 import { LineEngine } from "../line/engine/lineEngine";
 import { Math2D } from "../line/math";
+import { StrokeStyle } from "../gropiusModel";
+import { MarkerGenerator } from "../marker/markerGenerator";
 
 @injectable()
 export class RelationView implements IView {
@@ -26,13 +28,35 @@ export class RelationView implements IView {
         const controlPointDistance = Math.min(distance / 2, 75);
         const controlPoint1 = Math2D.add(startPoint, Math2D.scaleTo(startVector, controlPointDistance));
         const controlPoint2 = Math2D.add(endPoint, Math2D.scaleTo(endVector, controlPointDistance));
-        return svg("path", {
+        const markerAngle = Math2D.angle(endVector) + Math.PI;
+        const strokeWidth = StrokeStyle.strokeWidth(model.style);
+        const pathStyle = {
+            "stroke-width": strokeWidth,
+            stroke: model.style.stroke?.color ?? "var(--shape-stroke-color)"
+        };
+        const markerInfo = MarkerGenerator.DEFAULT.getMarkerInfo(model.style);
+        const markerStartPoint = Math2D.add(endPoint, Math2D.scaleTo(endVector, markerInfo.startOffset));
+        const endMarker = svg("path", {
             attrs: {
-                d: `M ${startPoint.x} ${startPoint.y} L ${endPoint.x} ${endPoint.y}`,
-                stroke: "var(--shape-stroke-color)",
-                fill: "none",
-                "stroke-width": 2
+                d: markerInfo.path,
+                ...pathStyle,
+                transform: `translate(${markerStartPoint.x}, ${markerStartPoint.y}) rotate(${
+                    (markerAngle * 180) / Math.PI
+                })`,
+                fill: markerInfo.filled ? pathStyle.stroke : "none"
             }
         });
+        const lineEndPoint = Math2D.add(
+            endPoint,
+            Math2D.scaleTo(endVector, markerInfo.startOffset - markerInfo.lineOffset)
+        );
+        const line = svg("path", {
+            attrs: {
+                d: `M ${startPoint.x} ${startPoint.y} L ${lineEndPoint.x} ${lineEndPoint.y}`,
+                ...pathStyle,
+                fill: "none"
+            }
+        });
+        return svg("g", null, line, endMarker);
     }
 }

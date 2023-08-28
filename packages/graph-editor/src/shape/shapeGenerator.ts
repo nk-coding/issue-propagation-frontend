@@ -12,11 +12,11 @@ export class ShapeGenerator {
     static DEFAULT = new ShapeGenerator();
 
     private engines = new Map<GropiusShape, ShapeEngine>([
-        ["circle", new CircleEngine()],
-        ["ellipse", new EllipseEngine()],
-        ["rect", new RectEngine()],
-        ["rhombus", new RhombusEngine()],
-        ["hexagon", new HexagonEngine()]
+        ["CIRCLE", new CircleEngine()],
+        ["ELLIPSE", new EllipseEngine()],
+        ["RECT", new RectEngine()],
+        ["RHOMBUS", new RhombusEngine()],
+        ["HEXAGON", new HexagonEngine()]
     ]);
 
     generateForBounds(shape: GropiusShape, bounds: Bounds, style: ShapeStyle): Shape {

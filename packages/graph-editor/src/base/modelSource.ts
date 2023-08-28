@@ -13,7 +13,7 @@ import { Interface } from "../model/interface";
 import { Label } from "../model/label";
 import { Relation } from "../model/relation";
 import { UpdateLayoutAction } from "../features/move/updateLayoutAction";
-import { Action, Point, SModelElement, UpdateModelAction } from "sprotty-protocol";
+import { Action, SModelElement, UpdateModelAction } from "sprotty-protocol";
 import { Element } from "../model/element";
 import { Chip } from "../model/chip";
 import { IssueType } from "../model/issueType";

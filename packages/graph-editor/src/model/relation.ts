@@ -1,11 +1,11 @@
-import { StrokeStyle } from "../gropiusModel";
+import { RelationStyle, StrokeStyle } from "../gropiusModel";
 import { Element } from "./element";
 
 export interface Relation extends Element {
     type: typeof Relation.TYPE;
     start: string;
     end: string;
-    style: StrokeStyle;
+    style: RelationStyle;
 }
 
 export namespace Relation {

@@ -14,7 +14,7 @@ export class EllipseEngine extends ShapeEngine {
         const center = Bounds.center(bounds);
         return {
             bounds,
-            shape: "ellipse",
+            shape: "ELLIPSE",
             outline: this.outline(center, bounds.width - strokeWidth / 2, bounds.height - strokeWidth / 2)
         };
     }
@@ -34,7 +34,7 @@ export class EllipseEngine extends ShapeEngine {
                 x: center.x - outerSize.width / 2,
                 y: center.y - outerSize.height / 2
             },
-            shape: "ellipse",
+            shape: "ELLIPSE",
             outline: this.outline(center, outerSize.width / 2 - strokeWidth / 2, outerSize.height / 2 - strokeWidth / 2)
         };
     }

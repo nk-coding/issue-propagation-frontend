@@ -31,7 +31,7 @@ export interface Relation extends Node {
     name: string;
     start: string;
     end: string;
-    style: StrokeStyle;
+    style: RelationStyle;
 }
 
 export interface IssueRelation {
@@ -68,7 +68,13 @@ export interface ShapeStyle extends StrokeStyle, FillStyle {
     radius?: number;
 }
 
-export type Shape = "rect" | "circle" | "ellipse" | "rhombus" | "triangle" | "hexagon" | "parallelogram" | "trapeze";
+export interface RelationStyle extends StrokeStyle {
+    marker: Marker;
+}
+
+export type Shape = "RECT" | "CIRCLE" | "ELLIPSE" | "RHOMBUS" | "HEXAGON";
+
+export type Marker = "ARROW" | "DIAMOND" | "FILLED_DIAMOND" | "TRIANGLE" | "FILLED_TRIANGLE";
 
 export interface GraphLayout {
     [id: string]:
