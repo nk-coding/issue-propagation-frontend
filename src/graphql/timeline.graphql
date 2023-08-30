@@ -375,9 +375,7 @@ fragment LabelTimelineInfo on Label {
 }
 
 fragment TrackableTimelineInfo on Trackable {
-    id
-    name
-    description
+    ...DefaultTrackableInfo
 }
 
 fragment AssignmenTypeTimelineInfo on AssignmentType {
@@ -393,6 +391,7 @@ fragment CommentTimelineInfo on Comment {
 }
 
 fragment IssueRelationTypeTimelineInfo on IssueRelationType {
+    id
     name
     description
 }
@@ -418,8 +417,7 @@ fragment OutgoingRelationTimelineInfo on IssueRelation {
 }
 
 fragment IssueTimelineInfo on Issue {
-    title
-    ...DefaultIssueIconInfo
+    ...DefaultIssueInfo
 }
 
 fragment IssuePriorityTimelineInfo on IssuePriority {

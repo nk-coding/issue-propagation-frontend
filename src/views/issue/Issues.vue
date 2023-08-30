@@ -1,5 +1,9 @@
 <template>
-    <PaginatedList :item-manager="itemManager" :sort-fields="Object.keys(sortFields)" @item-selected="selectIssue">
+    <PaginatedList
+        :item-manager="itemManager"
+        :sort-fields="Object.keys(sortFields)"
+        :to="(issue: Issue) => issueRoute(issue)"
+    >
         <template #item="{ item }">
             <ListItem :title="item.title" :subtitle="item.title">
                 <template #prepend>
@@ -51,7 +55,7 @@
 <script lang="ts" setup>
 import { NodeReturnType, useClient } from "@/graphql/client";
 import { computed, ref } from "vue";
-import { useRoute, useRouter } from "vue-router";
+import { RouteLocationRaw, useRoute, useRouter } from "vue-router";
 import PaginatedList, { ItemManager } from "@/components/PaginatedList.vue";
 import ListItem from "@/components/ListItem.vue";
 import { IssueOrderField, OrderDirection } from "@/graphql/generated";
@@ -104,10 +108,14 @@ const itemManager: ItemManager<Issue, keyof typeof sortFields> = {
 };
 
 function selectIssue(issue: { id: string }) {
-    router.push({
+    router.push(issueRoute(issue));
+}
+
+function issueRoute(issue: { id: string }): RouteLocationRaw {
+    return {
         name: (route.name as string).slice(0, -1),
         params: { issue: issue.id, trackable: trackableId.value }
-    });
+    };
 }
 </script>
 <style scoped lang="scss">

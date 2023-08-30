@@ -17076,8 +17076,8 @@ export type GetIssueQuery = {
                             id: string;
                             createdAt: any;
                             pinnedOn?:
-                                | { __typename?: "Component"; id: string; name: string; description: string }
-                                | { __typename?: "Project"; id: string; name: string; description: string }
+                                | { __typename: "Component"; id: string; name: string; description: string }
+                                | { __typename: "Project"; id: string; name: string; description: string }
                                 | null;
                             createdBy:
                                 | {
@@ -17100,8 +17100,8 @@ export type GetIssueQuery = {
                             id: string;
                             createdAt: any;
                             addedToTrackable?:
-                                | { __typename?: "Component"; id: string; name: string; description: string }
-                                | { __typename?: "Project"; id: string; name: string; description: string }
+                                | { __typename: "Component"; id: string; name: string; description: string }
+                                | { __typename: "Project"; id: string; name: string; description: string }
                                 | null;
                             createdBy:
                                 | {
@@ -17322,21 +17322,36 @@ export type GetIssueQuery = {
                                 __typename?: "IssueRelation";
                                 issue?: {
                                     __typename?: "Issue";
+                                    id: string;
                                     title: string;
+                                    trackables: {
+                                        __typename?: "TrackableConnection";
+                                        nodes: Array<
+                                            | { __typename: "Component"; id: string; name: string; description: string }
+                                            | { __typename: "Project"; id: string; name: string; description: string }
+                                        >;
+                                    };
                                     incomingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
                                     outgoingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
                                     state: { __typename?: "IssueState"; isOpen: boolean };
                                     type: { __typename?: "IssueType"; iconPath: string };
                                 } | null;
-                                type?: { __typename?: "IssueRelationType"; name: string; description: string } | null;
+                                type?: {
+                                    __typename?: "IssueRelationType";
+                                    id: string;
+                                    name: string;
+                                    description: string;
+                                } | null;
                             };
                             oldRelationType?: {
                                 __typename?: "IssueRelationType";
+                                id: string;
                                 name: string;
                                 description: string;
                             } | null;
                             newRelationTyoe?: {
                                 __typename?: "IssueRelationType";
+                                id: string;
                                 name: string;
                                 description: string;
                             } | null;
@@ -17419,13 +17434,26 @@ export type GetIssueQuery = {
                                   };
                             relatedIssue?: {
                                 __typename?: "Issue";
+                                id: string;
                                 title: string;
+                                trackables: {
+                                    __typename?: "TrackableConnection";
+                                    nodes: Array<
+                                        | { __typename: "Component"; id: string; name: string; description: string }
+                                        | { __typename: "Project"; id: string; name: string; description: string }
+                                    >;
+                                };
                                 incomingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
                                 outgoingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
                                 state: { __typename?: "IssueState"; isOpen: boolean };
                                 type: { __typename?: "IssueType"; iconPath: string };
                             } | null;
-                            type?: { __typename?: "IssueRelationType"; name: string; description: string } | null;
+                            type?: {
+                                __typename?: "IssueRelationType";
+                                id: string;
+                                name: string;
+                                description: string;
+                            } | null;
                         }
                       | {
                             __typename: "OutgoingRelationTypeChangedEvent";
@@ -17435,21 +17463,36 @@ export type GetIssueQuery = {
                                 __typename?: "IssueRelation";
                                 relatedIssue?: {
                                     __typename?: "Issue";
+                                    id: string;
                                     title: string;
+                                    trackables: {
+                                        __typename?: "TrackableConnection";
+                                        nodes: Array<
+                                            | { __typename: "Component"; id: string; name: string; description: string }
+                                            | { __typename: "Project"; id: string; name: string; description: string }
+                                        >;
+                                    };
                                     incomingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
                                     outgoingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
                                     state: { __typename?: "IssueState"; isOpen: boolean };
                                     type: { __typename?: "IssueType"; iconPath: string };
                                 } | null;
-                                type?: { __typename?: "IssueRelationType"; name: string; description: string } | null;
+                                type?: {
+                                    __typename?: "IssueRelationType";
+                                    id: string;
+                                    name: string;
+                                    description: string;
+                                } | null;
                             };
                             oldRelationType?: {
                                 __typename?: "IssueRelationType";
+                                id: string;
                                 name: string;
                                 description: string;
                             } | null;
                             newRelationTyoe?: {
                                 __typename?: "IssueRelationType";
+                                id: string;
                                 name: string;
                                 description: string;
                             } | null;
@@ -17511,13 +17554,26 @@ export type GetIssueQuery = {
                                 __typename?: "IssueRelation";
                                 issue?: {
                                     __typename?: "Issue";
+                                    id: string;
                                     title: string;
+                                    trackables: {
+                                        __typename?: "TrackableConnection";
+                                        nodes: Array<
+                                            | { __typename: "Component"; id: string; name: string; description: string }
+                                            | { __typename: "Project"; id: string; name: string; description: string }
+                                        >;
+                                    };
                                     incomingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
                                     outgoingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
                                     state: { __typename?: "IssueState"; isOpen: boolean };
                                     type: { __typename?: "IssueType"; iconPath: string };
                                 } | null;
-                                type?: { __typename?: "IssueRelationType"; name: string; description: string } | null;
+                                type?: {
+                                    __typename?: "IssueRelationType";
+                                    id: string;
+                                    name: string;
+                                    description: string;
+                                } | null;
                             } | null;
                             createdBy:
                                 | {
@@ -17661,8 +17717,8 @@ export type GetIssueQuery = {
                             id: string;
                             createdAt: any;
                             unpinnedOn?:
-                                | { __typename?: "Component"; id: string; name: string; description: string }
-                                | { __typename?: "Project"; id: string; name: string; description: string }
+                                | { __typename: "Component"; id: string; name: string; description: string }
+                                | { __typename: "Project"; id: string; name: string; description: string }
                                 | null;
                             createdBy:
                                 | {
@@ -17685,8 +17741,8 @@ export type GetIssueQuery = {
                             id: string;
                             createdAt: any;
                             removedFromTrackable?:
-                                | { __typename?: "Component"; id: string; name: string; description: string }
-                                | { __typename?: "Project"; id: string; name: string; description: string }
+                                | { __typename: "Component"; id: string; name: string; description: string }
+                                | { __typename: "Project"; id: string; name: string; description: string }
                                 | null;
                             createdBy:
                                 | {
@@ -17712,13 +17768,26 @@ export type GetIssueQuery = {
                                 __typename?: "IssueRelation";
                                 issue?: {
                                     __typename?: "Issue";
+                                    id: string;
                                     title: string;
+                                    trackables: {
+                                        __typename?: "TrackableConnection";
+                                        nodes: Array<
+                                            | { __typename: "Component"; id: string; name: string; description: string }
+                                            | { __typename: "Project"; id: string; name: string; description: string }
+                                        >;
+                                    };
                                     incomingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
                                     outgoingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
                                     state: { __typename?: "IssueState"; isOpen: boolean };
                                     type: { __typename?: "IssueType"; iconPath: string };
                                 } | null;
-                                type?: { __typename?: "IssueRelationType"; name: string; description: string } | null;
+                                type?: {
+                                    __typename?: "IssueRelationType";
+                                    id: string;
+                                    name: string;
+                                    description: string;
+                                } | null;
                             } | null;
                             createdBy:
                                 | {
@@ -17771,13 +17840,26 @@ export type GetIssueQuery = {
                                 __typename?: "IssueRelation";
                                 relatedIssue?: {
                                     __typename?: "Issue";
+                                    id: string;
                                     title: string;
+                                    trackables: {
+                                        __typename?: "TrackableConnection";
+                                        nodes: Array<
+                                            | { __typename: "Component"; id: string; name: string; description: string }
+                                            | { __typename: "Project"; id: string; name: string; description: string }
+                                        >;
+                                    };
                                     incomingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
                                     outgoingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
                                     state: { __typename?: "IssueState"; isOpen: boolean };
                                     type: { __typename?: "IssueType"; iconPath: string };
                                 } | null;
-                                type?: { __typename?: "IssueRelationType"; name: string; description: string } | null;
+                                type?: {
+                                    __typename?: "IssueRelationType";
+                                    id: string;
+                                    name: string;
+                                    description: string;
+                                } | null;
                             } | null;
                             createdBy:
                                 | {
@@ -18009,13 +18091,21 @@ export type GetIssueQuery = {
                       id: string;
                       relatedIssue?: {
                           __typename?: "Issue";
+                          id: string;
                           title: string;
+                          trackables: {
+                              __typename?: "TrackableConnection";
+                              nodes: Array<
+                                  | { __typename: "Component"; id: string; name: string; description: string }
+                                  | { __typename: "Project"; id: string; name: string; description: string }
+                              >;
+                          };
                           incomingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
                           outgoingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
                           state: { __typename?: "IssueState"; isOpen: boolean };
                           type: { __typename?: "IssueType"; iconPath: string };
                       } | null;
-                      type?: { __typename?: "IssueRelationType"; name: string; description: string } | null;
+                      type?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
                   }>;
               };
               incomingRelations: {
@@ -18026,13 +18116,21 @@ export type GetIssueQuery = {
                       id: string;
                       issue?: {
                           __typename?: "Issue";
+                          id: string;
                           title: string;
+                          trackables: {
+                              __typename?: "TrackableConnection";
+                              nodes: Array<
+                                  | { __typename: "Component"; id: string; name: string; description: string }
+                                  | { __typename: "Project"; id: string; name: string; description: string }
+                              >;
+                          };
                           incomingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
                           outgoingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
                           state: { __typename?: "IssueState"; isOpen: boolean };
                           type: { __typename?: "IssueType"; iconPath: string };
                       } | null;
-                      type?: { __typename?: "IssueRelationType"; name: string; description: string } | null;
+                      type?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
                   }>;
               };
               labels: {
@@ -18249,6 +18347,23 @@ export type CreateIssueMutationVariables = Exact<{
 export type CreateIssueMutation = {
     __typename?: "Mutation";
     createIssue?: { __typename?: "CreateIssuePayload"; issue?: { __typename?: "Issue"; id: string } | null } | null;
+};
+
+export type DefaultIssueInfoFragment = {
+    __typename?: "Issue";
+    id: string;
+    title: string;
+    trackables: {
+        __typename?: "TrackableConnection";
+        nodes: Array<
+            | { __typename: "Component"; id: string; name: string; description: string }
+            | { __typename: "Project"; id: string; name: string; description: string }
+        >;
+    };
+    incomingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
+    outgoingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
+    state: { __typename?: "IssueState"; isOpen: boolean };
+    type: { __typename?: "IssueType"; iconPath: string };
 };
 
 export type DefaultIssueIconInfoFragment = {
@@ -18881,8 +18996,8 @@ type DefaultTimelineItemInfo_AddedToPinnedIssuesEvent_Fragment = {
     id: string;
     createdAt: any;
     pinnedOn?:
-        | { __typename?: "Component"; id: string; name: string; description: string }
-        | { __typename?: "Project"; id: string; name: string; description: string }
+        | { __typename: "Component"; id: string; name: string; description: string }
+        | { __typename: "Project"; id: string; name: string; description: string }
         | null;
     createdBy:
         | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
@@ -18894,8 +19009,8 @@ type DefaultTimelineItemInfo_AddedToTrackableEvent_Fragment = {
     id: string;
     createdAt: any;
     addedToTrackable?:
-        | { __typename?: "Component"; id: string; name: string; description: string }
-        | { __typename?: "Project"; id: string; name: string; description: string }
+        | { __typename: "Component"; id: string; name: string; description: string }
+        | { __typename: "Project"; id: string; name: string; description: string }
         | null;
     createdBy:
         | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
@@ -18982,16 +19097,24 @@ type DefaultTimelineItemInfo_IncomingRelationTypeChangedEvent_Fragment = {
         __typename?: "IssueRelation";
         issue?: {
             __typename?: "Issue";
+            id: string;
             title: string;
+            trackables: {
+                __typename?: "TrackableConnection";
+                nodes: Array<
+                    | { __typename: "Component"; id: string; name: string; description: string }
+                    | { __typename: "Project"; id: string; name: string; description: string }
+                >;
+            };
             incomingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
             outgoingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
             state: { __typename?: "IssueState"; isOpen: boolean };
             type: { __typename?: "IssueType"; iconPath: string };
         } | null;
-        type?: { __typename?: "IssueRelationType"; name: string; description: string } | null;
+        type?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
     };
-    oldRelationType?: { __typename?: "IssueRelationType"; name: string; description: string } | null;
-    newRelationTyoe?: { __typename?: "IssueRelationType"; name: string; description: string } | null;
+    oldRelationType?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
+    newRelationTyoe?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
     createdBy:
         | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
         | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
@@ -19022,13 +19145,21 @@ type DefaultTimelineItemInfo_IssueRelation_Fragment = {
         | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
     relatedIssue?: {
         __typename?: "Issue";
+        id: string;
         title: string;
+        trackables: {
+            __typename?: "TrackableConnection";
+            nodes: Array<
+                | { __typename: "Component"; id: string; name: string; description: string }
+                | { __typename: "Project"; id: string; name: string; description: string }
+            >;
+        };
         incomingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
         outgoingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
         state: { __typename?: "IssueState"; isOpen: boolean };
         type: { __typename?: "IssueType"; iconPath: string };
     } | null;
-    type?: { __typename?: "IssueRelationType"; name: string; description: string } | null;
+    type?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
 };
 
 type DefaultTimelineItemInfo_OutgoingRelationTypeChangedEvent_Fragment = {
@@ -19039,16 +19170,24 @@ type DefaultTimelineItemInfo_OutgoingRelationTypeChangedEvent_Fragment = {
         __typename?: "IssueRelation";
         relatedIssue?: {
             __typename?: "Issue";
+            id: string;
             title: string;
+            trackables: {
+                __typename?: "TrackableConnection";
+                nodes: Array<
+                    | { __typename: "Component"; id: string; name: string; description: string }
+                    | { __typename: "Project"; id: string; name: string; description: string }
+                >;
+            };
             incomingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
             outgoingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
             state: { __typename?: "IssueState"; isOpen: boolean };
             type: { __typename?: "IssueType"; iconPath: string };
         } | null;
-        type?: { __typename?: "IssueRelationType"; name: string; description: string } | null;
+        type?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
     };
-    oldRelationType?: { __typename?: "IssueRelationType"; name: string; description: string } | null;
-    newRelationTyoe?: { __typename?: "IssueRelationType"; name: string; description: string } | null;
+    oldRelationType?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
+    newRelationTyoe?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
     createdBy:
         | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
         | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
@@ -19073,13 +19212,21 @@ type DefaultTimelineItemInfo_RelatedByIssueEvent_Fragment = {
         __typename?: "IssueRelation";
         issue?: {
             __typename?: "Issue";
+            id: string;
             title: string;
+            trackables: {
+                __typename?: "TrackableConnection";
+                nodes: Array<
+                    | { __typename: "Component"; id: string; name: string; description: string }
+                    | { __typename: "Project"; id: string; name: string; description: string }
+                >;
+            };
             incomingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
             outgoingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
             state: { __typename?: "IssueState"; isOpen: boolean };
             type: { __typename?: "IssueType"; iconPath: string };
         } | null;
-        type?: { __typename?: "IssueRelationType"; name: string; description: string } | null;
+        type?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
     } | null;
     createdBy:
         | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
@@ -19140,8 +19287,8 @@ type DefaultTimelineItemInfo_RemovedFromPinnedIssuesEvent_Fragment = {
     id: string;
     createdAt: any;
     unpinnedOn?:
-        | { __typename?: "Component"; id: string; name: string; description: string }
-        | { __typename?: "Project"; id: string; name: string; description: string }
+        | { __typename: "Component"; id: string; name: string; description: string }
+        | { __typename: "Project"; id: string; name: string; description: string }
         | null;
     createdBy:
         | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
@@ -19153,8 +19300,8 @@ type DefaultTimelineItemInfo_RemovedFromTrackableEvent_Fragment = {
     id: string;
     createdAt: any;
     removedFromTrackable?:
-        | { __typename?: "Component"; id: string; name: string; description: string }
-        | { __typename?: "Project"; id: string; name: string; description: string }
+        | { __typename: "Component"; id: string; name: string; description: string }
+        | { __typename: "Project"; id: string; name: string; description: string }
         | null;
     createdBy:
         | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
@@ -19169,13 +19316,21 @@ type DefaultTimelineItemInfo_RemovedIncomingRelationEvent_Fragment = {
         __typename?: "IssueRelation";
         issue?: {
             __typename?: "Issue";
+            id: string;
             title: string;
+            trackables: {
+                __typename?: "TrackableConnection";
+                nodes: Array<
+                    | { __typename: "Component"; id: string; name: string; description: string }
+                    | { __typename: "Project"; id: string; name: string; description: string }
+                >;
+            };
             incomingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
             outgoingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
             state: { __typename?: "IssueState"; isOpen: boolean };
             type: { __typename?: "IssueType"; iconPath: string };
         } | null;
-        type?: { __typename?: "IssueRelationType"; name: string; description: string } | null;
+        type?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
     } | null;
     createdBy:
         | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
@@ -19200,13 +19355,21 @@ type DefaultTimelineItemInfo_RemovedOutgoingRelationEvent_Fragment = {
         __typename?: "IssueRelation";
         relatedIssue?: {
             __typename?: "Issue";
+            id: string;
             title: string;
+            trackables: {
+                __typename?: "TrackableConnection";
+                nodes: Array<
+                    | { __typename: "Component"; id: string; name: string; description: string }
+                    | { __typename: "Project"; id: string; name: string; description: string }
+                >;
+            };
             incomingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
             outgoingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
             state: { __typename?: "IssueState"; isOpen: boolean };
             type: { __typename?: "IssueType"; iconPath: string };
         } | null;
-        type?: { __typename?: "IssueRelationType"; name: string; description: string } | null;
+        type?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
     } | null;
     createdBy:
         | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
@@ -19700,8 +19863,8 @@ export type AddedToPinnedIssuesEventTimelineInfoFragment = {
     id: string;
     createdAt: any;
     pinnedOn?:
-        | { __typename?: "Component"; id: string; name: string; description: string }
-        | { __typename?: "Project"; id: string; name: string; description: string }
+        | { __typename: "Component"; id: string; name: string; description: string }
+        | { __typename: "Project"; id: string; name: string; description: string }
         | null;
     createdBy:
         | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
@@ -19713,8 +19876,8 @@ export type AddedToTrackableEventTimelineInfoFragment = {
     id: string;
     createdAt: any;
     addedToTrackable?:
-        | { __typename?: "Component"; id: string; name: string; description: string }
-        | { __typename?: "Project"; id: string; name: string; description: string }
+        | { __typename: "Component"; id: string; name: string; description: string }
+        | { __typename: "Project"; id: string; name: string; description: string }
         | null;
     createdBy:
         | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
@@ -19801,13 +19964,21 @@ export type IncomingRelationTypeChangedEventTimelineInfoFragment = {
         __typename?: "IssueRelation";
         issue?: {
             __typename?: "Issue";
+            id: string;
             title: string;
+            trackables: {
+                __typename?: "TrackableConnection";
+                nodes: Array<
+                    | { __typename: "Component"; id: string; name: string; description: string }
+                    | { __typename: "Project"; id: string; name: string; description: string }
+                >;
+            };
             incomingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
             outgoingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
             state: { __typename?: "IssueState"; isOpen: boolean };
             type: { __typename?: "IssueType"; iconPath: string };
         } | null;
-        type?: { __typename?: "IssueRelationType"; name: string; description: string } | null;
+        type?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
     };
     createdBy:
         | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
@@ -19839,13 +20010,21 @@ export type IssueRelationTimelineInfoFragment = {
         | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
     relatedIssue?: {
         __typename?: "Issue";
+        id: string;
         title: string;
+        trackables: {
+            __typename?: "TrackableConnection";
+            nodes: Array<
+                | { __typename: "Component"; id: string; name: string; description: string }
+                | { __typename: "Project"; id: string; name: string; description: string }
+            >;
+        };
         incomingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
         outgoingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
         state: { __typename?: "IssueState"; isOpen: boolean };
         type: { __typename?: "IssueType"; iconPath: string };
     } | null;
-    type?: { __typename?: "IssueRelationType"; name: string; description: string } | null;
+    type?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
 };
 
 export type OutgoingRelationTypeChangedEventTimelineInfoFragment = {
@@ -19856,13 +20035,21 @@ export type OutgoingRelationTypeChangedEventTimelineInfoFragment = {
         __typename?: "IssueRelation";
         relatedIssue?: {
             __typename?: "Issue";
+            id: string;
             title: string;
+            trackables: {
+                __typename?: "TrackableConnection";
+                nodes: Array<
+                    | { __typename: "Component"; id: string; name: string; description: string }
+                    | { __typename: "Project"; id: string; name: string; description: string }
+                >;
+            };
             incomingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
             outgoingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
             state: { __typename?: "IssueState"; isOpen: boolean };
             type: { __typename?: "IssueType"; iconPath: string };
         } | null;
-        type?: { __typename?: "IssueRelationType"; name: string; description: string } | null;
+        type?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
     };
     createdBy:
         | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
@@ -19888,13 +20075,21 @@ export type RelatedByIssueEventTimelineInfoFragment = {
         __typename?: "IssueRelation";
         issue?: {
             __typename?: "Issue";
+            id: string;
             title: string;
+            trackables: {
+                __typename?: "TrackableConnection";
+                nodes: Array<
+                    | { __typename: "Component"; id: string; name: string; description: string }
+                    | { __typename: "Project"; id: string; name: string; description: string }
+                >;
+            };
             incomingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
             outgoingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
             state: { __typename?: "IssueState"; isOpen: boolean };
             type: { __typename?: "IssueType"; iconPath: string };
         } | null;
-        type?: { __typename?: "IssueRelationType"; name: string; description: string } | null;
+        type?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
     } | null;
     createdBy:
         | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
@@ -19905,8 +20100,8 @@ type RelationTypeChangedEventTimelineInfo_IncomingRelationTypeChangedEvent_Fragm
     __typename: "IncomingRelationTypeChangedEvent";
     id: string;
     createdAt: any;
-    oldRelationType?: { __typename?: "IssueRelationType"; name: string; description: string } | null;
-    newRelationTyoe?: { __typename?: "IssueRelationType"; name: string; description: string } | null;
+    oldRelationType?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
+    newRelationTyoe?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
     createdBy:
         | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
         | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
@@ -19916,8 +20111,8 @@ type RelationTypeChangedEventTimelineInfo_OutgoingRelationTypeChangedEvent_Fragm
     __typename: "OutgoingRelationTypeChangedEvent";
     id: string;
     createdAt: any;
-    oldRelationType?: { __typename?: "IssueRelationType"; name: string; description: string } | null;
-    newRelationTyoe?: { __typename?: "IssueRelationType"; name: string; description: string } | null;
+    oldRelationType?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
+    newRelationTyoe?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
     createdBy:
         | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
         | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
@@ -19981,8 +20176,8 @@ export type RemovedFromPinnedIssuesEventTimelineInfoFragment = {
     id: string;
     createdAt: any;
     unpinnedOn?:
-        | { __typename?: "Component"; id: string; name: string; description: string }
-        | { __typename?: "Project"; id: string; name: string; description: string }
+        | { __typename: "Component"; id: string; name: string; description: string }
+        | { __typename: "Project"; id: string; name: string; description: string }
         | null;
     createdBy:
         | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
@@ -19994,8 +20189,8 @@ export type RemovedFromTrackableEventTimelineInfoFragment = {
     id: string;
     createdAt: any;
     removedFromTrackable?:
-        | { __typename?: "Component"; id: string; name: string; description: string }
-        | { __typename?: "Project"; id: string; name: string; description: string }
+        | { __typename: "Component"; id: string; name: string; description: string }
+        | { __typename: "Project"; id: string; name: string; description: string }
         | null;
     createdBy:
         | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
@@ -20010,13 +20205,21 @@ export type RemovedIncomingRelationEventTimelineInfoFragment = {
         __typename?: "IssueRelation";
         issue?: {
             __typename?: "Issue";
+            id: string;
             title: string;
+            trackables: {
+                __typename?: "TrackableConnection";
+                nodes: Array<
+                    | { __typename: "Component"; id: string; name: string; description: string }
+                    | { __typename: "Project"; id: string; name: string; description: string }
+                >;
+            };
             incomingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
             outgoingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
             state: { __typename?: "IssueState"; isOpen: boolean };
             type: { __typename?: "IssueType"; iconPath: string };
         } | null;
-        type?: { __typename?: "IssueRelationType"; name: string; description: string } | null;
+        type?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
     } | null;
     createdBy:
         | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
@@ -20041,13 +20244,21 @@ export type RemovedOutgoingRelationEventTimelineInfoFragment = {
         __typename?: "IssueRelation";
         relatedIssue?: {
             __typename?: "Issue";
+            id: string;
             title: string;
+            trackables: {
+                __typename?: "TrackableConnection";
+                nodes: Array<
+                    | { __typename: "Component"; id: string; name: string; description: string }
+                    | { __typename: "Project"; id: string; name: string; description: string }
+                >;
+            };
             incomingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
             outgoingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
             state: { __typename?: "IssueState"; isOpen: boolean };
             type: { __typename?: "IssueType"; iconPath: string };
         } | null;
-        type?: { __typename?: "IssueRelationType"; name: string; description: string } | null;
+        type?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
     } | null;
     createdBy:
         | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
@@ -20237,13 +20448,13 @@ export type LabelTimelineInfoFragment = {
 };
 
 type TrackableTimelineInfo_Component_Fragment = {
-    __typename?: "Component";
+    __typename: "Component";
     id: string;
     name: string;
     description: string;
 };
 
-type TrackableTimelineInfo_Project_Fragment = { __typename?: "Project"; id: string; name: string; description: string };
+type TrackableTimelineInfo_Project_Fragment = { __typename: "Project"; id: string; name: string; description: string };
 
 export type TrackableTimelineInfoFragment =
     | TrackableTimelineInfo_Component_Fragment
@@ -20278,44 +20489,69 @@ export type CommentTimelineInfoFragment = CommentTimelineInfo_Body_Fragment | Co
 
 export type IssueRelationTypeTimelineInfoFragment = {
     __typename?: "IssueRelationType";
+    id: string;
     name: string;
     description: string;
 };
 
 export type IssueRelationTimelineInfoBaseFragment = {
     __typename?: "IssueRelation";
-    type?: { __typename?: "IssueRelationType"; name: string; description: string } | null;
+    type?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
 };
 
 export type IncomingRelationTimelineInfoFragment = {
     __typename?: "IssueRelation";
     issue?: {
         __typename?: "Issue";
+        id: string;
         title: string;
+        trackables: {
+            __typename?: "TrackableConnection";
+            nodes: Array<
+                | { __typename: "Component"; id: string; name: string; description: string }
+                | { __typename: "Project"; id: string; name: string; description: string }
+            >;
+        };
         incomingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
         outgoingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
         state: { __typename?: "IssueState"; isOpen: boolean };
         type: { __typename?: "IssueType"; iconPath: string };
     } | null;
-    type?: { __typename?: "IssueRelationType"; name: string; description: string } | null;
+    type?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
 };
 
 export type OutgoingRelationTimelineInfoFragment = {
     __typename?: "IssueRelation";
     relatedIssue?: {
         __typename?: "Issue";
+        id: string;
         title: string;
+        trackables: {
+            __typename?: "TrackableConnection";
+            nodes: Array<
+                | { __typename: "Component"; id: string; name: string; description: string }
+                | { __typename: "Project"; id: string; name: string; description: string }
+            >;
+        };
         incomingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
         outgoingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
         state: { __typename?: "IssueState"; isOpen: boolean };
         type: { __typename?: "IssueType"; iconPath: string };
     } | null;
-    type?: { __typename?: "IssueRelationType"; name: string; description: string } | null;
+    type?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
 };
 
 export type IssueTimelineInfoFragment = {
     __typename?: "Issue";
+    id: string;
     title: string;
+    trackables: {
+        __typename?: "TrackableConnection";
+        nodes: Array<
+            | { __typename: "Component"; id: string; name: string; description: string }
+            | { __typename: "Project"; id: string; name: string; description: string }
+        >;
+    };
     incomingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
     outgoingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
     state: { __typename?: "IssueState"; isOpen: boolean };
@@ -20351,6 +20587,19 @@ type OpenIssueCount_Project_Fragment = {
 };
 
 export type OpenIssueCountFragment = OpenIssueCount_Component_Fragment | OpenIssueCount_Project_Fragment;
+
+type DefaultTrackableInfo_Component_Fragment = {
+    __typename: "Component";
+    id: string;
+    name: string;
+    description: string;
+};
+
+type DefaultTrackableInfo_Project_Fragment = { __typename: "Project"; id: string; name: string; description: string };
+
+export type DefaultTrackableInfoFragment =
+    | DefaultTrackableInfo_Component_Fragment
+    | DefaultTrackableInfo_Project_Fragment;
 
 export type GetCurrentUserQueryVariables = Exact<{ [key: string]: never }>;
 
@@ -20467,12 +20716,19 @@ export const AddedLabelEventTimelineInfoFragmentDoc = gql`
     ${TimelineItemInfoFragmentDoc}
     ${LabelTimelineInfoFragmentDoc}
 `;
-export const TrackableTimelineInfoFragmentDoc = gql`
-    fragment TrackableTimelineInfo on Trackable {
+export const DefaultTrackableInfoFragmentDoc = gql`
+    fragment DefaultTrackableInfo on Trackable {
+        __typename
         id
         name
         description
     }
+`;
+export const TrackableTimelineInfoFragmentDoc = gql`
+    fragment TrackableTimelineInfo on Trackable {
+        ...DefaultTrackableInfo
+    }
+    ${DefaultTrackableInfoFragmentDoc}
 `;
 export const AddedToPinnedIssuesEventTimelineInfoFragmentDoc = gql`
     fragment AddedToPinnedIssuesEventTimelineInfo on AddedToPinnedIssuesEvent {
@@ -20581,6 +20837,7 @@ export const EstimatedTimeChangedEventTimelineInfoFragmentDoc = gql`
 `;
 export const IssueRelationTypeTimelineInfoFragmentDoc = gql`
     fragment IssueRelationTypeTimelineInfo on IssueRelationType {
+        id
         name
         description
     }
@@ -20609,12 +20866,25 @@ export const DefaultIssueIconInfoFragmentDoc = gql`
         }
     }
 `;
-export const IssueTimelineInfoFragmentDoc = gql`
-    fragment IssueTimelineInfo on Issue {
-        title
+export const DefaultIssueInfoFragmentDoc = gql`
+    fragment DefaultIssueInfo on Issue {
         ...DefaultIssueIconInfo
+        id
+        title
+        trackables {
+            nodes {
+                ...DefaultTrackableInfo
+            }
+        }
     }
     ${DefaultIssueIconInfoFragmentDoc}
+    ${DefaultTrackableInfoFragmentDoc}
+`;
+export const IssueTimelineInfoFragmentDoc = gql`
+    fragment IssueTimelineInfo on Issue {
+        ...DefaultIssueInfo
+    }
+    ${DefaultIssueInfoFragmentDoc}
 `;
 export const IncomingRelationTimelineInfoFragmentDoc = gql`
     fragment IncomingRelationTimelineInfo on IssueRelation {

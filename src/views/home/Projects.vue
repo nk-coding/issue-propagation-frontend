@@ -1,5 +1,9 @@
 <template>
-    <PaginatedList :item-manager="itemManager" :sort-fields="Object.keys(sortFields)" @item-selected="selectProject">
+    <PaginatedList
+        :item-manager="itemManager"
+        :sort-fields="Object.keys(sortFields)"
+        :to="(project: Project) => ({ name: 'project', params: { trackable: project.id } })"
+    >
         <template #item="{ item }">
             <ListItem :title="item.name" :subtitle="item.description">
                 <template #append>
@@ -52,10 +56,6 @@ const itemManager: ItemManager<Project, keyof typeof sortFields> = {
         return [res.projects.nodes, res.projects.totalCount];
     }
 };
-
-function selectProject(project: any) {
-    router.push({ name: "project", params: { trackable: project.id } });
-}
 </script>
 <style scoped lang="scss">
 @use "@/styles/settings";

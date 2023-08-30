@@ -50,12 +50,16 @@ export class RelationView implements IView {
             endPoint,
             Math2D.scaleTo(endVector, markerInfo.startOffset - markerInfo.lineOffset)
         );
+        const pathAttributes: Record<string, string | number> = {
+            d: `M ${startPoint.x} ${startPoint.y} L ${lineEndPoint.x} ${lineEndPoint.y}`,
+            ...pathStyle,
+            fill: "none"
+        };
+        if (model.style.stroke?.dash != undefined) {
+            pathAttributes["stroke-dasharray"] = model.style.stroke.dash.join(" ");
+        }
         const line = svg("path", {
-            attrs: {
-                d: `M ${startPoint.x} ${startPoint.y} L ${lineEndPoint.x} ${lineEndPoint.y}`,
-                ...pathStyle,
-                fill: "none"
-            }
+            attrs: pathAttributes
         });
         return svg("g", null, line, endMarker);
     }

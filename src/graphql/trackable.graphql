@@ -3,3 +3,10 @@ fragment OpenIssueCount on Trackable {
         totalCount
     }
 }
+
+fragment DefaultTrackableInfo on Trackable {
+    __typename
+    id
+    name
+    description
+}

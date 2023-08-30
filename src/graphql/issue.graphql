@@ -144,6 +144,17 @@ mutation createIssue($input: CreateIssueInput!) {
     }
 }
 
+fragment DefaultIssueInfo on Issue {
+    ...DefaultIssueIconInfo
+    id
+    title
+    trackables {
+        nodes {
+            ...DefaultTrackableInfo
+        }
+    }
+}
+
 fragment DefaultIssueIconInfo on Issue {
     incomingRelations {
         totalCount

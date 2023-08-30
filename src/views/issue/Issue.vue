@@ -28,7 +28,7 @@
                 />
                 <TimelineBreak />
                 <Comment
-                    v-if="issue.comment"
+                    v-if="issue.comment && store.isLoggedIn"
                     ref="newComment"
                     :item="newCommentItem"
                     :new-comment="true"
@@ -39,7 +39,7 @@
                 <div class="pt-3" />
             </div>
             <v-sheet class="sidebar ml-8 mr-3 mb-3" color="surface-container" rounded="xl">
-                <EditableCompartment name="Type" :editable="!!issue.manageIssues" :close-hierarchy="false">
+                <EditableCompartment name="Type" :editable="!!issue.manageIssues && store.isLoggedIn" :close-hierarchy="false">
                     <template #display>
                         <IssueType :type="issue.type" />
                     </template>
@@ -55,7 +55,7 @@
                     </template>
                 </EditableCompartment>
                 <v-divider />
-                <EditableCompartment name="State" :editable="!!issue.manageIssues" :close-hierarchy="false">
+                <EditableCompartment name="State" :editable="!!issue.manageIssues && store.isLoggedIn" :close-hierarchy="false">
                     <template #display>
                         <IssueState :state="issue.state" />
                     </template>
@@ -71,7 +71,7 @@
                     </template>
                 </EditableCompartment>
                 <v-divider />
-                <EditableCompartment name="Labels" :editable="!!issue.manageIssues">
+                <EditableCompartment name="Labels" :editable="!!issue.manageIssues && store.isLoggedIn">
                     <template #display>
                         <Label v-for="label in labels" :label="label" />
                     </template>
@@ -115,13 +115,46 @@
                     </template>
                 </EditableCompartment>
                 <v-divider />
-                <EditableCompartment name="Assignees" :editable="!!issue.manageIssues">
+                <EditableCompartment name="Assignees" :editable="!!issue.manageIssues && store.isLoggedIn">
                     <template #display>
-                        <Assignment
-                            v-for="assignment in issue.assignments.nodes"
-                            :assignment="assignment"
-                            class="d-block my-2"
-                        />
+                        <div v-for="assignmentGroup in groupedAssignments">
+                            <span class="text-subtitle-2">{{ assignmentGroup.type?.name ?? "[No type]" }}</span>
+                            <User
+                                v-for="assignment in assignmentGroup.items"
+                                :user="assignment.user"
+                                class="d-block my-2 ml-2"
+                            />
+                        </div>
+                    </template>
+                </EditableCompartment>
+                <v-divider />
+                <EditableCompartment name="Outgoing Relations" :editable="!!issue.manageIssues && store.isLoggedIn">
+                    <template #display>
+                        <div v-for="relationGroup in groupedOutgoingRelations">
+                            <span class="text-subtitle-2">{{ relationGroup.type?.name ?? "[No type]" }}</span>
+                            <div v-for="relation in relationGroup.items">
+                                <IssueInfo
+                                    v-if="relation.relatedIssue != undefined"
+                                    :issue="relation.relatedIssue!"
+                                    class="d-block my-2 ml-2"
+                                />
+                            </div>
+                        </div>
+                    </template>
+                </EditableCompartment>
+                <v-divider />
+                <EditableCompartment name="Incoming Relations" :editable="false">
+                    <template #display>
+                        <div v-for="relationGroup in groupedIncomingRelations">
+                            <span class="text-subtitle-2">{{ relationGroup.type?.name ?? "[No type]" }}</span>
+                            <div v-for="relation in relationGroup.items">
+                                <IssueInfo
+                                    v-if="relation.issue != undefined"
+                                    :issue="relation.issue!"
+                                    class="d-block my-2 ml-2"
+                                />
+                            </div>
+                        </div>
                     </template>
                 </EditableCompartment>
             </v-sheet>
@@ -132,7 +165,7 @@
 import { NodeReturnType, useClient } from "@/graphql/client";
 import { computed, ref, watch } from "vue";
 import { useRoute } from "vue-router";
-import { useAsyncState } from "@vueuse/core";
+import { computedAsync } from "@vueuse/core";
 import TimelineItem from "@/components/timeline/TimelineItem";
 import IssueIcon from "@/components/IssueIcon.vue";
 import User from "@/components/info/User.vue";
@@ -148,15 +181,20 @@ import EditableCompartment from "@/components/EditableCompartment.vue";
 import Label from "@/components/info/Label.vue";
 import IssueState from "@/components/info/IssueState.vue";
 import IssueType from "@/components/info/IssueType.vue";
-import Assignment from "@/components/info/Assignment.vue";
 import ListItem from "@/components/ListItem.vue";
 import FetchingAutocomplete from "@/components/input/FetchingAutocomplete.vue";
-import { DefaultIssueStateInfoFragment, DefaultLabelInfoFragment } from "@/graphql/generated";
-import { DefaultIssueTypeInfoFragment } from "@/graphql/generated";
-import IssueTypeIcon from "@/components/IssueTypeIcon.vue";
+import {
+    AssignmentTimelineInfoFragment,
+    DefaultAssignmentTypeInfoFragment,
+    DefaultLabelInfoFragment,
+    IncomingRelationTimelineInfoFragment,
+    IssueRelationTypeTimelineInfoFragment,
+    OutgoingRelationTimelineInfoFragment
+} from "@/graphql/generated";
 import { issueKey } from "@/util/keys";
 import IssueTypeAutocomplete from "@/components/input/IssueTypeAutocomplete.vue";
 import IssueStateAutocomplete from "@/components/input/IssueStateAutocomplete.vue";
+import IssueInfo from "@/components/info/Issue.vue";
 
 export type Issue = NodeReturnType<"getIssue", "Issue">;
 
@@ -166,13 +204,18 @@ const store = useAppStore();
 const issueId = computed(() => route.params.issue as string);
 const selectedItem = computed(() => route.query.item as string | undefined);
 
-const { state: issue, isReady } = useAsyncState(
+const evaluating = ref(false);
+const isReady = computed(() => !evaluating.value && issue.value != null);
+const issue = computedAsync(
     async () => {
+        if (!issueId.value) {
+            return null;
+        }
         const res = await withErrorMessage(() => client.getIssue({ id: issueId.value }), "Error loading issue");
         return res.node as Issue;
     },
     null,
-    { shallow: false }
+    evaluating
 );
 
 const answers = ref<string | null>(null);
@@ -289,6 +332,44 @@ async function removeLabel(labelId: string) {
         labels.value.splice(index, 1);
     }
 }
+
+interface Group<T, V> {
+    type: T | undefined;
+    items: V[];
+}
+
+function groupByType<T extends { id: string }, V extends { type?: T | null }>(items: V[]): Group<T, V>[] {
+    const groupedItems: Map<string | undefined, Group<T, V>> = new Map();
+    for (const item of items) {
+        if (groupedItems.has(item.type?.id)) {
+            groupedItems.get(item.type?.id)!.items.push(item);
+        } else {
+            groupedItems.set(item.type?.id, {
+                type: item.type ?? undefined,
+                items: [item]
+            });
+        }
+    }
+    return [...groupedItems.values()];
+}
+
+const groupedAssignments = computed(() => {
+    return groupByType<DefaultAssignmentTypeInfoFragment, AssignmentTimelineInfoFragment>(
+        issue.value!.assignments.nodes
+    );
+});
+
+const groupedOutgoingRelations = computed(() => {
+    return groupByType<IssueRelationTypeTimelineInfoFragment, OutgoingRelationTimelineInfoFragment>(
+        issue.value!.outgoingRelations.nodes
+    );
+});
+
+const groupedIncomingRelations = computed(() => {
+    return groupByType<IssueRelationTypeTimelineInfoFragment, IncomingRelationTimelineInfoFragment>(
+        issue.value!.incomingRelations.nodes
+    );
+});
 </script>
 <style scoped lang="scss">
 @use "@/styles/settings.scss";

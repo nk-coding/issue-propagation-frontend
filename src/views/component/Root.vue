@@ -12,9 +12,9 @@
 </template>
 
 <script lang="ts" setup>
-import BaseLayout, { TabSegment } from "@/components/BaseLayout.vue";
+import BaseLayout from "@/components/BaseLayout.vue";
 import { NodeReturnType, useClient } from "@/graphql/client";
-import { useAsyncState } from "@vueuse/core";
+import { computedAsync } from "@vueuse/core";
 import { computed } from "vue";
 import { RouteLocationRaw, useRoute } from "vue-router";
 import { withErrorMessage } from "@/util/withErrorMessage";
@@ -28,7 +28,10 @@ const route = useRoute();
 const componentId = computed(() => route.params.trackable as string);
 const eventBus = inject(eventBusKey);
 
-const { state: component, isReady } = useAsyncState(async () => {
+const component = computedAsync(async () => {
+    if (!componentId.value) {
+        return null;
+    }
     const res = await withErrorMessage(() => client.getComponent({ id: componentId.value }), "Error loading component");
     return res.node as Component;
 }, null);
@@ -45,11 +48,11 @@ const titleSegments = computed(() => [
     { name: component.value?.name ?? "", path: componentPath("") }
 ]);
 
-const tabs: TabSegment[] = [
+const tabs = computed(() => [
     { name: "Home", path: componentPath("component") },
     { name: "Details", path: componentPath("component-details-general"), exact: false },
     { name: "Issues", path: componentPath("component-issues"), exact: false }
-];
+]);
 
 const leftSidebarItems = computed(() => {
     if (route.path.includes("/details")) {

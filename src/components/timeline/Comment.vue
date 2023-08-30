@@ -35,7 +35,7 @@
                             <v-spacer />
                             <v-fade-transition>
                                 <div v-show="issue?.comment && (isHovering || menuOpen)">
-                                    <IconButton :disabled="isDeleted || !issue?.comment" @click="reply">
+                                    <IconButton :disabled="isDeleted || !issue?.comment || !store.isLoggedIn" @click="reply">
                                         <v-icon>mdi-reply</v-icon>
                                         <v-tooltip activator="parent" location="top"> Reply </v-tooltip>
                                     </IconButton>
@@ -48,7 +48,7 @@
                                         >
                                             <v-list>
                                                 <v-list-item
-                                                    :disabled="editMode || isDeleted"
+                                                    :disabled="editMode || isDeleted || !store.isLoggedIn"
                                                     @click="activateEditMode"
                                                 >
                                                     <v-list-item-title>Edit</v-list-item-title>
@@ -57,7 +57,7 @@
                                                     </template>
                                                 </v-list-item>
                                                 <v-list-item
-                                                    :disabled="editMode || item.__typename === 'Body' || isDeleted"
+                                                    :disabled="editMode || item.__typename === 'Body' || isDeleted || !store.isLoggedIn"
                                                     @click=""
                                                 >
                                                     <v-list-item-title>Delete</v-list-item-title>
@@ -167,6 +167,7 @@ import ConfirmationDialog from "@/components/dialog/ConfirmationDialog.vue";
 import { markdownToText } from "@/util/markdownToText";
 import { useRouter } from "vue-router";
 import { issueKey } from "@/util/keys";
+import { useAppStore } from "@/store/app";
 
 type Comment = TimelineItemType<"IssueComment"> | TimelineItemType<"Body">;
 
@@ -198,6 +199,7 @@ const itemBody = ref(props.item.body);
 const hasChanged = ref(false);
 const client = useClient();
 const router = useRouter();
+const store = useAppStore();
 
 const deletedText = "This comment has been deleted";
 

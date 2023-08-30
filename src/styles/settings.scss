@@ -11,7 +11,15 @@
         "lger": 16px
     ),
     $tooltip-background-color: rgb(var(--v-theme-inverse-surface)),
-    $tooltip-text-color: rgb(var(--v-theme-on-inverse-surface))
+    $tooltip-text-color: rgb(var(--v-theme-on-inverse-surface)),
+    $typography: (
+        'button': (
+            'text-transform': none
+        ),
+        'subtitle-1': (
+            'weight': 500
+        ),
+    )
 );
 
 $icon-with-number-width: 70px;

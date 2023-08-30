@@ -14,7 +14,7 @@
         rounded="xl"
         :elevation="editMode ? 5 : 0"
     >
-        <div class="d-flex align-center text-subtitle-2 title">
+        <div class="d-flex align-center text-subtitle-1 title">
             {{ name }}
             <v-spacer />
             <IconButton v-if="editable && !editMode" @click="editMode = true">

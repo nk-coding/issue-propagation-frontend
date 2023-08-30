@@ -1,5 +1,9 @@
 <template>
-    <PaginatedList :item-manager="itemManager" :sort-fields="Object.keys(sortFields)" @item-selected="selectComponent">
+    <PaginatedList
+        :item-manager="itemManager"
+        :sort-fields="Object.keys(sortFields)"
+        :to="(component: Component) => ({ name: 'component', params: { trackable: component.id } })"
+    >
         <template #item="{ item }">
             <ListItem :title="item.name" :subtitle="item.description">
                 <template #append>
@@ -52,10 +56,6 @@ const itemManager: ItemManager<Component, keyof typeof sortFields> = {
         return [res.components.nodes, res.components.totalCount];
     }
 };
-
-function selectComponent(component: any) {
-    router.push({ name: "component", params: { trackable: component.id } });
-}
 </script>
 <style scoped lang="scss">
 @use "@/styles/settings";

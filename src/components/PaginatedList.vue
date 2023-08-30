@@ -25,7 +25,7 @@
         <div class="list-container flex-grow-1 px-3">
             <div v-for="(item, index) in currentItems">
                 <v-divider v-if="index != 0" />
-                <v-card variant="text" rounded="0" class="px-3" @click="$emit('itemSelected', item)">
+                <v-card variant="text" rounded="0" class="px-3" :to="to(item)">
                     <slot name="item" :item="item" />
                 </v-card>
             </div>
@@ -40,6 +40,7 @@
 import { watch } from "vue";
 import { Ref, onMounted } from "vue";
 import { PropType, ref } from "vue";
+import { RouteLocationRaw } from "vue-router";
 
 export interface ItemManager<I, J> {
     filterLocal(item: I, filter: string): boolean;
@@ -65,12 +66,12 @@ const props = defineProps({
         type: Number,
         required: false,
         default: 25
+    },
+    to: {
+        type: Function as PropType<(item: T) => RouteLocationRaw>,
+        required: true
     }
 });
-
-defineEmits<{
-    (event: "itemSelected", item: T): void;
-}>();
 
 const searchString = ref("");
 const currentSortField = ref(props.sortFields[0]) as Ref<S>;

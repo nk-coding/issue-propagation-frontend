@@ -46,6 +46,9 @@ export default createVuetify({
             variant: "outlined",
             density: "comfortable"
         },
+        VTooltip: {
+            openDelay: 250
+        },
         FAB: {
             width: "56px",
             height: "56px",

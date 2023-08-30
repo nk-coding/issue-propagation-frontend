@@ -71,6 +71,17 @@ const plugins = [gfm()];
 
 .markdown-body {
     background: none !important;
+    font-family: "Roboto", sans-serif !important;
+
+    h1 {
+        font-weight: 400 !important;
+    }
+    h2 {
+        font-weight: 450 !important;
+    }
+    h3,h4,h5,h6 {
+        font-weight: 500 !important;
+    }
 }
 
 .bytemd {

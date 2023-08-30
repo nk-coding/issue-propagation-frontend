@@ -71,5 +71,11 @@ html,
 .flex-1-1-0 {
     flex: 1 1 0 !important;
 }
+
+.text-ellipses {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
 </style>
 ./util/eventBus
