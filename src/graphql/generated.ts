@@ -21942,7 +21942,7 @@ export const ChangeIssueRelationTypeDocument = gql`
 `;
 export const SearchIssueStatesDocument = gql`
     query searchIssueStates($template: ID!, $query: String!, $count: Int!) {
-        searchIssueStates(query: $query, first: $count) {
+        searchIssueStates(query: $query, first: $count, filter: { partOf: { any: { id: { eq: $template } } } }) {
             ...DefaultIssueStateInfo
         }
     }

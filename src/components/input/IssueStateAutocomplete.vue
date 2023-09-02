@@ -1,5 +1,5 @@
 <template>
-    <FetchingAutocomplete :fetch="searchIssueStates" :dependency="template" label="State" item-title="name">
+    <FetchingAutocomplete :fetch="searchIssueStates" :dependency="template" :has-selection="hasSelection" label="State" item-title="name">
         <template #item="{ props, item }">
             <v-list-item :title="item.raw.name" :subtitle="item.raw.description" v-bind="props">
                 <template #prepend>
@@ -22,6 +22,10 @@ const props = defineProps({
     template: {
         type: String,
         required: false
+    },
+    hasSelection: {
+        type: Boolean,
+        required: true
     }
 });
 

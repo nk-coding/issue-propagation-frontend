@@ -52,6 +52,7 @@
                             class="mb-n3"
                             autofocus
                             menu
+                            :has-selection="!!issue.type"
                             :template="issue.template.id"
                             :initial-items="[issue.type]"
                             :model-value="issue.type.id"
@@ -73,6 +74,7 @@
                             class="mb-n3"
                             autofocus
                             menu
+                            :has-selection="!!issue.state"
                             :template="issue.template.id"
                             :initial-items="[issue.state]"
                             :model-value="issue.state.id"
@@ -102,6 +104,7 @@
                         <FetchingAutocomplete
                             :fetch="searchLabels"
                             :dependency="[labels]"
+                            :has-selection="addedLabels.length > 0"
                             v-model="addedLabels"
                             variant="outlined"
                             density="comfortable"
@@ -167,6 +170,7 @@
                             <IssueRelationTypeAutocomplete
                                 class="mb-n3 mt-1"
                                 density="compact"
+                                :has-selection="!!relation.type"
                                 :template="issue.template.id"
                                 :initial-items="relation.type ? [relation.type] : []"
                                 :model-value="relation.type?.id"

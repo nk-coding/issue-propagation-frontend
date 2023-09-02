@@ -1,5 +1,5 @@
 <template>
-    <FetchingAutocomplete :fetch="searchIssueTemplates" label="Template" item-title="name">
+    <FetchingAutocomplete :fetch="searchIssueTemplates" :has-selection="hasSelection" label="Template" item-title="name">
         <template #item="{ props, item }">
             <v-list-item :title="item.raw.name" :subtitle="item.raw.description" v-bind="props"> </v-list-item>
         </template>
@@ -11,6 +11,13 @@ import { DefaultIssueTemplateInfoFragment } from "@/graphql/generated";
 import { withErrorMessage } from "@/util/withErrorMessage";
 import FetchingAutocomplete from "./FetchingAutocomplete.vue";
 import { transformSearchQuery } from "@/util/searchQueryTransformer";
+
+defineProps({
+    hasSelection: {
+        type: Boolean,
+        required: true
+    }
+})
 
 const client = useClient();
 

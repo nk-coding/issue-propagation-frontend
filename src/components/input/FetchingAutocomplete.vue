@@ -13,10 +13,14 @@
     </v-autocomplete>
 </template>
 <script setup lang="ts" generic="T extends { id: string }">
-import { onMounted, nextTick, Ref, watch, ref, PropType } from "vue";
+import { onMounted, Ref, watch, ref, PropType } from "vue";
 import { VAutocomplete } from "vuetify/lib/components/index.mjs";
 
 const props = defineProps({
+    hasSelection: {
+        type: Boolean,
+        required: true
+    },
     fetch: {
         type: Function as PropType<(filter: string, count: number) => Promise<T[]>>,
         required: true
@@ -40,9 +44,8 @@ const emit = defineEmits<{
 const items = ref(props.initialItems) as Ref<T[]>;
 const search = ref<undefined | string>("");
 const updatedModelValue = ref(false);
-const hasSelectedElement = ref(false);
 
-watch(search, async (search, oldSearch) => {
+watch(search, async (search) => {
     if (!updatedModelValue.value) {
         await updateSearch(search ?? "");
     } else {
@@ -52,7 +55,7 @@ watch(search, async (search, oldSearch) => {
 
 watch(
     () => props.dependency,
-    async (newDep, oldDep) => {
+    async () => {
         await updateSearch(search.value ?? "");
     }
 );
@@ -63,7 +66,7 @@ async function updateSearch(search: string) {
 }
 
 function resetFromFocus(focused: boolean) {
-    if (focused && hasSelectedElement.value) {
+    if (focused && props.hasSelection) {
         resetSearch();
     }
 }
@@ -82,7 +85,6 @@ function selectedElement(value: any) {
     } else {
         ids = [];
     }
-    hasSelectedElement.value = ids.length > 0
     emit(
         "selected-items",
         items.value.filter((item) => ids.includes(item.id))

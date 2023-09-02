@@ -18,9 +18,10 @@
                         <v-text-field v-bind="title" label="Title" class="mb-1" />
                     </div>
                     <div class="d-flex flex-wrap mx-n2">
-                        <IssueTemplateAutocomplete v-bind="template" class="wrap-input mx-2 mb-1 flex-1-1-0" />
+                        <IssueTemplateAutocomplete v-bind="template" :has-selection="!!template.modelValue" class="wrap-input mx-2 mb-1 flex-1-1-0" />
                         <IssueTypeAutocomplete
                             v-bind="type"
+                            :has-selection="!!type.modelValue"
                             :template="template.modelValue"
                             :disabled="!template.modelValue"
                             class="wrap-input mx-2 mb-1 flex-1-1-0"
@@ -28,6 +29,7 @@
                         />
                         <IssueStateAutocomplete
                             v-bind="state"
+                            :has-selection="!!state.modelValue"
                             :template="template.modelValue"
                             :disabled="!template.modelValue"
                             class="wrap-input mx-2 mb-1 flex-1-1-0"
