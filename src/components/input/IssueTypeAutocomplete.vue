@@ -19,6 +19,7 @@ import { DefaultIssueTypeInfoFragment } from "@/graphql/generated";
 import { withErrorMessage } from "@/util/withErrorMessage";
 import FetchingAutocomplete from "./FetchingAutocomplete.vue";
 import IssueTypeIcon from "../IssueTypeIcon.vue";
+import { transformSearchQuery } from "@/util/searchQueryTransformer";
 
 const props = defineProps({
     template: {
@@ -33,11 +34,17 @@ async function searchIssueTypes(filter: string, count: number): Promise<DefaultI
     if (props.template == undefined) {
         return [];
     }
-    const searchedIssue = await withErrorMessage(async () => {
-        const res = await client.searchIssueTypes({ template: props.template!, filter, count });
-        return res.node as NodeReturnType<"searchIssueTypes", "IssueTemplate">;
+    return await withErrorMessage(async () => {
+        const query = transformSearchQuery(filter);
+        if (query != undefined) {
+            const res = await client.searchIssueTypes({ template: props.template!, query, count });
+            return res.searchIssueTypes;
+        } else {
+            const res = await client.firstIssueTypes({ template: props.template!, count })
+            const nodeRes = res.node as NodeReturnType<"firstIssueTypes", "IssueTemplate">
+            return nodeRes.issueTypes.nodes
+        }
     }, "Error searching issue types");
-    return searchedIssue.issueTypes.nodes;
 }
 </script>
 <style scoped lang="scss">

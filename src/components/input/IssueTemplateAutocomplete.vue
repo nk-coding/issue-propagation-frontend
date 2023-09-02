@@ -10,13 +10,20 @@ import { useClient } from "@/graphql/client";
 import { DefaultIssueTemplateInfoFragment } from "@/graphql/generated";
 import { withErrorMessage } from "@/util/withErrorMessage";
 import FetchingAutocomplete from "./FetchingAutocomplete.vue";
+import { transformSearchQuery } from "@/util/searchQueryTransformer";
 
 const client = useClient();
 
 async function searchIssueTemplates(filter: string, count: number): Promise<DefaultIssueTemplateInfoFragment[]> {
     return await withErrorMessage(async () => {
-        const res = await client.searchIssueTemplates({ filter, count });
-        return res.issueTemplates.nodes;
+        const query = transformSearchQuery(filter);
+        if (query != undefined) {
+            const res = await client.searchIssueTemplates({ query, count });
+            return res.searchIssueTemplates;
+        } else {
+            const res = await client.firstIssueTemplates({ count })
+            return res.issueTemplates.nodes
+        }
     }, "Error searching issue templates");
 }
 </script>

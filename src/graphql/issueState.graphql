@@ -5,10 +5,16 @@ fragment DefaultIssueStateInfo on IssueState {
     isOpen
 }
 
-query searchIssueStates($template: ID!, $filter: String!, $count: Int!) {
+query searchIssueStates($template: ID!, $query: String!, $count: Int!) {
+    searchIssueStates(query: $query, first: $count, ) {
+        ...DefaultIssueStateInfo
+    }
+}
+
+query firstIssueStates($template: ID!, $count: Int!) {
     node(id: $template) {
         ... on IssueTemplate {
-            issueStates(filter: { name: { contains: $filter } }, first: $count, orderBy: { field: NAME }) {
+            issueStates(first: $count, orderBy: { field: NAME }) {
                 nodes {
                     ...DefaultIssueStateInfo
                 }

@@ -4,9 +4,9 @@
         <span class="flex-1-1-0 text-ellipses">
             <CustomRouterLink :to="issueLocation" :text="issue.title" class="text-high-emphasis"/>
             <br />
-            <span class="text-medium-emphasis text-caption">
+            <span class="text-medium-emphasis text-body-2">
                 <template v-for="(trackable, idx) in issue.trackables.nodes">
-                    <Trackable :trackable="trackable" class="text-medium-emphasis text-caption" />
+                    <Trackable :trackable="trackable" class="text-medium-emphasis text-body-2" />
                     <span v-if="idx < issue.trackables.nodes.length - 1">, </span>
                 </template>
             </span>
@@ -47,7 +47,7 @@ const issueLocation = computed<RouteLocationRaw>(() => {
     display: inline-block;
 }
 
-$icon-size: 2.25rem;
+$icon-size: 2.25em;
 
 .issue-icon {
     vertical-align: middle;

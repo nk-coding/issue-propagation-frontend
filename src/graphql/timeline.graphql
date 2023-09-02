@@ -47,9 +47,6 @@ fragment DefaultTimelineItemInfo on TimelineItem {
     ... on RelatedByIssueEvent {
         ...RelatedByIssueEventTimelineInfo
     }
-    ... on RelationTypeChangedEvent {
-        ...RelationTypeChangedEventTimelineInfo
-    }
     ... on RemovedAffectedEntityEvent {
         ...RemovedAffectedEntityEventTimelineInfo
     }
@@ -180,7 +177,7 @@ fragment EstimatedTimeChangedEventTimelineInfo on EstimatedTimeChangedEvent {
 }
 
 fragment IncomingRelationTypeChangedEventTimelineInfo on IncomingRelationTypeChangedEvent {
-    ...TimelineItemInfo
+    ...RelationTypeChangedEventTimelineInfo
     issueRelation {
         ...IncomingRelationTimelineInfo
     }
@@ -201,7 +198,7 @@ fragment IssueRelationTimelineInfo on IssueRelation {
 }
 
 fragment OutgoingRelationTypeChangedEventTimelineInfo on OutgoingRelationTypeChangedEvent {
-    ...TimelineItemInfo
+    ...RelationTypeChangedEventTimelineInfo
     issueRelation {
         ...OutgoingRelationTimelineInfo
     }
@@ -229,7 +226,7 @@ fragment RelationTypeChangedEventTimelineInfo on RelationTypeChangedEvent {
     oldRelationType: oldType {
         ...IssueRelationTypeTimelineInfo
     }
-    newRelationTyoe: newType {
+    newRelationType: newType {
         ...IssueRelationTypeTimelineInfo
     }
 }
@@ -403,6 +400,7 @@ fragment IssueRelationTimelineInfoBase on IssueRelation {
 }
 
 fragment IncomingRelationTimelineInfo on IssueRelation {
+    id
     ...IssueRelationTimelineInfoBase
     issue {
         ...IssueTimelineInfo
@@ -410,6 +408,7 @@ fragment IncomingRelationTimelineInfo on IssueRelation {
 }
 
 fragment OutgoingRelationTimelineInfo on IssueRelation {
+    id
     ...IssueRelationTimelineInfoBase
     relatedIssue {
         ...IssueTimelineInfo

@@ -28,13 +28,17 @@ const route = useRoute();
 const projectId = computed(() => route.params.trackable as string);
 const eventBus = inject(eventBusKey);
 
-const project = asyncComputed(async () => {
-    if (!projectId.value) {
-        return null;
-    }
-    const res = await withErrorMessage(() => client.getProject({ id: projectId.value }), "Error loading project");
-    return res.node as Project;
-}, null);
+const project = asyncComputed(
+    async () => {
+        if (!projectId.value) {
+            return null;
+        }
+        const res = await withErrorMessage(() => client.getProject({ id: projectId.value }), "Error loading project");
+        return res.node as Project;
+    },
+    null,
+    { shallow: false }
+);
 
 function projectPath(name: string): RouteLocationRaw {
     return {

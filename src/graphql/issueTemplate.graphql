@@ -4,8 +4,14 @@ fragment DefaultIssueTemplateInfo on IssueTemplate {
     description
 }
 
-query searchIssueTemplates($filter: String!, $count: Int!) {
-    issueTemplates(filter: { name: { contains: $filter } }, first: $count, orderBy: { field: NAME }) {
+query searchIssueTemplates($query: String!, $count: Int!) {
+    searchIssueTemplates(query: $query, first: $count) {
+        ...DefaultIssueTemplateInfo
+    }
+}
+
+query firstIssueTemplates($count: Int!) {
+    issueTemplates(first: $count, orderBy: { field: NAME }) {
         nodes {
             ...DefaultIssueTemplateInfo
         }

@@ -39,12 +39,17 @@
                 <div class="pt-3" />
             </div>
             <v-sheet class="sidebar ml-8 mr-3 mb-3" color="surface-container" rounded="xl">
-                <EditableCompartment name="Type" :editable="!!issue.manageIssues && store.isLoggedIn" :close-hierarchy="false">
+                <EditableCompartment
+                    name="Type"
+                    :editable="!!issue.manageIssues && store.isLoggedIn"
+                    :close-hierarchy="false"
+                >
                     <template #display>
                         <IssueType :type="issue.type" />
                     </template>
                     <template #edit>
                         <IssueTypeAutocomplete
+                            class="mb-n3"
                             autofocus
                             menu
                             :template="issue.template.id"
@@ -55,12 +60,17 @@
                     </template>
                 </EditableCompartment>
                 <v-divider />
-                <EditableCompartment name="State" :editable="!!issue.manageIssues && store.isLoggedIn" :close-hierarchy="false">
+                <EditableCompartment
+                    name="State"
+                    :editable="!!issue.manageIssues && store.isLoggedIn"
+                    :close-hierarchy="false"
+                >
                     <template #display>
                         <IssueState :state="issue.state" />
                     </template>
                     <template #edit>
                         <IssueStateAutocomplete
+                            class="mb-n3"
                             autofocus
                             menu
                             :template="issue.template.id"
@@ -141,6 +151,30 @@
                             </div>
                         </div>
                     </template>
+                    <template #edit>
+                        <div v-for="(relation, idx) in outgoingRelations">
+                            <div class="d-flex align-center">
+                                <IssueInfo
+                                    v-if="relation.relatedIssue != undefined"
+                                    :issue="relation.relatedIssue!"
+                                    class="d-block my-2"
+                                />
+                                <v-spacer />
+                                <IconButton @click="removeOutgoingRelation(relation.id)">
+                                    <v-icon>mdi-close</v-icon>
+                                </IconButton>
+                            </div>
+                            <IssueRelationTypeAutocomplete
+                                class="mb-n3 mt-1"
+                                density="compact"
+                                :template="issue.template.id"
+                                :initial-items="relation.type ? [relation.type] : []"
+                                :model-value="relation.type?.id"
+                                @update:model-value="updateRelationType(relation, $event)"
+                            />
+                            <v-divider v-if="idx < outgoingRelations.length - 1" />
+                        </div>
+                    </template>
                 </EditableCompartment>
                 <v-divider />
                 <EditableCompartment name="Incoming Relations" :editable="false">
@@ -195,6 +229,9 @@ import { issueKey } from "@/util/keys";
 import IssueTypeAutocomplete from "@/components/input/IssueTypeAutocomplete.vue";
 import IssueStateAutocomplete from "@/components/input/IssueStateAutocomplete.vue";
 import IssueInfo from "@/components/info/Issue.vue";
+import IssueRelationTypeAutocomplete from "@/components/input/IssueRelationTypeAutocomplete.vue";
+import { StringLiteralTypeAnnotation } from "@babel/types";
+import { transformSearchQuery } from "@/util/searchQueryTransformer";
 
 export type Issue = NodeReturnType<"getIssue", "Issue">;
 
@@ -215,7 +252,10 @@ const issue = computedAsync(
         return res.node as Issue;
     },
     null,
-    evaluating
+    {
+        evaluating,
+        shallow: false
+    }
 );
 
 const answers = ref<string | null>(null);
@@ -235,6 +275,7 @@ provide(issueKey, issue);
 
 const timeline = computed(() => issue.value!.timelineItems.nodes);
 const labels = computed(() => issue.value!.labels.nodes);
+const outgoingRelations = computed(() => issue.value!.outgoingRelations.nodes);
 
 function addComment(comment: TimelineItemType<"IssueComment">) {
     timeline.value.push(comment);
@@ -295,13 +336,18 @@ async function updateIssueState(state: string | null) {
 }
 
 async function searchLabels(filter: string, count: number): Promise<DefaultLabelInfoFragment[]> {
-    const searchedIssue = await withErrorMessage(async () => {
-        const res = await client.searchLabels({ issue: issueId.value, filter, count });
-        return res.node as NodeReturnType<"searchLabels", "Issue">;
+    const searchRes = await withErrorMessage(async () => {
+        const query = transformSearchQuery(filter);
+        if (query != undefined) {
+            const res = await client.searchLabels({ issue: issueId.value, query, count });
+            return res.searchLabels;
+        } else {
+            const res = await client.firstLabels({ issue: issueId.value, count });
+            const nodeRes = res.node as NodeReturnType<"firstLabels", "Issue">;
+            return nodeRes.trackables.nodes.flatMap((trackable) => trackable.labels.nodes);
+        }
     }, "Error searching labels");
-    const searchedLabels = new Map(
-        searchedIssue.trackables.nodes.flatMap((trackable) => trackable.labels.nodes.map((label) => [label.id, label]))
-    );
+    const searchedLabels = new Map(searchRes.map((label) => [label.id, label]));
     const currentLabels = new Set(labels.value.map((label) => label.id));
     return [...searchedLabels.values()].filter((label) => !currentLabels.has(label.id));
 }
@@ -370,6 +416,30 @@ const groupedIncomingRelations = computed(() => {
         issue.value!.incomingRelations.nodes
     );
 });
+
+async function removeOutgoingRelation(relationId: string) {
+    const event = await withErrorMessage(async () => {
+        const res = await client.removeIssueRelation({ id: relationId });
+        return res.removeIssueRelation!.removedOutgoingRelationEvent!;
+    }, "Error removing outgoing relation from issue");
+    timeline.value.push(event);
+    const index = outgoingRelations.value.findIndex((relation) => relation.id == relationId);
+    if (index != -1) {
+        outgoingRelations.value.splice(index, 1);
+    }
+}
+
+async function updateRelationType(relation: OutgoingRelationTimelineInfoFragment, type: string | null) {
+    if (!type) {
+        return;
+    }
+    const event = await withErrorMessage(async () => {
+        const res = await client.changeIssueRelationType({ issueRelation: relation.id, type });
+        return res.changeIssueRelationType!.outgoingRelationTypeChangedEvent!;
+    }, "Error updating issue relation type");
+    timeline.value.push(event);
+    relation.type = event.newRelationType;
+}
 </script>
 <style scoped lang="scss">
 @use "@/styles/settings.scss";
@@ -398,7 +468,7 @@ const groupedIncomingRelations = computed(() => {
     position: sticky;
     top: 0;
     right: 0;
-    width: min(40%, 350px);
+    width: min(40%, 400px);
     max-height: calc(100% - 12px);
     height: fit-content;
     overflow-y: auto;

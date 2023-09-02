@@ -3,8 +3,9 @@
         v-model:search="search"
         :items="items"
         item-value="id"
-        @update:focused="resetSearch"
+        @update:focused="resetFromFocus"
         @update:model-value="selectedElement"
+        no-filter
     >
         <template v-for="(_, name) in $slots" #[name]="slotData">
             <slot :name="name" v-bind="slotData" />
@@ -39,8 +40,9 @@ const emit = defineEmits<{
 const items = ref(props.initialItems) as Ref<T[]>;
 const search = ref<undefined | string>("");
 const updatedModelValue = ref(false);
+const hasSelectedElement = ref(false);
 
-watch(search, async (search) => {
+watch(search, async (search, oldSearch) => {
     if (!updatedModelValue.value) {
         await updateSearch(search ?? "");
     } else {
@@ -60,6 +62,12 @@ async function updateSearch(search: string) {
     items.value = newItems;
 }
 
+function resetFromFocus(focused: boolean) {
+    if (focused && hasSelectedElement.value) {
+        resetSearch();
+    }
+}
+
 async function resetSearch() {
     updatedModelValue.value = true;
     updateSearch("");
@@ -74,6 +82,7 @@ function selectedElement(value: any) {
     } else {
         ids = [];
     }
+    hasSelectedElement.value = ids.length > 0
     emit(
         "selected-items",
         items.value.filter((item) => ids.includes(item.id))

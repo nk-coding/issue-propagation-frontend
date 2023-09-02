@@ -5,10 +5,16 @@ fragment DefaultIssueTypeInfo on IssueType {
     iconPath
 }
 
-query searchIssueTypes($template: ID!, $filter: String!, $count: Int!) {
+query searchIssueTypes($template: ID!, $query: String!, $count: Int!) {
+    searchIssueTypes(query: $query, first: $count, filter: { partOf: { any: { id: { eq: $template } } } }) {
+        ...DefaultIssueTypeInfo
+    }
+}
+
+query firstIssueTypes($template: ID!, $count: Int!) {
     node(id: $template) {
         ... on IssueTemplate {
-            issueTypes(filter: { name: { contains: $filter } }, first: $count, orderBy: { field: NAME }) {
+            issueTypes(first: $count, orderBy: { field: NAME }) {
                 nodes {
                     ...DefaultIssueTypeInfo
                 }

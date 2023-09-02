@@ -12,10 +12,11 @@
     </FetchingAutocomplete>
 </template>
 <script setup lang="ts">
-import { NodeReturnType, useClient } from "@/graphql/client";
+import {  NodeReturnType, useClient } from "@/graphql/client";
 import { DefaultIssueStateInfoFragment } from "@/graphql/generated";
 import { withErrorMessage } from "@/util/withErrorMessage";
 import FetchingAutocomplete from "./FetchingAutocomplete.vue";
+import { transformSearchQuery } from "@/util/searchQueryTransformer";
 
 const props = defineProps({
     template: {
@@ -30,11 +31,17 @@ async function searchIssueStates(filter: string, count: number): Promise<Default
     if (props.template == undefined) {
         return [];
     }
-    const searchedIssue = await withErrorMessage(async () => {
-        const res = await client.searchIssueStates({ template: props.template!, filter, count });
-        return res.node as NodeReturnType<"searchIssueStates", "IssueTemplate">;
+    return await withErrorMessage(async () => {
+        const query = transformSearchQuery(filter);
+        if (query != undefined) {
+            const res = await client.searchIssueStates({ template: props.template!, query, count });
+            return res.searchIssueStates;
+        } else {
+            const res = await client.firstIssueStates({ template: props.template!, count })
+            const nodeRes = res.node as NodeReturnType<"firstIssueStates", "IssueTemplate">
+            return nodeRes.issueStates.nodes
+        }
     }, "Error searching issue states");
-    return searchedIssue.issueStates.nodes;
 }
 </script>
 <style scoped lang="scss">

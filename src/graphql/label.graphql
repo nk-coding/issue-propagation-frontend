@@ -5,12 +5,22 @@ fragment DefaultLabelInfo on Label {
     color
 }
 
-query searchLabels($issue: ID!, $filter: String!, $count: Int!) {
+query searchLabels($issue: ID!, $query: String!, $count: Int!) {
+    searchLabels(
+        query: $query
+        first: $count
+        filter: { trackables: { any: { issues: { any: { id: { eq: $issue } } } } } }
+    ) {
+        ...DefaultLabelInfo
+    }
+}
+
+query firstLabels($issue: ID!, $count: Int!) {
     node(id: $issue) {
         ... on Issue {
             trackables {
                 nodes {
-                    labels(filter: { name: { contains: $filter } }, first: $count, orderBy: { field: NAME }) {
+                    labels(first: $count, orderBy: { field: NAME }) {
                         nodes {
                             ...DefaultLabelInfo
                         }

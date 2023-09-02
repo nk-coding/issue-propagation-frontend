@@ -28,13 +28,20 @@ const route = useRoute();
 const componentId = computed(() => route.params.trackable as string);
 const eventBus = inject(eventBusKey);
 
-const component = computedAsync(async () => {
-    if (!componentId.value) {
-        return null;
-    }
-    const res = await withErrorMessage(() => client.getComponent({ id: componentId.value }), "Error loading component");
-    return res.node as Component;
-}, null);
+const component = computedAsync(
+    async () => {
+        if (!componentId.value) {
+            return null;
+        }
+        const res = await withErrorMessage(
+            () => client.getComponent({ id: componentId.value }),
+            "Error loading component"
+        );
+        return res.node as Component;
+    },
+    null,
+    { shallow: false }
+);
 
 function componentPath(name: string): RouteLocationRaw {
     return {

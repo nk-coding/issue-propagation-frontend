@@ -169,3 +169,9 @@ fragment DefaultIssueIconInfo on Issue {
         iconPath
     }
 }
+
+query searchIssues($query: String!, $count: Int!) {
+    searchIssues(query: $query, first: $count) {
+        ...DefaultIssueInfo
+    }
+}

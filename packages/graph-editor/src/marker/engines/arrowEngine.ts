@@ -7,7 +7,6 @@ export class ArrowEngine extends MarkerEngine {
 
     override startOffset(strokeWidth: number): number {
         const miterLength = strokeWidth / Math.sin(Math.atan(0.5)) / 2;
-        console.log(miterLength);
         return miterLength;
     }
 
