@@ -18500,6 +18500,43 @@ export type RemoveIssueRelationMutation = {
     } | null;
 };
 
+export type CreateIssueRelationMutationVariables = Exact<{
+    issue: Scalars["ID"]["input"];
+    relatedIssue: Scalars["ID"]["input"];
+}>;
+
+export type CreateIssueRelationMutation = {
+    __typename?: "Mutation";
+    createIssueRelation?: {
+        __typename?: "CreateIssueRelationPayload";
+        issueRelation?: {
+            __typename: "IssueRelation";
+            id: string;
+            createdAt: any;
+            createdBy:
+                | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+                | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+            relatedIssue?: {
+                __typename?: "Issue";
+                id: string;
+                title: string;
+                trackables: {
+                    __typename?: "TrackableConnection";
+                    nodes: Array<
+                        | { __typename: "Component"; id: string; name: string; description: string }
+                        | { __typename: "Project"; id: string; name: string; description: string }
+                    >;
+                };
+                incomingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
+                outgoingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
+                state: { __typename?: "IssueState"; isOpen: boolean };
+                type: { __typename?: "IssueType"; iconPath: string };
+            } | null;
+            type?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
+        } | null;
+    } | null;
+};
+
 export type DefaultIssueRelationTypeInfoFragment = {
     __typename?: "IssueRelationType";
     id: string;
@@ -18618,7 +18655,7 @@ export type FirstIssueRelationTypesQuery = {
 
 export type ChangeIssueRelationTypeMutationVariables = Exact<{
     issueRelation: Scalars["ID"]["input"];
-    type: Scalars["ID"]["input"];
+    type?: InputMaybe<Scalars["ID"]["input"]>;
 }>;
 
 export type ChangeIssueRelationTypeMutation = {
@@ -21908,6 +21945,16 @@ export const RemoveIssueRelationDocument = gql`
     }
     ${RemovedOutgoingRelationEventTimelineInfoFragmentDoc}
 `;
+export const CreateIssueRelationDocument = gql`
+    mutation createIssueRelation($issue: ID!, $relatedIssue: ID!) {
+        createIssueRelation(input: { issue: $issue, relatedIssue: $relatedIssue }) {
+            issueRelation {
+                ...IssueRelationTimelineInfo
+            }
+        }
+    }
+    ${IssueRelationTimelineInfoFragmentDoc}
+`;
 export const SearchIssueRelationTypesDocument = gql`
     query searchIssueRelationTypes($template: ID!, $query: String!, $count: Int!) {
         searchIssueRelationTypes(query: $query, first: $count, filter: { partOf: { any: { id: { eq: $template } } } }) {
@@ -21931,7 +21978,7 @@ export const FirstIssueRelationTypesDocument = gql`
     ${DefaultIssueRelationTypeInfoFragmentDoc}
 `;
 export const ChangeIssueRelationTypeDocument = gql`
-    mutation changeIssueRelationType($issueRelation: ID!, $type: ID!) {
+    mutation changeIssueRelationType($issueRelation: ID!, $type: ID) {
         changeIssueRelationType(input: { issueRelation: $issueRelation, type: $type }) {
             outgoingRelationTypeChangedEvent {
                 ...OutgoingRelationTypeChangedEventTimelineInfo
@@ -22269,6 +22316,20 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "removeIssueRelation",
+                "mutation"
+            );
+        },
+        createIssueRelation(
+            variables: CreateIssueRelationMutationVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<CreateIssueRelationMutation> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<CreateIssueRelationMutation>(CreateIssueRelationDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "createIssueRelation",
                 "mutation"
             );
         },

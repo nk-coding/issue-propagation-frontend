@@ -2,6 +2,12 @@
     <FetchingAutocomplete :fetch="searchIssues" :has-selection="hasSelection" :label="label" item-title="title">
         <template #item="{ props, item }">
             <v-list-item :title="item.raw.title" :subtitle="generateSubtitle(item.raw)" v-bind="props">
+                <template #prepend>
+                    <IssueIcon
+                        :issue="item.raw"
+                        class="issue-icon mr-2"
+                    />
+                </template>
             </v-list-item>
         </template>
     </FetchingAutocomplete>
@@ -12,6 +18,7 @@ import { DefaultIssueInfoFragment } from "@/graphql/generated";
 import { withErrorMessage } from "@/util/withErrorMessage";
 import FetchingAutocomplete from "./FetchingAutocomplete.vue";
 import { transformSearchQuery } from "@/util/searchQueryTransformer";
+import IssueIcon from "../IssueIcon.vue";
 
 const props = defineProps({
     label: {
@@ -47,7 +54,7 @@ async function searchIssues(filter: string, count: number): Promise<DefaultIssue
 @use "@/styles/settings.scss";
 @use "sass:map";
 
-.state-icon {
+.issue-icon {
     width: map.get(settings.$avatar-sizes, "large");
     height: map.get(settings.$avatar-sizes, "large");
 }

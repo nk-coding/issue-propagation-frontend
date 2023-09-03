@@ -22,7 +22,7 @@ query firstIssueRelationTypes($template: ID!, $count: Int!) {
     }
 }
 
-mutation changeIssueRelationType($issueRelation: ID!, $type: ID!) {
+mutation changeIssueRelationType($issueRelation: ID!, $type: ID) {
     changeIssueRelationType(input: { issueRelation: $issueRelation, type: $type }) {
         outgoingRelationTypeChangedEvent {
             ...OutgoingRelationTypeChangedEventTimelineInfo

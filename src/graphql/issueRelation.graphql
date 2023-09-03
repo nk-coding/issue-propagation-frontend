@@ -5,3 +5,11 @@ mutation removeIssueRelation($id: ID!) {
         }
     }
 }
+
+mutation createIssueRelation($issue: ID!, $relatedIssue: ID!) {
+    createIssueRelation(input: { issue: $issue, relatedIssue: $relatedIssue }) {
+        issueRelation {
+            ...IssueRelationTimelineInfo
+        }
+    }
+}
