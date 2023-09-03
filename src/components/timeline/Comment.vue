@@ -36,11 +36,11 @@
                             <v-fade-transition>
                                 <div v-show="issue?.comment && (isHovering || menuOpen)">
                                     <IconButton :disabled="isDeleted || !issue?.comment || !store.isLoggedIn" @click="reply">
-                                        <v-icon>mdi-reply</v-icon>
+                                        <v-icon icon="mdi-reply"/>
                                         <v-tooltip activator="parent" location="top"> Reply </v-tooltip>
                                     </IconButton>
                                     <IconButton>
-                                        <v-icon>mdi-dots-vertical</v-icon>
+                                        <v-icon icon="mdi-dots-vertical"/>
                                         <v-menu
                                             activator="parent"
                                             location="bottom end"
@@ -53,7 +53,7 @@
                                                 >
                                                     <v-list-item-title>Edit</v-list-item-title>
                                                     <template #prepend>
-                                                        <v-icon>mdi-pencil</v-icon>
+                                                        <v-icon icon="mdi-pencil"/>
                                                     </template>
                                                 </v-list-item>
                                                 <v-list-item
@@ -62,7 +62,7 @@
                                                 >
                                                     <v-list-item-title>Delete</v-list-item-title>
                                                     <template #prepend>
-                                                        <v-icon>mdi-delete</v-icon>
+                                                        <v-icon icon="mdi-delete"/>
                                                     </template>
                                                     <ConfirmationDialog
                                                         title="Delete comment?"
@@ -117,7 +117,7 @@
                                         color="error"
                                         @click="resetAnswers"
                                     >
-                                        <v-icon>mdi-close-circle-outline</v-icon>
+                                        <v-icon icon="mdi-close-circle-outline"/>
                                     </v-btn>
                                 </v-card>
                             </div>

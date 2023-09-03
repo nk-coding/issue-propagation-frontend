@@ -3,7 +3,7 @@
         <div class="mb-5 main-wrapper">
             <div class="d-flex align-center">
                 <div class="mr-2 pa-1 rounded-circle timeline-icon-wrapper">
-                    <v-icon class="timeline-icon" size="large">{{ icon }}</v-icon>
+                    <v-icon class="timeline-icon" size="large" :icon="icon"/>
                 </div>
                 <slot></slot>
             </div>

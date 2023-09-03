@@ -18,15 +18,15 @@
                         />
                     </div>
                     <div class="text-medium-emphasis icon-container d-flex align-center">
-                        <v-icon color="issue-incoming" class="triangle-right mr-1" size="x-small">mdi-triangle</v-icon>
+                        <v-icon color="issue-incoming" class="triangle-right mr-1" size="x-small" icon="mdi-triangle"/>
                         {{ item.incomingRelations.totalCount }}
                     </div>
                     <div class="text-medium-emphasis icon-container d-flex align-center">
                         {{ item.outgoingRelations.totalCount }}
-                        <v-icon color="issue-outgoing" class="triangle-right ml-1" size="x-small">mdi-triangle</v-icon>
+                        <v-icon color="issue-outgoing" class="triangle-right ml-1" size="x-small" icon="mdi-triangle"/>
                     </div>
                     <div class="text-medium-emphasis icon-container">
-                        <v-icon>mdi-comment-outline</v-icon>
+                        <v-icon icon="mdi-comment-outline"/>
                         {{ item.issueComments.totalCount }}
                     </div>
                 </template>
