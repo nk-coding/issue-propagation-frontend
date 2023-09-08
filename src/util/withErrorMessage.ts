@@ -6,6 +6,7 @@ export async function withErrorMessage<T>(action: () => Promise<T>, message: str
     } catch (error) {
         const store = useAppStore();
         store.pushError(message);
+        console.error(error);
         throw error;
     }
 }

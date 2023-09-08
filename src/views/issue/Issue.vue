@@ -132,123 +132,113 @@
                     </template>
                 </EditableCompartment>
                 <v-divider />
-                <EditableCompartment name="Assignees" :editable="!!issue.manageIssues && store.isLoggedIn">
-                    <template #display>
-                        <div v-for="assignmentGroup in groupedAssignments">
-                            <span class="text-subtitle-2">{{ assignmentGroup.type?.name ?? "[No type]" }}</span>
-                            <User
-                                v-for="assignment in assignmentGroup.items"
-                                :user="assignment.user"
-                                class="d-block my-2 ml-2"
-                            />
-                        </div>
+                <TypedEditableCompartment
+                    name="Assignments"
+                    name-inline="assignment"
+                    :editable="!!issue.manageIssues && store.isLoggedIn"
+                    :items="assignments"
+                    :edited-types="editedAssignmentTypes"
+                    @remove-item="removeAssignment"
+                    @toggle-type-edit="editedAssignmentTypes[$event] = !editedAssignmentTypes[$event]"
+                >
+                    <template #ItemInfo="{ item }">
+                        <User :user="item.user" class="d-block my-2 ml-2" />
                     </template>
-                </EditableCompartment>
+                    <template #EditedItemInfo="{ item }">
+                        <User :user="item.user" class="d-block mb-2" />
+                    </template>
+                    <template #TypeAutocomplete="{ item }">
+                        <AssignmentTypeAutocomplete
+                            density="compact"
+                            hide-details
+                            autofocus
+                            menu
+                            clearable
+                            persistent-clear
+                            class="mt-1 mb-3"
+                            :has-selection="!!item.type"
+                            :template="issue.template.id"
+                            :initial-items="item.type ? [item.type] : []"
+                            :model-value="item.type?.id"
+                            @update:model-value="updateAssignmentType(item, $event)"
+                            @click:clear="removeAssignmentType(item)"
+                        />
+                    </template>
+                    <template #ItemAutocomplete>
+                        <UserAutocomplete
+                            :fetch="searchUsers"
+                            :has-selection="false"
+                            v-model="usersToAssign"
+                            label="Assign user"
+                            class="mb-2"
+                            hide-details
+                            autofocus
+                        />
+                    </template>
+                </TypedEditableCompartment>
                 <v-divider />
-                <EditableCompartment name="Outgoing Relations" :editable="!!issue.manageIssues && store.isLoggedIn">
-                    <template #display>
-                        <div v-for="relationGroup in groupedOutgoingRelations">
-                            <span class="text-subtitle-2">
-                                {{ relationTypeName(relationGroup) }}
-                            </span>
-                            <div v-for="relation in relationGroup.items">
-                                <IssueInfo
-                                    v-if="relation.relatedIssue != undefined"
-                                    :issue="relation.relatedIssue!"
-                                    class="d-block my-2 ml-2"
-                                />
-                            </div>
-                        </div>
+                <TypedEditableCompartment
+                    name="Outgoing Relations"
+                    name-inline="relation"
+                    :editable="!!issue.manageIssues && store.isLoggedIn"
+                    :items="outgoingRelations"
+                    :edited-types="editedRelationTypes"
+                    @remove-item="removeOutgoingRelation"
+                    @toggle-type-edit="editedRelationTypes[$event] = !editedRelationTypes[$event]"
+                >
+                    <template #ItemInfo="{ item }">
+                        <IssueInfo
+                            v-if="item.relatedIssue != undefined"
+                            :issue="item.relatedIssue!"
+                            class="d-block my-2 ml-2"
+                        />
                     </template>
-                    <template #edit>
-                        <div
-                            v-for="(relation, idx) in outgoingRelations"
-                            class="pt-2 relation-edit-compartment"
-                            :key="idx"
-                        >
-                            <v-hover v-slot="{ isHovering, props }">
-                                <div v-bind="props">
-                                    <div class="d-flex align-center">
-                                        <div>
-                                            <span
-                                                class="text-subtitle-2 mb-2 edit-type"
-                                                @click="toggleRelationTypeEdit(relation.id)"
-                                            >
-                                                {{ relationTypeName(relation) }}
-                                                <v-fade-transition>
-                                                    <v-icon
-                                                        v-if="isHovering"
-                                                        class="ml-1"
-                                                        :icon="
-                                                            editedRelationTypes[relation.id]
-                                                                ? 'mdi-pencil-off'
-                                                                : 'mdi-pencil'
-                                                        "
-                                                        size="small"
-                                                    ></v-icon>
-                                                </v-fade-transition>
-                                                <v-tooltip activator="parent"> Edit type </v-tooltip>
-                                            </span>
-                                            <IssueInfo
-                                                v-if="relation.relatedIssue != undefined"
-                                                :issue="relation.relatedIssue!"
-                                                class="d-block mb-2"
-                                            />
-                                        </div>
-                                        <v-spacer />
-                                        <IconButton @click="removeOutgoingRelation(relation.id)">
-                                            <v-icon>mdi-close</v-icon>
-                                            <v-tooltip activator="parent"> Remove relation </v-tooltip>
-                                        </IconButton>
-                                    </div>
-                                    <IssueRelationTypeAutocomplete
-                                        density="compact"
-                                        hide-details
-                                        autofocus
-                                        menu
-                                        clearable
-                                        persistent-clear
-                                        class="mt-1 mb-3"
-                                        v-if="editedRelationTypes[relation.id]"
-                                        :has-selection="!!relation.type"
-                                        :template="issue.template.id"
-                                        :initial-items="relation.type ? [relation.type] : []"
-                                        :model-value="relation.type?.id"
-                                        @update:model-value="updateRelationType(relation, $event)"
-                                        @click:clear="removeRelationType(relation)"
-                                    />
-                                </div>
-                            </v-hover>
-                            <v-divider />
-                        </div>
-                        <div class="mt-3">
-                            <IssueAutocomplete
-                                :fetch="searchIssues"
-                                :has-selection="false"
-                                v-model="relatedIssueToAdd"
-                                label="Add related issue"
-                                class="mb-2"
-                                hide-details
-                                autofocus
-                            />
-                        </div>
+                    <template #EditedItemInfo="{ item }">
+                        <IssueInfo
+                            v-if="item.relatedIssue != undefined"
+                            :issue="item.relatedIssue!"
+                            class="d-block mb-2"
+                        />
                     </template>
-                </EditableCompartment>
+                    <template #TypeAutocomplete="{ item }">
+                        <IssueRelationTypeAutocomplete
+                            density="compact"
+                            hide-details
+                            autofocus
+                            menu
+                            clearable
+                            persistent-clear
+                            class="mt-1 mb-3"
+                            :has-selection="!!item.type"
+                            :template="issue.template.id"
+                            :initial-items="item.type ? [item.type] : []"
+                            :model-value="item.type?.id"
+                            @update:model-value="updateRelationType(item, $event)"
+                            @click:clear="removeRelationType(item)"
+                        />
+                    </template>
+                    <template #ItemAutocomplete>
+                        <IssueAutocomplete
+                            :has-selection="false"
+                            v-model="relatedIssueToAdd"
+                            label="Add related issue"
+                            class="mb-2"
+                            hide-details
+                            autofocus
+                        />
+                    </template>
+                </TypedEditableCompartment>
                 <v-divider />
-                <EditableCompartment name="Incoming Relations" :editable="false">
-                    <template #display>
-                        <div v-for="relationGroup in groupedIncomingRelations">
-                            <span class="text-subtitle-2">{{ relationGroup.type?.name ?? "[No type]" }}</span>
-                            <div v-for="relation in relationGroup.items">
-                                <IssueInfo
-                                    v-if="relation.issue != undefined"
-                                    :issue="relation.issue!"
-                                    class="d-block my-2 ml-2"
-                                />
-                            </div>
-                        </div>
+                <TypedEditableCompartment
+                    name="Incoming Relations"
+                    name-inline="relation"
+                    :editable="false"
+                    :items="issue.incomingRelations.nodes"
+                >
+                    <template #ItemInfo="{ item }">
+                        <IssueInfo v-if="item.issue != undefined" :issue="item.issue!" class="d-block my-2 ml-2" />
                     </template>
-                </EditableCompartment>
+                </TypedEditableCompartment>
             </v-sheet>
         </div>
     </div>
@@ -277,11 +267,8 @@ import ListItem from "@/components/ListItem.vue";
 import FetchingAutocomplete from "@/components/input/FetchingAutocomplete.vue";
 import {
     AssignmentTimelineInfoFragment,
-    DefaultAssignmentTypeInfoFragment,
-    DefaultIssueInfoFragment,
     DefaultLabelInfoFragment,
-    IncomingRelationTimelineInfoFragment,
-    IssueRelationTypeTimelineInfoFragment,
+    DefaultUserInfoFragment,
     OutgoingRelationTimelineInfoFragment
 } from "@/graphql/generated";
 import { issueKey } from "@/util/keys";
@@ -291,6 +278,9 @@ import IssueInfo from "@/components/info/Issue.vue";
 import IssueRelationTypeAutocomplete from "@/components/input/IssueRelationTypeAutocomplete.vue";
 import IssueAutocomplete from "@/components/input/IssueAutocomplete.vue";
 import { transformSearchQuery } from "@/util/searchQueryTransformer";
+import TypedEditableCompartment from "@/components/TypedEditableCompartment.vue";
+import AssignmentTypeAutocomplete from "@/components/input/AssignmentTypeAutocomplete.vue";
+import UserAutocomplete from "@/components/input/UserAutocomplete.vue";
 
 export type Issue = NodeReturnType<"getIssue", "Issue">;
 
@@ -335,6 +325,7 @@ provide(issueKey, issue);
 const timeline = computed(() => issue.value!.timelineItems.nodes);
 const labels = computed(() => issue.value!.labels.nodes);
 const outgoingRelations = computed(() => issue.value!.outgoingRelations.nodes);
+const assignments = computed(() => issue.value!.assignments.nodes);
 
 function addComment(comment: TimelineItemType<"IssueComment">) {
     timeline.value.push(comment);
@@ -439,43 +430,72 @@ async function removeLabel(labelId: string) {
     }
 }
 
-interface Group<T, V> {
-    type: T | undefined;
-    items: V[];
-}
+const editedAssignmentTypes = ref<Record<string, boolean>>({});
 
-function groupByType<T extends { id: string }, V extends { type?: T | null }>(items: V[]): Group<T, V>[] {
-    const groupedItems: Map<string | undefined, Group<T, V>> = new Map();
-    for (const item of items) {
-        if (groupedItems.has(item.type?.id)) {
-            groupedItems.get(item.type?.id)!.items.push(item);
-        } else {
-            groupedItems.set(item.type?.id, {
-                type: item.type ?? undefined,
-                items: [item]
-            });
-        }
+async function removeAssignment(relationId: string) {
+    const event = await withErrorMessage(async () => {
+        const res = await client.removeAssignment({ id: relationId });
+        return res.removeAssignment!.removedAssignmentEvent!;
+    }, "Error removing assignment from issue");
+    timeline.value.push(event);
+    const index = assignments.value.findIndex((relation) => relation.id == relationId);
+    if (index != -1) {
+        assignments.value.splice(index, 1);
     }
-    return [...groupedItems.values()];
 }
 
-const groupedAssignments = computed(() => {
-    return groupByType<DefaultAssignmentTypeInfoFragment, AssignmentTimelineInfoFragment>(
-        issue.value!.assignments.nodes
-    );
+async function updateAssignmentType(assignment: AssignmentTimelineInfoFragment, type: string | null) {
+    if (type == undefined) {
+        return;
+    }
+    const event = await withErrorMessage(async () => {
+        const res = await client.changeAssignmentType({ assignment: assignment.id, type });
+        return res.changeAssignmentType!.assignmentTypeChangedEvent!;
+    }, "Error updating assignment type");
+    timeline.value.push(event);
+    assignment.type = event.newAssignmentType;
+    editedRelationTypes.value[assignment.id] = false;
+}
+
+async function removeAssignmentType(assignment: AssignmentTimelineInfoFragment) {
+    const event = await withErrorMessage(async () => {
+        const res = await client.changeAssignmentType({ assignment: assignment.id, type: null });
+        return res.changeAssignmentType!.assignmentTypeChangedEvent!;
+    }, "Error updating assignment type");
+    timeline.value.push(event);
+    assignment.type = undefined;
+    editedRelationTypes.value[assignment.id] = false;
+}
+
+async function searchUsers(filter: string, count: number): Promise<DefaultUserInfoFragment[]> {
+    return await withErrorMessage(async () => {
+        const query = transformSearchQuery(filter);
+        if (query != undefined) {
+            const res = await client.searchManageIssuesUsers({ query, count, issue: issueId.value });
+            return res.searchGropiusUsers;
+        } else {
+            return [];
+        }
+    }, "Error searching users");
+}
+
+const usersToAssign = ref<string | null>(null);
+
+watch(usersToAssign, async (user) => {
+    if (user == undefined) {
+        return;
+    }
+    const event = await withErrorMessage(async () => {
+        const res = await client.createAssignment({ issue: issueId.value, user });
+        return res.createAssignment!.assignment!;
+    }, "Error creating assignment");
+    timeline.value.push(event);
+    assignments.value.push(event);
+    usersToAssign.value = null;
+    editedAssignmentTypes.value[event.id] = true;
 });
 
-const groupedOutgoingRelations = computed(() => {
-    return groupByType<IssueRelationTypeTimelineInfoFragment, OutgoingRelationTimelineInfoFragment>(
-        issue.value!.outgoingRelations.nodes
-    );
-});
-
-const groupedIncomingRelations = computed(() => {
-    return groupByType<IssueRelationTypeTimelineInfoFragment, IncomingRelationTimelineInfoFragment>(
-        issue.value!.incomingRelations.nodes
-    );
-});
+const editedRelationTypes = ref<Record<string, boolean>>({});
 
 async function removeOutgoingRelation(relationId: string) {
     const event = await withErrorMessage(async () => {
@@ -487,18 +507,6 @@ async function removeOutgoingRelation(relationId: string) {
     if (index != -1) {
         outgoingRelations.value.splice(index, 1);
     }
-}
-
-function relationTypeName(
-    relation: OutgoingRelationTimelineInfoFragment | Group<IssueRelationTypeTimelineInfoFragment, any>
-): string {
-    return relation.type?.name ?? "[No type]";
-}
-
-const editedRelationTypes = ref<Record<string, boolean>>({});
-
-function toggleRelationTypeEdit(relation: string) {
-    editedRelationTypes.value[relation] = !editedRelationTypes.value[relation];
 }
 
 async function updateRelationType(relation: OutgoingRelationTimelineInfoFragment, type: string | null) {
@@ -539,19 +547,6 @@ watch(relatedIssueToAdd, async (relatedIssue) => {
     relatedIssueToAdd.value = null;
     editedRelationTypes.value[event.id] = true;
 });
-
-async function searchIssues(filter: string, count: number): Promise<DefaultIssueInfoFragment[]> {
-    return await withErrorMessage(async () => {
-        const query = transformSearchQuery(filter);
-        if (query != undefined) {
-            const res = await client.searchIssues({ query, count });
-            return res.searchIssues;
-        } else {
-            // for now
-            return [];
-        }
-    }, "Error searching issues");
-}
 </script>
 <style scoped lang="scss">
 @use "@/styles/settings.scss";
@@ -584,13 +579,5 @@ async function searchIssues(filter: string, count: number): Promise<DefaultIssue
     max-height: calc(100% - 12px);
     height: fit-content;
     overflow-y: auto;
-}
-
-.edit-type {
-    cursor: pointer;
-
-    &:hover {
-        color: rgb(var(--v-theme-primary)) !important;
-    }
 }
 </style>
