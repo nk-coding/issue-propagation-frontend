@@ -1,10 +1,11 @@
 <template>
     <IconTimelineItem :icon="icon">
-        <div class="text-medium-emphasis">
-            <User :user="item.createdBy" />
-            <slot />
-            <RelativeTime :time="item.createdAt" />
+        <div class="text-medium-emphasis content-wrapper">
+            <User :user="item.createdBy" /> <slot /> <RelativeTime :time="item.createdAt" />
         </div>
+        <template #content>
+            <slot name="content" />
+        </template>
     </IconTimelineItem>
 </template>
 <script setup lang="ts">
@@ -25,3 +26,8 @@ defineProps({
     }
 });
 </script>
+<style scoped>
+.content-wrapper {
+    line-height: 2;
+}
+</style>

@@ -6,12 +6,8 @@
                 <div>
                     <div class="text-h4">{{ issue.title }}</div>
                     <div class="text-medium-emphasis text-subtitle-1">
-                        Opened by&nbsp;
-                        <User :user="issue.createdBy" />
-                        &nbsp;
-                        <RelativeTime :time="issue.createdAt" />
-                        &nbsp;· last updated&nbsp;
-                        <RelativeTime :time="issue.lastUpdatedAt" />
+                        Opened by <User :user="issue.createdBy" /> <RelativeTime :time="issue.createdAt" /> · last
+                        updated <RelativeTime :time="issue.lastUpdatedAt" />
                     </div>
                 </div>
             </div>
@@ -454,7 +450,7 @@ async function updateAssignmentType(assignment: AssignmentTimelineInfoFragment, 
     }, "Error updating assignment type");
     timeline.value.push(event);
     assignment.type = event.newAssignmentType;
-    editedRelationTypes.value[assignment.id] = false;
+    editedAssignmentTypes.value[assignment.id] = false;
 }
 
 async function removeAssignmentType(assignment: AssignmentTimelineInfoFragment) {
@@ -464,7 +460,7 @@ async function removeAssignmentType(assignment: AssignmentTimelineInfoFragment) 
     }, "Error updating assignment type");
     timeline.value.push(event);
     assignment.type = undefined;
-    editedRelationTypes.value[assignment.id] = false;
+    editedAssignmentTypes.value[assignment.id] = false;
 }
 
 async function searchUsers(filter: string, count: number): Promise<DefaultUserInfoFragment[]> {

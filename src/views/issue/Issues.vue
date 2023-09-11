@@ -32,9 +32,7 @@
                 </template>
                 <template #subtitle>
                     <div class="text-medium-emphasis text-body-2">
-                        was created&nbsp;
-                        <RelativeTime :time="item.createdAt" />
-                        &nbsp;by&nbsp;
+                        was created <RelativeTime :time="item.createdAt" /> by
                         <User :user="item.createdBy" size="small" />
                     </div>
                 </template>

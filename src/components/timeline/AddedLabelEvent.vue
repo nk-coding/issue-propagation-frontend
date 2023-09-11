@@ -1,8 +1,6 @@
 <template>
     <DefaultIconTimelineItem icon="mdi-label" :item="item">
-        &nbsp;added&nbsp;
-        <Label v-if="item.addedLabel" :label="item.addedLabel!" />
-        <template v-else> a label </template>&nbsp;
+        added <Label v-if="item.addedLabel" :label="item.addedLabel!" /> <template v-else> a label </template>
     </DefaultIconTimelineItem>
 </template>
 <script setup lang="ts">

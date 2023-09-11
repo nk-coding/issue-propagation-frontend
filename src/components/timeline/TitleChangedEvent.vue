@@ -1,10 +1,7 @@
 <template>
     <DefaultIconTimelineItem icon="mdi-pencil" :item="item">
-        &nbsp;changed the title from&nbsp;
-        <span class="text-decoration-line-through">{{ item.oldTitle }}</span>
-        &nbsp;to&nbsp;
-        <span>{{ item.newTitle }}</span
-        >&nbsp;
+        changed the title from <span class="text-decoration-line-through">{{ item.oldTitle }}</span> to
+        <span>{{ item.newTitle }}</span>
     </DefaultIconTimelineItem>
 </template>
 <script setup lang="ts">

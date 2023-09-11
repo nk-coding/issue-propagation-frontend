@@ -5,6 +5,8 @@ import RemovedLabelEvent from "./RemovedLabelEvent.vue";
 import TitleChangedEvent from "./TitleChangedEvent.vue";
 import TypeChangedEvent from "./TypeChangedEvent.vue";
 import StateChangedEvent from "./StateChangedEvent.vue";
+import IssueRelation from "./IssueRelation.vue";
+import RelatedByIssueEvent from "./RelatedByIssueEvent.vue";
 
 type TimelineItemProps = {
     item: any;
@@ -22,7 +24,9 @@ const timelineItems: Record<string, Component> = {
     RemovedLabelEvent: RemovedLabelEvent,
     TitleChangedEvent: TitleChangedEvent,
     TypeChangedEvent: TypeChangedEvent,
-    StateChangedEvent: StateChangedEvent
+    StateChangedEvent: StateChangedEvent,
+    IssueRelation: IssueRelation,
+    RelatedByIssueEvent: RelatedByIssueEvent
 };
 
 export default function TimelineItem(props: TimelineItemProps, context: SetupContext<TimelineItemEvents>) {

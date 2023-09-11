@@ -1,9 +1,6 @@
 <template>
     <DefaultIconTimelineItem icon="mdi-pencil" :item="item">
-        &nbsp;changed the state from&nbsp;
-        <IssueState :state="item.oldState" />
-        &nbsp;to&nbsp;
-        <IssueState :state="item.newState" />&nbsp;
+        changed the state from <IssueState :state="item.oldState" /> to <IssueState :state="item.newState" />
     </DefaultIconTimelineItem>
 </template>
 <script setup lang="ts">
