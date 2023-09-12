@@ -1,5 +1,11 @@
 <template>
-    <FetchingAutocomplete :fetch="searchIssueStates" :dependency="template" :has-selection="hasSelection" label="State" item-title="name">
+    <FetchingAutocomplete
+        :fetch="searchIssueStates"
+        :dependency="template"
+        :has-selection="hasSelection"
+        label="State"
+        item-title="name"
+    >
         <template #item="{ props, item }">
             <v-list-item :title="item.raw.name" :subtitle="item.raw.description" v-bind="props">
                 <template #prepend>
@@ -12,7 +18,7 @@
     </FetchingAutocomplete>
 </template>
 <script setup lang="ts">
-import {  NodeReturnType, useClient } from "@/graphql/client";
+import { NodeReturnType, useClient } from "@/graphql/client";
 import { DefaultIssueStateInfoFragment } from "@/graphql/generated";
 import { withErrorMessage } from "@/util/withErrorMessage";
 import FetchingAutocomplete from "./FetchingAutocomplete.vue";
@@ -41,9 +47,9 @@ async function searchIssueStates(filter: string, count: number): Promise<Default
             const res = await client.searchIssueStates({ template: props.template!, query, count });
             return res.searchIssueStates;
         } else {
-            const res = await client.firstIssueStates({ template: props.template!, count })
-            const nodeRes = res.node as NodeReturnType<"firstIssueStates", "IssueTemplate">
-            return nodeRes.issueStates.nodes
+            const res = await client.firstIssueStates({ template: props.template!, count });
+            const nodeRes = res.node as NodeReturnType<"firstIssueStates", "IssueTemplate">;
+            return nodeRes.issueStates.nodes;
         }
     }, "Error searching issue states");
 }

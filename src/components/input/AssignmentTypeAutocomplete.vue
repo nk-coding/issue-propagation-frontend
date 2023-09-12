@@ -1,8 +1,13 @@
 <template>
-    <FetchingAutocomplete :fetch="searchAssignmentTypes" :dependency="template" :has-selection="hasSelection" label="Relation type" item-title="name">
+    <FetchingAutocomplete
+        :fetch="searchAssignmentTypes"
+        :dependency="template"
+        :has-selection="hasSelection"
+        label="Relation type"
+        item-title="name"
+    >
         <template #item="{ props, item }">
-            <v-list-item :title="item.raw.name" :subtitle="item.raw.description" v-bind="props">
-            </v-list-item>
+            <v-list-item :title="item.raw.name" :subtitle="item.raw.description" v-bind="props"> </v-list-item>
         </template>
     </FetchingAutocomplete>
 </template>
@@ -36,9 +41,9 @@ async function searchAssignmentTypes(filter: string, count: number): Promise<Def
             const res = await client.searchAssignmentTypes({ template: props.template!, query, count });
             return res.searchAssignmentTypes;
         } else {
-            const res = await client.firstAssignmentTypes({ template: props.template!, count })
-            const nodeRes = res.node as NodeReturnType<"firstAssignmentTypes", "IssueTemplate">
-            return nodeRes.assignmentTypes.nodes
+            const res = await client.firstAssignmentTypes({ template: props.template!, count });
+            const nodeRes = res.node as NodeReturnType<"firstAssignmentTypes", "IssueTemplate">;
+            return nodeRes.assignmentTypes.nodes;
         }
     }, "Error searching issue types");
 }

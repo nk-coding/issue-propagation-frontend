@@ -28,6 +28,6 @@ defineProps({
     fetch: {
         type: Function as PropType<(filter: string, count: number) => Promise<DefaultUserInfoFragment[]>>,
         required: true
-    },
+    }
 });
 </script>

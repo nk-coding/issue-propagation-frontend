@@ -3,10 +3,7 @@
         <template #item="{ props, item }">
             <v-list-item :title="item.raw.title" :subtitle="generateSubtitle(item.raw)" v-bind="props">
                 <template #prepend>
-                    <IssueIcon
-                        :issue="item.raw"
-                        class="issue-icon mr-2"
-                    />
+                    <IssueIcon :issue="item.raw" class="issue-icon mr-2" />
                 </template>
             </v-list-item>
         </template>
@@ -35,7 +32,7 @@ const props = defineProps({
 const client = useClient();
 
 function generateSubtitle(issue: DefaultIssueInfoFragment): string {
-    return issue.trackables.nodes.map(trackable => trackable.name).join(", ");
+    return issue.trackables.nodes.map((trackable) => trackable.name).join(", ");
 }
 
 async function searchIssues(filter: string, count: number): Promise<DefaultIssueInfoFragment[]> {

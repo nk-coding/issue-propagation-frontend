@@ -20,7 +20,7 @@ export class MoveMouseListener extends MouseListener {
     private startPosition?: Point;
     private moveHandler?: MoveHandler;
     private targetElement?: Element;
-    private changeRevision: number = -1;
+    private changeRevision = -1;
 
     override mouseDown(target: SModelElement, event: MouseEvent): Action[] {
         if (event.button === 0) {

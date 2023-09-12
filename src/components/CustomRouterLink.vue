@@ -7,8 +7,8 @@
     </router-link>
 </template>
 <script setup lang="ts">
-import { PropType } from 'vue';
-import { RouteLocationRaw } from 'vue-router';
+import { PropType } from "vue";
+import { RouteLocationRaw } from "vue-router";
 
 defineProps({
     to: {
@@ -23,7 +23,7 @@ defineProps({
         type: String,
         required: false
     }
-})
+});
 </script>
 <style scoped>
 .custom-link {

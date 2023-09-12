@@ -101,10 +101,10 @@
                             <v-divider />
                         </div>
                         <FetchingAutocomplete
+                            v-model="addedLabels"
                             :fetch="searchLabels"
                             :dependency="[labels]"
                             :has-selection="addedLabels.length > 0"
-                            v-model="addedLabels"
                             hide-details
                             variant="outlined"
                             density="comfortable"
@@ -162,9 +162,9 @@
                     </template>
                     <template #ItemAutocomplete>
                         <UserAutocomplete
+                            v-model="usersToAssign"
                             :fetch="searchUsers"
                             :has-selection="false"
-                            v-model="usersToAssign"
                             label="Assign user"
                             class="mb-2"
                             hide-details
@@ -215,8 +215,8 @@
                     </template>
                     <template #ItemAutocomplete>
                         <IssueAutocomplete
-                            :has-selection="false"
                             v-model="relatedIssueToAdd"
+                            :has-selection="false"
                             label="Add related issue"
                             class="mb-2"
                             hide-details

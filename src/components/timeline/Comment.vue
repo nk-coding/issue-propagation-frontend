@@ -103,7 +103,8 @@
                                                 'text-decoration-line-through': isItemDeleted(answers)
                                             }"
                                         >
-                                            <User :user="answers.createdBy"/> commented <RelativeTime :time="answers.createdAt"/>
+                                            <User :user="answers.createdBy" /> commented
+                                            <RelativeTime :time="answers.createdAt" />
                                         </div>
                                         <div v-if="!isItemDeleted(answers)" class="answer-text">
                                             {{ markdownToText(answers.body) }}

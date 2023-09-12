@@ -1,5 +1,11 @@
 <template>
-    <FetchingAutocomplete :fetch="searchIssueTypes" :dependency="template" :has-selection="hasSelection" label="Type" item-title="name">
+    <FetchingAutocomplete
+        :fetch="searchIssueTypes"
+        :dependency="template"
+        :has-selection="hasSelection"
+        label="Type"
+        item-title="name"
+    >
         <template #item="{ props, item }">
             <v-list-item :title="item.raw.name" :subtitle="item.raw.description" v-bind="props">
                 <template #prepend>
@@ -44,9 +50,9 @@ async function searchIssueTypes(filter: string, count: number): Promise<DefaultI
             const res = await client.searchIssueTypes({ template: props.template!, query, count });
             return res.searchIssueTypes;
         } else {
-            const res = await client.firstIssueTypes({ template: props.template!, count })
-            const nodeRes = res.node as NodeReturnType<"firstIssueTypes", "IssueTemplate">
-            return nodeRes.issueTypes.nodes
+            const res = await client.firstIssueTypes({ template: props.template!, count });
+            const nodeRes = res.node as NodeReturnType<"firstIssueTypes", "IssueTemplate">;
+            return nodeRes.issueTypes.nodes;
         }
     }, "Error searching issue types");
 }

@@ -11,7 +11,7 @@
             </div>
         </template>
         <template #edit>
-            <div v-for="(item, idx) in items" class="pt-2" :key="idx">
+            <div v-for="(item, idx) in items" :key="idx" class="pt-2">
                 <v-hover v-slot="{ isHovering, props }">
                     <div v-bind="props">
                         <div class="d-flex align-center">
@@ -36,7 +36,7 @@
                                 <v-tooltip activator="parent"> Remove {{ nameInline }} </v-tooltip>
                             </IconButton>
                         </div>
-                        <slot name="TypeAutocomplete" :item="item" v-if="editedTypes[item.id]" />
+                        <slot v-if="editedTypes[item.id]" name="TypeAutocomplete" :item="item" />
                     </div>
                 </v-hover>
                 <v-divider />

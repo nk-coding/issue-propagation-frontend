@@ -1,8 +1,13 @@
 <template>
-    <FetchingAutocomplete :fetch="searchIssueRelationTypes" :dependency="template" :has-selection="hasSelection" label="Relation type" item-title="name">
+    <FetchingAutocomplete
+        :fetch="searchIssueRelationTypes"
+        :dependency="template"
+        :has-selection="hasSelection"
+        label="Relation type"
+        item-title="name"
+    >
         <template #item="{ props, item }">
-            <v-list-item :title="item.raw.name" :subtitle="item.raw.description" v-bind="props">
-            </v-list-item>
+            <v-list-item :title="item.raw.name" :subtitle="item.raw.description" v-bind="props"> </v-list-item>
         </template>
     </FetchingAutocomplete>
 </template>
@@ -26,7 +31,10 @@ const props = defineProps({
 
 const client = useClient();
 
-async function searchIssueRelationTypes(filter: string, count: number): Promise<DefaultIssueRelationTypeInfoFragment[]> {
+async function searchIssueRelationTypes(
+    filter: string,
+    count: number
+): Promise<DefaultIssueRelationTypeInfoFragment[]> {
     if (props.template == undefined) {
         return [];
     }
@@ -36,9 +44,9 @@ async function searchIssueRelationTypes(filter: string, count: number): Promise<
             const res = await client.searchIssueRelationTypes({ template: props.template!, query, count });
             return res.searchIssueRelationTypes;
         } else {
-            const res = await client.firstIssueRelationTypes({ template: props.template!, count })
-            const nodeRes = res.node as NodeReturnType<"firstIssueRelationTypes", "IssueTemplate">
-            return nodeRes.relationTypes.nodes
+            const res = await client.firstIssueRelationTypes({ template: props.template!, count });
+            const nodeRes = res.node as NodeReturnType<"firstIssueRelationTypes", "IssueTemplate">;
+            return nodeRes.relationTypes.nodes;
         }
     }, "Error searching issue types");
 }
