@@ -1,5 +1,5 @@
 <template>
-    <DefaultIconTimelineItem icon="mdi-delete" icon-size="x-small" :item="item">
+    <DefaultIconTimelineItem icon="mdi-delete" :item="item">
         removed an <span class="text-high-emphasis">incoming relation</span>
         <template v-if="item.removedRelation?.type">
             with type <Type :type="item.removedRelation.type"/>

@@ -1,5 +1,5 @@
 <template>
-    <DefaultIconTimelineItem icon="mdi-pencil" icon-size="x-small" :item="item">
+    <DefaultIconTimelineItem icon="mdi-pencil" :item="item">
         changed the type of an <span class="text-high-emphasis">incoming relation</span> from
         <Type :type="item.oldRelationType ?? undefined" /> to <Type :type="item.newRelationType ?? undefined" />
         <template #content v-if="item.issueRelation.issue">

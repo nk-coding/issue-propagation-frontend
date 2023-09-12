@@ -1,5 +1,5 @@
 <template>
-    <DefaultIconTimelineItem icon="mdi-triangle" icon-size="x-small" :item="item">
+    <DefaultIconTimelineItem icon="mdi-triangle" :item="item">
         added an <span class="text-high-emphasis">outgoing relation</span>
         <template v-if="item.type">
             with type <Type :type="item.type"/>
