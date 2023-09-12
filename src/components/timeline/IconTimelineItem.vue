@@ -2,7 +2,7 @@
     <TimelineItemBase>
         <div class="mb-5 main-wrapper">
             <div class="d-flex align-center">
-                <div class="mr-2 pa-1 rounded-circle timeline-icon-wrapper">
+                <div class="mr-2 pa-1 rounded-circle timeline-icon-wrapper flex-0-0">
                     <v-icon class="timeline-icon">{{ icon }}</v-icon>
                 </div>
                 <slot></slot>

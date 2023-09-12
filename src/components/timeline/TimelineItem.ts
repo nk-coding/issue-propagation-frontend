@@ -7,6 +7,10 @@ import TypeChangedEvent from "./TypeChangedEvent.vue";
 import StateChangedEvent from "./StateChangedEvent.vue";
 import IssueRelation from "./IssueRelation.vue";
 import RelatedByIssueEvent from "./RelatedByIssueEvent.vue";
+import OutgoingRelationTypeChangedEvent from "./OutgoingRelationTypeChangedEvent.vue";
+import IncomingRelationTypeChangedEvent from "./IncomingRelationTypeChangedEvent.vue";
+import RemovedOutgoingRelationEvent from "./RemovedOutgoingRelationEvent.vue";
+import RemovedIncomingRelationEvent from "./RemovedIncomingRelationEvent.vue";
 
 type TimelineItemProps = {
     item: any;
@@ -26,7 +30,11 @@ const timelineItems: Record<string, Component> = {
     TypeChangedEvent: TypeChangedEvent,
     StateChangedEvent: StateChangedEvent,
     IssueRelation: IssueRelation,
-    RelatedByIssueEvent: RelatedByIssueEvent
+    RelatedByIssueEvent: RelatedByIssueEvent,
+    OutgoingRelationTypeChangedEvent: OutgoingRelationTypeChangedEvent,
+    IncomingRelationTypeChangedEvent: IncomingRelationTypeChangedEvent,
+    RemovedOutgoingRelationEvent: RemovedOutgoingRelationEvent,
+    RemovedIncomingRelationEvent: RemovedIncomingRelationEvent
 };
 
 export default function TimelineItem(props: TimelineItemProps, context: SetupContext<TimelineItemEvents>) {
