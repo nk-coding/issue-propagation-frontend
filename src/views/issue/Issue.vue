@@ -8,16 +8,14 @@
                         <v-text-field v-if="editTitle" v-model="editTitleText" hide-details class="mr-3" />
                         <div v-else class="text-h4 mr-3">{{ issue.title }}</div>
                         <IconButton
-                            @click="startEditTitle"
                             v-if="!!issue.manageIssues && store.isLoggedIn && !editTitle"
+                            @click="startEditTitle"
                         >
                             <v-icon icon="mdi-pencil" />
                             <v-tooltip activator="parent"> Edit title </v-tooltip>
                         </IconButton>
                         <template v-if="editTitle">
-                            <v-btn variant="outlined" color="error" @click="cancelEditTitle">
-                                Cancel
-                            </v-btn>
+                            <v-btn variant="outlined" color="error" @click="cancelEditTitle"> Cancel </v-btn>
                             <v-btn color="primary" class="mx-3" @click="saveTitle">Save</v-btn>
                         </template>
                     </div>
@@ -105,11 +103,11 @@
                         <div v-for="label in labels">
                             <ListItem :title="label.name" :subtitle="label.description">
                                 <template #prepend>
-                                    <v-icon :color="label.color" class="mr-2" icon="mdi-circle "/>
+                                    <v-icon :color="label.color" class="mr-2" icon="mdi-circle " />
                                 </template>
                                 <template #append>
                                     <IconButton @click="removeLabel(label.id)">
-                                        <v-icon icon="mdi-close"/>
+                                        <v-icon icon="mdi-close" />
                                         <v-tooltip activator="parent"> Remove label </v-tooltip>
                                     </IconButton>
                                 </template>
@@ -136,7 +134,7 @@
                             <template #item="{ props, item: label }">
                                 <v-list-item :title="label.raw.name" :subtitle="label.raw.description" v-bind="props">
                                     <template #prepend>
-                                        <v-icon :color="label.raw.color" class="full-opacity" icon="mdi-circle"/>
+                                        <v-icon :color="label.raw.color" class="full-opacity" icon="mdi-circle" />
                                     </template>
                                 </v-list-item>
                             </template>

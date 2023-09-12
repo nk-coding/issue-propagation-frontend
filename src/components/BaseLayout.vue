@@ -11,7 +11,7 @@
                     <span v-if="index != 0" class="text-h6">/</span>
                     <v-btn variant="text" class="px-1" min-width="0" rounded="lger" @click="router.push(segment.path)">
                         <span v-if="'name' in segment" class="text-h6">{{ segment.name }}</span>
-                        <v-icon v-else :icon="segment.icon" size="large"/>
+                        <v-icon v-else :icon="segment.icon" size="large" />
                     </v-btn>
                 </div>
             </slot>
@@ -25,7 +25,7 @@
             <v-spacer />
             <div class="side-bar-width">
                 <v-btn icon variant="outlined" size="small" class="mx-auto d-flex" @click="toggleDarkMode()">
-                    <v-icon :icon="lightMode ?'mdi-weather-sunny' : 'mdi-weather-night'"/>
+                    <v-icon :icon="lightMode ? 'mdi-weather-sunny' : 'mdi-weather-night'" />
                     <v-tooltip activator="parent" location="bottom"> Toggle light/dark mode </v-tooltip>
                 </v-btn>
             </div>

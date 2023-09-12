@@ -24,7 +24,7 @@
                                             class="ml-1"
                                             :icon="editedTypes[item.id] ? 'mdi-pencil-off' : 'mdi-pencil'"
                                             size="small"
-                                        ></v-icon>
+                                        />
                                     </v-fade-transition>
                                     <v-tooltip activator="parent"> Edit type </v-tooltip>
                                 </span>
@@ -32,7 +32,7 @@
                             </div>
                             <v-spacer />
                             <IconButton @click="$emit('removeItem', item.id)">
-                                <v-icon>mdi-close</v-icon>
+                                <v-icon icon="mdi-close" />
                                 <v-tooltip activator="parent"> Remove {{ nameInline }} </v-tooltip>
                             </IconButton>
                         </div>

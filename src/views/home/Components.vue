@@ -8,7 +8,7 @@
             <ListItem :title="item.name" :subtitle="item.description">
                 <template #append>
                     <div class="text-medium-emphasis issue-container">
-                        <v-icon icon="mdi-alert-circle-outline"/>
+                        <v-icon icon="mdi-alert-circle-outline" />
                         {{ item.openIssues.totalCount }}
                     </div>
                 </template>

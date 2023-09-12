@@ -18,7 +18,7 @@
             {{ name }}
             <v-spacer />
             <IconButton v-if="editable && !editMode" @click="editMode = true">
-                <v-icon icon="mdi-pencil"/>
+                <v-icon icon="mdi-pencil" />
             </IconButton>
         </div>
         <div v-if="editMode" @click.stop="">

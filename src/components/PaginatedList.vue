@@ -16,7 +16,7 @@
                 :items="sortFields"
             ></v-select>
             <v-btn icon class="mx-2" variant="outlined" @click="toggleSortDirection()">
-                <v-icon :icon="sortAscending ? 'mdi-sort-ascending' : 'mdi-sort-descending'"/>
+                <v-icon :icon="sortAscending ? 'mdi-sort-ascending' : 'mdi-sort-descending'" />
                 <v-tooltip activator="parent" location="bottom"> Toggle sort sort </v-tooltip>
             </v-btn>
         </div>
