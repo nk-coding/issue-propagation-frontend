@@ -9,9 +9,7 @@
         <template #item="{ props, item }">
             <v-list-item :title="item.raw.name" :subtitle="item.raw.description" v-bind="props">
                 <template #prepend>
-                    <v-icon :color="item.raw.isOpen ? 'issue-open' : 'issue-closed'" class="full-opacity">
-                        mdi-circle
-                    </v-icon>
+                    <v-icon :color="item.raw.isOpen ? 'issue-open' : 'issue-closed'" class="full-opacity" icon="mdi-circle"/>
                 </template>
             </v-list-item>
         </template>

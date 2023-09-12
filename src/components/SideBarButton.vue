@@ -10,7 +10,7 @@
                     ></div>
                 </v-expand-x-transition>
                 <div class="icon-pill overlay-pill"></div>
-                <v-icon :color="iconColor(chooseActive(isActive, isExactActive))">{{ icon }}</v-icon>
+                <v-icon :color="iconColor(chooseActive(isActive, isExactActive))" :icon="icon"/>
             </div>
             <div class="button-label text-caption">
                 {{ text }}

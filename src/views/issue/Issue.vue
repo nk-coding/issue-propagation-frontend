@@ -105,11 +105,11 @@
                         <div v-for="label in labels">
                             <ListItem :title="label.name" :subtitle="label.description">
                                 <template #prepend>
-                                    <v-icon :color="label.color" class="mr-2"> mdi-circle </v-icon>
+                                    <v-icon :color="label.color" class="mr-2" icon="mdi-circle "/>
                                 </template>
                                 <template #append>
                                     <IconButton @click="removeLabel(label.id)">
-                                        <v-icon>mdi-close</v-icon>
+                                        <v-icon icon="mdi-close"/>
                                         <v-tooltip activator="parent"> Remove label </v-tooltip>
                                     </IconButton>
                                 </template>
@@ -136,7 +136,7 @@
                             <template #item="{ props, item: label }">
                                 <v-list-item :title="label.raw.name" :subtitle="label.raw.description" v-bind="props">
                                     <template #prepend>
-                                        <v-icon :color="label.raw.color" class="full-opacity"> mdi-circle </v-icon>
+                                        <v-icon :color="label.raw.color" class="full-opacity" icon="mdi-circle"/>
                                     </template>
                                 </v-list-item>
                             </template>
