@@ -1,5 +1,10 @@
 <template>
-    <FetchingAutocomplete :fetch="searchIssueTemplates" :has-selection="hasSelection" label="Template" item-title="name">
+    <FetchingAutocomplete
+        :fetch="searchIssueTemplates"
+        :has-selection="hasSelection"
+        label="Template"
+        item-title="name"
+    >
         <template #item="{ props, item }">
             <v-list-item :title="item.raw.name" :subtitle="item.raw.description" v-bind="props"> </v-list-item>
         </template>
@@ -17,7 +22,7 @@ defineProps({
         type: Boolean,
         required: true
     }
-})
+});
 
 const client = useClient();
 
@@ -28,8 +33,8 @@ async function searchIssueTemplates(filter: string, count: number): Promise<Defa
             const res = await client.searchIssueTemplates({ query, count });
             return res.searchIssueTemplates;
         } else {
-            const res = await client.firstIssueTemplates({ count })
-            return res.issueTemplates.nodes
+            const res = await client.firstIssueTemplates({ count });
+            return res.issueTemplates.nodes;
         }
     }, "Error searching issue templates");
 }

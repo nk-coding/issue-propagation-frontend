@@ -3,9 +3,9 @@
         v-model:search="search"
         :items="items"
         item-value="id"
+        no-filter
         @update:focused="resetFromFocus"
         @update:model-value="selectedElement"
-        no-filter
     >
         <template v-for="(_, name) in $slots" #[name]="slotData">
             <slot :name="name" v-bind="slotData" />

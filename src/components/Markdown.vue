@@ -80,7 +80,10 @@ const plugins = [gfm()];
     h2 {
         font-weight: 450 !important;
     }
-    h3,h4,h5,h6 {
+    h3,
+    h4,
+    h5,
+    h6 {
         font-weight: 500 !important;
     }
 }

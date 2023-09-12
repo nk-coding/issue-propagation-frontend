@@ -28,9 +28,8 @@
                                     'text-decoration-line-through': isDeleted
                                 }"
                             >
-                                <User :user="item.createdBy" :show-avatar="false"></User>
-                                &nbsp;commented&nbsp;
-                                <RelativeTime :time="item.createdAt"></RelativeTime>
+                                <User :user="item.createdBy" :show-avatar="false" /> commented
+                                <RelativeTime :time="item.createdAt" />
                             </div>
                             <v-spacer />
                             <v-fade-transition>
@@ -57,7 +56,12 @@
                                                     </template>
                                                 </v-list-item>
                                                 <v-list-item
-                                                    :disabled="editMode || item.__typename === 'Body' || isDeleted || !store.isLoggedIn"
+                                                    :disabled="
+                                                        editMode ||
+                                                        item.__typename === 'Body' ||
+                                                        isDeleted ||
+                                                        !store.isLoggedIn
+                                                    "
                                                     @click=""
                                                 >
                                                     <v-list-item-title>Delete</v-list-item-title>
@@ -96,9 +100,8 @@
                                                 'text-decoration-line-through': isItemDeleted(answers)
                                             }"
                                         >
-                                            <User :user="answers.createdBy"></User>
-                                            &nbsp;commented&nbsp;
-                                            <RelativeTime :time="answers.createdAt"></RelativeTime>
+                                            <User :user="answers.createdBy" /> commented
+                                            <RelativeTime :time="answers.createdAt" />
                                         </div>
                                         <div v-if="!isItemDeleted(answers)" class="answer-text">
                                             {{ markdownToText(answers.body) }}

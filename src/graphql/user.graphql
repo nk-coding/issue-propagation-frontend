@@ -10,3 +10,13 @@ fragment DefaultUserInfo on User {
     displayName
     avatar
 }
+
+query searchManageIssuesUsers($query: String!, $count: Int!, $issue: ID!) {
+    searchGropiusUsers(
+        query: $query
+        first: $count
+        filter: { hasNodePermission: { node: $issue, permission: MANAGE_ISSUES } }
+    ) {
+        ...DefaultUserInfo
+    }
+}

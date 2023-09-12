@@ -1,9 +1,6 @@
 <template>
     <DefaultIconTimelineItem icon="mdi-pencil" :item="item">
-        &nbsp;changed the type from&nbsp;
-        <IssueType :type="item.oldIssueType" />
-        &nbsp;to&nbsp;
-        <IssueType :type="item.newIssueType" />&nbsp;
+        changed the type from <IssueType :type="item.oldIssueType" /> to <IssueType :type="item.newIssueType" />
     </DefaultIconTimelineItem>
 </template>
 <script setup lang="ts">

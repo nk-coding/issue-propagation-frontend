@@ -2,8 +2,8 @@
     <div class="sprotty-wrapper">
         <div :id="editorId" class="sprotty" />
         <div class="ui-container">
-            <v-btn icon @click="format" variant="text">
-                <v-icon icon="mdi-auto-fix"/>
+            <v-btn icon variant="text" @click="format">
+                <v-icon icon="mdi-auto-fix" />
                 <v-tooltip activator="parent" location="bottom"> Auto-layout </v-tooltip>
             </v-btn>
         </div>

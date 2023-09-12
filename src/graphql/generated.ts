@@ -4596,6 +4596,8 @@ export type GropiusUserFilterInput = {
     displayName?: InputMaybe<StringFilterInput>;
     /** Filter by email */
     email?: InputMaybe<NullableStringFilterInput>;
+    /** Filter for users with a specific permission on a node */
+    hasNodePermission?: InputMaybe<NodePermissionFilterEntry>;
     /** Filter by id */
     id?: InputMaybe<IdFilterInput>;
     /** Filter by imsUsers */
@@ -4637,7 +4639,9 @@ export enum GropiusUserOrderField {
     /** Order by email */
     Email = "EMAIL",
     /** Order by id */
-    Id = "ID"
+    Id = "ID",
+    /** Order by username */
+    Username = "USERNAME"
 }
 
 /** Filter which can be used to filter for Nodes with a specific ID field */
@@ -5966,7 +5970,9 @@ export enum ImsUserOrderField {
     /** Order by email */
     Email = "EMAIL",
     /** Order by id */
-    Id = "ID"
+    Id = "ID",
+    /** Order by username */
+    Username = "USERNAME"
 }
 
 /**
@@ -11907,6 +11913,13 @@ export type NodePermissionUsersArgs = {
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
+export type NodePermissionFilterEntry = {
+    /** The node where the user must have the permission */
+    node: Scalars["ID"]["input"];
+    /** The permission the user must have on the node */
+    permission: AllPermissionEntry;
+};
+
 /** Filter which can be used to filter for Nodes with a specific DateTime field */
 export type NullableDateTimeFilterInput = {
     /** Matches values which are equal to the provided value */
@@ -12811,6 +12824,10 @@ export type Query = {
     projects: ProjectConnection;
     /** Query for nodes of type RelationTemplate */
     relationTemplates: RelationTemplateConnection;
+    /** Search for nodes of type AssignmentType */
+    searchAssignmentTypes: Array<AssignmentType>;
+    /** Search for nodes of type GropiusUser */
+    searchGropiusUsers: Array<GropiusUser>;
     /** Search for nodes of type IssueRelationType */
     searchIssueRelationTypes: Array<IssueRelationType>;
     /** Search for nodes of type IssueState */
@@ -12823,6 +12840,8 @@ export type Query = {
     searchIssues: Array<Issue>;
     /** Search for nodes of type Label */
     searchLabels: Array<Label>;
+    /** Search for nodes of type User */
+    searchUsers: Array<User>;
 };
 
 export type QueryArtefactTemplatesArgs = {
@@ -12919,6 +12938,18 @@ export type QueryRelationTemplatesArgs = {
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
+export type QuerySearchAssignmentTypesArgs = {
+    filter?: InputMaybe<AssignmentTypeFilterInput>;
+    first: Scalars["Int"]["input"];
+    query: Scalars["String"]["input"];
+};
+
+export type QuerySearchGropiusUsersArgs = {
+    filter?: InputMaybe<GropiusUserFilterInput>;
+    first: Scalars["Int"]["input"];
+    query: Scalars["String"]["input"];
+};
+
 export type QuerySearchIssueRelationTypesArgs = {
     filter?: InputMaybe<IssueRelationTypeFilterInput>;
     first: Scalars["Int"]["input"];
@@ -12951,6 +12982,12 @@ export type QuerySearchIssuesArgs = {
 
 export type QuerySearchLabelsArgs = {
     filter?: InputMaybe<LabelFilterInput>;
+    first: Scalars["Int"]["input"];
+    query: Scalars["String"]["input"];
+};
+
+export type QuerySearchUsersArgs = {
+    filter?: InputMaybe<UserFilterInput>;
     first: Scalars["Int"]["input"];
     query: Scalars["String"]["input"];
 };
@@ -16608,7 +16645,9 @@ export enum UserOrderField {
     /** Order by email */
     Email = "EMAIL",
     /** Order by id */
-    Id = "ID"
+    Id = "ID",
+    /** Order by username */
+    Username = "USERNAME"
 }
 
 /** Entity with a version */
@@ -16631,6 +16670,223 @@ export type DefaultAssignmentTypeInfoFragment = {
     id: string;
     name: string;
     description: string;
+};
+
+export type RemoveAssignmentMutationVariables = Exact<{
+    id: Scalars["ID"]["input"];
+}>;
+
+export type RemoveAssignmentMutation = {
+    __typename?: "Mutation";
+    removeAssignment?: {
+        __typename?: "RemoveAssignmentPayload";
+        removedAssignmentEvent?: {
+            __typename: "RemovedAssignmentEvent";
+            id: string;
+            createdAt: any;
+            removedAssignment: {
+                __typename: "Assignment";
+                id: string;
+                createdAt: any;
+                createdBy:
+                    | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+                    | {
+                          __typename?: "IMSUser";
+                          id: string;
+                          username?: string | null;
+                          displayName: string;
+                          avatar: any;
+                      };
+                user:
+                    | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+                    | {
+                          __typename?: "IMSUser";
+                          id: string;
+                          username?: string | null;
+                          displayName: string;
+                          avatar: any;
+                      };
+                type?: { __typename?: "AssignmentType"; id: string; name: string; description: string } | null;
+            };
+            createdBy:
+                | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+                | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+        } | null;
+    } | null;
+};
+
+export type CreateAssignmentMutationVariables = Exact<{
+    issue: Scalars["ID"]["input"];
+    user: Scalars["ID"]["input"];
+}>;
+
+export type CreateAssignmentMutation = {
+    __typename?: "Mutation";
+    createAssignment?: {
+        __typename?: "CreateAssignmentPayload";
+        assignment?: {
+            __typename: "Assignment";
+            id: string;
+            createdAt: any;
+            createdBy:
+                | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+                | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+            user:
+                | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+                | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+            type?: { __typename?: "AssignmentType"; id: string; name: string; description: string } | null;
+        } | null;
+    } | null;
+};
+
+export type SearchAssignmentTypesQueryVariables = Exact<{
+    template: Scalars["ID"]["input"];
+    query: Scalars["String"]["input"];
+    count: Scalars["Int"]["input"];
+}>;
+
+export type SearchAssignmentTypesQuery = {
+    __typename?: "Query";
+    searchAssignmentTypes: Array<{ __typename?: "AssignmentType"; id: string; name: string; description: string }>;
+};
+
+export type FirstAssignmentTypesQueryVariables = Exact<{
+    template: Scalars["ID"]["input"];
+    count: Scalars["Int"]["input"];
+}>;
+
+export type FirstAssignmentTypesQuery = {
+    __typename?: "Query";
+    node?:
+        | { __typename?: "AddedAffectedEntityEvent" }
+        | { __typename?: "AddedArtefactEvent" }
+        | { __typename?: "AddedLabelEvent" }
+        | { __typename?: "AddedToPinnedIssuesEvent" }
+        | { __typename?: "AddedToTrackableEvent" }
+        | { __typename?: "Artefact" }
+        | { __typename?: "ArtefactTemplate" }
+        | { __typename?: "Assignment" }
+        | { __typename?: "AssignmentType" }
+        | { __typename?: "AssignmentTypeChangedEvent" }
+        | { __typename?: "Body" }
+        | { __typename?: "Component" }
+        | { __typename?: "ComponentPermission" }
+        | { __typename?: "ComponentTemplate" }
+        | { __typename?: "ComponentVersion" }
+        | { __typename?: "ComponentVersionTemplate" }
+        | { __typename?: "DueDateChangedEvent" }
+        | { __typename?: "EstimatedTimeChangedEvent" }
+        | { __typename?: "GlobalPermission" }
+        | { __typename?: "GropiusUser" }
+        | { __typename?: "IMS" }
+        | { __typename?: "IMSIssue" }
+        | { __typename?: "IMSIssueTemplate" }
+        | { __typename?: "IMSPermission" }
+        | { __typename?: "IMSProject" }
+        | { __typename?: "IMSProjectTemplate" }
+        | { __typename?: "IMSTemplate" }
+        | { __typename?: "IMSUser" }
+        | { __typename?: "IMSUserTemplate" }
+        | { __typename?: "IncomingRelationTypeChangedEvent" }
+        | { __typename?: "Interface" }
+        | { __typename?: "InterfaceDefinition" }
+        | { __typename?: "InterfaceDefinitionTemplate" }
+        | { __typename?: "InterfacePart" }
+        | { __typename?: "InterfacePartTemplate" }
+        | { __typename?: "InterfaceSpecification" }
+        | { __typename?: "InterfaceSpecificationDerivationCondition" }
+        | { __typename?: "InterfaceSpecificationTemplate" }
+        | { __typename?: "InterfaceSpecificationVersion" }
+        | { __typename?: "InterfaceSpecificationVersionTemplate" }
+        | { __typename?: "InterfaceTemplate" }
+        | { __typename?: "IntraComponentDependencyParticipant" }
+        | { __typename?: "IntraComponentDependencySpecification" }
+        | { __typename?: "Issue" }
+        | { __typename?: "IssueComment" }
+        | { __typename?: "IssuePriority" }
+        | { __typename?: "IssueRelation" }
+        | { __typename?: "IssueRelationType" }
+        | { __typename?: "IssueState" }
+        | {
+              __typename?: "IssueTemplate";
+              assignmentTypes: {
+                  __typename?: "AssignmentTypeConnection";
+                  nodes: Array<{ __typename?: "AssignmentType"; id: string; name: string; description: string }>;
+              };
+          }
+        | { __typename?: "IssueType" }
+        | { __typename?: "Label" }
+        | { __typename?: "OutgoingRelationTypeChangedEvent" }
+        | { __typename?: "PriorityChangedEvent" }
+        | { __typename?: "Project" }
+        | { __typename?: "ProjectPermission" }
+        | { __typename?: "RelatedByIssueEvent" }
+        | { __typename?: "Relation" }
+        | { __typename?: "RelationCondition" }
+        | { __typename?: "RelationTemplate" }
+        | { __typename?: "RemovedAffectedEntityEvent" }
+        | { __typename?: "RemovedArtefactEvent" }
+        | { __typename?: "RemovedAssignmentEvent" }
+        | { __typename?: "RemovedFromPinnedIssuesEvent" }
+        | { __typename?: "RemovedFromTrackableEvent" }
+        | { __typename?: "RemovedIncomingRelationEvent" }
+        | { __typename?: "RemovedLabelEvent" }
+        | { __typename?: "RemovedOutgoingRelationEvent" }
+        | { __typename?: "RemovedTemplatedFieldEvent" }
+        | { __typename?: "SpentTimeChangedEvent" }
+        | { __typename?: "StartDateChangedEvent" }
+        | { __typename?: "StateChangedEvent" }
+        | { __typename?: "TemplateChangedEvent" }
+        | { __typename?: "TemplatedFieldChangedEvent" }
+        | { __typename?: "TitleChangedEvent" }
+        | { __typename?: "TypeChangedEvent" }
+        | null;
+};
+
+export type ChangeAssignmentTypeMutationVariables = Exact<{
+    assignment: Scalars["ID"]["input"];
+    type?: InputMaybe<Scalars["ID"]["input"]>;
+}>;
+
+export type ChangeAssignmentTypeMutation = {
+    __typename?: "Mutation";
+    changeAssignmentType?: {
+        __typename?: "ChangeAssignmentTypePayload";
+        assignmentTypeChangedEvent?: {
+            __typename: "AssignmentTypeChangedEvent";
+            id: string;
+            createdAt: any;
+            assignment: {
+                __typename: "Assignment";
+                id: string;
+                createdAt: any;
+                createdBy:
+                    | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+                    | {
+                          __typename?: "IMSUser";
+                          id: string;
+                          username?: string | null;
+                          displayName: string;
+                          avatar: any;
+                      };
+                user:
+                    | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+                    | {
+                          __typename?: "IMSUser";
+                          id: string;
+                          username?: string | null;
+                          displayName: string;
+                          avatar: any;
+                      };
+                type?: { __typename?: "AssignmentType"; id: string; name: string; description: string } | null;
+            };
+            newAssignmentType?: { __typename?: "AssignmentType"; id: string; name: string; description: string } | null;
+            oldAssignmentType?: { __typename?: "AssignmentType"; id: string; name: string; description: string } | null;
+            createdBy:
+                | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+                | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+        } | null;
+    } | null;
 };
 
 export type GetComponentsQueryVariables = Exact<{
@@ -21017,6 +21273,23 @@ type DefaultUserInfo_ImsUser_Fragment = {
 
 export type DefaultUserInfoFragment = DefaultUserInfo_GropiusUser_Fragment | DefaultUserInfo_ImsUser_Fragment;
 
+export type SearchManageIssuesUsersQueryVariables = Exact<{
+    query: Scalars["String"]["input"];
+    count: Scalars["Int"]["input"];
+    issue: Scalars["ID"]["input"];
+}>;
+
+export type SearchManageIssuesUsersQuery = {
+    __typename?: "Query";
+    searchGropiusUsers: Array<{
+        __typename?: "GropiusUser";
+        id: string;
+        username: string;
+        displayName: string;
+        avatar: any;
+    }>;
+};
+
 export const DefaultIssueRelationTypeInfoFragmentDoc = gql`
     fragment DefaultIssueRelationTypeInfo on IssueRelationType {
         id
@@ -21728,6 +22001,58 @@ export const OpenIssueCountFragmentDoc = gql`
         }
     }
 `;
+export const RemoveAssignmentDocument = gql`
+    mutation removeAssignment($id: ID!) {
+        removeAssignment(input: { assignment: $id }) {
+            removedAssignmentEvent {
+                ...RemovedAssignmentEventTimelineInfo
+            }
+        }
+    }
+    ${RemovedAssignmentEventTimelineInfoFragmentDoc}
+`;
+export const CreateAssignmentDocument = gql`
+    mutation createAssignment($issue: ID!, $user: ID!) {
+        createAssignment(input: { issue: $issue, user: $user }) {
+            assignment {
+                ...AssignmentTimelineInfo
+            }
+        }
+    }
+    ${AssignmentTimelineInfoFragmentDoc}
+`;
+export const SearchAssignmentTypesDocument = gql`
+    query searchAssignmentTypes($template: ID!, $query: String!, $count: Int!) {
+        searchAssignmentTypes(query: $query, first: $count, filter: { partOf: { any: { id: { eq: $template } } } }) {
+            ...DefaultAssignmentTypeInfo
+        }
+    }
+    ${DefaultAssignmentTypeInfoFragmentDoc}
+`;
+export const FirstAssignmentTypesDocument = gql`
+    query firstAssignmentTypes($template: ID!, $count: Int!) {
+        node(id: $template) {
+            ... on IssueTemplate {
+                assignmentTypes(first: $count, orderBy: { field: NAME }) {
+                    nodes {
+                        ...DefaultAssignmentTypeInfo
+                    }
+                }
+            }
+        }
+    }
+    ${DefaultAssignmentTypeInfoFragmentDoc}
+`;
+export const ChangeAssignmentTypeDocument = gql`
+    mutation changeAssignmentType($assignment: ID!, $type: ID) {
+        changeAssignmentType(input: { assignment: $assignment, type: $type }) {
+            assignmentTypeChangedEvent {
+                ...AssignmentTypeChangedEventTimelineInfo
+            }
+        }
+    }
+    ${AssignmentTypeChangedEventTimelineInfoFragmentDoc}
+`;
 export const GetComponentsDocument = gql`
     query getComponents($filter: String!, $orderBy: ComponentOrder!, $count: Int!, $skip: Int!) {
         components(filter: { name: { contains: $filter } }, orderBy: $orderBy, first: $count, skip: $skip) {
@@ -22154,6 +22479,18 @@ export const GetCurrentUserDocument = gql`
     }
     ${DefaultUserInfoFragmentDoc}
 `;
+export const SearchManageIssuesUsersDocument = gql`
+    query searchManageIssuesUsers($query: String!, $count: Int!, $issue: ID!) {
+        searchGropiusUsers(
+            query: $query
+            first: $count
+            filter: { hasNodePermission: { node: $issue, permission: MANAGE_ISSUES } }
+        ) {
+            ...DefaultUserInfo
+        }
+    }
+    ${DefaultUserInfoFragmentDoc}
+`;
 
 export type SdkFunctionWrapper = <T>(
     action: (requestHeaders?: Record<string, string>) => Promise<T>,
@@ -22165,6 +22502,76 @@ const defaultWrapper: SdkFunctionWrapper = (action, _operationName, _operationTy
 
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
     return {
+        removeAssignment(
+            variables: RemoveAssignmentMutationVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<RemoveAssignmentMutation> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<RemoveAssignmentMutation>(RemoveAssignmentDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "removeAssignment",
+                "mutation"
+            );
+        },
+        createAssignment(
+            variables: CreateAssignmentMutationVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<CreateAssignmentMutation> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<CreateAssignmentMutation>(CreateAssignmentDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "createAssignment",
+                "mutation"
+            );
+        },
+        searchAssignmentTypes(
+            variables: SearchAssignmentTypesQueryVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<SearchAssignmentTypesQuery> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<SearchAssignmentTypesQuery>(SearchAssignmentTypesDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "searchAssignmentTypes",
+                "query"
+            );
+        },
+        firstAssignmentTypes(
+            variables: FirstAssignmentTypesQueryVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<FirstAssignmentTypesQuery> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<FirstAssignmentTypesQuery>(FirstAssignmentTypesDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "firstAssignmentTypes",
+                "query"
+            );
+        },
+        changeAssignmentType(
+            variables: ChangeAssignmentTypeMutationVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<ChangeAssignmentTypeMutation> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<ChangeAssignmentTypeMutation>(ChangeAssignmentTypeDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "changeAssignmentType",
+                "mutation"
+            );
+        },
         getComponents(
             variables: GetComponentsQueryVariables,
             requestHeaders?: GraphQLClientRequestHeaders
@@ -22582,6 +22989,20 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "getCurrentUser",
+                "query"
+            );
+        },
+        searchManageIssuesUsers(
+            variables: SearchManageIssuesUsersQueryVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<SearchManageIssuesUsersQuery> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<SearchManageIssuesUsersQuery>(SearchManageIssuesUsersDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "searchManageIssuesUsers",
                 "query"
             );
         }

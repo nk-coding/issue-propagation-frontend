@@ -1,6 +1,6 @@
 <template>
     <FetchingAutocomplete
-        :fetch="searchIssueRelationTypes"
+        :fetch="searchAssignmentTypes"
         :dependency="template"
         :has-selection="hasSelection"
         label="Relation type"
@@ -13,7 +13,7 @@
 </template>
 <script setup lang="ts">
 import { NodeReturnType, useClient } from "@/graphql/client";
-import { DefaultIssueRelationTypeInfoFragment } from "@/graphql/generated";
+import { DefaultAssignmentTypeInfoFragment } from "@/graphql/generated";
 import { withErrorMessage } from "@/util/withErrorMessage";
 import FetchingAutocomplete from "./FetchingAutocomplete.vue";
 import { transformSearchQuery } from "@/util/searchQueryTransformer";
@@ -31,22 +31,19 @@ const props = defineProps({
 
 const client = useClient();
 
-async function searchIssueRelationTypes(
-    filter: string,
-    count: number
-): Promise<DefaultIssueRelationTypeInfoFragment[]> {
+async function searchAssignmentTypes(filter: string, count: number): Promise<DefaultAssignmentTypeInfoFragment[]> {
     if (props.template == undefined) {
         return [];
     }
     return await withErrorMessage(async () => {
         const query = transformSearchQuery(filter);
         if (query != undefined) {
-            const res = await client.searchIssueRelationTypes({ template: props.template!, query, count });
-            return res.searchIssueRelationTypes;
+            const res = await client.searchAssignmentTypes({ template: props.template!, query, count });
+            return res.searchAssignmentTypes;
         } else {
-            const res = await client.firstIssueRelationTypes({ template: props.template!, count });
-            const nodeRes = res.node as NodeReturnType<"firstIssueRelationTypes", "IssueTemplate">;
-            return nodeRes.relationTypes.nodes;
+            const res = await client.firstAssignmentTypes({ template: props.template!, count });
+            const nodeRes = res.node as NodeReturnType<"firstAssignmentTypes", "IssueTemplate">;
+            return nodeRes.assignmentTypes.nodes;
         }
     }, "Error searching issue types");
 }
