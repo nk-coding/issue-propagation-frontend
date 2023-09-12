@@ -18658,6 +18658,28 @@ export type CreateIssueMutation = {
     createIssue?: { __typename?: "CreateIssuePayload"; issue?: { __typename?: "Issue"; id: string } | null } | null;
 };
 
+export type ChangeIssueTitleMutationVariables = Exact<{
+    id: Scalars["ID"]["input"];
+    title: Scalars["String"]["input"];
+}>;
+
+export type ChangeIssueTitleMutation = {
+    __typename?: "Mutation";
+    changeIssueTitle?: {
+        __typename?: "ChangeIssueTitlePayload";
+        titleChangedEvent?: {
+            __typename: "TitleChangedEvent";
+            oldTitle: string;
+            newTitle: string;
+            id: string;
+            createdAt: any;
+            createdBy:
+                | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+                | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+        } | null;
+    } | null;
+};
+
 export type DefaultIssueInfoFragment = {
     __typename?: "Issue";
     id: string;
@@ -22252,6 +22274,16 @@ export const CreateIssueDocument = gql`
         }
     }
 `;
+export const ChangeIssueTitleDocument = gql`
+    mutation changeIssueTitle($id: ID!, $title: String!) {
+        changeIssueTitle(input: { issue: $id, title: $title }) {
+            titleChangedEvent {
+                ...TitleChangedEventTimelineInfo
+            }
+        }
+    }
+    ${TitleChangedEventTimelineInfoFragmentDoc}
+`;
 export const SearchIssuesDocument = gql`
     query searchIssues($query: String!, $count: Int!) {
         searchIssues(query: $query, first: $count) {
@@ -22695,6 +22727,20 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "createIssue",
+                "mutation"
+            );
+        },
+        changeIssueTitle(
+            variables: ChangeIssueTitleMutationVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<ChangeIssueTitleMutation> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<ChangeIssueTitleMutation>(ChangeIssueTitleDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "changeIssueTitle",
                 "mutation"
             );
         },

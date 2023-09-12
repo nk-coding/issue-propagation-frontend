@@ -4,7 +4,23 @@
             <div class="d-flex">
                 <IssueIcon :issue="issue" height="50px" class="mr-3"></IssueIcon>
                 <div>
-                    <div class="text-h4">{{ issue.title }}</div>
+                    <div class="d-flex align-center">
+                        <v-text-field v-if="editTitle" v-model="editTitleText" hide-details class="mr-3" />
+                        <div v-else class="text-h4 mr-3">{{ issue.title }}</div>
+                        <IconButton
+                            @click="startEditTitle"
+                            v-if="!!issue.manageIssues && store.isLoggedIn && !editTitle"
+                        >
+                            <v-icon icon="mdi-pencil" />
+                            <v-tooltip activator="parent"> Edit title </v-tooltip>
+                        </IconButton>
+                        <template v-if="editTitle">
+                            <v-btn variant="outlined" color="error" @click="cancelEditTitle">
+                                Cancel
+                            </v-btn>
+                            <v-btn color="primary" class="mx-3" @click="saveTitle">Save</v-btn>
+                        </template>
+                    </div>
                     <div class="text-medium-emphasis text-subtitle-1">
                         Opened by <User :user="issue.createdBy" /> <RelativeTime :time="issue.createdAt" /> · last
                         updated <RelativeTime :time="issue.lastUpdatedAt" />
@@ -543,6 +559,28 @@ watch(relatedIssueToAdd, async (relatedIssue) => {
     relatedIssueToAdd.value = null;
     editedRelationTypes.value[event.id] = true;
 });
+
+const editTitle = ref(false);
+const editTitleText = ref("");
+
+function startEditTitle() {
+    editTitleText.value = issue.value!.title;
+    editTitle.value = true;
+}
+
+function cancelEditTitle() {
+    editTitle.value = false;
+}
+
+async function saveTitle() {
+    const event = await withErrorMessage(async () => {
+        const res = await client.changeIssueTitle({ id: issueId.value, title: editTitleText.value });
+        return res.changeIssueTitle!.titleChangedEvent!;
+    }, "Error updating issue title");
+    timeline.value.push(event);
+    issue.value!.title = event.newTitle;
+    editTitle.value = false;
+}
 </script>
 <style scoped lang="scss">
 @use "@/styles/settings.scss";

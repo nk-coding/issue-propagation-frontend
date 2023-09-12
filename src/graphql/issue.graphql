@@ -144,6 +144,14 @@ mutation createIssue($input: CreateIssueInput!) {
     }
 }
 
+mutation changeIssueTitle($id: ID!, $title: String!) {
+    changeIssueTitle(input: { issue: $id, title: $title }) {
+        titleChangedEvent {
+            ...TitleChangedEventTimelineInfo
+        }
+    }
+}
+
 fragment DefaultIssueInfo on Issue {
     ...DefaultIssueIconInfo
     id

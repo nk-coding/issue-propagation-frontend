@@ -111,7 +111,7 @@ function typeName(item: V | Group): string {
 <style lang="scss">
 .edit-type {
     cursor: pointer;
-
+    vertical-align: middle;
     &:hover {
         color: rgb(var(--v-theme-primary)) !important;
     }
