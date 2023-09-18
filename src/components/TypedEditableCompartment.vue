@@ -51,7 +51,6 @@
 import { computed, ref } from "vue";
 import { PropType } from "vue";
 import EditableCompartment from "./EditableCompartment.vue";
-import { emit } from "process";
 
 const props = defineProps({
     items: {

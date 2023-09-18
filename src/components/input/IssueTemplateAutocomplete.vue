@@ -1,7 +1,7 @@
 <template>
     <FetchingAutocomplete
+        mode="model"
         :fetch="searchIssueTemplates"
-        :has-selection="hasSelection"
         label="Template"
         item-title="name"
     >
@@ -16,13 +16,6 @@ import { DefaultIssueTemplateInfoFragment } from "@/graphql/generated";
 import { withErrorMessage } from "@/util/withErrorMessage";
 import FetchingAutocomplete from "./FetchingAutocomplete.vue";
 import { transformSearchQuery } from "@/util/searchQueryTransformer";
-
-defineProps({
-    hasSelection: {
-        type: Boolean,
-        required: true
-    }
-});
 
 const client = useClient();
 

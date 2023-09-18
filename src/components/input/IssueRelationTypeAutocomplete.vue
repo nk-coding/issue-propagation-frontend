@@ -1,8 +1,8 @@
 <template>
     <FetchingAutocomplete
+        mode="model"
         :fetch="searchIssueRelationTypes"
         :dependency="template"
-        :has-selection="hasSelection"
         label="Relation type"
         item-title="name"
     >
@@ -22,10 +22,6 @@ const props = defineProps({
     template: {
         type: String,
         required: false
-    },
-    hasSelection: {
-        type: Boolean,
-        required: true
     }
 });
 

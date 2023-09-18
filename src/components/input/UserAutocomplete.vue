@@ -1,5 +1,5 @@
 <template>
-    <FetchingAutocomplete :fetch="fetch" :has-selection="hasSelection" :label="label" item-title="displayName">
+    <FetchingAutocomplete mode="add" :fetch="fetch" :label="label" item-title="displayName">
         <template #item="{ props, item }">
             <v-list-item :title="item.raw.displayName" :subtitle="item.raw.username" v-bind="props">
                 <template #prepend>
@@ -20,10 +20,6 @@ defineProps({
         type: String,
         required: false,
         default: "Issue"
-    },
-    hasSelection: {
-        type: Boolean,
-        required: true
     },
     fetch: {
         type: Function as PropType<(filter: string, count: number) => Promise<DefaultUserInfoFragment[]>>,

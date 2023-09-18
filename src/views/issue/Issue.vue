@@ -5,7 +5,7 @@
                 <IssueIcon :issue="issue" height="50px" class="mr-3"></IssueIcon>
                 <div>
                     <div class="d-flex align-center">
-                        <v-text-field v-if="editTitle" v-model="editTitleText" hide-details class="mr-3" />
+                        <v-text-field v-if="editTitle" v-model="editTitleText" hide-details autofocus class="mr-3" />
                         <div v-else class="text-h4 mr-3">{{ issue.title }}</div>
                         <IconButton
                             v-if="!!issue.manageIssues && store.isLoggedIn && !editTitle"
@@ -61,9 +61,8 @@
                         <IssueTypeAutocomplete
                             class="mb-2"
                             autofocus
-                            menu
+                            menu-mode="initial"
                             hide-details
-                            :has-selection="!!issue.type"
                             :template="issue.template.id"
                             :initial-items="[issue.type]"
                             :model-value="issue.type.id"
@@ -84,9 +83,8 @@
                         <IssueStateAutocomplete
                             class="mb-2"
                             autofocus
-                            menu
                             hide-details
-                            :has-selection="!!issue.state"
+                            menu-mode="initial"
                             :template="issue.template.id"
                             :initial-items="[issue.state]"
                             :model-value="issue.state.id"
@@ -115,10 +113,11 @@
                             <v-divider />
                         </div>
                         <FetchingAutocomplete
-                            v-model="addedLabels"
                             :fetch="searchLabels"
                             :dependency="[labels]"
-                            :has-selection="addedLabels.length > 0"
+                            mode="add"
+                            menu-mode="repeating"
+                            @selected-item="addLabel"
                             hide-details
                             variant="outlined"
                             density="comfortable"
@@ -128,8 +127,6 @@
                             auto-select-first
                             item-title="name"
                             item-value="id"
-                            multiple
-                            menu
                         >
                             <template #item="{ props, item: label }">
                                 <v-list-item :title="label.raw.name" :subtitle="label.raw.description" v-bind="props">
@@ -162,11 +159,10 @@
                             density="compact"
                             hide-details
                             autofocus
-                            menu
+                            menu-mode="initial"
                             clearable
                             persistent-clear
                             class="mt-1 mb-3"
-                            :has-selection="!!item.type"
                             :template="issue.template.id"
                             :initial-items="item.type ? [item.type] : []"
                             :model-value="item.type?.id"
@@ -176,9 +172,8 @@
                     </template>
                     <template #ItemAutocomplete>
                         <UserAutocomplete
-                            v-model="usersToAssign"
+                            @selected-item="assignUser"
                             :fetch="searchUsers"
-                            :has-selection="false"
                             label="Assign user"
                             class="mb-2"
                             hide-details
@@ -215,11 +210,10 @@
                             density="compact"
                             hide-details
                             autofocus
-                            menu
+                            menu-mode="initial"
                             clearable
                             persistent-clear
                             class="mt-1 mb-3"
-                            :has-selection="!!item.type"
                             :template="issue.template.id"
                             :initial-items="item.type ? [item.type] : []"
                             :model-value="item.type?.id"
@@ -229,8 +223,7 @@
                     </template>
                     <template #ItemAutocomplete>
                         <IssueAutocomplete
-                            v-model="relatedIssueToAdd"
-                            :has-selection="false"
+                            @selected-item="addOutgoingRelation"
                             label="Add related issue"
                             class="mb-2"
                             hide-details
@@ -277,6 +270,7 @@ import ListItem from "@/components/ListItem.vue";
 import FetchingAutocomplete from "@/components/input/FetchingAutocomplete.vue";
 import {
     AssignmentTimelineInfoFragment,
+    DefaultIssueInfoFragment,
     DefaultLabelInfoFragment,
     DefaultUserInfoFragment,
     OutgoingRelationTimelineInfoFragment
@@ -412,21 +406,15 @@ async function searchLabels(filter: string, count: number): Promise<DefaultLabel
     return [...searchedLabels.values()].filter((label) => !currentLabels.has(label.id));
 }
 
-const addedLabels = ref<string[]>([]);
-
-watch(addedLabels, async (newLabels) => {
-    if (newLabels.length > 0) {
-        for (const labelId of newLabels) {
-            const event = await withErrorMessage(async () => {
-                const res = await client.addLabelToIssue({ issue: issueId.value, label: labelId });
-                return res.addLabelToIssue!.addedLabelEvent!;
-            }, "Error adding label to issue");
-            timeline.value.push(event);
-            labels.value.push(event.addedLabel!);
-        }
-        addedLabels.value = [];
-    }
-});
+async function addLabel(label: DefaultLabelInfoFragment) {
+    const labelId = label.id;
+    const event = await withErrorMessage(async () => {
+        const res = await client.addLabelToIssue({ issue: issueId.value, label: labelId });
+        return res.addLabelToIssue!.addedLabelEvent!;
+    }, "Error adding label to issue");
+    timeline.value.push(event);
+    labels.value.push(event.addedLabel!);
+}
 
 async function removeLabel(labelId: string) {
     const event = await withErrorMessage(async () => {
@@ -489,21 +477,15 @@ async function searchUsers(filter: string, count: number): Promise<DefaultUserIn
     }, "Error searching users");
 }
 
-const usersToAssign = ref<string | null>(null);
-
-watch(usersToAssign, async (user) => {
-    if (user == undefined) {
-        return;
-    }
+async function assignUser(user: DefaultUserInfoFragment) {
     const event = await withErrorMessage(async () => {
-        const res = await client.createAssignment({ issue: issueId.value, user });
+        const res = await client.createAssignment({ issue: issueId.value, user: user.id });
         return res.createAssignment!.assignment!;
     }, "Error creating assignment");
     timeline.value.push(event);
     assignments.value.push(event);
-    usersToAssign.value = null;
     editedAssignmentTypes.value[event.id] = true;
-});
+}
 
 const editedRelationTypes = ref<Record<string, boolean>>({});
 
@@ -542,21 +524,15 @@ async function removeRelationType(relation: OutgoingRelationTimelineInfoFragment
     editedRelationTypes.value[relation.id] = false;
 }
 
-const relatedIssueToAdd = ref<string | null>(null);
-
-watch(relatedIssueToAdd, async (relatedIssue) => {
-    if (relatedIssue == undefined) {
-        return;
-    }
+async function addOutgoingRelation(relatedIssue: DefaultIssueInfoFragment) {
     const event = await withErrorMessage(async () => {
-        const res = await client.createIssueRelation({ issue: issueId.value, relatedIssue });
+        const res = await client.createIssueRelation({ issue: issueId.value, relatedIssue: relatedIssue.id });
         return res.createIssueRelation!.issueRelation!;
     }, "Error creating issue relation");
     timeline.value.push(event);
     outgoingRelations.value.push(event);
-    relatedIssueToAdd.value = null;
     editedRelationTypes.value[event.id] = true;
-});
+}
 
 const editTitle = ref(false);
 const editTitleText = ref("");
