@@ -579,6 +579,8 @@ export type AffectedByIssueFilterInput = {
     not?: InputMaybe<AffectedByIssueFilterInput>;
     /** Connects all subformulas via or */
     or?: InputMaybe<Array<AffectedByIssueFilterInput>>;
+    /** Filters for AffectedByIssues which are related to a Trackable */
+    relatedTo?: InputMaybe<Scalars["ID"]["input"]>;
 };
 
 /** Used to filter by a connection-based property. Fields are joined by AND */
@@ -2878,6 +2880,8 @@ export type ComponentFilterInput = {
     permissions?: InputMaybe<ComponentPermissionListFilterInput>;
     /** Filter by pinnedIssues */
     pinnedIssues?: InputMaybe<IssueListFilterInput>;
+    /** Filters for AffectedByIssues which are related to a Trackable */
+    relatedTo?: InputMaybe<Scalars["ID"]["input"]>;
     /** Filter by repositoryURL */
     repositoryURL?: InputMaybe<NullableStringFilterInput>;
     /** Filter by syncsTo */
@@ -3674,6 +3678,8 @@ export type ComponentVersionFilterInput = {
     or?: InputMaybe<Array<ComponentVersionFilterInput>>;
     /** Filter by outgoingRelations */
     outgoingRelations?: InputMaybe<RelationListFilterInput>;
+    /** Filters for AffectedByIssues which are related to a Trackable */
+    relatedTo?: InputMaybe<Scalars["ID"]["input"]>;
     /** Filters for nodes where the related node match this filter */
     template?: InputMaybe<ComponentVersionTemplateFilterInput>;
     /** Filter for templated fields with matching key and values. Entries are joined by AND */
@@ -7007,6 +7013,8 @@ export type InterfaceFilterInput = {
     or?: InputMaybe<Array<InterfaceFilterInput>>;
     /** Filter by outgoingRelations */
     outgoingRelations?: InputMaybe<RelationListFilterInput>;
+    /** Filters for AffectedByIssues which are related to a Trackable */
+    relatedTo?: InputMaybe<Scalars["ID"]["input"]>;
     /** Filters for nodes where the related node match this filter */
     template?: InputMaybe<InterfaceTemplateFilterInput>;
     /** Filter for templated fields with matching key and values. Entries are joined by AND */
@@ -7292,6 +7300,8 @@ export type InterfacePartFilterInput = {
     not?: InputMaybe<InterfacePartFilterInput>;
     /** Connects all subformulas via or */
     or?: InputMaybe<Array<InterfacePartFilterInput>>;
+    /** Filters for AffectedByIssues which are related to a Trackable */
+    relatedTo?: InputMaybe<Scalars["ID"]["input"]>;
     /** Filters for nodes where the related node match this filter */
     template?: InputMaybe<InterfacePartTemplateFilterInput>;
     /** Filter for templated fields with matching key and values. Entries are joined by AND */
@@ -7824,6 +7834,8 @@ export type InterfaceSpecificationFilterInput = {
     not?: InputMaybe<InterfaceSpecificationFilterInput>;
     /** Connects all subformulas via or */
     or?: InputMaybe<Array<InterfaceSpecificationFilterInput>>;
+    /** Filters for AffectedByIssues which are related to a Trackable */
+    relatedTo?: InputMaybe<Scalars["ID"]["input"]>;
     /** Filters for nodes where the related node match this filter */
     template?: InputMaybe<InterfaceSpecificationTemplateFilterInput>;
     /** Filter for templated fields with matching key and values. Entries are joined by AND */
@@ -8442,6 +8454,8 @@ export type InterfaceSpecificationVersionFilterInput = {
     not?: InputMaybe<InterfaceSpecificationVersionFilterInput>;
     /** Connects all subformulas via or */
     or?: InputMaybe<Array<InterfaceSpecificationVersionFilterInput>>;
+    /** Filters for AffectedByIssues which are related to a Trackable */
+    relatedTo?: InputMaybe<Scalars["ID"]["input"]>;
     /** Filters for nodes where the related node match this filter */
     template?: InputMaybe<InterfaceSpecificationVersionTemplateFilterInput>;
     /** Filter for templated fields with matching key and values. Entries are joined by AND */
@@ -12894,6 +12908,8 @@ export type ProjectFilterInput = {
     permissions?: InputMaybe<ProjectPermissionListFilterInput>;
     /** Filter by pinnedIssues */
     pinnedIssues?: InputMaybe<IssueListFilterInput>;
+    /** Filters for AffectedByIssues which are related to a Trackable */
+    relatedTo?: InputMaybe<Scalars["ID"]["input"]>;
     /** Filter by repositoryURL */
     repositoryURL?: InputMaybe<NullableStringFilterInput>;
     /** Filter by syncsTo */
@@ -14041,6 +14057,8 @@ export type RelationPartnerFilterInput = {
     or?: InputMaybe<Array<RelationPartnerFilterInput>>;
     /** Filter by outgoingRelations */
     outgoingRelations?: InputMaybe<RelationListFilterInput>;
+    /** Filters for AffectedByIssues which are related to a Trackable */
+    relatedTo?: InputMaybe<Scalars["ID"]["input"]>;
     /** Filter for templated fields with matching key and values. Entries are joined by AND */
     templatedFields?: InputMaybe<Array<InputMaybe<JsonFieldInput>>>;
 };
@@ -16142,6 +16160,8 @@ export type TrackableFilterInput = {
     or?: InputMaybe<Array<TrackableFilterInput>>;
     /** Filter by pinnedIssues */
     pinnedIssues?: InputMaybe<IssueListFilterInput>;
+    /** Filters for AffectedByIssues which are related to a Trackable */
+    relatedTo?: InputMaybe<Scalars["ID"]["input"]>;
     /** Filter by repositoryURL */
     repositoryURL?: InputMaybe<NullableStringFilterInput>;
     /** Filter by syncsTo */
@@ -17022,6 +17042,237 @@ export enum UserOrderField {
 export type Versioned = {
     /** The version of this entity */
     version: Scalars["String"]["output"];
+};
+
+export type SearchAffectedByIssuesQueryVariables = Exact<{
+    query: Scalars["String"]["input"];
+    count: Scalars["Int"]["input"];
+    trackable: Scalars["ID"]["input"];
+}>;
+
+export type SearchAffectedByIssuesQuery = {
+    __typename?: "Query";
+    searchAffectedByIssues: Array<
+        | { __typename: "Component"; id: string; name: string; description: string }
+        | { __typename: "ComponentVersion"; id: string; name: string; description: string }
+        | { __typename: "Interface"; id: string; name: string; description: string }
+        | { __typename: "InterfacePart"; id: string; name: string; description: string }
+        | { __typename: "InterfaceSpecification"; id: string; name: string; description: string }
+        | { __typename: "InterfaceSpecificationVersion"; id: string; name: string; description: string }
+        | { __typename: "Project"; id: string; name: string; description: string }
+    >;
+};
+
+export type GetComponentVersionsQueryVariables = Exact<{
+    id: Scalars["ID"]["input"];
+    count: Scalars["Int"]["input"];
+}>;
+
+export type GetComponentVersionsQuery = {
+    __typename?: "Query";
+    node?:
+        | { __typename?: "AddedAffectedEntityEvent"; id: string }
+        | { __typename?: "AddedArtefactEvent"; id: string }
+        | { __typename?: "AddedLabelEvent"; id: string }
+        | { __typename?: "AddedToPinnedIssuesEvent"; id: string }
+        | { __typename?: "AddedToTrackableEvent"; id: string }
+        | { __typename?: "AggregatedIssue"; id: string }
+        | { __typename?: "AggregatedIssueRelation"; id: string }
+        | { __typename?: "Artefact"; id: string }
+        | { __typename?: "ArtefactTemplate"; id: string }
+        | { __typename?: "Assignment"; id: string }
+        | { __typename?: "AssignmentType"; id: string }
+        | { __typename?: "AssignmentTypeChangedEvent"; id: string }
+        | { __typename?: "Body"; id: string }
+        | {
+              __typename?: "Component";
+              id: string;
+              versions: {
+                  __typename?: "ComponentVersionConnection";
+                  nodes: Array<{ __typename: "ComponentVersion"; id: string; name: string; description: string }>;
+              };
+          }
+        | { __typename?: "ComponentPermission"; id: string }
+        | { __typename?: "ComponentTemplate"; id: string }
+        | { __typename?: "ComponentVersion"; id: string }
+        | { __typename?: "ComponentVersionTemplate"; id: string }
+        | { __typename?: "DueDateChangedEvent"; id: string }
+        | { __typename?: "EstimatedTimeChangedEvent"; id: string }
+        | { __typename?: "GlobalPermission"; id: string }
+        | { __typename?: "GropiusUser"; id: string }
+        | { __typename?: "IMS"; id: string }
+        | { __typename?: "IMSIssue"; id: string }
+        | { __typename?: "IMSIssueTemplate"; id: string }
+        | { __typename?: "IMSPermission"; id: string }
+        | { __typename?: "IMSProject"; id: string }
+        | { __typename?: "IMSProjectTemplate"; id: string }
+        | { __typename?: "IMSTemplate"; id: string }
+        | { __typename?: "IMSUser"; id: string }
+        | { __typename?: "IMSUserTemplate"; id: string }
+        | { __typename?: "IncomingRelationTypeChangedEvent"; id: string }
+        | { __typename?: "Interface"; id: string }
+        | { __typename?: "InterfaceDefinition"; id: string }
+        | { __typename?: "InterfaceDefinitionTemplate"; id: string }
+        | { __typename?: "InterfacePart"; id: string }
+        | { __typename?: "InterfacePartTemplate"; id: string }
+        | { __typename?: "InterfaceSpecification"; id: string }
+        | { __typename?: "InterfaceSpecificationDerivationCondition"; id: string }
+        | { __typename?: "InterfaceSpecificationTemplate"; id: string }
+        | { __typename?: "InterfaceSpecificationVersion"; id: string }
+        | { __typename?: "InterfaceSpecificationVersionTemplate"; id: string }
+        | { __typename?: "InterfaceTemplate"; id: string }
+        | { __typename?: "IntraComponentDependencyParticipant"; id: string }
+        | { __typename?: "IntraComponentDependencySpecification"; id: string }
+        | { __typename?: "Issue"; id: string }
+        | { __typename?: "IssueComment"; id: string }
+        | { __typename?: "IssuePriority"; id: string }
+        | { __typename?: "IssueRelation"; id: string }
+        | { __typename?: "IssueRelationType"; id: string }
+        | { __typename?: "IssueState"; id: string }
+        | { __typename?: "IssueTemplate"; id: string }
+        | { __typename?: "IssueType"; id: string }
+        | { __typename?: "Label"; id: string }
+        | { __typename?: "OutgoingRelationTypeChangedEvent"; id: string }
+        | { __typename?: "PriorityChangedEvent"; id: string }
+        | { __typename?: "Project"; id: string }
+        | { __typename?: "ProjectPermission"; id: string }
+        | { __typename?: "RelatedByIssueEvent"; id: string }
+        | { __typename?: "Relation"; id: string }
+        | { __typename?: "RelationCondition"; id: string }
+        | { __typename?: "RelationTemplate"; id: string }
+        | { __typename?: "RemovedAffectedEntityEvent"; id: string }
+        | { __typename?: "RemovedArtefactEvent"; id: string }
+        | { __typename?: "RemovedAssignmentEvent"; id: string }
+        | { __typename?: "RemovedFromPinnedIssuesEvent"; id: string }
+        | { __typename?: "RemovedFromTrackableEvent"; id: string }
+        | { __typename?: "RemovedIncomingRelationEvent"; id: string }
+        | { __typename?: "RemovedLabelEvent"; id: string }
+        | { __typename?: "RemovedOutgoingRelationEvent"; id: string }
+        | { __typename?: "RemovedTemplatedFieldEvent"; id: string }
+        | { __typename?: "SpentTimeChangedEvent"; id: string }
+        | { __typename?: "StartDateChangedEvent"; id: string }
+        | { __typename?: "StateChangedEvent"; id: string }
+        | { __typename?: "TemplateChangedEvent"; id: string }
+        | { __typename?: "TemplatedFieldChangedEvent"; id: string }
+        | { __typename?: "TitleChangedEvent"; id: string }
+        | { __typename?: "TypeChangedEvent"; id: string }
+        | null;
+};
+
+type DefaultAffectedByIssueInfo_Component_Fragment = {
+    __typename: "Component";
+    id: string;
+    name: string;
+    description: string;
+};
+
+type DefaultAffectedByIssueInfo_ComponentVersion_Fragment = {
+    __typename: "ComponentVersion";
+    id: string;
+    name: string;
+    description: string;
+};
+
+type DefaultAffectedByIssueInfo_Interface_Fragment = {
+    __typename: "Interface";
+    id: string;
+    name: string;
+    description: string;
+};
+
+type DefaultAffectedByIssueInfo_InterfacePart_Fragment = {
+    __typename: "InterfacePart";
+    id: string;
+    name: string;
+    description: string;
+};
+
+type DefaultAffectedByIssueInfo_InterfaceSpecification_Fragment = {
+    __typename: "InterfaceSpecification";
+    id: string;
+    name: string;
+    description: string;
+};
+
+type DefaultAffectedByIssueInfo_InterfaceSpecificationVersion_Fragment = {
+    __typename: "InterfaceSpecificationVersion";
+    id: string;
+    name: string;
+    description: string;
+};
+
+type DefaultAffectedByIssueInfo_Project_Fragment = {
+    __typename: "Project";
+    id: string;
+    name: string;
+    description: string;
+};
+
+export type DefaultAffectedByIssueInfoFragment =
+    | DefaultAffectedByIssueInfo_Component_Fragment
+    | DefaultAffectedByIssueInfo_ComponentVersion_Fragment
+    | DefaultAffectedByIssueInfo_Interface_Fragment
+    | DefaultAffectedByIssueInfo_InterfacePart_Fragment
+    | DefaultAffectedByIssueInfo_InterfaceSpecification_Fragment
+    | DefaultAffectedByIssueInfo_InterfaceSpecificationVersion_Fragment
+    | DefaultAffectedByIssueInfo_Project_Fragment;
+
+export type AddAffectedEntityToIssueMutationVariables = Exact<{
+    issue: Scalars["ID"]["input"];
+    affectedEntity: Scalars["ID"]["input"];
+}>;
+
+export type AddAffectedEntityToIssueMutation = {
+    __typename?: "Mutation";
+    addAffectedEntityToIssue?: {
+        __typename?: "AddAffectedEntityToIssuePayload";
+        addedAffectedEntityEvent?: {
+            __typename: "AddedAffectedEntityEvent";
+            id: string;
+            createdAt: any;
+            addedAffectedEntity?:
+                | { __typename: "Component"; id: string; name: string; description: string }
+                | { __typename: "ComponentVersion"; id: string; name: string; description: string }
+                | { __typename: "Interface"; id: string; name: string; description: string }
+                | { __typename: "InterfacePart"; id: string; name: string; description: string }
+                | { __typename: "InterfaceSpecification"; id: string; name: string; description: string }
+                | { __typename: "InterfaceSpecificationVersion"; id: string; name: string; description: string }
+                | { __typename: "Project"; id: string; name: string; description: string }
+                | null;
+            createdBy:
+                | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+                | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+        } | null;
+    } | null;
+};
+
+export type RemoveAffectedEntityFromIssueMutationVariables = Exact<{
+    issue: Scalars["ID"]["input"];
+    affectedEntity: Scalars["ID"]["input"];
+}>;
+
+export type RemoveAffectedEntityFromIssueMutation = {
+    __typename?: "Mutation";
+    removeAffectedEntityFromIssue?: {
+        __typename?: "RemoveAffectedEntityFromIssuePayload";
+        removedAffectedEntityEvent?: {
+            __typename: "RemovedAffectedEntityEvent";
+            id: string;
+            createdAt: any;
+            removedAffectedEntity?:
+                | { __typename: "Component"; id: string; name: string; description: string }
+                | { __typename: "ComponentVersion"; id: string; name: string; description: string }
+                | { __typename: "Interface"; id: string; name: string; description: string }
+                | { __typename: "InterfacePart"; id: string; name: string; description: string }
+                | { __typename: "InterfaceSpecification"; id: string; name: string; description: string }
+                | { __typename: "InterfaceSpecificationVersion"; id: string; name: string; description: string }
+                | { __typename: "Project"; id: string; name: string; description: string }
+                | null;
+            createdBy:
+                | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+                | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+        } | null;
+    } | null;
 };
 
 export type DefaultAssignmentInfoFragment = {
@@ -21751,13 +22002,19 @@ export const TimelineItemInfoFragmentDoc = gql`
     }
     ${UserTimelineInfoFragmentDoc}
 `;
-export const AffectedByIssueTimelineInfoFragmentDoc = gql`
-    fragment AffectedByIssueTimelineInfo on AffectedByIssue {
+export const DefaultAffectedByIssueInfoFragmentDoc = gql`
+    fragment DefaultAffectedByIssueInfo on AffectedByIssue {
         id
         name
         description
         __typename
     }
+`;
+export const AffectedByIssueTimelineInfoFragmentDoc = gql`
+    fragment AffectedByIssueTimelineInfo on AffectedByIssue {
+        ...DefaultAffectedByIssueInfo
+    }
+    ${DefaultAffectedByIssueInfoFragmentDoc}
 `;
 export const AddedAffectedEntityEventTimelineInfoFragmentDoc = gql`
     fragment AddedAffectedEntityEventTimelineInfo on AddedAffectedEntityEvent {
@@ -22423,6 +22680,49 @@ export const OpenIssueCountFragmentDoc = gql`
         }
     }
 `;
+export const SearchAffectedByIssuesDocument = gql`
+    query searchAffectedByIssues($query: String!, $count: Int!, $trackable: ID!) {
+        searchAffectedByIssues(query: $query, first: $count, filter: { relatedTo: $trackable }) {
+            ...DefaultAffectedByIssueInfo
+        }
+    }
+    ${DefaultAffectedByIssueInfoFragmentDoc}
+`;
+export const GetComponentVersionsDocument = gql`
+    query getComponentVersions($id: ID!, $count: Int!) {
+        node(id: $id) {
+            id
+            ... on Component {
+                versions(first: $count) {
+                    nodes {
+                        ...DefaultAffectedByIssueInfo
+                    }
+                }
+            }
+        }
+    }
+    ${DefaultAffectedByIssueInfoFragmentDoc}
+`;
+export const AddAffectedEntityToIssueDocument = gql`
+    mutation addAffectedEntityToIssue($issue: ID!, $affectedEntity: ID!) {
+        addAffectedEntityToIssue(input: { issue: $issue, affectedEntity: $affectedEntity }) {
+            addedAffectedEntityEvent {
+                ...AddedAffectedEntityEventTimelineInfo
+            }
+        }
+    }
+    ${AddedAffectedEntityEventTimelineInfoFragmentDoc}
+`;
+export const RemoveAffectedEntityFromIssueDocument = gql`
+    mutation removeAffectedEntityFromIssue($issue: ID!, $affectedEntity: ID!) {
+        removeAffectedEntityFromIssue(input: { issue: $issue, affectedEntity: $affectedEntity }) {
+            removedAffectedEntityEvent {
+                ...RemovedAffectedEntityEventTimelineInfo
+            }
+        }
+    }
+    ${RemovedAffectedEntityEventTimelineInfoFragmentDoc}
+`;
 export const RemoveAssignmentDocument = gql`
     mutation removeAssignment($id: ID!) {
         removeAssignment(input: { assignment: $id }) {
@@ -22944,6 +23244,63 @@ const defaultWrapper: SdkFunctionWrapper = (action, _operationName, _operationTy
 
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
     return {
+        searchAffectedByIssues(
+            variables: SearchAffectedByIssuesQueryVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<SearchAffectedByIssuesQuery> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<SearchAffectedByIssuesQuery>(SearchAffectedByIssuesDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "searchAffectedByIssues",
+                "query"
+            );
+        },
+        getComponentVersions(
+            variables: GetComponentVersionsQueryVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<GetComponentVersionsQuery> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<GetComponentVersionsQuery>(GetComponentVersionsDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "getComponentVersions",
+                "query"
+            );
+        },
+        addAffectedEntityToIssue(
+            variables: AddAffectedEntityToIssueMutationVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<AddAffectedEntityToIssueMutation> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<AddAffectedEntityToIssueMutation>(AddAffectedEntityToIssueDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "addAffectedEntityToIssue",
+                "mutation"
+            );
+        },
+        removeAffectedEntityFromIssue(
+            variables: RemoveAffectedEntityFromIssueMutationVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<RemoveAffectedEntityFromIssueMutation> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<RemoveAffectedEntityFromIssueMutation>(
+                        RemoveAffectedEntityFromIssueDocument,
+                        variables,
+                        { ...requestHeaders, ...wrappedRequestHeaders }
+                    ),
+                "removeAffectedEntityFromIssue",
+                "mutation"
+            );
+        },
         removeAssignment(
             variables: RemoveAssignmentMutationVariables,
             requestHeaders?: GraphQLClientRequestHeaders

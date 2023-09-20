@@ -13,7 +13,7 @@
     >
         <template #item="{ props, item }">
             <slot
-                v-if="!contextSearchMode && item.value != context?.id"
+                v-if="!contextSearchMode && item.value != contextItem?.id"
                 name="item"
                 :props="props"
                 :item="(item as ListItem<T>)"
@@ -45,7 +45,7 @@ const props = defineProps({
         required: false
     },
     fetch: {
-        type: Function as PropType<(filter: string, count: number, context?: string) => Promise<T[]>>,
+        type: Function as PropType<(filter: string, count: number, context?: C) => Promise<T[]>>,
         required: true
     },
     contextFetch: {
@@ -74,14 +74,24 @@ const emit = defineEmits<{
 }>();
 
 const context = ref(props.initialContext) as Ref<C | undefined>;
+const contextItem = computed(() => {
+    if (context.value == undefined) {
+        return undefined;
+    } else {
+        return {
+            ...context.value,
+            id: `context-${context.value.id}`
+        };
+    }
+})
 const contextMode = computed(() => props.mode == "add-context");
 const contextSearchMode = computed(() => {
     return contextMode.value && context.value == undefined;
 });
 const initialContextModel = computed(() => {
     if (contextMode.value) {
-        if (props.initialContext != undefined) {
-            return [props.initialContext as C];
+        if (contextItem.value != undefined) {
+            return [contextItem.value];
         } else {
             return [];
         }
@@ -135,11 +145,11 @@ async function updateSearch(search: string) {
     if (contextSearchMode.value) {
         newItems = await props.contextFetch!(search, 10);
     } else {
-        newItems = await props.fetch(search, 10, context.value?.id);
+        newItems = await props.fetch(search, 10, context.value);
     }
 
     if (contextMode.value && !contextSearchMode.value) {
-        items.value = [context.value as C, ...newItems];
+        items.value = [contextItem.value as C, ...newItems];
     } else {
         items.value = newItems;
     }

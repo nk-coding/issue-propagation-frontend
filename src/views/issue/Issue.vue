@@ -112,30 +112,18 @@
                             </ListItem>
                             <v-divider />
                         </div>
-                        <FetchingAutocomplete
-                            :fetch="searchLabels"
+                        <LabelAutocomplete
+                            :issue="issueId"
+                            :ignore="labels.map((label) => label.id)"
                             :dependency="[labels]"
-                            mode="add"
                             menu-mode="repeating"
                             hide-details
-                            variant="outlined"
-                            density="comfortable"
                             class="mt-3 mb-2"
                             label="Add label"
                             autofocus
                             auto-select-first
-                            item-title="name"
-                            item-value="id"
                             @selected-item="addLabel"
-                        >
-                            <template #item="{ props, item: label }">
-                                <v-list-item :title="label.raw.name" :subtitle="label.raw.description" v-bind="props">
-                                    <template #prepend>
-                                        <v-icon :color="label.raw.color" class="full-opacity" icon="mdi-circle" />
-                                    </template>
-                                </v-list-item>
-                            </template>
-                        </FetchingAutocomplete>
+                        />
                     </template>
                 </EditableCompartment>
                 <v-divider />
@@ -243,6 +231,49 @@
                         <IssueInfo v-if="item.issue != undefined" :issue="item.issue!" class="d-block my-2 ml-2" />
                     </template>
                 </TypedEditableCompartment>
+                <v-divider />
+                <EditableCompartment name="Affects" :editable="!!issue.manageIssues && store.isLoggedIn">
+                    <template #display>
+                        <div v-for="itemGroup in groupedAffectedEntities">
+                            <span class="text-subtitle-2">
+                                {{ itemGroup?.type }}
+                            </span>
+                            <div v-for="item in itemGroup.items">
+                                <AffectedByIssue
+                                    :affected-entity="item"
+                                    class="d-block my-2 ml-2"
+                                />
+                            </div>
+                        </div>
+                    </template>
+                    <template #edit>
+                        <div v-for="affectedEntity in affectedEntities">
+                            <ListItem :title="`${affectedEntity.name} [${affectedEntity.__typename}]`" :subtitle="affectedEntity.description">
+                                <template #append>
+                                    <IconButton @click="removeAffectedEntity(affectedEntity.id)">
+                                        <v-icon icon="mdi-close" />
+                                        <v-tooltip activator="parent"> Remove affected entity </v-tooltip>
+                                    </IconButton>
+                                </template>
+                            </ListItem>
+                            <v-divider />
+                        </div>
+                        <AffectedByIssueAutocomplete
+                            :dependency="[affectedEntities]"
+                            :initial-context="trackable ?? undefined"
+                            :ignore="affectedEntities.map((entity) => entity.id)"
+                            menu-mode="repeating"
+                            hide-details
+                            class="mt-3 mb-2"
+                            label="Add affected entity"
+                            autofocus
+                            auto-select-first
+                            item-title="name"
+                            item-value="id"
+                            @selected-item="addAffectedEntity"
+                        />
+                    </template>
+                </EditableCompartment>
             </v-sheet>
         </div>
     </div>
@@ -271,6 +302,7 @@ import ListItem from "@/components/ListItem.vue";
 import FetchingAutocomplete from "@/components/input/FetchingAutocomplete.vue";
 import {
     AssignmentTimelineInfoFragment,
+    DefaultAffectedByIssueInfoFragment,
     DefaultIssueInfoFragment,
     DefaultLabelInfoFragment,
     DefaultUserInfoFragment,
@@ -287,6 +319,9 @@ import TypedEditableCompartment from "@/components/TypedEditableCompartment.vue"
 import AssignmentTypeAutocomplete from "@/components/input/AssignmentTypeAutocomplete.vue";
 import UserAutocomplete from "@/components/input/UserAutocomplete.vue";
 import { inject } from "vue";
+import AffectedByIssueAutocomplete from "@/components/input/AffectedByIssueAutocomplete.vue";
+import LabelAutocomplete from "@/components/input/LabelAutocomplete.vue";
+import AffectedByIssue from "@/components/info/AffectedByIssue.vue";
 
 export type Issue = NodeReturnType<"getIssue", "Issue">;
 
@@ -333,6 +368,7 @@ const timeline = computed(() => issue.value!.timelineItems.nodes);
 const labels = computed(() => issue.value!.labels.nodes);
 const outgoingRelations = computed(() => issue.value!.outgoingRelations.nodes);
 const assignments = computed(() => issue.value!.assignments.nodes);
+const affectedEntities = computed(() => issue.value!.affects.nodes);
 
 function addComment(comment: TimelineItemType<"IssueComment">) {
     timeline.value.push(comment);
@@ -390,23 +426,6 @@ async function updateIssueState(state: string | null) {
     }, "Error updating issue state");
     timeline.value.push(event);
     issue.value!.state = event.newState;
-}
-
-async function searchLabels(filter: string, count: number): Promise<DefaultLabelInfoFragment[]> {
-    const searchRes = await withErrorMessage(async () => {
-        const query = transformSearchQuery(filter);
-        if (query != undefined) {
-            const res = await client.searchLabels({ issue: issueId.value, query, count });
-            return res.searchLabels;
-        } else {
-            const res = await client.firstLabels({ issue: issueId.value, count });
-            const nodeRes = res.node as NodeReturnType<"firstLabels", "Issue">;
-            return nodeRes.trackables.nodes.flatMap((trackable) => trackable.labels.nodes);
-        }
-    }, "Error searching labels");
-    const searchedLabels = new Map(searchRes.map((label) => [label.id, label]));
-    const currentLabels = new Set(labels.value.map((label) => label.id));
-    return [...searchedLabels.values()].filter((label) => !currentLabels.has(label.id));
 }
 
 async function addLabel(label: DefaultLabelInfoFragment) {
@@ -557,6 +576,54 @@ async function saveTitle() {
     timeline.value.push(event);
     issue.value!.title = event.newTitle;
     editTitle.value = false;
+}
+
+const groupedAffectedEntities = computed(() => {
+    const types = [
+        "Project",
+        "Component",
+        "ComponentVersion",
+        "Interface",
+        "InterfaceSpecification",
+        "InterfaceSpecificationVersion",
+        "InterfacePart"
+    ] as const;
+    type Group = { type: (typeof types)[number]; items: DefaultAffectedByIssueInfoFragment[] };
+    const groups = new Map<(typeof types)[number], Group>();
+    for (const item of affectedEntities.value) {
+        const group = groups.get(item.__typename);
+        if (group) {
+            group.items.push(item);
+        } else {
+            groups.set(item.__typename, {
+                type: item.__typename,
+                items: [item]
+            });
+        }
+    }
+    return types.map((type) => groups.get(type)).filter((group): group is Group => group != undefined);
+});
+
+async function addAffectedEntity(affectedEntity: DefaultAffectedByIssueInfoFragment) {
+    const affectedEntityId = affectedEntity.id;
+    const event = await withErrorMessage(async () => {
+        const res = await client.addAffectedEntityToIssue({ issue: issueId.value, affectedEntity: affectedEntityId });
+        return res.addAffectedEntityToIssue!.addedAffectedEntityEvent!;
+    }, "Error adding affectedentity to issue");
+    timeline.value.push(event);
+    affectedEntities.value.push(event.addedAffectedEntity!);
+}
+
+async function removeAffectedEntity(affectedEntityId: string) {
+    const event = await withErrorMessage(async () => {
+        const res = await client.removeAffectedEntityFromIssue({ issue: issueId.value, affectedEntity: affectedEntityId });
+        return res.removeAffectedEntityFromIssue!.removedAffectedEntityEvent!;
+    }, "Error removing affectedentity from issue");
+    timeline.value.push(event);
+    const index = affectedEntities.value.findIndex((affectedentity) => affectedentity.id == affectedEntityId);
+    if (index != -1) {
+        affectedEntities.value.splice(index, 1);
+    }
 }
 </script>
 <style scoped lang="scss">

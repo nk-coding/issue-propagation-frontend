@@ -352,10 +352,7 @@ fragment IssueTypeTimelineInfo on IssueType {
 }
 
 fragment AffectedByIssueTimelineInfo on AffectedByIssue {
-    id
-    name
-    description
-    __typename
+    ...DefaultAffectedByIssueInfo
 }
 
 fragment ArtefactTimelineInfo on Artefact {

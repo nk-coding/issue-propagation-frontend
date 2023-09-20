@@ -1,0 +1,41 @@
+query searchAffectedByIssues($query: String!, $count: Int!, $trackable: ID!) {
+    searchAffectedByIssues(query: $query, first: $count, filter: { relatedTo: $trackable }) {
+        ...DefaultAffectedByIssueInfo
+    }
+}
+
+query getComponentVersions($id: ID!, $count: Int!) {
+    node(id: $id) {
+        id
+        ... on Component {
+            versions(first: $count) {
+                nodes {
+                    ...DefaultAffectedByIssueInfo
+                }
+            }
+        }
+    }
+}
+
+fragment DefaultAffectedByIssueInfo on AffectedByIssue {
+    id
+    name
+    description
+    __typename
+}
+
+mutation addAffectedEntityToIssue($issue: ID!, $affectedEntity: ID!) {
+    addAffectedEntityToIssue(input: { issue: $issue, affectedEntity: $affectedEntity }) {
+        addedAffectedEntityEvent {
+            ...AddedAffectedEntityEventTimelineInfo
+        }
+    }
+}
+
+mutation removeAffectedEntityFromIssue($issue: ID!, $affectedEntity: ID!) {
+    removeAffectedEntityFromIssue(input: { issue: $issue, affectedEntity: $affectedEntity }) {
+        removedAffectedEntityEvent {
+            ...RemovedAffectedEntityEventTimelineInfo
+        }
+    }
+}
