@@ -15,10 +15,10 @@
 import BaseLayout from "@/components/BaseLayout.vue";
 import { NodeReturnType, useClient } from "@/graphql/client";
 import { asyncComputed } from "@vueuse/core";
-import { computed } from "vue";
+import { computed, provide } from "vue";
 import { RouteLocationRaw, useRoute } from "vue-router";
 import { withErrorMessage } from "@/util/withErrorMessage";
-import { eventBusKey } from "@/util/keys";
+import { eventBusKey, trackableKey } from "@/util/keys";
 import { inject } from "vue";
 
 type Project = NodeReturnType<"getProject", "Project">;
@@ -39,6 +39,8 @@ const project = asyncComputed(
     null,
     { shallow: false }
 );
+
+provide(trackableKey, project);
 
 function projectPath(name: string): RouteLocationRaw {
     return {

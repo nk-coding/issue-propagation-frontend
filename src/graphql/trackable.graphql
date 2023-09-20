@@ -10,3 +10,9 @@ fragment DefaultTrackableInfo on Trackable {
     name
     description
 }
+
+query searchTrackables($query: String!, $count: Int!) {
+    searchTrackables(query: $query, first: $count) {
+        ...DefaultTrackableInfo
+    }
+}

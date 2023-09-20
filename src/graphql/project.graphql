@@ -14,6 +14,7 @@ query getProject($id: ID!) {
     node(id: $id) {
         id
         ... on Project {
+            __typename
             name
             description
             ...OpenIssueCount

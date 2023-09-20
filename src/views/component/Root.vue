@@ -19,7 +19,8 @@ import { computed } from "vue";
 import { RouteLocationRaw, useRoute } from "vue-router";
 import { withErrorMessage } from "@/util/withErrorMessage";
 import { inject } from "vue";
-import { eventBusKey } from "@/util/keys";
+import { eventBusKey, trackableKey } from "@/util/keys";
+import { provide } from "vue";
 
 type Component = NodeReturnType<"getComponent", "Component">;
 
@@ -42,6 +43,8 @@ const component = computedAsync(
     null,
     { shallow: false }
 );
+
+provide(trackableKey, component);
 
 function componentPath(name: string): RouteLocationRaw {
     return {

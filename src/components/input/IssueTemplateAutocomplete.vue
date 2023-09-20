@@ -1,10 +1,5 @@
 <template>
-    <FetchingAutocomplete
-        mode="model"
-        :fetch="searchIssueTemplates"
-        label="Template"
-        item-title="name"
-    >
+    <FetchingAutocomplete mode="model" :fetch="searchIssueTemplates" label="Template" item-title="name">
         <template #item="{ props, item }">
             <v-list-item :title="item.raw.name" :subtitle="item.raw.description" v-bind="props"> </v-list-item>
         </template>

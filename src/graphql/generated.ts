@@ -607,6 +607,260 @@ export enum AffectedByIssueOrderField {
     Name = "NAME"
 }
 
+/**
+ * An aggregated Issue on a RelationPartner.
+ *     READ is granted if READ is granted on `relationPartner`.
+ *     An Issue is aggregated on a ComponentVersion if
+ *     - it affects the ComponentVersion
+ *     - it affects the associated Component
+ *     - it is on the Component, and does not affect anything
+ *     An Issue is aggregated on a Interface if
+ *     - it affects the associated InterfaceSpecificationVersion
+ *     - it affects the associated InterfaceSpecification
+ *     - it affects any InterfacePart of the associated InterfaceSpecificationVersion
+ *
+ */
+export type AggregatedIssue = Node & {
+    __typename?: "AggregatedIssue";
+    /** The amount of Issues of this type on this location. */
+    count: Scalars["Int"]["output"];
+    /** The unique id of this node */
+    id: Scalars["ID"]["output"];
+    /** IssueRelations from this aggregated issue to other aggregated issues. */
+    incomingRelations: AggregatedIssueRelationConnection;
+    /** If aggregated issues are open or closed. */
+    isOpen: Scalars["Boolean"]["output"];
+    /** The Issues aggregated by this AggregatedIssue. */
+    issues: IssueConnection;
+    /** IssueRelations from other aggregated issues to this aggregated issue. */
+    outgoingRelations: AggregatedIssueRelationConnection;
+    /** The RelationPartner this AggregatedIssue is on. */
+    relationPartner: RelationPartner;
+    /** The IssueType of this AggregatedIssue. */
+    type: IssueType;
+};
+
+/**
+ * An aggregated Issue on a RelationPartner.
+ *     READ is granted if READ is granted on `relationPartner`.
+ *     An Issue is aggregated on a ComponentVersion if
+ *     - it affects the ComponentVersion
+ *     - it affects the associated Component
+ *     - it is on the Component, and does not affect anything
+ *     An Issue is aggregated on a Interface if
+ *     - it affects the associated InterfaceSpecificationVersion
+ *     - it affects the associated InterfaceSpecification
+ *     - it affects any InterfacePart of the associated InterfaceSpecificationVersion
+ *
+ */
+export type AggregatedIssueIncomingRelationsArgs = {
+    after?: InputMaybe<Scalars["String"]["input"]>;
+    before?: InputMaybe<Scalars["String"]["input"]>;
+    filter?: InputMaybe<AggregatedIssueRelationFilterInput>;
+    first?: InputMaybe<Scalars["Int"]["input"]>;
+    last?: InputMaybe<Scalars["Int"]["input"]>;
+    orderBy?: InputMaybe<AggregatedIssueRelationOrder>;
+    skip?: InputMaybe<Scalars["Int"]["input"]>;
+};
+
+/**
+ * An aggregated Issue on a RelationPartner.
+ *     READ is granted if READ is granted on `relationPartner`.
+ *     An Issue is aggregated on a ComponentVersion if
+ *     - it affects the ComponentVersion
+ *     - it affects the associated Component
+ *     - it is on the Component, and does not affect anything
+ *     An Issue is aggregated on a Interface if
+ *     - it affects the associated InterfaceSpecificationVersion
+ *     - it affects the associated InterfaceSpecification
+ *     - it affects any InterfacePart of the associated InterfaceSpecificationVersion
+ *
+ */
+export type AggregatedIssueIssuesArgs = {
+    after?: InputMaybe<Scalars["String"]["input"]>;
+    before?: InputMaybe<Scalars["String"]["input"]>;
+    filter?: InputMaybe<IssueFilterInput>;
+    first?: InputMaybe<Scalars["Int"]["input"]>;
+    last?: InputMaybe<Scalars["Int"]["input"]>;
+    orderBy?: InputMaybe<IssueOrder>;
+    skip?: InputMaybe<Scalars["Int"]["input"]>;
+};
+
+/**
+ * An aggregated Issue on a RelationPartner.
+ *     READ is granted if READ is granted on `relationPartner`.
+ *     An Issue is aggregated on a ComponentVersion if
+ *     - it affects the ComponentVersion
+ *     - it affects the associated Component
+ *     - it is on the Component, and does not affect anything
+ *     An Issue is aggregated on a Interface if
+ *     - it affects the associated InterfaceSpecificationVersion
+ *     - it affects the associated InterfaceSpecification
+ *     - it affects any InterfacePart of the associated InterfaceSpecificationVersion
+ *
+ */
+export type AggregatedIssueOutgoingRelationsArgs = {
+    after?: InputMaybe<Scalars["String"]["input"]>;
+    before?: InputMaybe<Scalars["String"]["input"]>;
+    filter?: InputMaybe<AggregatedIssueRelationFilterInput>;
+    first?: InputMaybe<Scalars["Int"]["input"]>;
+    last?: InputMaybe<Scalars["Int"]["input"]>;
+    orderBy?: InputMaybe<AggregatedIssueRelationOrder>;
+    skip?: InputMaybe<Scalars["Int"]["input"]>;
+};
+
+/** The connection type for AggregatedIssue. */
+export type AggregatedIssueConnection = {
+    __typename?: "AggregatedIssueConnection";
+    /** A list of all edges of the current page. */
+    edges: Array<AggregatedIssueEdge>;
+    /** A list of all nodes of the current page. */
+    nodes: Array<AggregatedIssue>;
+    /** Information to aid in pagination. */
+    pageInfo: PageInfo;
+    /** Identifies the total count of items in the connection. */
+    totalCount: Scalars["Int"]["output"];
+};
+
+/** An edge in a connection. */
+export type AggregatedIssueEdge = {
+    __typename?: "AggregatedIssueEdge";
+    /** A cursor used in pagination. */
+    cursor: Scalars["String"]["output"];
+    /** The item at the end of the edge. */
+    node: AggregatedIssue;
+};
+
+/** Filter used to filter AggregatedIssue */
+export type AggregatedIssueFilterInput = {
+    /** Connects all subformulas via and */
+    and?: InputMaybe<Array<AggregatedIssueFilterInput>>;
+    /** Filter by count */
+    count?: InputMaybe<IntFilterInput>;
+    /** Filter by id */
+    id?: InputMaybe<IdFilterInput>;
+    /** Filter by incomingRelations */
+    incomingRelations?: InputMaybe<AggregatedIssueRelationListFilterInput>;
+    /** Filter by isOpen */
+    isOpen?: InputMaybe<BooleanFilterInput>;
+    /** Filter by issues */
+    issues?: InputMaybe<IssueListFilterInput>;
+    /** Negates the subformula */
+    not?: InputMaybe<AggregatedIssueFilterInput>;
+    /** Connects all subformulas via or */
+    or?: InputMaybe<Array<AggregatedIssueFilterInput>>;
+    /** Filter by outgoingRelations */
+    outgoingRelations?: InputMaybe<AggregatedIssueRelationListFilterInput>;
+    /** Filters for nodes where the related node match this filter */
+    relationPartner?: InputMaybe<RelationPartnerFilterInput>;
+    /** Filters for nodes where the related node match this filter */
+    type?: InputMaybe<IssueTypeFilterInput>;
+};
+
+/** Used to filter by a connection-based property. Fields are joined by AND */
+export type AggregatedIssueListFilterInput = {
+    /** Filters for nodes where all of the related nodes match this filter */
+    all?: InputMaybe<AggregatedIssueFilterInput>;
+    /** Filters for nodes where any of the related nodes match this filter */
+    any?: InputMaybe<AggregatedIssueFilterInput>;
+    /** Filters for nodes where none of the related nodes match this filter */
+    none?: InputMaybe<AggregatedIssueFilterInput>;
+};
+
+/** Defines the order of a AggregatedIssue list */
+export type AggregatedIssueOrder = {
+    /** The direction to order by, defaults to ASC */
+    direction?: InputMaybe<OrderDirection>;
+    /** The field to order by, defaults to ID */
+    field?: InputMaybe<AggregatedIssueOrderField>;
+};
+
+/** Fields a list of AggregatedIssue can be sorted by */
+export enum AggregatedIssueOrderField {
+    /** Order by count */
+    Count = "COUNT",
+    /** Order by id */
+    Id = "ID"
+}
+
+/**
+ * An aggregated IssueRelation.
+ *     IssueRelations are aggregated by both start and end Issue.
+ *
+ */
+export type AggregatedIssueRelation = Node & {
+    __typename?: "AggregatedIssueRelation";
+    count: Scalars["Int"]["output"];
+    /** The end of this AggregatedIssueRelation. */
+    end: AggregatedIssue;
+    /** The unique id of this node */
+    id: Scalars["ID"]["output"];
+    /** The start of this AggregatedIssueRelation. */
+    start: AggregatedIssue;
+};
+
+/** The connection type for AggregatedIssueRelation. */
+export type AggregatedIssueRelationConnection = {
+    __typename?: "AggregatedIssueRelationConnection";
+    /** A list of all edges of the current page. */
+    edges: Array<AggregatedIssueRelationEdge>;
+    /** A list of all nodes of the current page. */
+    nodes: Array<AggregatedIssueRelation>;
+    /** Information to aid in pagination. */
+    pageInfo: PageInfo;
+    /** Identifies the total count of items in the connection. */
+    totalCount: Scalars["Int"]["output"];
+};
+
+/** An edge in a connection. */
+export type AggregatedIssueRelationEdge = {
+    __typename?: "AggregatedIssueRelationEdge";
+    /** A cursor used in pagination. */
+    cursor: Scalars["String"]["output"];
+    /** The item at the end of the edge. */
+    node: AggregatedIssueRelation;
+};
+
+/** Filter used to filter AggregatedIssueRelation */
+export type AggregatedIssueRelationFilterInput = {
+    /** Connects all subformulas via and */
+    and?: InputMaybe<Array<AggregatedIssueRelationFilterInput>>;
+    /** Filters for nodes where the related node match this filter */
+    end?: InputMaybe<AggregatedIssueFilterInput>;
+    /** Filter by id */
+    id?: InputMaybe<IdFilterInput>;
+    /** Negates the subformula */
+    not?: InputMaybe<AggregatedIssueRelationFilterInput>;
+    /** Connects all subformulas via or */
+    or?: InputMaybe<Array<AggregatedIssueRelationFilterInput>>;
+    /** Filters for nodes where the related node match this filter */
+    start?: InputMaybe<AggregatedIssueFilterInput>;
+};
+
+/** Used to filter by a connection-based property. Fields are joined by AND */
+export type AggregatedIssueRelationListFilterInput = {
+    /** Filters for nodes where all of the related nodes match this filter */
+    all?: InputMaybe<AggregatedIssueRelationFilterInput>;
+    /** Filters for nodes where any of the related nodes match this filter */
+    any?: InputMaybe<AggregatedIssueRelationFilterInput>;
+    /** Filters for nodes where none of the related nodes match this filter */
+    none?: InputMaybe<AggregatedIssueRelationFilterInput>;
+};
+
+/** Defines the order of a AggregatedIssueRelation list */
+export type AggregatedIssueRelationOrder = {
+    /** The direction to order by, defaults to ASC */
+    direction?: InputMaybe<OrderDirection>;
+    /** The field to order by, defaults to ID */
+    field?: InputMaybe<AggregatedIssueRelationOrderField>;
+};
+
+/** Fields a list of AggregatedIssueRelation can be sorted by */
+export enum AggregatedIssueRelationOrderField {
+    /** Order by id */
+    Id = "ID"
+}
+
 /** Non global permission entries */
 export enum AllPermissionEntry {
     /**
@@ -3152,6 +3406,8 @@ export type ComponentVersion = AffectedByIssue &
         __typename?: "ComponentVersion";
         /** The issues which affect this entity */
         affectingIssues: IssueConnection;
+        /** AggregatedIssues on this RelationPartner. */
+        aggregatedIssues: AggregatedIssueConnection;
         /** The Component which defines this ComponentVersions */
         component: Component;
         /** The description of this entity. */
@@ -3205,6 +3461,23 @@ export type ComponentVersionAffectingIssuesArgs = {
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
     orderBy?: InputMaybe<IssueOrder>;
+    skip?: InputMaybe<Scalars["Int"]["input"]>;
+};
+
+/**
+ * Version of a component.
+ *     Can specifies visible/invisible InterfaceSpecifications.
+ *     Can be used in Relations, affected by issues and included by Projects.
+ *     READ is granted if READ is granted on `component`.
+ *
+ */
+export type ComponentVersionAggregatedIssuesArgs = {
+    after?: InputMaybe<Scalars["String"]["input"]>;
+    before?: InputMaybe<Scalars["String"]["input"]>;
+    filter?: InputMaybe<AggregatedIssueFilterInput>;
+    first?: InputMaybe<Scalars["Int"]["input"]>;
+    last?: InputMaybe<Scalars["Int"]["input"]>;
+    orderBy?: InputMaybe<AggregatedIssueOrder>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -3375,6 +3648,8 @@ export type ComponentVersionEdge = {
 export type ComponentVersionFilterInput = {
     /** Filter by affectingIssues */
     affectingIssues?: InputMaybe<IssueListFilterInput>;
+    /** Filter by aggregatedIssues */
+    aggregatedIssues?: InputMaybe<AggregatedIssueListFilterInput>;
     /** Connects all subformulas via and */
     and?: InputMaybe<Array<ComponentVersionFilterInput>>;
     /** Filters for nodes where the related node match this filter */
@@ -6146,6 +6421,22 @@ export type IncomingRelationTypeChangedEventHasPermissionArgs = {
     permission?: InputMaybe<AllPermissionEntry>;
 };
 
+/** Filter which can be used to filter for Nodes with a specific Int field */
+export type IntFilterInput = {
+    /** Matches values which are equal to the provided value */
+    eq?: InputMaybe<Scalars["Int"]["input"]>;
+    /** Matches values which are greater than the provided value */
+    gt?: InputMaybe<Scalars["Int"]["input"]>;
+    /** Matches values which are greater than or equal to the provided value */
+    gte?: InputMaybe<Scalars["Int"]["input"]>;
+    /** Matches values which are equal to any of the provided values */
+    in?: InputMaybe<Array<Scalars["Int"]["input"]>>;
+    /** Matches values which are lesser than the provided value */
+    lt?: InputMaybe<Scalars["Int"]["input"]>;
+    /** Matches values which are lesser than or equal to the provided value */
+    lte?: InputMaybe<Scalars["Int"]["input"]>;
+};
+
 /**
  * An interface which is part of a specific ComponentVersion.
  *     Its semantics depend on the InterfaceSpecification it is specified by, e.g. an Interface can represent a REST API.
@@ -6164,6 +6455,8 @@ export type Interface = AffectedByIssue &
         __typename?: "Interface";
         /** The issues which affect this entity */
         affectingIssues: IssueConnection;
+        /** AggregatedIssues on this RelationPartner. */
+        aggregatedIssues: AggregatedIssueConnection;
         /** The description of this entity. */
         description: Scalars["String"]["output"];
         /** Value of an extension field by name of the extension field. Null if the field does not exist. */
@@ -6211,6 +6504,23 @@ export type InterfaceAffectingIssuesArgs = {
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
     orderBy?: InputMaybe<IssueOrder>;
+    skip?: InputMaybe<Scalars["Int"]["input"]>;
+};
+
+/**
+ * An interface which is part of a specific ComponentVersion.
+ *     Its semantics depend on the InterfaceSpecification it is specified by, e.g. an Interface can represent a REST API.
+ *     Can be used in Relations and affected by Issues.
+ *     READ is granted if READ is granted on `interfaceDefinition`.
+ *
+ */
+export type InterfaceAggregatedIssuesArgs = {
+    after?: InputMaybe<Scalars["String"]["input"]>;
+    before?: InputMaybe<Scalars["String"]["input"]>;
+    filter?: InputMaybe<AggregatedIssueFilterInput>;
+    first?: InputMaybe<Scalars["Int"]["input"]>;
+    last?: InputMaybe<Scalars["Int"]["input"]>;
+    orderBy?: InputMaybe<AggregatedIssueOrder>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -6675,6 +6985,8 @@ export type InterfaceEdge = {
 export type InterfaceFilterInput = {
     /** Filter by affectingIssues */
     affectingIssues?: InputMaybe<IssueListFilterInput>;
+    /** Filter by aggregatedIssues */
+    aggregatedIssues?: InputMaybe<AggregatedIssueListFilterInput>;
     /** Connects all subformulas via and */
     and?: InputMaybe<Array<InterfaceFilterInput>>;
     /** Filter by description */
@@ -8756,6 +9068,8 @@ export type Issue = AuditedNode &
         __typename?: "Issue";
         /** Entities which are in some regard affected by this Issue. */
         affects: AffectedByIssueConnection;
+        /** AggregatedIssues which aggregate this Issue. */
+        aggregatedBy: AggregatedIssueConnection;
         /** Artefacts currently assigned to the Issue. For the history, see timelineItems. */
         artefacts: ArtefactConnection;
         /** Current Assignments to this Issue. For the history, see timelineItems. */
@@ -8852,6 +9166,27 @@ export type IssueAffectsArgs = {
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
     orderBy?: InputMaybe<AffectedByIssueOrder>;
+    skip?: InputMaybe<Scalars["Int"]["input"]>;
+};
+
+/**
+ * An Issue in the Gropius system.
+ *     Issues can be used to report bugs, request features, ask questions, ...
+ *     Issues are synced to all IMSProjects of Trackables they are part of.
+ *     All changes to the Issue are reflected by the timeline.
+ *     READ is granted if READ is granted on any Trackable in `trackables`.
+ *     Caution: due to confidentiality reasons, updates to `incomingRelations` do not cause updates on `lastModifiedBy`
+ *     and `participants`, however, `lastModifiedAt` and `lastUpdatedAt` is still changed.
+ *     The same applies to RelatedByIssueEvent, RemovedIncomingRelationEvent and IncomingRelationTypeChangedEvent.
+ *
+ */
+export type IssueAggregatedByArgs = {
+    after?: InputMaybe<Scalars["String"]["input"]>;
+    before?: InputMaybe<Scalars["String"]["input"]>;
+    filter?: InputMaybe<AggregatedIssueFilterInput>;
+    first?: InputMaybe<Scalars["Int"]["input"]>;
+    last?: InputMaybe<Scalars["Int"]["input"]>;
+    orderBy?: InputMaybe<AggregatedIssueOrder>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -9415,6 +9750,8 @@ export type IssueEdge = {
 export type IssueFilterInput = {
     /** Filter by affects */
     affects?: InputMaybe<AffectedByIssueListFilterInput>;
+    /** Filter by aggregatedBy */
+    aggregatedBy?: InputMaybe<AggregatedIssueListFilterInput>;
     /** Connects all subformulas via and */
     and?: InputMaybe<Array<IssueFilterInput>>;
     /** Filter by artefacts */
@@ -12824,6 +13161,8 @@ export type Query = {
     projects: ProjectConnection;
     /** Query for nodes of type RelationTemplate */
     relationTemplates: RelationTemplateConnection;
+    /** Search for nodes of type AffectedByIssue */
+    searchAffectedByIssues: Array<AffectedByIssue>;
     /** Search for nodes of type AssignmentType */
     searchAssignmentTypes: Array<AssignmentType>;
     /** Search for nodes of type GropiusUser */
@@ -12840,6 +13179,8 @@ export type Query = {
     searchIssues: Array<Issue>;
     /** Search for nodes of type Label */
     searchLabels: Array<Label>;
+    /** Search for nodes of type Trackable */
+    searchTrackables: Array<Trackable>;
     /** Search for nodes of type User */
     searchUsers: Array<User>;
 };
@@ -12938,6 +13279,12 @@ export type QueryRelationTemplatesArgs = {
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
+export type QuerySearchAffectedByIssuesArgs = {
+    filter?: InputMaybe<AffectedByIssueFilterInput>;
+    first: Scalars["Int"]["input"];
+    query: Scalars["String"]["input"];
+};
+
 export type QuerySearchAssignmentTypesArgs = {
     filter?: InputMaybe<AssignmentTypeFilterInput>;
     first: Scalars["Int"]["input"];
@@ -12982,6 +13329,12 @@ export type QuerySearchIssuesArgs = {
 
 export type QuerySearchLabelsArgs = {
     filter?: InputMaybe<LabelFilterInput>;
+    first: Scalars["Int"]["input"];
+    query: Scalars["String"]["input"];
+};
+
+export type QuerySearchTrackablesArgs = {
+    filter?: InputMaybe<TrackableFilterInput>;
     first: Scalars["Int"]["input"];
     query: Scalars["String"]["input"];
 };
@@ -13567,6 +13920,8 @@ export enum RelationOrderField {
 export type RelationPartner = {
     /** The issues which affect this entity */
     affectingIssues: IssueConnection;
+    /** AggregatedIssues on this RelationPartner. */
+    aggregatedIssues: AggregatedIssueConnection;
     /** The description of this entity. */
     description: Scalars["String"]["output"];
     /** Value of an extension field by name of the extension field. Null if the field does not exist. */
@@ -13602,6 +13957,17 @@ export type RelationPartnerAffectingIssuesArgs = {
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
     orderBy?: InputMaybe<IssueOrder>;
+    skip?: InputMaybe<Scalars["Int"]["input"]>;
+};
+
+/** Entity which can be used as start / end of Relations. Can be affected by Issues. */
+export type RelationPartnerAggregatedIssuesArgs = {
+    after?: InputMaybe<Scalars["String"]["input"]>;
+    before?: InputMaybe<Scalars["String"]["input"]>;
+    filter?: InputMaybe<AggregatedIssueFilterInput>;
+    first?: InputMaybe<Scalars["Int"]["input"]>;
+    last?: InputMaybe<Scalars["Int"]["input"]>;
+    orderBy?: InputMaybe<AggregatedIssueOrder>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -13657,6 +14023,8 @@ export type RelationPartnerTemplatedFieldsArgs = {
 export type RelationPartnerFilterInput = {
     /** Filter by affectingIssues */
     affectingIssues?: InputMaybe<IssueListFilterInput>;
+    /** Filter by aggregatedIssues */
+    aggregatedIssues?: InputMaybe<AggregatedIssueListFilterInput>;
     /** Connects all subformulas via and */
     and?: InputMaybe<Array<RelationPartnerFilterInput>>;
     /** Filter by description */
@@ -16763,6 +17131,8 @@ export type FirstAssignmentTypesQuery = {
         | { __typename?: "AddedLabelEvent" }
         | { __typename?: "AddedToPinnedIssuesEvent" }
         | { __typename?: "AddedToTrackableEvent" }
+        | { __typename?: "AggregatedIssue" }
+        | { __typename?: "AggregatedIssueRelation" }
         | { __typename?: "Artefact" }
         | { __typename?: "ArtefactTemplate" }
         | { __typename?: "Assignment" }
@@ -16923,6 +17293,8 @@ export type GetComponentQuery = {
         | { __typename?: "AddedLabelEvent"; id: string }
         | { __typename?: "AddedToPinnedIssuesEvent"; id: string }
         | { __typename?: "AddedToTrackableEvent"; id: string }
+        | { __typename?: "AggregatedIssue"; id: string }
+        | { __typename?: "AggregatedIssueRelation"; id: string }
         | { __typename?: "Artefact"; id: string }
         | { __typename?: "ArtefactTemplate"; id: string }
         | { __typename?: "Assignment"; id: string }
@@ -16930,7 +17302,7 @@ export type GetComponentQuery = {
         | { __typename?: "AssignmentTypeChangedEvent"; id: string }
         | { __typename?: "Body"; id: string }
         | {
-              __typename?: "Component";
+              __typename: "Component";
               name: string;
               description: string;
               id: string;
@@ -17019,6 +17391,8 @@ export type GetIssuesQuery = {
         | { __typename?: "AddedLabelEvent" }
         | { __typename?: "AddedToPinnedIssuesEvent" }
         | { __typename?: "AddedToTrackableEvent" }
+        | { __typename?: "AggregatedIssue" }
+        | { __typename?: "AggregatedIssueRelation" }
         | { __typename?: "Artefact" }
         | { __typename?: "ArtefactTemplate" }
         | { __typename?: "Assignment" }
@@ -17231,6 +17605,8 @@ export type GetIssueQuery = {
         | { __typename?: "AddedLabelEvent" }
         | { __typename?: "AddedToPinnedIssuesEvent" }
         | { __typename?: "AddedToTrackableEvent" }
+        | { __typename?: "AggregatedIssue" }
+        | { __typename?: "AggregatedIssueRelation" }
         | { __typename?: "Artefact" }
         | { __typename?: "ArtefactTemplate" }
         | { __typename?: "Assignment" }
@@ -18708,6 +19084,7 @@ export type DefaultIssueIconInfoFragment = {
 export type SearchIssuesQueryVariables = Exact<{
     query: Scalars["String"]["input"];
     count: Scalars["Int"]["input"];
+    trackable: Scalars["ID"]["input"];
 }>;
 
 export type SearchIssuesQuery = {
@@ -18851,6 +19228,8 @@ export type FirstIssueRelationTypesQuery = {
         | { __typename?: "AddedLabelEvent" }
         | { __typename?: "AddedToPinnedIssuesEvent" }
         | { __typename?: "AddedToTrackableEvent" }
+        | { __typename?: "AggregatedIssue" }
+        | { __typename?: "AggregatedIssueRelation" }
         | { __typename?: "Artefact" }
         | { __typename?: "ArtefactTemplate" }
         | { __typename?: "Assignment" }
@@ -19022,6 +19401,8 @@ export type FirstIssueStatesQuery = {
         | { __typename?: "AddedLabelEvent" }
         | { __typename?: "AddedToPinnedIssuesEvent" }
         | { __typename?: "AddedToTrackableEvent" }
+        | { __typename?: "AggregatedIssue" }
+        | { __typename?: "AggregatedIssueRelation" }
         | { __typename?: "Artefact" }
         | { __typename?: "ArtefactTemplate" }
         | { __typename?: "Assignment" }
@@ -19197,6 +19578,8 @@ export type FirstIssueTypesQuery = {
         | { __typename?: "AddedLabelEvent" }
         | { __typename?: "AddedToPinnedIssuesEvent" }
         | { __typename?: "AddedToTrackableEvent" }
+        | { __typename?: "AggregatedIssue" }
+        | { __typename?: "AggregatedIssueRelation" }
         | { __typename?: "Artefact" }
         | { __typename?: "ArtefactTemplate" }
         | { __typename?: "Assignment" }
@@ -19337,6 +19720,8 @@ export type FirstLabelsQuery = {
         | { __typename?: "AddedLabelEvent" }
         | { __typename?: "AddedToPinnedIssuesEvent" }
         | { __typename?: "AddedToTrackableEvent" }
+        | { __typename?: "AggregatedIssue" }
+        | { __typename?: "AggregatedIssueRelation" }
         | { __typename?: "Artefact" }
         | { __typename?: "ArtefactTemplate" }
         | { __typename?: "Assignment" }
@@ -19526,6 +19911,8 @@ export type GetProjectQuery = {
         | { __typename?: "AddedLabelEvent"; id: string }
         | { __typename?: "AddedToPinnedIssuesEvent"; id: string }
         | { __typename?: "AddedToTrackableEvent"; id: string }
+        | { __typename?: "AggregatedIssue"; id: string }
+        | { __typename?: "AggregatedIssueRelation"; id: string }
         | { __typename?: "Artefact"; id: string }
         | { __typename?: "ArtefactTemplate"; id: string }
         | { __typename?: "Assignment"; id: string }
@@ -19576,7 +19963,7 @@ export type GetProjectQuery = {
         | { __typename?: "OutgoingRelationTypeChangedEvent"; id: string }
         | { __typename?: "PriorityChangedEvent"; id: string }
         | {
-              __typename?: "Project";
+              __typename: "Project";
               name: string;
               description: string;
               id: string;
@@ -21270,6 +21657,19 @@ export type DefaultTrackableInfoFragment =
     | DefaultTrackableInfo_Component_Fragment
     | DefaultTrackableInfo_Project_Fragment;
 
+export type SearchTrackablesQueryVariables = Exact<{
+    query: Scalars["String"]["input"];
+    count: Scalars["Int"]["input"];
+}>;
+
+export type SearchTrackablesQuery = {
+    __typename?: "Query";
+    searchTrackables: Array<
+        | { __typename: "Component"; id: string; name: string; description: string }
+        | { __typename: "Project"; id: string; name: string; description: string }
+    >;
+};
+
 export type GetCurrentUserQueryVariables = Exact<{ [key: string]: never }>;
 
 export type GetCurrentUserQuery = {
@@ -22094,6 +22494,7 @@ export const GetComponentDocument = gql`
         node(id: $id) {
             id
             ... on Component {
+                __typename
                 name
                 description
                 ...OpenIssueCount
@@ -22285,8 +22686,8 @@ export const ChangeIssueTitleDocument = gql`
     ${TitleChangedEventTimelineInfoFragmentDoc}
 `;
 export const SearchIssuesDocument = gql`
-    query searchIssues($query: String!, $count: Int!) {
-        searchIssues(query: $query, first: $count) {
+    query searchIssues($query: String!, $count: Int!, $trackable: ID!) {
+        searchIssues(query: $query, first: $count, filter: { trackables: { any: { id: { eq: $trackable } } } }) {
             ...DefaultIssueInfo
         }
     }
@@ -22495,6 +22896,7 @@ export const GetProjectDocument = gql`
         node(id: $id) {
             id
             ... on Project {
+                __typename
                 name
                 description
                 ...OpenIssueCount
@@ -22502,6 +22904,14 @@ export const GetProjectDocument = gql`
         }
     }
     ${OpenIssueCountFragmentDoc}
+`;
+export const SearchTrackablesDocument = gql`
+    query searchTrackables($query: String!, $count: Int!) {
+        searchTrackables(query: $query, first: $count) {
+            ...DefaultTrackableInfo
+        }
+    }
+    ${DefaultTrackableInfoFragmentDoc}
 `;
 export const GetCurrentUserDocument = gql`
     query getCurrentUser {
@@ -23021,6 +23431,20 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "getProject",
+                "query"
+            );
+        },
+        searchTrackables(
+            variables: SearchTrackablesQueryVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<SearchTrackablesQuery> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<SearchTrackablesQuery>(SearchTrackablesDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "searchTrackables",
                 "query"
             );
         },

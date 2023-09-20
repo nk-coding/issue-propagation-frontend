@@ -178,8 +178,8 @@ fragment DefaultIssueIconInfo on Issue {
     }
 }
 
-query searchIssues($query: String!, $count: Int!) {
-    searchIssues(query: $query, first: $count) {
+query searchIssues($query: String!, $count: Int!, $trackable: ID!) {
+    searchIssues(query: $query, first: $count, filter: { trackables: { any: { id: { eq: $trackable } } }}) {
         ...DefaultIssueInfo
     }
 }

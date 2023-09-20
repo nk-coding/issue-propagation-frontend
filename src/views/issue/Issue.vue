@@ -117,7 +117,6 @@
                             :dependency="[labels]"
                             mode="add"
                             menu-mode="repeating"
-                            @selected-item="addLabel"
                             hide-details
                             variant="outlined"
                             density="comfortable"
@@ -127,6 +126,7 @@
                             auto-select-first
                             item-title="name"
                             item-value="id"
+                            @selected-item="addLabel"
                         >
                             <template #item="{ props, item: label }">
                                 <v-list-item :title="label.raw.name" :subtitle="label.raw.description" v-bind="props">
@@ -172,12 +172,12 @@
                     </template>
                     <template #ItemAutocomplete>
                         <UserAutocomplete
-                            @selected-item="assignUser"
                             :fetch="searchUsers"
                             label="Assign user"
                             class="mb-2"
                             hide-details
                             autofocus
+                            @selected-item="assignUser"
                         />
                     </template>
                 </TypedEditableCompartment>
@@ -223,11 +223,12 @@
                     </template>
                     <template #ItemAutocomplete>
                         <IssueAutocomplete
-                            @selected-item="addOutgoingRelation"
                             label="Add related issue"
                             class="mb-2"
                             hide-details
                             autofocus
+                            :initial-context="trackable ?? undefined"
+                            @selected-item="addOutgoingRelation"
                         />
                     </template>
                 </TypedEditableCompartment>
@@ -275,7 +276,7 @@ import {
     DefaultUserInfoFragment,
     OutgoingRelationTimelineInfoFragment
 } from "@/graphql/generated";
-import { issueKey } from "@/util/keys";
+import { issueKey, trackableKey } from "@/util/keys";
 import IssueTypeAutocomplete from "@/components/input/IssueTypeAutocomplete.vue";
 import IssueStateAutocomplete from "@/components/input/IssueStateAutocomplete.vue";
 import IssueInfo from "@/components/info/Issue.vue";
@@ -285,6 +286,7 @@ import { transformSearchQuery } from "@/util/searchQueryTransformer";
 import TypedEditableCompartment from "@/components/TypedEditableCompartment.vue";
 import AssignmentTypeAutocomplete from "@/components/input/AssignmentTypeAutocomplete.vue";
 import UserAutocomplete from "@/components/input/UserAutocomplete.vue";
+import { inject } from "vue";
 
 export type Issue = NodeReturnType<"getIssue", "Issue">;
 
@@ -293,6 +295,7 @@ const route = useRoute();
 const store = useAppStore();
 const issueId = computed(() => route.params.issue as string);
 const selectedItem = computed(() => route.query.item as string | undefined);
+const trackable = inject(trackableKey);
 
 const evaluating = ref(false);
 const isReady = computed(() => !evaluating.value && issue.value != null);

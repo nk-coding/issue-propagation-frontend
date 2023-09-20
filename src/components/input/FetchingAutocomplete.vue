@@ -2,20 +2,34 @@
     <v-autocomplete
         v-model:search="search"
         v-model:menu="menu"
-        v-model="proxiedModel"
+        v-model="(proxiedModel as any)"
         :items="items"
+        :multiple="contextMode"
+        :chips="contextMode"
         item-value="id"
-        no-filter
+        :filter-keys="['id']"
+        :custom-filter="(item: any) => item.value != context?.id"
         @update:focused="resetFromFocus"
     >
-        <template v-for="(_, name) in $slots" #[name]="slotData">
-            <slot :name="name" v-bind="slotData" />
+        <template #item="{ props, item }">
+            <slot
+                v-if="!contextSearchMode && item.value != context?.id"
+                name="item"
+                :props="props"
+                :item="(item as ListItem<T>)"
+            ></slot>
+            <slot v-else-if="contextSearchMode" name="context-item" :props="props" :item="(item as ListItem<C>)"></slot>
         </template>
     </v-autocomplete>
 </template>
-<script setup lang="ts" generic="T extends { id: string }">
+<script setup lang="ts" generic="T extends { id: string }, C extends { id: string }">
 import { onMounted, Ref, watch, ref, PropType, computed, nextTick } from "vue";
-import { VAutocomplete } from "vuetify/lib/components/index.mjs";
+
+export interface ListItem<T> {
+    raw: T;
+    value: string;
+    title: string;
+}
 
 const props = defineProps({
     mode: {
@@ -31,8 +45,12 @@ const props = defineProps({
         required: false
     },
     fetch: {
-        type: Function as PropType<(filter: string, count: number) => Promise<T[]>>,
+        type: Function as PropType<(filter: string, count: number, context?: string) => Promise<T[]>>,
         required: true
+    },
+    contextFetch: {
+        type: Function as PropType<(filter: string, count: number) => Promise<C[]>>,
+        required: false
     },
     dependency: {
         type: [String, Number, Array, Object],
@@ -43,6 +61,10 @@ const props = defineProps({
         type: Array as PropType<T[]>,
         required: false,
         default: () => []
+    },
+    initialContext: {
+        type: Object as PropType<C>,
+        required: false
     }
 });
 
@@ -51,12 +73,29 @@ const emit = defineEmits<{
     (event: "update:modelValue", value: string | undefined): void;
 }>();
 
-const items = ref(props.initialItems) as Ref<T[]>;
+const context = ref(props.initialContext) as Ref<C | undefined>;
+const contextMode = computed(() => props.mode == "add-context");
+const contextSearchMode = computed(() => {
+    return contextMode.value && context.value == undefined;
+});
+const initialContextModel = computed(() => {
+    if (contextMode.value) {
+        if (props.initialContext != undefined) {
+            return [props.initialContext as C];
+        } else {
+            return [];
+        }
+    } else {
+        return [];
+    }
+});
+
+const items = ref(contextMode.value ? initialContextModel.value : props.initialItems) as Ref<(T | C)[]>;
 const search = ref<undefined | string>("");
-const menu = ref<boolean>(!!props.menuMode)
+const menu = ref<boolean>(!!props.menuMode);
 const updatedModelValue = ref(false);
 
-const proxiedModel = ref(props.modelValue);
+const proxiedModel = ref(contextMode.value ? initialContextModel.value.map((it) => it.id) : props.modelValue);
 watch(
     () => props.modelValue,
     (model) => {
@@ -92,12 +131,22 @@ watch(
 );
 
 async function updateSearch(search: string) {
-    const newItems = await props.fetch(search, 10);
-    items.value = newItems;
+    let newItems: (T | C)[];
+    if (contextSearchMode.value) {
+        newItems = await props.contextFetch!(search, 10);
+    } else {
+        newItems = await props.fetch(search, 10, context.value?.id);
+    }
+
+    if (contextMode.value && !contextSearchMode.value) {
+        items.value = [context.value as C, ...newItems];
+    } else {
+        items.value = newItems;
+    }
 }
 
 function resetFromFocus(focused: boolean) {
-    if (focused && hasSelection) {
+    if (focused && hasSelection.value) {
         resetSearch();
     }
 }
@@ -112,29 +161,39 @@ function selectedElement(value: any) {
     if (typeof value === "string") {
         id = value;
     } else if (Array.isArray(value)) {
-        // TODO
-        id = undefined;
+        id = value.at(-1);
     } else {
         id = undefined;
     }
-    if (props.mode != "model") {
-        const item = items.value.find((item) => item.id == id);
-        if (item != undefined) {
-            emit("selected-item", item);
-        }
-    } else {
+    const item = items.value.find((item) => item.id == id);
+    if (props.mode == "model") {
         emit("update:modelValue", id);
+    } else if (props.mode == "add") {
+        if (item != undefined) {
+            emit("selected-item", item as T);
+        }
+        proxiedModel.value = undefined;
+        search.value = "";
+    } else {
+        if (value.length == 0) {
+            context.value = undefined;
+        } else if (value.length == 1) {
+            items.value = [item!];
+            context.value = item as C;
+        } else {
+            if (item != undefined) {
+                emit("selected-item", item as T);
+            }
+            (proxiedModel.value as string[]).pop();
+        }
+        search.value = "";
+        menu.value = false;
     }
-    if (props.mode == "add") {
-        nextTick(() =>{
-            proxiedModel.value = undefined;
-            search.value = "";
-        })
-    }
+
     if (props.menuMode == "repeating") {
         nextTick(() => {
             menu.value = true;
-        })
+        });
     }
     resetSearch();
 }

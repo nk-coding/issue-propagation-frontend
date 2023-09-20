@@ -1,11 +1,5 @@
 <template>
-    <FetchingAutocomplete
-        mode="model"
-        :fetch="searchIssueTypes"
-        :dependency="template"
-        label="Type"
-        item-title="name"
-    >
+    <FetchingAutocomplete mode="model" :fetch="searchIssueTypes" :dependency="template" label="Type" item-title="name">
         <template #item="{ props, item }">
             <v-list-item :title="item.raw.name" :subtitle="item.raw.description" v-bind="props">
                 <template #prepend>

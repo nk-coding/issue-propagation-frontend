@@ -1,5 +1,5 @@
 <template>
-    <v-chip :color="label.color" rounded="pill">
+    <v-chip :color="label.color">
         {{ label.name }}
         <v-tooltip activator="parent" location="bottom">
             {{ label.description }}

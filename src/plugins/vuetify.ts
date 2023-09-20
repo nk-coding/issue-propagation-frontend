@@ -60,6 +60,9 @@ export default createVuetify({
             variant: "text",
             color: "tertiary",
             density: "comfortable"
+        },
+        VChip: {
+            rounded: "pill"
         }
     }
 });
