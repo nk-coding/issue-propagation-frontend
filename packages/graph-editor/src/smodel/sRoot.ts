@@ -4,28 +4,12 @@ import { Bounds } from "sprotty-protocol";
 import { LinearAnimatable } from "../features/animation/model";
 import { Math2D } from "../line/math";
 
-const rootAnimatedFields = new Set(["zoom, scrollX, scrollY"]);
-
-export class SRoot extends ViewportRootElement implements LinearAnimatable {
-    readonly animatedFields = rootAnimatedFields;
+export class SRoot extends ViewportRootElement {
     override type: typeof Root.TYPE = Root.TYPE;
     animated?: boolean;
     targetBounds?: Bounds;
 
     changeRevision = 0;
-
-    get scrollX(): number {
-        return this.scroll.x;
-    }
-    set scrollX(value: number) {
-        this.scroll = { ...this.scroll, x: value };
-    }
-    get scrollY(): number {
-        return this.scroll.y;
-    }
-    set scrollY(value: number) {
-        this.scroll = { ...this.scroll, y: value };
-    }
 
     updateToTargetBounds(): void {
         if (this.targetBounds) {
