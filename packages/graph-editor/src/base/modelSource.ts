@@ -110,10 +110,12 @@ export abstract class GraphModelSource extends LocalModelSource {
             maxY = Math.max(maxY, component.y);
             for (const child of component.children) {
                 if (Interface.is(child)) {
-                    minX = Math.min(minX, child.x);
-                    minY = Math.min(minY, child.y);
-                    maxX = Math.max(maxX, child.x);
-                    maxY = Math.max(maxY, child.y);
+                    const x = component.x + child.x;
+                    const y = component.y + child.y;
+                    minX = Math.min(minX, x);
+                    minY = Math.min(minY, y);
+                    maxX = Math.max(maxX, x);
+                    maxY = Math.max(maxY, y);
                 }
             }
         }

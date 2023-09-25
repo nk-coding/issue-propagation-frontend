@@ -33,7 +33,14 @@ export class SRoot extends ViewportRootElement implements LinearAnimatable {
             const targetZoomY = this.canvasBounds.height / this.targetBounds.height;
             this.zoom = Math.min(targetZoomX, targetZoomY);
             const targetCenter = Bounds.center(this.targetBounds);
-            this.scroll = Math2D.scale(targetCenter, this.zoom);
+            const currentCenter = Math2D.scale(
+                {
+                    x: this.canvasBounds.width / 2,
+                    y: this.canvasBounds.height / 2
+                },
+                1 / this.zoom
+            );
+            this.scroll = Math2D.sub(targetCenter, currentCenter);
         }
     }
 
