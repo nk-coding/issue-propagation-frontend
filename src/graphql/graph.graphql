@@ -60,8 +60,8 @@ fragment GraphRelationPartnerInfo on RelationPartner {
     }
     aggregatedIssues {
         nodes {
+            id
             type {
-                id
                 name
                 iconPath
             }
@@ -69,9 +69,7 @@ fragment GraphRelationPartnerInfo on RelationPartner {
             outgoingRelations(filter: { end: { relationPartner: { partOfProject: $project } } }) {
                 nodes {
                     end {
-                        type {
-                            id
-                        }
+                        id
                         relationPartner {
                             id
                         }

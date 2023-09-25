@@ -136,8 +136,8 @@ function extractIssueRelations(relationPartner: GraphRelationPartnerInfoFragment
             return {
                 from: relationPartner.id,
                 to: relation.end!.relationPartner.id,
-                fromType: aggregatedIssue.type.id,
-                toType: relation.end!.type.id
+                fromType: aggregatedIssue.id,
+                toType: relation.end!.id
             };
         });
     });
@@ -208,7 +208,7 @@ function extractIssueTypes(relationPartner: GraphRelationPartnerInfoFragment): I
     return relationPartner.aggregatedIssues.nodes.map((aggregatedIssue) => {
         const type = aggregatedIssue.type;
         return {
-            id: type.id,
+            id: aggregatedIssue.id,
             name: type.name,
             iconPath: type.iconPath,
             count: aggregatedIssue.count

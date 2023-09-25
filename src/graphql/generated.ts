@@ -17880,20 +17880,16 @@ export type GetProjectGraphQuery = {
                                       __typename?: "AggregatedIssueConnection";
                                       nodes: Array<{
                                           __typename?: "AggregatedIssue";
+                                          id: string;
                                           count: number;
-                                          type: {
-                                              __typename?: "IssueType";
-                                              id: string;
-                                              name: string;
-                                              iconPath: string;
-                                          };
+                                          type: { __typename?: "IssueType"; name: string; iconPath: string };
                                           outgoingRelations: {
                                               __typename?: "AggregatedIssueRelationConnection";
                                               nodes: Array<{
                                                   __typename?: "AggregatedIssueRelation";
                                                   end: {
                                                       __typename?: "AggregatedIssue";
-                                                      type: { __typename?: "IssueType"; id: string };
+                                                      id: string;
                                                       relationPartner:
                                                           | { __typename?: "ComponentVersion"; id: string }
                                                           | { __typename?: "Interface"; id: string };
@@ -17966,15 +17962,16 @@ export type GetProjectGraphQuery = {
                           __typename?: "AggregatedIssueConnection";
                           nodes: Array<{
                               __typename?: "AggregatedIssue";
+                              id: string;
                               count: number;
-                              type: { __typename?: "IssueType"; id: string; name: string; iconPath: string };
+                              type: { __typename?: "IssueType"; name: string; iconPath: string };
                               outgoingRelations: {
                                   __typename?: "AggregatedIssueRelationConnection";
                                   nodes: Array<{
                                       __typename?: "AggregatedIssueRelation";
                                       end: {
                                           __typename?: "AggregatedIssue";
-                                          type: { __typename?: "IssueType"; id: string };
+                                          id: string;
                                           relationPartner:
                                               | { __typename?: "ComponentVersion"; id: string }
                                               | { __typename?: "Interface"; id: string };
@@ -18058,15 +18055,16 @@ export type AddComponentVersionToProjectMutation = {
                             __typename?: "AggregatedIssueConnection";
                             nodes: Array<{
                                 __typename?: "AggregatedIssue";
+                                id: string;
                                 count: number;
-                                type: { __typename?: "IssueType"; id: string; name: string; iconPath: string };
+                                type: { __typename?: "IssueType"; name: string; iconPath: string };
                                 outgoingRelations: {
                                     __typename?: "AggregatedIssueRelationConnection";
                                     nodes: Array<{
                                         __typename?: "AggregatedIssueRelation";
                                         end: {
                                             __typename?: "AggregatedIssue";
-                                            type: { __typename?: "IssueType"; id: string };
+                                            id: string;
                                             relationPartner:
                                                 | { __typename?: "ComponentVersion"; id: string }
                                                 | { __typename?: "Interface"; id: string };
@@ -18139,15 +18137,16 @@ export type AddComponentVersionToProjectMutation = {
                 __typename?: "AggregatedIssueConnection";
                 nodes: Array<{
                     __typename?: "AggregatedIssue";
+                    id: string;
                     count: number;
-                    type: { __typename?: "IssueType"; id: string; name: string; iconPath: string };
+                    type: { __typename?: "IssueType"; name: string; iconPath: string };
                     outgoingRelations: {
                         __typename?: "AggregatedIssueRelationConnection";
                         nodes: Array<{
                             __typename?: "AggregatedIssueRelation";
                             end: {
                                 __typename?: "AggregatedIssue";
-                                type: { __typename?: "IssueType"; id: string };
+                                id: string;
                                 relationPartner:
                                     | { __typename?: "ComponentVersion"; id: string }
                                     | { __typename?: "Interface"; id: string };
@@ -18198,15 +18197,16 @@ export type GraphComponentVersionInfoFragment = {
                     __typename?: "AggregatedIssueConnection";
                     nodes: Array<{
                         __typename?: "AggregatedIssue";
+                        id: string;
                         count: number;
-                        type: { __typename?: "IssueType"; id: string; name: string; iconPath: string };
+                        type: { __typename?: "IssueType"; name: string; iconPath: string };
                         outgoingRelations: {
                             __typename?: "AggregatedIssueRelationConnection";
                             nodes: Array<{
                                 __typename?: "AggregatedIssueRelation";
                                 end: {
                                     __typename?: "AggregatedIssue";
-                                    type: { __typename?: "IssueType"; id: string };
+                                    id: string;
                                     relationPartner:
                                         | { __typename?: "ComponentVersion"; id: string }
                                         | { __typename?: "Interface"; id: string };
@@ -18276,15 +18276,16 @@ export type GraphComponentVersionInfoFragment = {
         __typename?: "AggregatedIssueConnection";
         nodes: Array<{
             __typename?: "AggregatedIssue";
+            id: string;
             count: number;
-            type: { __typename?: "IssueType"; id: string; name: string; iconPath: string };
+            type: { __typename?: "IssueType"; name: string; iconPath: string };
             outgoingRelations: {
                 __typename?: "AggregatedIssueRelationConnection";
                 nodes: Array<{
                     __typename?: "AggregatedIssueRelation";
                     end: {
                         __typename?: "AggregatedIssue";
-                        type: { __typename?: "IssueType"; id: string };
+                        id: string;
                         relationPartner:
                             | { __typename?: "ComponentVersion"; id: string }
                             | { __typename?: "Interface"; id: string };
@@ -18321,15 +18322,16 @@ type GraphRelationPartnerInfo_ComponentVersion_Fragment = {
         __typename?: "AggregatedIssueConnection";
         nodes: Array<{
             __typename?: "AggregatedIssue";
+            id: string;
             count: number;
-            type: { __typename?: "IssueType"; id: string; name: string; iconPath: string };
+            type: { __typename?: "IssueType"; name: string; iconPath: string };
             outgoingRelations: {
                 __typename?: "AggregatedIssueRelationConnection";
                 nodes: Array<{
                     __typename?: "AggregatedIssueRelation";
                     end: {
                         __typename?: "AggregatedIssue";
-                        type: { __typename?: "IssueType"; id: string };
+                        id: string;
                         relationPartner:
                             | { __typename?: "ComponentVersion"; id: string }
                             | { __typename?: "Interface"; id: string };
@@ -18366,15 +18368,16 @@ type GraphRelationPartnerInfo_Interface_Fragment = {
         __typename?: "AggregatedIssueConnection";
         nodes: Array<{
             __typename?: "AggregatedIssue";
+            id: string;
             count: number;
-            type: { __typename?: "IssueType"; id: string; name: string; iconPath: string };
+            type: { __typename?: "IssueType"; name: string; iconPath: string };
             outgoingRelations: {
                 __typename?: "AggregatedIssueRelationConnection";
                 nodes: Array<{
                     __typename?: "AggregatedIssueRelation";
                     end: {
                         __typename?: "AggregatedIssue";
-                        type: { __typename?: "IssueType"; id: string };
+                        id: string;
                         relationPartner:
                             | { __typename?: "ComponentVersion"; id: string }
                             | { __typename?: "Interface"; id: string };
@@ -22824,8 +22827,8 @@ export const GraphRelationPartnerInfoFragmentDoc = gql`
         }
         aggregatedIssues {
             nodes {
+                id
                 type {
-                    id
                     name
                     iconPath
                 }
@@ -22833,9 +22836,7 @@ export const GraphRelationPartnerInfoFragmentDoc = gql`
                 outgoingRelations(filter: { end: { relationPartner: { partOfProject: $project } } }) {
                     nodes {
                         end {
-                            type {
-                                id
-                            }
+                            id
                             relationPartner {
                                 id
                             }

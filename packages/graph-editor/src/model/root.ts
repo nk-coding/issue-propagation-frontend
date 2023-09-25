@@ -4,7 +4,7 @@ import { Element } from "./element";
 export interface Root extends Element {
     type: typeof Root.TYPE;
     animated?: boolean;
-    targetBounds?: Bounds
+    targetBounds?: Bounds;
 }
 
 export namespace Root {

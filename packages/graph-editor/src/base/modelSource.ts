@@ -48,7 +48,7 @@ export abstract class GraphModelSource extends LocalModelSource {
         }
     }
 
-    updateGraph(graphAndLayout: { graph?: Graph; layout?: GraphLayout, fitToBounds: boolean }) {
+    updateGraph(graphAndLayout: { graph?: Graph; layout?: GraphLayout; fitToBounds: boolean }) {
         const { graph, layout, fitToBounds } = graphAndLayout;
         if (this.graph == undefined) {
             if (graph == undefined || layout == undefined) {
@@ -85,7 +85,7 @@ export abstract class GraphModelSource extends LocalModelSource {
                 y: centerBounds.y - offset,
                 width: centerBounds.width + 2 * offset,
                 height: centerBounds.height + 2 * offset
-            }
+            };
         }
         return {
             type: "root",
