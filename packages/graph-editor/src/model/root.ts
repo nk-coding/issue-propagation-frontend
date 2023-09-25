@@ -1,8 +1,10 @@
+import { Bounds } from "sprotty-protocol";
 import { Element } from "./element";
 
 export interface Root extends Element {
     type: typeof Root.TYPE;
     animated?: boolean;
+    targetBounds?: Bounds
 }
 
 export namespace Root {

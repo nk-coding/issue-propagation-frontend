@@ -69,12 +69,11 @@ export class UpdateModelCommand extends BaseUpdateModelCommand {
         if (isSelectable(left) && isSelectable(right)) {
             right.selected = left.selected;
         }
-        if (left instanceof SModelRoot && right instanceof SModelRoot) {
+        if (left instanceof SRoot && right instanceof SRoot) {
             right.canvasBounds = left.canvasBounds;
-        }
-        if (left instanceof ViewportRootElement && right instanceof ViewportRootElement) {
             right.scroll = left.scroll;
             right.zoom = left.zoom;
+            right.updateToTargetBounds();
         }
         if (isLinearAnimatable(left) && isLinearAnimatable(right)) {
             const commonFields = computeCommonAnimatableFields(left, right);

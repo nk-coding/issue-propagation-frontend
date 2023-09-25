@@ -13,10 +13,11 @@ import { Interface } from "../model/interface";
 import { Label } from "../model/label";
 import { Relation } from "../model/relation";
 import { UpdateLayoutAction } from "../features/move/updateLayoutAction";
-import { Action, SModelElement, UpdateModelAction } from "sprotty-protocol";
+import { Action, Bounds, SModelElement, UpdateModelAction } from "sprotty-protocol";
 import { Element } from "../model/element";
 import { Chip } from "../model/chip";
 import { IssueType } from "../model/issueType";
+import { Math2D } from "../line/math";
 
 export abstract class GraphModelSource extends LocalModelSource {
     private layout?: GraphLayout;
@@ -47,8 +48,8 @@ export abstract class GraphModelSource extends LocalModelSource {
         }
     }
 
-    updateGraph(graphAndLayout: { graph?: Graph; layout?: GraphLayout }) {
-        const { graph, layout } = graphAndLayout;
+    updateGraph(graphAndLayout: { graph?: Graph; layout?: GraphLayout, fitToBounds: boolean }) {
+        const { graph, layout, fitToBounds } = graphAndLayout;
         if (this.graph == undefined) {
             if (graph == undefined || layout == undefined) {
                 throw new Error("Partial updates are not supported initially");
@@ -60,24 +61,67 @@ export abstract class GraphModelSource extends LocalModelSource {
         if (layout != undefined) {
             this.layout = layout;
         }
-        this.rebuildRoot();
+        this.rebuildRoot(fitToBounds);
     }
 
-    private rebuildRoot() {
+    private rebuildRoot(fitToBounds: boolean) {
         if (this.graph == undefined || this.layout == undefined) {
             throw new Error("Graph and layout must be set");
         }
-        const root = this.createRoot(this.graph, this.layout);
+        const root = this.createRoot(this.graph, this.layout, fitToBounds);
         this.updateModel(root);
     }
 
-    private createRoot(graph: Graph, layout: GraphLayout): Root {
+    private createRoot(graph: Graph, layout: GraphLayout, fitToBounds: boolean): Root {
         const components = graph.components.map((component) => this.createComponent(component, layout));
         const relations = graph.relations.map((relation) => this.createRelation(relation, layout));
+        let targetBounds: Bounds | undefined;
+        if (fitToBounds) {
+            const centerBounds = this.computeCenterBounds(components);
+            // for now this is a good enough estimate
+            const offset = 200;
+            targetBounds = {
+                x: centerBounds.x - offset,
+                y: centerBounds.y - offset,
+                width: centerBounds.width + 2 * offset,
+                height: centerBounds.height + 2 * offset
+            }
+        }
         return {
             type: "root",
             id: "root",
-            children: [...components, ...relations]
+            children: [...components, ...relations],
+            targetBounds
+        };
+    }
+
+    private computeCenterBounds(components: Component[]): Bounds {
+        if (components.length === 0) {
+            return { x: 0, y: 0, width: 0, height: 0 };
+        }
+        let minX = Number.MAX_VALUE;
+        let minY = Number.MAX_VALUE;
+        let maxX = Number.MIN_VALUE;
+        let maxY = Number.MIN_VALUE;
+        for (const component of components) {
+            minX = Math.min(minX, component.x);
+            minY = Math.min(minY, component.y);
+            maxX = Math.max(maxX, component.x);
+            maxY = Math.max(maxY, component.y);
+            for (const child of component.children) {
+                if (Interface.is(child)) {
+                    minX = Math.min(minX, child.x);
+                    minY = Math.min(minY, child.y);
+                    maxX = Math.max(maxX, child.x);
+                    maxY = Math.max(maxY, child.y);
+                }
+            }
+        }
+        return {
+            x: minX,
+            y: minY,
+            width: maxX - minX,
+            height: maxY - minY
         };
     }
 

@@ -47,19 +47,19 @@ onMounted(async () => {
     container.bind(ModelSource).toSelf().inSingletonScope();
     container.bind(TYPES.ModelSource).toService(ModelSource);
     modelSource.value = container.get(ModelSource);
-    modelSource.value!.updateGraph({ graph: props.graph, layout: props.layout.layout });
+    modelSource.value!.updateGraph({ graph: props.graph, layout: props.layout.layout, fitToBounds: true });
 });
 
 watch(
     () => props.graph,
     () => {
-        modelSource.value!.updateGraph({ graph: props.graph });
+        modelSource.value!.updateGraph({ graph: props.graph, fitToBounds: false });
     }
 );
 watch(
     () => props.layout,
     () => {
-        modelSource.value!.updateGraph({ layout: props.layout.layout });
+        modelSource.value!.updateGraph({ layout: props.layout.layout, fitToBounds: props.layout.resetViewport });
     }
 );
 </script>
