@@ -3,6 +3,8 @@ import { eventBusKey } from "./keys";
 
 export type Events = {
     "create-issue": undefined;
+    "add-component-version-to-project": undefined;
+    "layout-component-graph": undefined;
 };
 
 export function onEvent(event: keyof Events, handler: (event: Events[keyof Events]) => void) {

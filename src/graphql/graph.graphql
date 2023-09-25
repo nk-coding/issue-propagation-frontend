@@ -1,0 +1,112 @@
+query getProjectGraph($project: ID!) {
+    node(id: $project) {
+        ... on Project {
+            components {
+                nodes {
+                    ...GraphComponentVersionInfo
+                }
+            }
+        }
+    }
+}
+
+mutation addComponentVersionToProject($project: ID!, $componentVersion: ID!) {
+    addComponentVersionToProject(input: { componentVersion: $componentVersion, project: $project }) {
+        componentVersion {
+            ...GraphComponentVersionInfo
+        }
+    }
+}
+
+fragment GraphComponentVersionInfo on ComponentVersion {
+    name
+    version
+    ...GraphRelationPartnerInfo
+    interfaceDefinitions {
+        nodes {
+            visibleInterface {
+                ...GraphRelationPartnerInfo
+            }
+            interfaceSpecificationVersion {
+                version
+                name
+                interfaceSpecification {
+                    template {
+                        ...GraphRelationPartnerTemplateInfo
+                    }
+                }
+            }
+        }
+    }
+    component {
+        template {
+            ...GraphRelationPartnerTemplateInfo
+        }
+    }
+}
+
+fragment GraphRelationPartnerInfo on RelationPartner {
+    id
+    outgoingRelations(filter: { end: { partOfProject: $project } }) {
+        nodes {
+            id
+            template {
+                ...GraphRelationTemplateInfo
+            }
+            end {
+                id
+            }
+        }
+    }
+    aggregatedIssues {
+        nodes {
+            type {
+                id
+                name
+                iconPath
+            }
+            count
+            outgoingRelations(filter: { end: { relationPartner: { partOfProject: $project } } }) {
+                nodes {
+                    end {
+                        type {
+                            id
+                        }
+                        relationPartner {
+                            id
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+fragment FillStyleInfo on FillStyle {
+    color
+}
+
+fragment StrokeStyleInfo on StrokeStyle {
+    color
+    width
+    dash
+}
+
+fragment GraphRelationPartnerTemplateInfo on RelationPartnerTemplate {
+    fill {
+        ...FillStyleInfo
+    }
+    stroke {
+        ...StrokeStyleInfo
+    }
+    shapeType
+    shapeRadius
+}
+
+fragment GraphRelationTemplateInfo on RelationTemplate {
+    name
+    stroke {
+        ...StrokeStyleInfo
+    }
+    markerType
+}

@@ -78,9 +78,7 @@ const leftSidebarItems = computed(() => {
 });
 
 const rightSidebarItems = computed(() => {
-    if (route.name != "project-issues") {
-        return [];
-    } else {
+    if (route.name == "project-issues") {
         return [
             [
                 {
@@ -93,6 +91,29 @@ const rightSidebarItems = computed(() => {
                 }
             ]
         ];
+    } else if (route.name == "project") {
+        return [
+            [
+                {
+                    icon: "mdi-plus",
+                    description: "Add component version",
+                    color: "secondary",
+                    onClick: () => {
+                        eventBus?.emit("add-component-version-to-project", undefined);
+                    }
+                },
+                {
+                    icon: "mdi-auto-fix",
+                    description: "Layout graph",
+                    color: "secondary",
+                    onClick: () => {
+                        eventBus?.emit("layout-component-graph", undefined);
+                    }
+                }
+            ]
+        ];
+    } else {
+        return [];
     }
 });
 </script>

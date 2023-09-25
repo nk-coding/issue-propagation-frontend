@@ -2,10 +2,7 @@
     <div class="sprotty-wrapper">
         <div :id="editorId" class="sprotty" />
         <div class="ui-container">
-            <v-btn icon variant="text" @click="format">
-                <v-icon icon="mdi-auto-fix" />
-                <v-tooltip activator="parent" location="bottom"> Auto-layout </v-tooltip>
-            </v-btn>
+            
         </div>
     </div>
 </template>
@@ -16,13 +13,18 @@ import { TYPES } from "sprotty";
 import { PropType, onMounted, shallowRef, watch, ref } from "vue";
 import { v4 as uuidv4 } from "uuid";
 
+export interface GraphLayoutWrapper {
+    layout: GraphLayout;
+    resetViewport: boolean;
+}
+
 const props = defineProps({
     graph: {
         type: Object as PropType<Graph>,
         required: true
     },
     layout: {
-        type: Object as PropType<GraphLayout>,
+        type: Object as PropType<GraphLayoutWrapper>,
         required: true
     }
 });
@@ -45,7 +47,7 @@ onMounted(async () => {
     container.bind(ModelSource).toSelf().inSingletonScope();
     container.bind(TYPES.ModelSource).toService(ModelSource);
     modelSource.value = container.get(ModelSource);
-    modelSource.value!.updateGraph({ graph: props.graph, layout: props.layout });
+    modelSource.value!.updateGraph({ graph: props.graph, layout: props.layout.layout });
 });
 
 watch(
@@ -57,13 +59,9 @@ watch(
 watch(
     () => props.layout,
     () => {
-        modelSource.value!.updateGraph({ layout: props.layout });
+        modelSource.value!.updateGraph({ layout: props.layout.layout });
     }
 );
-
-function format() {
-    modelSource.value!.autolayout();
-}
 </script>
 <style scoped>
 .sprotty-wrapper {

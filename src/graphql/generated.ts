@@ -92,10 +92,13 @@ export type AddComponentVersionToProjectInput = {
     project: Scalars["ID"]["input"];
 };
 
+/** Payload type for the addComponentVersionToProject mutation */
 export type AddComponentVersionToProjectPayload = {
     __typename?: "AddComponentVersionToProjectPayload";
-    /** The updated Project */
-    project?: Maybe<Project>;
+    /** The added component version */
+    componentVersion: ComponentVersion;
+    /** The updated project */
+    project: Project;
 };
 
 /** Input for the addInterfaceSpecificationVersionToComponentVersion mutation */
@@ -1986,6 +1989,8 @@ export enum BasePermissionOrderField {
     Name = "NAME"
 }
 
+export type BaseStyle = FillStyle | StrokeStyle;
+
 /**
  * Base type for both Template and SubTemplate.
  *     Defines templated fields with specific types (defined using JSON schema).
@@ -3139,6 +3144,8 @@ export type ComponentTemplate = BaseTemplate &
         extensionField?: Maybe<Scalars["JSON"]["output"]>;
         /** All extension fields, if a `namePrefix` is provided, only those matching it */
         extensionFields: Array<JsonField>;
+        /** Style of the fill */
+        fill?: Maybe<FillStyle>;
         /** Checks if the current user has a specific permission on this Node */
         hasPermission?: Maybe<Scalars["Boolean"]["output"]>;
         /** The unique id of this node */
@@ -3155,6 +3162,10 @@ export type ComponentTemplate = BaseTemplate &
         possibleStartOfRelations: RelationConditionConnection;
         /** Templates of InterfaceSpecifications which can be visible on Components with this Template. */
         possibleVisibleInterfaceSpecifications: InterfaceSpecificationTemplateConnection;
+        shapeRadius?: Maybe<Scalars["Float"]["output"]>;
+        shapeType: ShapeType;
+        /** Style of the stroke */
+        stroke?: Maybe<StrokeStyle>;
         /** All template field specifications, if a `namePrefix` is provided, only those matching it */
         templateFieldSpecifications: Array<JsonField>;
         /** Entities which use this template. */
@@ -3678,6 +3689,8 @@ export type ComponentVersionFilterInput = {
     or?: InputMaybe<Array<ComponentVersionFilterInput>>;
     /** Filter by outgoingRelations */
     outgoingRelations?: InputMaybe<RelationListFilterInput>;
+    /** Filters for RelationPartners which are part of a Project's component graph */
+    partOfProject?: InputMaybe<Scalars["ID"]["input"]>;
     /** Filters for AffectedByIssues which are related to a Trackable */
     relatedTo?: InputMaybe<Scalars["ID"]["input"]>;
     /** Filters for nodes where the related node match this filter */
@@ -3961,8 +3974,16 @@ export type CreateComponentTemplateInput = {
     extends?: InputMaybe<Array<Scalars["ID"]["input"]>>;
     /** The initial value of the extension fields */
     extensionFields?: InputMaybe<Array<JsonFieldInput>>;
+    /** Style of the fill */
+    fill?: InputMaybe<FillStyleInput>;
     /** The name of the NamedNode, must not be blank */
     name: Scalars["String"]["input"];
+    /** The corner radius of the shape, ignored for circle/ellipse */
+    shapeRadius?: InputMaybe<Scalars["Float"]["input"]>;
+    /** The type of the shape */
+    shapeType: ShapeType;
+    /** Style of the stroke */
+    stroke?: InputMaybe<StrokeStyleInput>;
     /**
      * Additional initial templateFieldSpecifications, should be a JSON schema JSON.
      *         Must be disjoint with templateFieldSpecifications of templates this template extends.
@@ -4137,6 +4158,8 @@ export type CreateInterfaceSpecificationTemplateInput = {
     extends?: InputMaybe<Array<Scalars["ID"]["input"]>>;
     /** The initial value of the extension fields */
     extensionFields?: InputMaybe<Array<JsonFieldInput>>;
+    /** Style of the fill */
+    fill?: InputMaybe<FillStyleInput>;
     /** SubTemplate for all InterfacesDefinitions of a InterfaceSpecification with the created Template */
     interfaceDefinitionTemplate: NullableSubTemplateInput;
     /** SubTemplate for all InterfaceParts of a InterfaceSpecification with the created Template */
@@ -4147,6 +4170,12 @@ export type CreateInterfaceSpecificationTemplateInput = {
     interfaceTemplate: NullableSubTemplateInput;
     /** The name of the NamedNode, must not be blank */
     name: Scalars["String"]["input"];
+    /** The corner radius of the shape, ignored for circle/ellipse */
+    shapeRadius?: InputMaybe<Scalars["Float"]["input"]>;
+    /** The type of the shape */
+    shapeType: ShapeType;
+    /** Style of the stroke */
+    stroke?: InputMaybe<StrokeStyleInput>;
     /**
      * Additional initial templateFieldSpecifications, should be a JSON schema JSON.
      *         Must be disjoint with templateFieldSpecifications of templates this template extends.
@@ -4397,10 +4426,14 @@ export type CreateRelationTemplateInput = {
     extends?: InputMaybe<Array<Scalars["ID"]["input"]>>;
     /** The initial value of the extension fields */
     extensionFields?: InputMaybe<Array<JsonFieldInput>>;
+    /** The type of the marker at the end of the relation. */
+    markerType: MarkerType;
     /** The name of the NamedNode, must not be blank */
     name: Scalars["String"]["input"];
     /** Defines which Relations can use the created Template, at least one RelationCondition has to match (logical OR) */
     relationConditions: Array<RelationConditionInput>;
+    /** Style of the stroke */
+    stroke?: InputMaybe<StrokeStyleInput>;
     /**
      * Additional initial templateFieldSpecifications, should be a JSON schema JSON.
      *         Must be disjoint with templateFieldSpecifications of templates this template extends.
@@ -4443,6 +4476,7 @@ export type DeleteNodeInput = {
     id: Scalars["ID"]["input"];
 };
 
+/** Payload type for delete node mutations */
 export type DeleteNodePayload = {
     __typename?: "DeleteNodePayload";
     /** The id of the deleted Node */
@@ -4600,6 +4634,21 @@ export type ExtensibleNodeExtensionFieldsArgs = {
 /** Entity which provides dynamic extension fields. */
 export type ExtensibleNodeHasPermissionArgs = {
     permission?: InputMaybe<AllPermissionEntry>;
+};
+
+/** Fill style of a shape */
+export type FillStyle = Node & {
+    __typename?: "FillStyle";
+    /** The color of the fill */
+    color: Scalars["String"]["output"];
+    /** The unique id of this node */
+    id: Scalars["ID"]["output"];
+};
+
+/** Input to create a FillStyle */
+export type FillStyleInput = {
+    /** The color of the fill */
+    color: Scalars["String"]["input"];
 };
 
 /** Filter which can be used to filter for Nodes with a specific Float field */
@@ -7013,6 +7062,8 @@ export type InterfaceFilterInput = {
     or?: InputMaybe<Array<InterfaceFilterInput>>;
     /** Filter by outgoingRelations */
     outgoingRelations?: InputMaybe<RelationListFilterInput>;
+    /** Filters for RelationPartners which are part of a Project's component graph */
+    partOfProject?: InputMaybe<Scalars["ID"]["input"]>;
     /** Filters for AffectedByIssues which are related to a Trackable */
     relatedTo?: InputMaybe<Scalars["ID"]["input"]>;
     /** Filters for nodes where the related node match this filter */
@@ -7773,12 +7824,32 @@ export type InterfaceSpecificationDerivationConditionInput = {
     derivesVisibleDerived: Scalars["Boolean"]["input"];
     /** If true, visible self-defined InterfaceSpecifications are derived */
     derivesVisibleSelfDefined: Scalars["Boolean"]["input"];
+    /** The description of the NamedNode */
+    description: Scalars["String"]["input"];
+    /** IDs of Templates the created template extends. Must be templates of the same type. */
+    extends?: InputMaybe<Array<Scalars["ID"]["input"]>>;
     /** The initial value of the extension fields */
     extensionFields?: InputMaybe<Array<JsonFieldInput>>;
+    /** Style of the fill */
+    fill?: InputMaybe<FillStyleInput>;
     /** If true InterfaceSpecifications are invisible derived */
     isInvisibleDerived: Scalars["Boolean"]["input"];
     /** If true InterfaceSpecifications are visible derived */
     isVisibleDerived: Scalars["Boolean"]["input"];
+    /** The name of the NamedNode, must not be blank */
+    name: Scalars["String"]["input"];
+    /** The corner radius of the shape, ignored for circle/ellipse */
+    shapeRadius?: InputMaybe<Scalars["Float"]["input"]>;
+    /** The type of the shape */
+    shapeType: ShapeType;
+    /** Style of the stroke */
+    stroke?: InputMaybe<StrokeStyleInput>;
+    /**
+     * Additional initial templateFieldSpecifications, should be a JSON schema JSON.
+     *         Must be disjoint with templateFieldSpecifications of templates this template extends.
+     *
+     */
+    templateFieldSpecifications?: InputMaybe<Array<JsonFieldInput>>;
 };
 
 /** Used to filter by a connection-based property. Fields are joined by AND */
@@ -7922,6 +7993,8 @@ export type InterfaceSpecificationTemplate = BaseTemplate &
         extensionField?: Maybe<Scalars["JSON"]["output"]>;
         /** All extension fields, if a `namePrefix` is provided, only those matching it */
         extensionFields: Array<JsonField>;
+        /** Style of the fill */
+        fill?: Maybe<FillStyle>;
         /** Checks if the current user has a specific permission on this Node */
         hasPermission?: Maybe<Scalars["Boolean"]["output"]>;
         /** The unique id of this node */
@@ -7954,6 +8027,10 @@ export type InterfaceSpecificationTemplate = BaseTemplate &
         possibleEndOfRelations: RelationConditionConnection;
         /** RelationConditions which allow this template for the start of the relation. */
         possibleStartOfRelations: RelationConditionConnection;
+        shapeRadius?: Maybe<Scalars["Float"]["output"]>;
+        shapeType: ShapeType;
+        /** Style of the stroke */
+        stroke?: Maybe<StrokeStyle>;
         /** All template field specifications, if a `namePrefix` is provided, only those matching it */
         templateFieldSpecifications: Array<JsonField>;
         /** Entities which use this template. */
@@ -11236,6 +11313,20 @@ export enum LabelOrderField {
     Name = "NAME"
 }
 
+/** Type of a Relation marker */
+export enum MarkerType {
+    /** A regular arrow */
+    Arrow = "ARROW",
+    /** A diamond */
+    Diamond = "DIAMOND",
+    /** A filled diamond */
+    FilledDiamond = "FILLED_DIAMOND",
+    /** A filled triangle */
+    FilledTriangle = "FILLED_TRIANGLE",
+    /** A triangle */
+    Triangle = "TRIANGLE"
+}
+
 /** Interface for all types which support templates describing user writeable fields. */
 export type MutableTemplatedNode = {
     /** Value of a field defined by the template. Error if such a field is not defined. */
@@ -11282,7 +11373,7 @@ export type Mutation = {
      *         with the ComponentVersion
      *
      */
-    addComponentVersionToProject?: Maybe<AddComponentVersionToProjectPayload>;
+    addComponentVersionToProject: AddComponentVersionToProjectPayload;
     /**
      * Adds an InterfaceSpecificationVersion (in)visible to ComponentVersions,
      *         requires ADMIN on the Component of the ComponentVersion to update
@@ -14057,6 +14148,8 @@ export type RelationPartnerFilterInput = {
     or?: InputMaybe<Array<RelationPartnerFilterInput>>;
     /** Filter by outgoingRelations */
     outgoingRelations?: InputMaybe<RelationListFilterInput>;
+    /** Filters for RelationPartners which are part of a Project's component graph */
+    partOfProject?: InputMaybe<Scalars["ID"]["input"]>;
     /** Filters for AffectedByIssues which are related to a Trackable */
     relatedTo?: InputMaybe<Scalars["ID"]["input"]>;
     /** Filter for templated fields with matching key and values. Entries are joined by AND */
@@ -14071,6 +14164,8 @@ export type RelationPartnerTemplate = {
     extensionField?: Maybe<Scalars["JSON"]["output"]>;
     /** All extension fields, if a `namePrefix` is provided, only those matching it */
     extensionFields: Array<JsonField>;
+    /** Style of the fill */
+    fill?: Maybe<FillStyle>;
     /** Checks if the current user has a specific permission on this Node */
     hasPermission?: Maybe<Scalars["Boolean"]["output"]>;
     /** The unique id of this node */
@@ -14083,6 +14178,12 @@ export type RelationPartnerTemplate = {
     possibleEndOfRelations: RelationConditionConnection;
     /** RelationConditions which allow this template for the start of the relation. */
     possibleStartOfRelations: RelationConditionConnection;
+    /** The corner radius of the shape, ignored for circle/ellipse. */
+    shapeRadius?: Maybe<Scalars["Float"]["output"]>;
+    /** The type of the shape. */
+    shapeType: ShapeType;
+    /** Style of the stroke */
+    stroke?: Maybe<StrokeStyle>;
     /** All template field specifications, if a `namePrefix` is provided, only those matching it */
     templateFieldSpecifications: Array<JsonField>;
 };
@@ -14229,10 +14330,14 @@ export type RelationTemplate = BaseTemplate &
         id: Scalars["ID"]["output"];
         /** If true, this template is deprecated and cannot be used for new entities any more. */
         isDeprecated: Scalars["Boolean"]["output"];
+        /** The type of the marker at the end of the relation. */
+        markerType: MarkerType;
         /** The name of this entity. */
         name: Scalars["String"]["output"];
         /** Defines which Relations can use this template, at least one RelationCondition has to match */
         relationConditions: RelationConditionConnection;
+        /** Style of the stroke */
+        stroke?: Maybe<StrokeStyle>;
         /** All template field specifications, if a `namePrefix` is provided, only those matching it */
         templateFieldSpecifications: Array<JsonField>;
         /** Entities which use this template. */
@@ -15236,6 +15341,20 @@ export type RemovedTemplatedFieldEventHasPermissionArgs = {
     permission?: InputMaybe<AllPermissionEntry>;
 };
 
+/** Type of a Shape */
+export enum ShapeType {
+    /** A Circle */
+    Circle = "CIRCLE",
+    /** An Ellipse */
+    Ellipse = "ELLIPSE",
+    /** A Hexagon */
+    Hexagon = "HEXAGON",
+    /** A Rectangle */
+    Rect = "RECT",
+    /** A Rhombus */
+    Rhombus = "RHOMBUS"
+}
+
 /**
  * Event representing that the spent time of an Issue changed.
  *     READ is granted if READ is granted on `issue`.
@@ -15447,6 +15566,29 @@ export type StringFilterInput = {
     matches?: InputMaybe<Scalars["String"]["input"]>;
     /** Matches Strings which start with the provided value */
     startsWith?: InputMaybe<Scalars["String"]["input"]>;
+};
+
+/** Style of the stroke */
+export type StrokeStyle = Node & {
+    __typename?: "StrokeStyle";
+    /** The color of the stroke */
+    color?: Maybe<Scalars["String"]["output"]>;
+    /** The dash pattern of the stroke */
+    dash?: Maybe<Array<Scalars["Float"]["output"]>>;
+    /** The unique id of this node */
+    id: Scalars["ID"]["output"];
+    /** The width of the stroke */
+    width?: Maybe<Scalars["Float"]["output"]>;
+};
+
+/** Input to create a StrokeStyle */
+export type StrokeStyleInput = {
+    /** The color of the stroke */
+    color?: InputMaybe<Scalars["String"]["input"]>;
+    /** The dash pattern of the stroke */
+    dash?: InputMaybe<Array<Scalars["Float"]["input"]>>;
+    /** The width of the stroke */
+    width?: InputMaybe<Scalars["Float"]["input"]>;
 };
 
 /**
@@ -17098,6 +17240,7 @@ export type GetComponentVersionsQuery = {
         | { __typename?: "ComponentVersionTemplate"; id: string }
         | { __typename?: "DueDateChangedEvent"; id: string }
         | { __typename?: "EstimatedTimeChangedEvent"; id: string }
+        | { __typename?: "FillStyle"; id: string }
         | { __typename?: "GlobalPermission"; id: string }
         | { __typename?: "GropiusUser"; id: string }
         | { __typename?: "IMS"; id: string }
@@ -17152,6 +17295,7 @@ export type GetComponentVersionsQuery = {
         | { __typename?: "SpentTimeChangedEvent"; id: string }
         | { __typename?: "StartDateChangedEvent"; id: string }
         | { __typename?: "StateChangedEvent"; id: string }
+        | { __typename?: "StrokeStyle"; id: string }
         | { __typename?: "TemplateChangedEvent"; id: string }
         | { __typename?: "TemplatedFieldChangedEvent"; id: string }
         | { __typename?: "TitleChangedEvent"; id: string }
@@ -17397,6 +17541,7 @@ export type FirstAssignmentTypesQuery = {
         | { __typename?: "ComponentVersionTemplate" }
         | { __typename?: "DueDateChangedEvent" }
         | { __typename?: "EstimatedTimeChangedEvent" }
+        | { __typename?: "FillStyle" }
         | { __typename?: "GlobalPermission" }
         | { __typename?: "GropiusUser" }
         | { __typename?: "IMS" }
@@ -17457,6 +17602,7 @@ export type FirstAssignmentTypesQuery = {
         | { __typename?: "SpentTimeChangedEvent" }
         | { __typename?: "StartDateChangedEvent" }
         | { __typename?: "StateChangedEvent" }
+        | { __typename?: "StrokeStyle" }
         | { __typename?: "TemplateChangedEvent" }
         | { __typename?: "TemplatedFieldChangedEvent" }
         | { __typename?: "TitleChangedEvent" }
@@ -17565,6 +17711,7 @@ export type GetComponentQuery = {
         | { __typename?: "ComponentVersionTemplate"; id: string }
         | { __typename?: "DueDateChangedEvent"; id: string }
         | { __typename?: "EstimatedTimeChangedEvent"; id: string }
+        | { __typename?: "FillStyle"; id: string }
         | { __typename?: "GlobalPermission"; id: string }
         | { __typename?: "GropiusUser"; id: string }
         | { __typename?: "IMS"; id: string }
@@ -17619,11 +17766,678 @@ export type GetComponentQuery = {
         | { __typename?: "SpentTimeChangedEvent"; id: string }
         | { __typename?: "StartDateChangedEvent"; id: string }
         | { __typename?: "StateChangedEvent"; id: string }
+        | { __typename?: "StrokeStyle"; id: string }
         | { __typename?: "TemplateChangedEvent"; id: string }
         | { __typename?: "TemplatedFieldChangedEvent"; id: string }
         | { __typename?: "TitleChangedEvent"; id: string }
         | { __typename?: "TypeChangedEvent"; id: string }
         | null;
+};
+
+export type GetProjectGraphQueryVariables = Exact<{
+    project: Scalars["ID"]["input"];
+}>;
+
+export type GetProjectGraphQuery = {
+    __typename?: "Query";
+    node?:
+        | { __typename?: "AddedAffectedEntityEvent" }
+        | { __typename?: "AddedArtefactEvent" }
+        | { __typename?: "AddedLabelEvent" }
+        | { __typename?: "AddedToPinnedIssuesEvent" }
+        | { __typename?: "AddedToTrackableEvent" }
+        | { __typename?: "AggregatedIssue" }
+        | { __typename?: "AggregatedIssueRelation" }
+        | { __typename?: "Artefact" }
+        | { __typename?: "ArtefactTemplate" }
+        | { __typename?: "Assignment" }
+        | { __typename?: "AssignmentType" }
+        | { __typename?: "AssignmentTypeChangedEvent" }
+        | { __typename?: "Body" }
+        | { __typename?: "Component" }
+        | { __typename?: "ComponentPermission" }
+        | { __typename?: "ComponentTemplate" }
+        | { __typename?: "ComponentVersion" }
+        | { __typename?: "ComponentVersionTemplate" }
+        | { __typename?: "DueDateChangedEvent" }
+        | { __typename?: "EstimatedTimeChangedEvent" }
+        | { __typename?: "FillStyle" }
+        | { __typename?: "GlobalPermission" }
+        | { __typename?: "GropiusUser" }
+        | { __typename?: "IMS" }
+        | { __typename?: "IMSIssue" }
+        | { __typename?: "IMSIssueTemplate" }
+        | { __typename?: "IMSPermission" }
+        | { __typename?: "IMSProject" }
+        | { __typename?: "IMSProjectTemplate" }
+        | { __typename?: "IMSTemplate" }
+        | { __typename?: "IMSUser" }
+        | { __typename?: "IMSUserTemplate" }
+        | { __typename?: "IncomingRelationTypeChangedEvent" }
+        | { __typename?: "Interface" }
+        | { __typename?: "InterfaceDefinition" }
+        | { __typename?: "InterfaceDefinitionTemplate" }
+        | { __typename?: "InterfacePart" }
+        | { __typename?: "InterfacePartTemplate" }
+        | { __typename?: "InterfaceSpecification" }
+        | { __typename?: "InterfaceSpecificationDerivationCondition" }
+        | { __typename?: "InterfaceSpecificationTemplate" }
+        | { __typename?: "InterfaceSpecificationVersion" }
+        | { __typename?: "InterfaceSpecificationVersionTemplate" }
+        | { __typename?: "InterfaceTemplate" }
+        | { __typename?: "IntraComponentDependencyParticipant" }
+        | { __typename?: "IntraComponentDependencySpecification" }
+        | { __typename?: "Issue" }
+        | { __typename?: "IssueComment" }
+        | { __typename?: "IssuePriority" }
+        | { __typename?: "IssueRelation" }
+        | { __typename?: "IssueRelationType" }
+        | { __typename?: "IssueState" }
+        | { __typename?: "IssueTemplate" }
+        | { __typename?: "IssueType" }
+        | { __typename?: "Label" }
+        | { __typename?: "OutgoingRelationTypeChangedEvent" }
+        | { __typename?: "PriorityChangedEvent" }
+        | {
+              __typename?: "Project";
+              components: {
+                  __typename?: "ComponentVersionConnection";
+                  nodes: Array<{
+                      __typename?: "ComponentVersion";
+                      name: string;
+                      version: string;
+                      id: string;
+                      interfaceDefinitions: {
+                          __typename?: "InterfaceDefinitionConnection";
+                          nodes: Array<{
+                              __typename?: "InterfaceDefinition";
+                              visibleInterface?: {
+                                  __typename?: "Interface";
+                                  id: string;
+                                  outgoingRelations: {
+                                      __typename?: "RelationConnection";
+                                      nodes: Array<{
+                                          __typename?: "Relation";
+                                          id: string;
+                                          template: {
+                                              __typename?: "RelationTemplate";
+                                              name: string;
+                                              markerType: MarkerType;
+                                              stroke?: {
+                                                  __typename?: "StrokeStyle";
+                                                  color?: string | null;
+                                                  width?: number | null;
+                                                  dash?: Array<number> | null;
+                                              } | null;
+                                          };
+                                          end?:
+                                              | { __typename?: "ComponentVersion"; id: string }
+                                              | { __typename?: "Interface"; id: string }
+                                              | null;
+                                      }>;
+                                  };
+                                  aggregatedIssues: {
+                                      __typename?: "AggregatedIssueConnection";
+                                      nodes: Array<{
+                                          __typename?: "AggregatedIssue";
+                                          count: number;
+                                          type: {
+                                              __typename?: "IssueType";
+                                              id: string;
+                                              name: string;
+                                              iconPath: string;
+                                          };
+                                          outgoingRelations: {
+                                              __typename?: "AggregatedIssueRelationConnection";
+                                              nodes: Array<{
+                                                  __typename?: "AggregatedIssueRelation";
+                                                  end: {
+                                                      __typename?: "AggregatedIssue";
+                                                      type: { __typename?: "IssueType"; id: string };
+                                                      relationPartner:
+                                                          | { __typename?: "ComponentVersion"; id: string }
+                                                          | { __typename?: "Interface"; id: string };
+                                                  };
+                                              }>;
+                                          };
+                                      }>;
+                                  };
+                              } | null;
+                              interfaceSpecificationVersion: {
+                                  __typename?: "InterfaceSpecificationVersion";
+                                  version: string;
+                                  name: string;
+                                  interfaceSpecification: {
+                                      __typename?: "InterfaceSpecification";
+                                      template: {
+                                          __typename?: "InterfaceSpecificationTemplate";
+                                          shapeType: ShapeType;
+                                          shapeRadius?: number | null;
+                                          fill?: { __typename?: "FillStyle"; color: string } | null;
+                                          stroke?: {
+                                              __typename?: "StrokeStyle";
+                                              color?: string | null;
+                                              width?: number | null;
+                                              dash?: Array<number> | null;
+                                          } | null;
+                                      };
+                                  };
+                              };
+                          }>;
+                      };
+                      component: {
+                          __typename?: "Component";
+                          template: {
+                              __typename?: "ComponentTemplate";
+                              shapeType: ShapeType;
+                              shapeRadius?: number | null;
+                              fill?: { __typename?: "FillStyle"; color: string } | null;
+                              stroke?: {
+                                  __typename?: "StrokeStyle";
+                                  color?: string | null;
+                                  width?: number | null;
+                                  dash?: Array<number> | null;
+                              } | null;
+                          };
+                      };
+                      outgoingRelations: {
+                          __typename?: "RelationConnection";
+                          nodes: Array<{
+                              __typename?: "Relation";
+                              id: string;
+                              template: {
+                                  __typename?: "RelationTemplate";
+                                  name: string;
+                                  markerType: MarkerType;
+                                  stroke?: {
+                                      __typename?: "StrokeStyle";
+                                      color?: string | null;
+                                      width?: number | null;
+                                      dash?: Array<number> | null;
+                                  } | null;
+                              };
+                              end?:
+                                  | { __typename?: "ComponentVersion"; id: string }
+                                  | { __typename?: "Interface"; id: string }
+                                  | null;
+                          }>;
+                      };
+                      aggregatedIssues: {
+                          __typename?: "AggregatedIssueConnection";
+                          nodes: Array<{
+                              __typename?: "AggregatedIssue";
+                              count: number;
+                              type: { __typename?: "IssueType"; id: string; name: string; iconPath: string };
+                              outgoingRelations: {
+                                  __typename?: "AggregatedIssueRelationConnection";
+                                  nodes: Array<{
+                                      __typename?: "AggregatedIssueRelation";
+                                      end: {
+                                          __typename?: "AggregatedIssue";
+                                          type: { __typename?: "IssueType"; id: string };
+                                          relationPartner:
+                                              | { __typename?: "ComponentVersion"; id: string }
+                                              | { __typename?: "Interface"; id: string };
+                                      };
+                                  }>;
+                              };
+                          }>;
+                      };
+                  }>;
+              };
+          }
+        | { __typename?: "ProjectPermission" }
+        | { __typename?: "RelatedByIssueEvent" }
+        | { __typename?: "Relation" }
+        | { __typename?: "RelationCondition" }
+        | { __typename?: "RelationTemplate" }
+        | { __typename?: "RemovedAffectedEntityEvent" }
+        | { __typename?: "RemovedArtefactEvent" }
+        | { __typename?: "RemovedAssignmentEvent" }
+        | { __typename?: "RemovedFromPinnedIssuesEvent" }
+        | { __typename?: "RemovedFromTrackableEvent" }
+        | { __typename?: "RemovedIncomingRelationEvent" }
+        | { __typename?: "RemovedLabelEvent" }
+        | { __typename?: "RemovedOutgoingRelationEvent" }
+        | { __typename?: "RemovedTemplatedFieldEvent" }
+        | { __typename?: "SpentTimeChangedEvent" }
+        | { __typename?: "StartDateChangedEvent" }
+        | { __typename?: "StateChangedEvent" }
+        | { __typename?: "StrokeStyle" }
+        | { __typename?: "TemplateChangedEvent" }
+        | { __typename?: "TemplatedFieldChangedEvent" }
+        | { __typename?: "TitleChangedEvent" }
+        | { __typename?: "TypeChangedEvent" }
+        | null;
+};
+
+export type AddComponentVersionToProjectMutationVariables = Exact<{
+    project: Scalars["ID"]["input"];
+    componentVersion: Scalars["ID"]["input"];
+}>;
+
+export type AddComponentVersionToProjectMutation = {
+    __typename?: "Mutation";
+    addComponentVersionToProject: {
+        __typename?: "AddComponentVersionToProjectPayload";
+        componentVersion: {
+            __typename?: "ComponentVersion";
+            name: string;
+            version: string;
+            id: string;
+            interfaceDefinitions: {
+                __typename?: "InterfaceDefinitionConnection";
+                nodes: Array<{
+                    __typename?: "InterfaceDefinition";
+                    visibleInterface?: {
+                        __typename?: "Interface";
+                        id: string;
+                        outgoingRelations: {
+                            __typename?: "RelationConnection";
+                            nodes: Array<{
+                                __typename?: "Relation";
+                                id: string;
+                                template: {
+                                    __typename?: "RelationTemplate";
+                                    name: string;
+                                    markerType: MarkerType;
+                                    stroke?: {
+                                        __typename?: "StrokeStyle";
+                                        color?: string | null;
+                                        width?: number | null;
+                                        dash?: Array<number> | null;
+                                    } | null;
+                                };
+                                end?:
+                                    | { __typename?: "ComponentVersion"; id: string }
+                                    | { __typename?: "Interface"; id: string }
+                                    | null;
+                            }>;
+                        };
+                        aggregatedIssues: {
+                            __typename?: "AggregatedIssueConnection";
+                            nodes: Array<{
+                                __typename?: "AggregatedIssue";
+                                count: number;
+                                type: { __typename?: "IssueType"; id: string; name: string; iconPath: string };
+                                outgoingRelations: {
+                                    __typename?: "AggregatedIssueRelationConnection";
+                                    nodes: Array<{
+                                        __typename?: "AggregatedIssueRelation";
+                                        end: {
+                                            __typename?: "AggregatedIssue";
+                                            type: { __typename?: "IssueType"; id: string };
+                                            relationPartner:
+                                                | { __typename?: "ComponentVersion"; id: string }
+                                                | { __typename?: "Interface"; id: string };
+                                        };
+                                    }>;
+                                };
+                            }>;
+                        };
+                    } | null;
+                    interfaceSpecificationVersion: {
+                        __typename?: "InterfaceSpecificationVersion";
+                        version: string;
+                        name: string;
+                        interfaceSpecification: {
+                            __typename?: "InterfaceSpecification";
+                            template: {
+                                __typename?: "InterfaceSpecificationTemplate";
+                                shapeType: ShapeType;
+                                shapeRadius?: number | null;
+                                fill?: { __typename?: "FillStyle"; color: string } | null;
+                                stroke?: {
+                                    __typename?: "StrokeStyle";
+                                    color?: string | null;
+                                    width?: number | null;
+                                    dash?: Array<number> | null;
+                                } | null;
+                            };
+                        };
+                    };
+                }>;
+            };
+            component: {
+                __typename?: "Component";
+                template: {
+                    __typename?: "ComponentTemplate";
+                    shapeType: ShapeType;
+                    shapeRadius?: number | null;
+                    fill?: { __typename?: "FillStyle"; color: string } | null;
+                    stroke?: {
+                        __typename?: "StrokeStyle";
+                        color?: string | null;
+                        width?: number | null;
+                        dash?: Array<number> | null;
+                    } | null;
+                };
+            };
+            outgoingRelations: {
+                __typename?: "RelationConnection";
+                nodes: Array<{
+                    __typename?: "Relation";
+                    id: string;
+                    template: {
+                        __typename?: "RelationTemplate";
+                        name: string;
+                        markerType: MarkerType;
+                        stroke?: {
+                            __typename?: "StrokeStyle";
+                            color?: string | null;
+                            width?: number | null;
+                            dash?: Array<number> | null;
+                        } | null;
+                    };
+                    end?:
+                        | { __typename?: "ComponentVersion"; id: string }
+                        | { __typename?: "Interface"; id: string }
+                        | null;
+                }>;
+            };
+            aggregatedIssues: {
+                __typename?: "AggregatedIssueConnection";
+                nodes: Array<{
+                    __typename?: "AggregatedIssue";
+                    count: number;
+                    type: { __typename?: "IssueType"; id: string; name: string; iconPath: string };
+                    outgoingRelations: {
+                        __typename?: "AggregatedIssueRelationConnection";
+                        nodes: Array<{
+                            __typename?: "AggregatedIssueRelation";
+                            end: {
+                                __typename?: "AggregatedIssue";
+                                type: { __typename?: "IssueType"; id: string };
+                                relationPartner:
+                                    | { __typename?: "ComponentVersion"; id: string }
+                                    | { __typename?: "Interface"; id: string };
+                            };
+                        }>;
+                    };
+                }>;
+            };
+        };
+    };
+};
+
+export type GraphComponentVersionInfoFragment = {
+    __typename?: "ComponentVersion";
+    name: string;
+    version: string;
+    id: string;
+    interfaceDefinitions: {
+        __typename?: "InterfaceDefinitionConnection";
+        nodes: Array<{
+            __typename?: "InterfaceDefinition";
+            visibleInterface?: {
+                __typename?: "Interface";
+                id: string;
+                outgoingRelations: {
+                    __typename?: "RelationConnection";
+                    nodes: Array<{
+                        __typename?: "Relation";
+                        id: string;
+                        template: {
+                            __typename?: "RelationTemplate";
+                            name: string;
+                            markerType: MarkerType;
+                            stroke?: {
+                                __typename?: "StrokeStyle";
+                                color?: string | null;
+                                width?: number | null;
+                                dash?: Array<number> | null;
+                            } | null;
+                        };
+                        end?:
+                            | { __typename?: "ComponentVersion"; id: string }
+                            | { __typename?: "Interface"; id: string }
+                            | null;
+                    }>;
+                };
+                aggregatedIssues: {
+                    __typename?: "AggregatedIssueConnection";
+                    nodes: Array<{
+                        __typename?: "AggregatedIssue";
+                        count: number;
+                        type: { __typename?: "IssueType"; id: string; name: string; iconPath: string };
+                        outgoingRelations: {
+                            __typename?: "AggregatedIssueRelationConnection";
+                            nodes: Array<{
+                                __typename?: "AggregatedIssueRelation";
+                                end: {
+                                    __typename?: "AggregatedIssue";
+                                    type: { __typename?: "IssueType"; id: string };
+                                    relationPartner:
+                                        | { __typename?: "ComponentVersion"; id: string }
+                                        | { __typename?: "Interface"; id: string };
+                                };
+                            }>;
+                        };
+                    }>;
+                };
+            } | null;
+            interfaceSpecificationVersion: {
+                __typename?: "InterfaceSpecificationVersion";
+                version: string;
+                name: string;
+                interfaceSpecification: {
+                    __typename?: "InterfaceSpecification";
+                    template: {
+                        __typename?: "InterfaceSpecificationTemplate";
+                        shapeType: ShapeType;
+                        shapeRadius?: number | null;
+                        fill?: { __typename?: "FillStyle"; color: string } | null;
+                        stroke?: {
+                            __typename?: "StrokeStyle";
+                            color?: string | null;
+                            width?: number | null;
+                            dash?: Array<number> | null;
+                        } | null;
+                    };
+                };
+            };
+        }>;
+    };
+    component: {
+        __typename?: "Component";
+        template: {
+            __typename?: "ComponentTemplate";
+            shapeType: ShapeType;
+            shapeRadius?: number | null;
+            fill?: { __typename?: "FillStyle"; color: string } | null;
+            stroke?: {
+                __typename?: "StrokeStyle";
+                color?: string | null;
+                width?: number | null;
+                dash?: Array<number> | null;
+            } | null;
+        };
+    };
+    outgoingRelations: {
+        __typename?: "RelationConnection";
+        nodes: Array<{
+            __typename?: "Relation";
+            id: string;
+            template: {
+                __typename?: "RelationTemplate";
+                name: string;
+                markerType: MarkerType;
+                stroke?: {
+                    __typename?: "StrokeStyle";
+                    color?: string | null;
+                    width?: number | null;
+                    dash?: Array<number> | null;
+                } | null;
+            };
+            end?: { __typename?: "ComponentVersion"; id: string } | { __typename?: "Interface"; id: string } | null;
+        }>;
+    };
+    aggregatedIssues: {
+        __typename?: "AggregatedIssueConnection";
+        nodes: Array<{
+            __typename?: "AggregatedIssue";
+            count: number;
+            type: { __typename?: "IssueType"; id: string; name: string; iconPath: string };
+            outgoingRelations: {
+                __typename?: "AggregatedIssueRelationConnection";
+                nodes: Array<{
+                    __typename?: "AggregatedIssueRelation";
+                    end: {
+                        __typename?: "AggregatedIssue";
+                        type: { __typename?: "IssueType"; id: string };
+                        relationPartner:
+                            | { __typename?: "ComponentVersion"; id: string }
+                            | { __typename?: "Interface"; id: string };
+                    };
+                }>;
+            };
+        }>;
+    };
+};
+
+type GraphRelationPartnerInfo_ComponentVersion_Fragment = {
+    __typename?: "ComponentVersion";
+    id: string;
+    outgoingRelations: {
+        __typename?: "RelationConnection";
+        nodes: Array<{
+            __typename?: "Relation";
+            id: string;
+            template: {
+                __typename?: "RelationTemplate";
+                name: string;
+                markerType: MarkerType;
+                stroke?: {
+                    __typename?: "StrokeStyle";
+                    color?: string | null;
+                    width?: number | null;
+                    dash?: Array<number> | null;
+                } | null;
+            };
+            end?: { __typename?: "ComponentVersion"; id: string } | { __typename?: "Interface"; id: string } | null;
+        }>;
+    };
+    aggregatedIssues: {
+        __typename?: "AggregatedIssueConnection";
+        nodes: Array<{
+            __typename?: "AggregatedIssue";
+            count: number;
+            type: { __typename?: "IssueType"; id: string; name: string; iconPath: string };
+            outgoingRelations: {
+                __typename?: "AggregatedIssueRelationConnection";
+                nodes: Array<{
+                    __typename?: "AggregatedIssueRelation";
+                    end: {
+                        __typename?: "AggregatedIssue";
+                        type: { __typename?: "IssueType"; id: string };
+                        relationPartner:
+                            | { __typename?: "ComponentVersion"; id: string }
+                            | { __typename?: "Interface"; id: string };
+                    };
+                }>;
+            };
+        }>;
+    };
+};
+
+type GraphRelationPartnerInfo_Interface_Fragment = {
+    __typename?: "Interface";
+    id: string;
+    outgoingRelations: {
+        __typename?: "RelationConnection";
+        nodes: Array<{
+            __typename?: "Relation";
+            id: string;
+            template: {
+                __typename?: "RelationTemplate";
+                name: string;
+                markerType: MarkerType;
+                stroke?: {
+                    __typename?: "StrokeStyle";
+                    color?: string | null;
+                    width?: number | null;
+                    dash?: Array<number> | null;
+                } | null;
+            };
+            end?: { __typename?: "ComponentVersion"; id: string } | { __typename?: "Interface"; id: string } | null;
+        }>;
+    };
+    aggregatedIssues: {
+        __typename?: "AggregatedIssueConnection";
+        nodes: Array<{
+            __typename?: "AggregatedIssue";
+            count: number;
+            type: { __typename?: "IssueType"; id: string; name: string; iconPath: string };
+            outgoingRelations: {
+                __typename?: "AggregatedIssueRelationConnection";
+                nodes: Array<{
+                    __typename?: "AggregatedIssueRelation";
+                    end: {
+                        __typename?: "AggregatedIssue";
+                        type: { __typename?: "IssueType"; id: string };
+                        relationPartner:
+                            | { __typename?: "ComponentVersion"; id: string }
+                            | { __typename?: "Interface"; id: string };
+                    };
+                }>;
+            };
+        }>;
+    };
+};
+
+export type GraphRelationPartnerInfoFragment =
+    | GraphRelationPartnerInfo_ComponentVersion_Fragment
+    | GraphRelationPartnerInfo_Interface_Fragment;
+
+export type FillStyleInfoFragment = { __typename?: "FillStyle"; color: string };
+
+export type StrokeStyleInfoFragment = {
+    __typename?: "StrokeStyle";
+    color?: string | null;
+    width?: number | null;
+    dash?: Array<number> | null;
+};
+
+type GraphRelationPartnerTemplateInfo_ComponentTemplate_Fragment = {
+    __typename?: "ComponentTemplate";
+    shapeType: ShapeType;
+    shapeRadius?: number | null;
+    fill?: { __typename?: "FillStyle"; color: string } | null;
+    stroke?: {
+        __typename?: "StrokeStyle";
+        color?: string | null;
+        width?: number | null;
+        dash?: Array<number> | null;
+    } | null;
+};
+
+type GraphRelationPartnerTemplateInfo_InterfaceSpecificationTemplate_Fragment = {
+    __typename?: "InterfaceSpecificationTemplate";
+    shapeType: ShapeType;
+    shapeRadius?: number | null;
+    fill?: { __typename?: "FillStyle"; color: string } | null;
+    stroke?: {
+        __typename?: "StrokeStyle";
+        color?: string | null;
+        width?: number | null;
+        dash?: Array<number> | null;
+    } | null;
+};
+
+export type GraphRelationPartnerTemplateInfoFragment =
+    | GraphRelationPartnerTemplateInfo_ComponentTemplate_Fragment
+    | GraphRelationPartnerTemplateInfo_InterfaceSpecificationTemplate_Fragment;
+
+export type GraphRelationTemplateInfoFragment = {
+    __typename?: "RelationTemplate";
+    name: string;
+    markerType: MarkerType;
+    stroke?: {
+        __typename?: "StrokeStyle";
+        color?: string | null;
+        width?: number | null;
+        dash?: Array<number> | null;
+    } | null;
 };
 
 export type GetIssuesQueryVariables = Exact<{
@@ -17720,6 +18534,7 @@ export type GetIssuesQuery = {
         | { __typename?: "ComponentVersionTemplate" }
         | { __typename?: "DueDateChangedEvent" }
         | { __typename?: "EstimatedTimeChangedEvent" }
+        | { __typename?: "FillStyle" }
         | { __typename?: "GlobalPermission" }
         | { __typename?: "GropiusUser" }
         | { __typename?: "IMS" }
@@ -17837,6 +18652,7 @@ export type GetIssuesQuery = {
         | { __typename?: "SpentTimeChangedEvent" }
         | { __typename?: "StartDateChangedEvent" }
         | { __typename?: "StateChangedEvent" }
+        | { __typename?: "StrokeStyle" }
         | { __typename?: "TemplateChangedEvent" }
         | { __typename?: "TemplatedFieldChangedEvent" }
         | { __typename?: "TitleChangedEvent" }
@@ -17871,6 +18687,7 @@ export type GetIssueQuery = {
         | { __typename?: "ComponentVersionTemplate" }
         | { __typename?: "DueDateChangedEvent" }
         | { __typename?: "EstimatedTimeChangedEvent" }
+        | { __typename?: "FillStyle" }
         | { __typename?: "GlobalPermission" }
         | { __typename?: "GropiusUser" }
         | { __typename?: "IMS" }
@@ -19163,6 +19980,7 @@ export type GetIssueQuery = {
         | { __typename?: "SpentTimeChangedEvent" }
         | { __typename?: "StartDateChangedEvent" }
         | { __typename?: "StateChangedEvent" }
+        | { __typename?: "StrokeStyle" }
         | { __typename?: "TemplateChangedEvent" }
         | { __typename?: "TemplatedFieldChangedEvent" }
         | { __typename?: "TitleChangedEvent" }
@@ -19494,6 +20312,7 @@ export type FirstIssueRelationTypesQuery = {
         | { __typename?: "ComponentVersionTemplate" }
         | { __typename?: "DueDateChangedEvent" }
         | { __typename?: "EstimatedTimeChangedEvent" }
+        | { __typename?: "FillStyle" }
         | { __typename?: "GlobalPermission" }
         | { __typename?: "GropiusUser" }
         | { __typename?: "IMS" }
@@ -19554,6 +20373,7 @@ export type FirstIssueRelationTypesQuery = {
         | { __typename?: "SpentTimeChangedEvent" }
         | { __typename?: "StartDateChangedEvent" }
         | { __typename?: "StateChangedEvent" }
+        | { __typename?: "StrokeStyle" }
         | { __typename?: "TemplateChangedEvent" }
         | { __typename?: "TemplatedFieldChangedEvent" }
         | { __typename?: "TitleChangedEvent" }
@@ -19667,6 +20487,7 @@ export type FirstIssueStatesQuery = {
         | { __typename?: "ComponentVersionTemplate" }
         | { __typename?: "DueDateChangedEvent" }
         | { __typename?: "EstimatedTimeChangedEvent" }
+        | { __typename?: "FillStyle" }
         | { __typename?: "GlobalPermission" }
         | { __typename?: "GropiusUser" }
         | { __typename?: "IMS" }
@@ -19733,6 +20554,7 @@ export type FirstIssueStatesQuery = {
         | { __typename?: "SpentTimeChangedEvent" }
         | { __typename?: "StartDateChangedEvent" }
         | { __typename?: "StateChangedEvent" }
+        | { __typename?: "StrokeStyle" }
         | { __typename?: "TemplateChangedEvent" }
         | { __typename?: "TemplatedFieldChangedEvent" }
         | { __typename?: "TitleChangedEvent" }
@@ -19844,6 +20666,7 @@ export type FirstIssueTypesQuery = {
         | { __typename?: "ComponentVersionTemplate" }
         | { __typename?: "DueDateChangedEvent" }
         | { __typename?: "EstimatedTimeChangedEvent" }
+        | { __typename?: "FillStyle" }
         | { __typename?: "GlobalPermission" }
         | { __typename?: "GropiusUser" }
         | { __typename?: "IMS" }
@@ -19910,6 +20733,7 @@ export type FirstIssueTypesQuery = {
         | { __typename?: "SpentTimeChangedEvent" }
         | { __typename?: "StartDateChangedEvent" }
         | { __typename?: "StateChangedEvent" }
+        | { __typename?: "StrokeStyle" }
         | { __typename?: "TemplateChangedEvent" }
         | { __typename?: "TemplatedFieldChangedEvent" }
         | { __typename?: "TitleChangedEvent" }
@@ -19986,6 +20810,7 @@ export type FirstLabelsQuery = {
         | { __typename?: "ComponentVersionTemplate" }
         | { __typename?: "DueDateChangedEvent" }
         | { __typename?: "EstimatedTimeChangedEvent" }
+        | { __typename?: "FillStyle" }
         | { __typename?: "GlobalPermission" }
         | { __typename?: "GropiusUser" }
         | { __typename?: "IMS" }
@@ -20073,6 +20898,7 @@ export type FirstLabelsQuery = {
         | { __typename?: "SpentTimeChangedEvent" }
         | { __typename?: "StartDateChangedEvent" }
         | { __typename?: "StateChangedEvent" }
+        | { __typename?: "StrokeStyle" }
         | { __typename?: "TemplateChangedEvent" }
         | { __typename?: "TemplatedFieldChangedEvent" }
         | { __typename?: "TitleChangedEvent" }
@@ -20177,6 +21003,7 @@ export type GetProjectQuery = {
         | { __typename?: "ComponentVersionTemplate"; id: string }
         | { __typename?: "DueDateChangedEvent"; id: string }
         | { __typename?: "EstimatedTimeChangedEvent"; id: string }
+        | { __typename?: "FillStyle"; id: string }
         | { __typename?: "GlobalPermission"; id: string }
         | { __typename?: "GropiusUser"; id: string }
         | { __typename?: "IMS"; id: string }
@@ -20237,6 +21064,7 @@ export type GetProjectQuery = {
         | { __typename?: "SpentTimeChangedEvent"; id: string }
         | { __typename?: "StartDateChangedEvent"; id: string }
         | { __typename?: "StateChangedEvent"; id: string }
+        | { __typename?: "StrokeStyle"; id: string }
         | { __typename?: "TemplateChangedEvent"; id: string }
         | { __typename?: "TemplatedFieldChangedEvent"; id: string }
         | { __typename?: "TitleChangedEvent"; id: string }
@@ -21963,6 +22791,111 @@ export type SearchManageIssuesUsersQuery = {
     }>;
 };
 
+export const StrokeStyleInfoFragmentDoc = gql`
+    fragment StrokeStyleInfo on StrokeStyle {
+        color
+        width
+        dash
+    }
+`;
+export const GraphRelationTemplateInfoFragmentDoc = gql`
+    fragment GraphRelationTemplateInfo on RelationTemplate {
+        name
+        stroke {
+            ...StrokeStyleInfo
+        }
+        markerType
+    }
+    ${StrokeStyleInfoFragmentDoc}
+`;
+export const GraphRelationPartnerInfoFragmentDoc = gql`
+    fragment GraphRelationPartnerInfo on RelationPartner {
+        id
+        outgoingRelations(filter: { end: { partOfProject: $project } }) {
+            nodes {
+                id
+                template {
+                    ...GraphRelationTemplateInfo
+                }
+                end {
+                    id
+                }
+            }
+        }
+        aggregatedIssues {
+            nodes {
+                type {
+                    id
+                    name
+                    iconPath
+                }
+                count
+                outgoingRelations(filter: { end: { relationPartner: { partOfProject: $project } } }) {
+                    nodes {
+                        end {
+                            type {
+                                id
+                            }
+                            relationPartner {
+                                id
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    ${GraphRelationTemplateInfoFragmentDoc}
+`;
+export const FillStyleInfoFragmentDoc = gql`
+    fragment FillStyleInfo on FillStyle {
+        color
+    }
+`;
+export const GraphRelationPartnerTemplateInfoFragmentDoc = gql`
+    fragment GraphRelationPartnerTemplateInfo on RelationPartnerTemplate {
+        fill {
+            ...FillStyleInfo
+        }
+        stroke {
+            ...StrokeStyleInfo
+        }
+        shapeType
+        shapeRadius
+    }
+    ${FillStyleInfoFragmentDoc}
+    ${StrokeStyleInfoFragmentDoc}
+`;
+export const GraphComponentVersionInfoFragmentDoc = gql`
+    fragment GraphComponentVersionInfo on ComponentVersion {
+        name
+        version
+        ...GraphRelationPartnerInfo
+        interfaceDefinitions {
+            nodes {
+                visibleInterface {
+                    ...GraphRelationPartnerInfo
+                }
+                interfaceSpecificationVersion {
+                    version
+                    name
+                    interfaceSpecification {
+                        template {
+                            ...GraphRelationPartnerTemplateInfo
+                        }
+                    }
+                }
+            }
+        }
+        component {
+            template {
+                ...GraphRelationPartnerTemplateInfo
+            }
+        }
+    }
+    ${GraphRelationPartnerInfoFragmentDoc}
+    ${GraphRelationPartnerTemplateInfoFragmentDoc}
+`;
 export const DefaultIssueRelationTypeInfoFragmentDoc = gql`
     fragment DefaultIssueRelationTypeInfo on IssueRelationType {
         id
@@ -22803,6 +23736,30 @@ export const GetComponentDocument = gql`
     }
     ${OpenIssueCountFragmentDoc}
 `;
+export const GetProjectGraphDocument = gql`
+    query getProjectGraph($project: ID!) {
+        node(id: $project) {
+            ... on Project {
+                components {
+                    nodes {
+                        ...GraphComponentVersionInfo
+                    }
+                }
+            }
+        }
+    }
+    ${GraphComponentVersionInfoFragmentDoc}
+`;
+export const AddComponentVersionToProjectDocument = gql`
+    mutation addComponentVersionToProject($project: ID!, $componentVersion: ID!) {
+        addComponentVersionToProject(input: { componentVersion: $componentVersion, project: $project }) {
+            componentVersion {
+                ...GraphComponentVersionInfo
+            }
+        }
+    }
+    ${GraphComponentVersionInfoFragmentDoc}
+`;
 export const GetIssuesDocument = gql`
     query getIssues($filter: String!, $orderBy: IssueOrder!, $count: Int!, $skip: Int!, $trackable: ID!) {
         node(id: $trackable) {
@@ -23397,6 +24354,35 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                     }),
                 "getComponent",
                 "query"
+            );
+        },
+        getProjectGraph(
+            variables: GetProjectGraphQueryVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<GetProjectGraphQuery> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<GetProjectGraphQuery>(GetProjectGraphDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "getProjectGraph",
+                "query"
+            );
+        },
+        addComponentVersionToProject(
+            variables: AddComponentVersionToProjectMutationVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<AddComponentVersionToProjectMutation> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<AddComponentVersionToProjectMutation>(
+                        AddComponentVersionToProjectDocument,
+                        variables,
+                        { ...requestHeaders, ...wrappedRequestHeaders }
+                    ),
+                "addComponentVersionToProject",
+                "mutation"
             );
         },
         getIssues(
