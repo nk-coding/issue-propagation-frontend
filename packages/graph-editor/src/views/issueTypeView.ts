@@ -1,6 +1,6 @@
 import { injectable } from "inversify";
 import { VNode } from "snabbdom";
-import { IView, RenderingContext, SModelElement, svg } from "sprotty";
+import { IView, RenderingContext, svg } from "sprotty";
 import { SIssueType } from "../smodel/sIssueType";
 import { wrapForeignElement } from "./util";
 import { SChip } from "../smodel/sChip";
@@ -28,7 +28,8 @@ export class IssueTypeView implements IView {
         });
         const folder = svg("path", {
             class: {
-                "issue-type-folder": true
+                "issue-type-folder": true,
+                highlighted: model.highlightedBecause.size > 0
             },
             attrs: {
                 d: issueTypeFolderPath

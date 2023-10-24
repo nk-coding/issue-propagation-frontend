@@ -29,7 +29,7 @@
         "reflect-metadata": "^0.1.13",
         "remark": "^14.0.3",
         "roboto-fontface": "*",
-        "sprotty": "^0.13.0",
+        "sprotty": "^1.0.0",
         "strip-markdown": "^5.0.1",
         "uuid": "^9.0.0",
         "vee-validate": "^4.11.1",

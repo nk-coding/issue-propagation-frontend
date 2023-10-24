@@ -1,7 +1,7 @@
 import {
     MouseListener,
-    SModelElement,
-    SModelRoot,
+    SModelElementImpl,
+    SModelRootImpl,
     findParentByFeature,
     isSelectable,
     isViewport,
@@ -22,7 +22,7 @@ export class MoveMouseListener extends MouseListener {
     private targetElement?: Element;
     private changeRevision = -1;
 
-    override mouseDown(target: SModelElement, event: MouseEvent): Action[] {
+    override mouseDown(target: SModelElementImpl, event: MouseEvent): Action[] {
         if (event.button === 0) {
             const moveableTarget = findParentByFeature(target, isMovable);
             if (moveableTarget != undefined) {
@@ -36,7 +36,7 @@ export class MoveMouseListener extends MouseListener {
         return [];
     }
 
-    override mouseMove(target: SModelElement, event: MouseEvent): Action[] {
+    override mouseMove(target: SModelElementImpl, event: MouseEvent): Action[] {
         if (this.startPosition) {
             if (this.moveHandler === undefined) {
                 this.moveHandler = this.createHandler(target, this.targetElement);
@@ -52,11 +52,11 @@ export class MoveMouseListener extends MouseListener {
         return [];
     }
 
-    override mouseUp(target: SModelElement, event: MouseEvent): Action[] {
+    override mouseUp(target: SModelElementImpl, event: MouseEvent): Action[] {
         return this.commitMove(target, event);
     }
 
-    override mouseEnter(target: SModelElement, event: MouseEvent): Action[] {
+    override mouseEnter(target: SModelElementImpl, event: MouseEvent): Action[] {
         if (event.buttons === 0) {
             return this.commitMove(target, event);
         } else {
@@ -64,7 +64,7 @@ export class MoveMouseListener extends MouseListener {
         }
     }
 
-    private commitMove(target: SModelElement, event: MouseEvent): Action[] {
+    private commitMove(target: SModelElementImpl, event: MouseEvent): Action[] {
         if (this.moveHandler === undefined || this.moveHandler === null) {
             this.startPosition = undefined;
             this.moveHandler = undefined;
@@ -77,7 +77,7 @@ export class MoveMouseListener extends MouseListener {
         return [result];
     }
 
-    private createHandler(target: SModelElement, targetElement?: Element): MoveHandler | undefined {
+    private createHandler(target: SModelElementImpl, targetElement?: Element): MoveHandler | undefined {
         const selected = this.getSelectedElements(target.root).filter((element) => {
             return element.type === Component.TYPE || element.type === Interface.TYPE;
         }) as (SComponent | SInterface)[];
@@ -95,7 +95,7 @@ export class MoveMouseListener extends MouseListener {
         return new ElementMoveHandler(toMove);
     }
 
-    private calculateTranslation(target: SModelElement, event: MouseEvent): Point {
+    private calculateTranslation(target: SModelElementImpl, event: MouseEvent): Point {
         if (this.startPosition == undefined) {
             throw new Error("Cannot calculate translation without a start position");
         }
@@ -106,16 +106,16 @@ export class MoveMouseListener extends MouseListener {
         };
     }
 
-    private getSelectedElements(root: SModelRoot): SModelElement[] {
+    private getSelectedElements(root: SModelRootImpl): SModelElementImpl[] {
         return [...root.index.all().filter((child) => isSelectable(child) && child.selected)];
     }
 }
 
-function findViewportZoom(element: Readonly<SModelElement>): number {
+function findViewportZoom(element: Readonly<SModelElementImpl>): number {
     const viewport = findParentByFeature(element, isViewport);
     return viewport ? viewport.zoom : 1;
 }
 
-function isMovable(element: SModelElement): element is SModelElement {
+function isMovable(element: SModelElementImpl): element is SModelElementImpl {
     return element.hasFeature(moveFeature);
 }

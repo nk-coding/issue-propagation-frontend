@@ -12,8 +12,8 @@
     "dependencies": {
         "bezier-js": "^6.1.4",
         "elkjs": "^0.8.2",
-        "sprotty": "^0.13.0",
-        "sprotty-protocol": "^0.13.0",
+        "sprotty": "^1.0.0",
+        "sprotty-protocol": "^1.0.0",
         "web-worker": "^1.2.0"
     },
     "devDependencies": {

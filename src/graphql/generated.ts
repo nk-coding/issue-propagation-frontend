@@ -15597,8 +15597,6 @@ export type StrokeStyle = Node & {
     dash?: Maybe<Array<Scalars["Float"]["output"]>>;
     /** The unique id of this node */
     id: Scalars["ID"]["output"];
-    /** The width of the stroke */
-    width?: Maybe<Scalars["Float"]["output"]>;
 };
 
 /** Input to create a StrokeStyle */
@@ -15607,8 +15605,6 @@ export type StrokeStyleInput = {
     color?: InputMaybe<Scalars["String"]["input"]>;
     /** The dash pattern of the stroke */
     dash?: InputMaybe<Array<Scalars["Float"]["input"]>>;
-    /** The width of the stroke */
-    width?: InputMaybe<Scalars["Float"]["input"]>;
 };
 
 /**
@@ -17886,7 +17882,6 @@ export type GetProjectGraphQuery = {
                                               stroke?: {
                                                   __typename?: "StrokeStyle";
                                                   color?: string | null;
-                                                  width?: number | null;
                                                   dash?: Array<number> | null;
                                               } | null;
                                           };
@@ -17939,7 +17934,6 @@ export type GetProjectGraphQuery = {
                                           stroke?: {
                                               __typename?: "StrokeStyle";
                                               color?: string | null;
-                                              width?: number | null;
                                               dash?: Array<number> | null;
                                           } | null;
                                       };
@@ -17957,7 +17951,6 @@ export type GetProjectGraphQuery = {
                               stroke?: {
                                   __typename?: "StrokeStyle";
                                   color?: string | null;
-                                  width?: number | null;
                                   dash?: Array<number> | null;
                               } | null;
                           };
@@ -17974,7 +17967,6 @@ export type GetProjectGraphQuery = {
                                   stroke?: {
                                       __typename?: "StrokeStyle";
                                       color?: string | null;
-                                      width?: number | null;
                                       dash?: Array<number> | null;
                                   } | null;
                               };
@@ -18069,7 +18061,6 @@ export type AddComponentVersionToProjectMutation = {
                                     stroke?: {
                                         __typename?: "StrokeStyle";
                                         color?: string | null;
-                                        width?: number | null;
                                         dash?: Array<number> | null;
                                     } | null;
                                 };
@@ -18118,7 +18109,6 @@ export type AddComponentVersionToProjectMutation = {
                                 stroke?: {
                                     __typename?: "StrokeStyle";
                                     color?: string | null;
-                                    width?: number | null;
                                     dash?: Array<number> | null;
                                 } | null;
                             };
@@ -18133,12 +18123,7 @@ export type AddComponentVersionToProjectMutation = {
                     shapeType: ShapeType;
                     shapeRadius?: number | null;
                     fill?: { __typename?: "FillStyle"; color: string } | null;
-                    stroke?: {
-                        __typename?: "StrokeStyle";
-                        color?: string | null;
-                        width?: number | null;
-                        dash?: Array<number> | null;
-                    } | null;
+                    stroke?: { __typename?: "StrokeStyle"; color?: string | null; dash?: Array<number> | null } | null;
                 };
             };
             outgoingRelations: {
@@ -18153,7 +18138,6 @@ export type AddComponentVersionToProjectMutation = {
                         stroke?: {
                             __typename?: "StrokeStyle";
                             color?: string | null;
-                            width?: number | null;
                             dash?: Array<number> | null;
                         } | null;
                     };
@@ -18215,7 +18199,6 @@ export type GraphComponentVersionInfoFragment = {
                             stroke?: {
                                 __typename?: "StrokeStyle";
                                 color?: string | null;
-                                width?: number | null;
                                 dash?: Array<number> | null;
                             } | null;
                         };
@@ -18264,7 +18247,6 @@ export type GraphComponentVersionInfoFragment = {
                         stroke?: {
                             __typename?: "StrokeStyle";
                             color?: string | null;
-                            width?: number | null;
                             dash?: Array<number> | null;
                         } | null;
                     };
@@ -18279,12 +18261,7 @@ export type GraphComponentVersionInfoFragment = {
             shapeType: ShapeType;
             shapeRadius?: number | null;
             fill?: { __typename?: "FillStyle"; color: string } | null;
-            stroke?: {
-                __typename?: "StrokeStyle";
-                color?: string | null;
-                width?: number | null;
-                dash?: Array<number> | null;
-            } | null;
+            stroke?: { __typename?: "StrokeStyle"; color?: string | null; dash?: Array<number> | null } | null;
         };
     };
     outgoingRelations: {
@@ -18296,12 +18273,7 @@ export type GraphComponentVersionInfoFragment = {
                 __typename?: "RelationTemplate";
                 name: string;
                 markerType: MarkerType;
-                stroke?: {
-                    __typename?: "StrokeStyle";
-                    color?: string | null;
-                    width?: number | null;
-                    dash?: Array<number> | null;
-                } | null;
+                stroke?: { __typename?: "StrokeStyle"; color?: string | null; dash?: Array<number> | null } | null;
             };
             end?: { __typename?: "ComponentVersion"; id: string } | { __typename?: "Interface"; id: string } | null;
         }>;
@@ -18344,12 +18316,7 @@ type GraphRelationPartnerInfo_ComponentVersion_Fragment = {
                 __typename?: "RelationTemplate";
                 name: string;
                 markerType: MarkerType;
-                stroke?: {
-                    __typename?: "StrokeStyle";
-                    color?: string | null;
-                    width?: number | null;
-                    dash?: Array<number> | null;
-                } | null;
+                stroke?: { __typename?: "StrokeStyle"; color?: string | null; dash?: Array<number> | null } | null;
             };
             end?: { __typename?: "ComponentVersion"; id: string } | { __typename?: "Interface"; id: string } | null;
         }>;
@@ -18392,12 +18359,7 @@ type GraphRelationPartnerInfo_Interface_Fragment = {
                 __typename?: "RelationTemplate";
                 name: string;
                 markerType: MarkerType;
-                stroke?: {
-                    __typename?: "StrokeStyle";
-                    color?: string | null;
-                    width?: number | null;
-                    dash?: Array<number> | null;
-                } | null;
+                stroke?: { __typename?: "StrokeStyle"; color?: string | null; dash?: Array<number> | null } | null;
             };
             end?: { __typename?: "ComponentVersion"; id: string } | { __typename?: "Interface"; id: string } | null;
         }>;
@@ -18437,7 +18399,6 @@ export type FillStyleInfoFragment = { __typename?: "FillStyle"; color: string };
 export type StrokeStyleInfoFragment = {
     __typename?: "StrokeStyle";
     color?: string | null;
-    width?: number | null;
     dash?: Array<number> | null;
 };
 
@@ -18446,12 +18407,7 @@ type GraphRelationPartnerTemplateInfo_ComponentTemplate_Fragment = {
     shapeType: ShapeType;
     shapeRadius?: number | null;
     fill?: { __typename?: "FillStyle"; color: string } | null;
-    stroke?: {
-        __typename?: "StrokeStyle";
-        color?: string | null;
-        width?: number | null;
-        dash?: Array<number> | null;
-    } | null;
+    stroke?: { __typename?: "StrokeStyle"; color?: string | null; dash?: Array<number> | null } | null;
 };
 
 type GraphRelationPartnerTemplateInfo_InterfaceSpecificationTemplate_Fragment = {
@@ -18459,12 +18415,7 @@ type GraphRelationPartnerTemplateInfo_InterfaceSpecificationTemplate_Fragment = 
     shapeType: ShapeType;
     shapeRadius?: number | null;
     fill?: { __typename?: "FillStyle"; color: string } | null;
-    stroke?: {
-        __typename?: "StrokeStyle";
-        color?: string | null;
-        width?: number | null;
-        dash?: Array<number> | null;
-    } | null;
+    stroke?: { __typename?: "StrokeStyle"; color?: string | null; dash?: Array<number> | null } | null;
 };
 
 export type GraphRelationPartnerTemplateInfoFragment =
@@ -18475,12 +18426,7 @@ export type GraphRelationTemplateInfoFragment = {
     __typename?: "RelationTemplate";
     name: string;
     markerType: MarkerType;
-    stroke?: {
-        __typename?: "StrokeStyle";
-        color?: string | null;
-        width?: number | null;
-        dash?: Array<number> | null;
-    } | null;
+    stroke?: { __typename?: "StrokeStyle"; color?: string | null; dash?: Array<number> | null } | null;
 };
 
 export type GetIssuesQueryVariables = Exact<{
@@ -22844,7 +22790,6 @@ export type SearchManageIssuesUsersQuery = {
 export const StrokeStyleInfoFragmentDoc = gql`
     fragment StrokeStyleInfo on StrokeStyle {
         color
-        width
         dash
     }
 `;

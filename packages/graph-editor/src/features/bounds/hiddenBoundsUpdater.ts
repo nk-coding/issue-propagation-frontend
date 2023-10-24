@@ -1,10 +1,10 @@
 import { injectable } from "inversify";
-import { BoundsAware, HiddenBoundsUpdater as SprottyHiddenBoundsUpdater } from "sprotty";
+import { BoundsAware, SModelElementImpl, HiddenBoundsUpdater as SprottyHiddenBoundsUpdater } from "sprotty";
 import { Bounds } from "sprotty-protocol";
 
 @injectable()
 export class HiddenBoundsUpdater extends SprottyHiddenBoundsUpdater {
-    protected override getBounds(elm: Node, element: BoundsAware): Bounds {
+    protected override getBounds(elm: Node, element: SModelElementImpl & BoundsAware): Bounds {
         if (this.isSVGGraphicsElement(elm)) {
             return super.getBounds(elm, element);
         }

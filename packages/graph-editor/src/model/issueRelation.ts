@@ -6,6 +6,8 @@ export interface IssueRelation extends Element {
     end: string;
     startIndex: number;
     endIndex: number;
+    startType: string;
+    endType: string;
     count: number;
 }
 

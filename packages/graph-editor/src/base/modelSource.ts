@@ -18,7 +18,6 @@ import { Action, Bounds, SModelElement, UpdateModelAction } from "sprotty-protoc
 import { Element } from "../model/element";
 import { Chip } from "../model/chip";
 import { IssueType } from "../model/issueType";
-import { Math2D } from "../line/math";
 import { IssueRelation } from "../model/issueRelation";
 
 export abstract class GraphModelSource extends LocalModelSource {
@@ -96,7 +95,7 @@ export abstract class GraphModelSource extends LocalModelSource {
         return {
             type: "root",
             id: "root",
-            children: [...components, ...relations, ...issueRelations],
+            children: [...issueRelations, ...components, ...relations],
             targetBounds
         };
     }
@@ -136,10 +135,6 @@ export abstract class GraphModelSource extends LocalModelSource {
     private createComponent(component: ComponentVersion, layout: GraphLayout): Component {
         const pos = this.extractComponentLayout(component.id, layout).pos;
         const children: Element[] = component.interfaces.map((i) => this.createInterface(i, layout));
-        let version: Chip | undefined;
-        if (component.version != undefined) {
-            version = this.createChip(component.version, component.id);
-        }
         if (component.version != undefined) {
             children.push(this.createChip(component.version, component.id));
         }
@@ -202,7 +197,7 @@ export abstract class GraphModelSource extends LocalModelSource {
     ): IssueRelation | undefined {
         const start = issueTypeLookup.get(relation.start);
         const end = issueTypeLookup.get(relation.end);
-        if (start == undefined || end == undefined) {
+        if (start == undefined || end == undefined || start[0] === end[0]) {
             return undefined;
         }
         return {
@@ -212,6 +207,8 @@ export abstract class GraphModelSource extends LocalModelSource {
             end: end[0],
             startIndex: start[1],
             endIndex: end[1],
+            startType: relation.start,
+            endType: relation.end,
             count: relation.count,
             children: []
         };

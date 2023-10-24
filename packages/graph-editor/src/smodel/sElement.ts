@@ -1,11 +1,11 @@
-import { SChildElement } from "sprotty";
+import { SChildElementImpl } from "sprotty";
 import { Element } from "../model/element";
 import { SRoot } from "./sRoot";
 
 /**
  * Base class for all elements
  */
-export abstract class SElement extends SChildElement implements Element {
+export abstract class SElement extends SChildElementImpl implements Element {
     declare children: SElement[];
 
     /**

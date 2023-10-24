@@ -189,7 +189,6 @@ function extractRelationStyle(template: GraphRelationTemplateInfoFragment): Rela
     if (template.stroke != undefined) {
         stroke = {
             color: template.stroke.color ?? undefined,
-            width: template.stroke.width ?? undefined,
             dash: template.stroke.dash ?? undefined
         };
     }
@@ -210,7 +209,6 @@ function extractShapeStyle(template: GraphRelationPartnerTemplateInfoFragment): 
     if (template.stroke != undefined) {
         stroke = {
             color: template.stroke.color ?? undefined,
-            width: template.stroke.width ?? undefined,
             dash: template.stroke.dash ?? undefined
         };
     }

@@ -7,10 +7,10 @@ import {
     forEachMatch,
     isSelectable,
     MatchResult,
-    SModelElement,
-    SModelRoot,
+    SModelElementImpl,
+    SModelRootImpl,
     UpdateModelCommand as BaseUpdateModelCommand,
-    ViewportRootElement
+    ViewportRootElementImpl
 } from "sprotty";
 import {
     ElmentLinearInterpolationAnimation,
@@ -28,12 +28,15 @@ export class UpdateModelCommand extends BaseUpdateModelCommand {
         newRoot: SRoot,
         matchResult: MatchResult,
         context: CommandExecutionContext
-    ): SModelRoot | Animation {
+    ): SModelRootImpl | Animation {
         const remainingMatchResult: MatchResult = {};
         const elementAnimations: ElmentLinearInterpolationAnimation[] = [];
         forEachMatch(matchResult, (id, match) => {
             if (match.left !== undefined && match.right !== undefined) {
-                const animation = this._updateElement(match.left as SModelElement, match.right as SModelElement);
+                const animation = this._updateElement(
+                    match.left as SModelElementImpl,
+                    match.right as SModelElementImpl
+                );
                 if (animation !== undefined) {
                     elementAnimations.push(animation);
                 }
@@ -65,7 +68,10 @@ export class UpdateModelCommand extends BaseUpdateModelCommand {
      * @param right the new element
      * @returns an ElementLinearInterpolationAnimation or undefined
      */
-    private _updateElement(left: SModelElement, right: SModelElement): ElmentLinearInterpolationAnimation | undefined {
+    private _updateElement(
+        left: SModelElementImpl,
+        right: SModelElementImpl
+    ): ElmentLinearInterpolationAnimation | undefined {
         if (isSelectable(left) && isSelectable(right)) {
             right.selected = left.selected;
         }
@@ -95,13 +101,13 @@ export class UpdateModelCommand extends BaseUpdateModelCommand {
         return undefined;
     }
 
-    protected override updateElement(left: SModelElement, right: SModelElement, animationData: any): void {
+    protected override updateElement(left: SModelElementImpl, right: SModelElementImpl, animationData: any): void {
         super.updateElement(left, right, animationData);
     }
 
     protected override performUpdate(
-        oldRoot: SModelRoot,
-        newRoot: SModelRoot,
+        oldRoot: SModelRootImpl,
+        newRoot: SModelRootImpl,
         context: CommandExecutionContext
     ): CommandReturn {
         (newRoot as SRoot).changeRevision = (oldRoot as SRoot).changeRevision + 1;

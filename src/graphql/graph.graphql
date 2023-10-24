@@ -91,7 +91,6 @@ fragment FillStyleInfo on FillStyle {
 
 fragment StrokeStyleInfo on StrokeStyle {
     color
-    width
     dash
 }
 

@@ -42,6 +42,7 @@ import { IssueTypeView } from "./views/issueTypeView";
 import { IssueRelation } from "./model/issueRelation";
 import { SIssueRelation } from "./smodel/sIssueRelation";
 import { IssueRelationView } from "./views/issueRelationView";
+import { hoverHighlightModule } from "./features/issueRelationHighlight/di.config";
 
 const diagramModule = new ContainerModule((bind, unbind, isBound, rebind) => {
     const context = { bind, unbind, isBound, rebind };
@@ -78,7 +79,7 @@ export function createContainer(widgetId: string): Container {
         exclude: [sprottyUpdateModule, sprottyMoveModule, sprottyZOrderModule, decorationModule, undoRedoModule]
     });
 
-    container.load(zorderModule, updateModule, boundsModule, moveModule);
+    container.load(zorderModule, updateModule, boundsModule, moveModule, hoverHighlightModule);
 
     container.load(diagramModule);
 

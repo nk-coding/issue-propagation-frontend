@@ -46,14 +46,13 @@ export type Interface = IssueAffected;
 export interface StrokeStyle {
     stroke?: {
         color?: string;
-        width?: number;
         dash?: number[];
     };
 }
 
 export namespace StrokeStyle {
     export function strokeWidth(style: StrokeStyle): number {
-        return style.stroke?.width ?? 2;
+        return 2;
     }
 }
 
