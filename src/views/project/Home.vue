@@ -1,5 +1,9 @@
 <template>
-    <GraphEditor v-if="graph != undefined" v-model:layout="layout" :graph="graph" />
+    <GraphEditor v-if="graph != undefined" v-model:layout="layout" :graph="graph">
+        <FilterChip v-model="showOpenIssues" label="Open Issues" icon="mdi-bug" class="mr-2 open-issue-chip" />
+        <FilterChip v-model="showClosedIssues" label="Closed Issues" icon="mdi-bug" class="mr-2 closed-issue-chip" />
+        <FilterChip v-model="showIssueRelations" label="Issue Relations" />
+    </GraphEditor>
 </template>
 <script lang="ts" setup>
 import { NodeReturnType, useClient } from "@/graphql/client";
@@ -29,6 +33,7 @@ import {
 import { computed, ref, watch, nextTick } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { onEvent } from "@/util/eventBus";
+import FilterChip from "@/components/input/FilterChip.vue";
 
 type ProjectGraph = NodeReturnType<"getProjectGraph", "Project">;
 
@@ -54,6 +59,10 @@ const originalGraph = asyncComputed(
     { shallow: false, evaluating }
 );
 
+const showOpenIssues = ref(true);
+const showClosedIssues = ref(false);
+const showIssueRelations = ref(true);
+
 const graph = computed<Graph | null>(() => {
     if (!originalGraph.value) {
         return null;
@@ -69,15 +78,17 @@ const graph = computed<Graph | null>(() => {
         }
         return res;
     });
-    const mappedIssueRelations = components.flatMap((component) => {
-        const res = [...extractIssueRelations(component)];
-        for (const definition of component.interfaceDefinitions.nodes) {
-            if (definition.visibleInterface != undefined) {
-                res.push(...extractIssueRelations(definition.visibleInterface));
+    let mappedIssueRelations: IssueRelation[] = [];
+    if (showIssueRelations.value) {
+        components.forEach((component) => {
+            mappedIssueRelations.push(...extractIssueRelations(component));
+            for (const definition of component.interfaceDefinitions.nodes) {
+                if (definition.visibleInterface != undefined) {
+                    mappedIssueRelations.push(...extractIssueRelations(definition.visibleInterface));
+                }
             }
-        }
-        return res;
-    });
+        });
+    }
     return {
         components: mappedComponents,
         relations: mappedRelations,
@@ -131,16 +142,23 @@ function extractRelations(relationPartner: GraphRelationPartnerInfoFragment): Re
 }
 
 function extractIssueRelations(relationPartner: GraphRelationPartnerInfoFragment): IssueRelation[] {
-    return relationPartner.aggregatedIssues.nodes.flatMap((aggregatedIssue) => {
-        return aggregatedIssue.outgoingRelations.nodes.map((relation) => {
-            return {
-                from: relationPartner.id,
-                to: relation.end!.relationPartner.id,
-                fromType: aggregatedIssue.id,
-                toType: relation.end!.id
-            };
+    const aggregatedRelations = new Map<string, { start: string; end: string; count: number }>();
+    relationPartner.aggregatedIssues.nodes.forEach((aggregatedIssue) => {
+        aggregatedIssue.outgoingRelations.nodes.forEach((relation) => {
+            const key = `${aggregatedIssue.id}-${relation.end!.id}`;
+            if (aggregatedRelations.has(key)) {
+                const existing = aggregatedRelations.get(key)!;
+                existing.count += aggregatedIssue.count;
+            } else {
+                aggregatedRelations.set(key, {
+                    start: aggregatedIssue.id,
+                    end: relation.end!.id,
+                    count: aggregatedIssue.count
+                });
+            }
         });
     });
+    return Array.from(aggregatedRelations.values());
 }
 
 function extractComponent(component: GraphComponentVersionInfoFragment): ComponentVersion {
@@ -205,14 +223,38 @@ function extractShapeStyle(template: GraphRelationPartnerTemplateInfoFragment): 
 }
 
 function extractIssueTypes(relationPartner: GraphRelationPartnerInfoFragment): IssueType[] {
-    return relationPartner.aggregatedIssues.nodes.map((aggregatedIssue) => {
-        const type = aggregatedIssue.type;
-        return {
-            id: aggregatedIssue.id,
-            name: type.name,
-            iconPath: type.iconPath,
-            count: aggregatedIssue.count
-        };
-    });
+    return relationPartner.aggregatedIssues.nodes
+        .filter((aggregatedIssue) => {
+            return (
+                (showOpenIssues.value && aggregatedIssue.isOpen) || (showClosedIssues.value && !aggregatedIssue.isOpen)
+            );
+        })
+        .map((aggregatedIssue) => {
+            const type = aggregatedIssue.type;
+            return {
+                id: aggregatedIssue.id,
+                name: type.name,
+                iconPath: type.iconPath,
+                count: aggregatedIssue.count,
+                isOpen: aggregatedIssue.isOpen
+            };
+        })
+        .sort((a, b) => {
+            if (a.isOpen && !b.isOpen) {
+                return -1;
+            } else if (!a.isOpen && b.isOpen) {
+                return 1;
+            } else {
+                return a.name.localeCompare(b.name);
+            }
+        });
 }
 </script>
+<style scoped>
+.open-issue-chip :deep(.v-icon.mdi-bug) {
+    color: rgb(var(--v-theme-issue-open));
+}
+.closed-issue-chip :deep(.v-icon.mdi-bug) {
+    color: rgb(var(--v-theme-issue-closed));
+}
+</style>

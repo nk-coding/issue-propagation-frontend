@@ -21,12 +21,7 @@ export class ComponentView implements IView {
                 otherChildren.push(context.renderElement(child));
             }
         }
-        otherChildren.push(
-            ...model.renderIssueTypes(context, {
-                x: model.x,
-                y: model.y + model.shape.bounds.height / 2 + 5
-            })
-        );
+        otherChildren.push(...model.renderIssueTypes(context));
         const component = svg(
             "g",
             null,

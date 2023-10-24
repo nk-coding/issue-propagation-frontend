@@ -90,8 +90,12 @@ export class SRoot extends ViewportRootElement {
                 fill: none;
             }
 
-            .sprotty .issue-type-icon {
-                fill: var(--shape-stroke-color);
+            .sprotty .issue-type-icon.closed {
+                fill: var(--issue-closed-color);
+            }
+
+            .sprotty .issue-type-icon.open {
+                fill: var(--issue-open-color);
             }
         `;
     }

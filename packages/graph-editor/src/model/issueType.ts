@@ -4,6 +4,7 @@ import { Element } from "./element";
 export interface IssueType extends Element {
     type: typeof IssueType.TYPE;
     iconPath: string;
+    isOpen: boolean;
 }
 
 export namespace IssueType {

@@ -1,3 +1,4 @@
+import { Point } from "sprotty-protocol";
 import { LinearAnimatable } from "../features/animation/model";
 import { Component } from "../model/component";
 import { Shape } from "../shape/shape";
@@ -10,6 +11,7 @@ export class SComponent extends SIssueAffected implements Component, LinearAnima
     declare type: typeof Component.TYPE;
     readonly animatedFields = componentAnimatedFields;
     override shape!: Shape;
+    override issueTypesCenterTopPos!: Point;
 
     constructor() {
         super();
@@ -24,6 +26,12 @@ export class SComponent extends SIssueAffected implements Component, LinearAnima
                 },
                 this.style
             );
+        });
+        this.cachedProperty<Point>("issueTypesCenterTopPos", () => {
+            return {
+                x: this.x,
+                y: this.y + this.shape.bounds.height / 2 + 5
+            };
         });
     }
 }

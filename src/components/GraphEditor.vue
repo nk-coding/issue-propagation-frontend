@@ -1,8 +1,8 @@
 <template>
     <div class="sprotty-wrapper">
         <div :id="editorId" class="sprotty" />
-        <div class="ui-container">
-            
+        <div class="ui-container ma-3">
+            <slot />
         </div>
     </div>
 </template>
@@ -97,5 +97,7 @@ watch(
     --version-chip-color: rgb(var(--v-theme-on-primary-container));
     --selected-shape-stroke-color: rgb(var(--v-theme-primary));
     --selected-shape-fill-color: rgba(var(--v-theme-primary), 0.2);
+    --issue-closed-color: rgb(var(--v-theme-issue-closed));
+    --issue-open-color: rgb(var(--v-theme-issue-open));
 }
 </style>

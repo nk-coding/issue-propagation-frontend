@@ -24,13 +24,7 @@ export class InterfaceView implements IView {
                 otherChildren.push(model.renderVersionLabel(context, child));
             }
         }
-        const nameLabelMargin = 3;
-        otherChildren.push(
-            ...model.renderIssueTypes(context, {
-                x: model.pos.x,
-                y: model.pos.y + model.shape.bounds.height / 2 + 2 * nameLabelMargin + nameLabel!.size.height
-            })
-        );
+        otherChildren.push(...model.renderIssueTypes(context));
         const parent = model.parent as SComponent;
         const connectionLine = this.renderConnectionLine(model, parent);
         const interfaceView = svg(
@@ -39,7 +33,7 @@ export class InterfaceView implements IView {
             ...model.generateShape(),
             wrapForeignElement(context.renderElement(nameLabel!), {
                 x: model.pos.x - nameLabel!.size.width / 2,
-                y: model.pos.y + model.shape.bounds.height / 2 + nameLabelMargin
+                y: model.pos.y + model.shape.bounds.height / 2 + 3
             })
         );
         return svg(

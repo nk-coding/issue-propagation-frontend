@@ -18,6 +18,15 @@ export abstract class SIssueAffected extends SNamedElement implements IssueAffec
     y!: number;
     selected = false;
     abstract shape: Shape;
+    abstract issueTypesCenterTopPos: Point;
+    issueTypes!: SIssueType[];
+
+    constructor() {
+        super();
+        this.cachedProperty<SIssueType[]>("issueTypes", () => {
+            return this.children.filter((child) => child.type === IssueType.TYPE) as SIssueType[];
+        });
+    }
 
     generateShapeAttrs(): Record<string, number | string> {
         const res: Record<string, number | string> = {};
@@ -86,22 +95,30 @@ export abstract class SIssueAffected extends SNamedElement implements IssueAffec
         );
     }
 
-    renderIssueTypes(context: RenderingContext, centerTop: Point): VNode[] {
-        const issueTypes = this.children.filter((child) => child.type === IssueType.TYPE) as SIssueType[];
-        const result: VNode[] = [];
+    issueTypePos(index: number): Point {
+        const centerTop = this.issueTypesCenterTopPos;
+        const count = this.issueTypes.length;
         const width = 42;
         const margin = 8;
-        const count = issueTypes.length;
+        const offsetX = -(count * width + (count - 1) * margin) / 2 + index * (width + margin);
+        return {
+            x: centerTop.x + offsetX,
+            y: centerTop.y
+        };
+    }
+
+    renderIssueTypes(context: RenderingContext): VNode[] {
+        const result: VNode[] = [];
+        const count = this.issueTypes.length;
         for (let i = count - 1; i >= 0; i--) {
-            const issueType = issueTypes[i];
-            let offsetX: number;
-            offsetX = -(count * width + (count - 1) * margin) / 2 + i * (width + margin);
+            const issueType = this.issueTypes[i];
+            const pos = this.issueTypePos(i);
             result.push(
                 svg(
                     "g",
                     {
                         attrs: {
-                            transform: `translate(${centerTop.x + offsetX}, ${centerTop.y})`
+                            transform: `translate(${pos.x}, ${pos.y})`
                         }
                     },
                     context.renderElement(issueType)

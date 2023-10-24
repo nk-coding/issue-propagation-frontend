@@ -800,8 +800,27 @@ export type AggregatedIssueRelation = Node & {
     end: AggregatedIssue;
     /** The unique id of this node */
     id: Scalars["ID"]["output"];
+    /** The IssueRelations aggregated by this AggregatedIssueRelation. */
+    issueRelations: IssueRelationConnection;
     /** The start of this AggregatedIssueRelation. */
     start: AggregatedIssue;
+    /** The IssueType of this AggregatedIssue. */
+    type?: Maybe<IssueRelationType>;
+};
+
+/**
+ * An aggregated IssueRelation.
+ *     IssueRelations are aggregated by both start and end Issue.
+ *
+ */
+export type AggregatedIssueRelationIssueRelationsArgs = {
+    after?: InputMaybe<Scalars["String"]["input"]>;
+    before?: InputMaybe<Scalars["String"]["input"]>;
+    filter?: InputMaybe<IssueRelationFilterInput>;
+    first?: InputMaybe<Scalars["Int"]["input"]>;
+    last?: InputMaybe<Scalars["Int"]["input"]>;
+    orderBy?: InputMaybe<IssueRelationOrder>;
+    skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
 /** The connection type for AggregatedIssueRelation. */
@@ -834,12 +853,16 @@ export type AggregatedIssueRelationFilterInput = {
     end?: InputMaybe<AggregatedIssueFilterInput>;
     /** Filter by id */
     id?: InputMaybe<IdFilterInput>;
+    /** Filter by issueRelations */
+    issueRelations?: InputMaybe<IssueRelationListFilterInput>;
     /** Negates the subformula */
     not?: InputMaybe<AggregatedIssueRelationFilterInput>;
     /** Connects all subformulas via or */
     or?: InputMaybe<Array<AggregatedIssueRelationFilterInput>>;
     /** Filters for nodes where the related node match this filter */
     start?: InputMaybe<AggregatedIssueFilterInput>;
+    /** Filters for nodes where the related node match this filter */
+    type?: InputMaybe<IssueRelationTypeFilterInput>;
 };
 
 /** Used to filter by a connection-based property. Fields are joined by AND */
@@ -4106,8 +4129,8 @@ export type CreateInterfacePartInput = {
     description: Scalars["String"]["input"];
     /** The initial value of the extension fields */
     extensionFields?: InputMaybe<Array<JsonFieldInput>>;
-    /** The id of the InterfaceSpecification the created InterfacePart is part of */
-    interfaceSpecification: Scalars["ID"]["input"];
+    /** The id of the InterfaceSpecificationVersion the created InterfacePart is part of */
+    interfaceSpecificationVersion: Scalars["ID"]["input"];
     /** The name of the NamedNode, must not be blank */
     name: Scalars["String"]["input"];
     /** Initial values for all templatedFields */
@@ -4124,8 +4147,6 @@ export type CreateInterfacePartPayload = {
 export type CreateInterfaceSpecificationInput = {
     /** The id of the Component the created InterfaceSpecification is part of */
     component: Scalars["ID"]["input"];
-    /** Initial defined InterfaceParts */
-    definedParts?: InputMaybe<Array<InterfacePartInput>>;
     /** The description of the NamedNode */
     description: Scalars["String"]["input"];
     /** The initial value of the extension fields */
@@ -4192,8 +4213,6 @@ export type CreateInterfaceSpecificationTemplatePayload = {
 
 /** Input for the createInterfaceSpecificationVersion mutation */
 export type CreateInterfaceSpecificationVersionInput = {
-    /** Ids of InterfaceParts of the associated InterfaceSpecification which should be the initial `activeParts` */
-    activeParts?: InputMaybe<Array<Scalars["ID"]["input"]>>;
     /** The description of the NamedNode */
     description: Scalars["String"]["input"];
     /** The initial value of the extension fields */
@@ -4202,6 +4221,8 @@ export type CreateInterfaceSpecificationVersionInput = {
     interfaceSpecification: Scalars["ID"]["input"];
     /** The name of the NamedNode, must not be blank */
     name: Scalars["String"]["input"];
+    /** Initial InterfaceParts */
+    parts?: InputMaybe<Array<InterfacePartInput>>;
     /** Initial values for all templatedFields */
     templatedFields: Array<JsonFieldInput>;
     /** The version of the created InterfaceSpecificationVersion */
@@ -7105,12 +7126,8 @@ export type InterfacePart = AffectedByIssue &
     Node &
     TemplatedNode & {
         __typename?: "InterfacePart";
-        /** InterfaceSpecificationVersions where this InterfacePart is active. */
-        activeOn: InterfaceSpecificationVersionConnection;
         /** The issues which affect this entity */
         affectingIssues: IssueConnection;
-        /** InterfaceSpecification which defines this InterfacePart */
-        definedOn: InterfaceSpecification;
         /** The description of this entity. */
         description: Scalars["String"]["output"];
         /** Value of an extension field by name of the extension field. Null if the field does not exist. */
@@ -7129,6 +7146,8 @@ export type InterfacePart = AffectedByIssue &
         includingOutgoingRelations: RelationConnection;
         /** The name of this entity. */
         name: Scalars["String"]["output"];
+        /** InterfaceSpecificationVersions where this InterfacePart is active. */
+        partOf: InterfaceSpecificationVersion;
         /** The Template of this InterfacePart */
         template: InterfacePartTemplate;
         /** Value of a field defined by the template. Error if such a field is not defined. */
@@ -7141,25 +7160,6 @@ export type InterfacePart = AffectedByIssue &
          */
         templatedFields: Array<JsonField>;
     };
-
-/**
- * Part of an Interface(Specification).
- *     Its semantics depend on the InterfaceSpecification, e.g. for a REST API interface,
- *     this could represent a single endpoint of the API.
- *     Relations can specify for both start and end included InterfaceParts.
- *     Can be affected by Issues, and be used as start / end of ServiceEffectSpecifications.
- *     READ is granted if READ is granted on `definedOn`.
- *
- */
-export type InterfacePartActiveOnArgs = {
-    after?: InputMaybe<Scalars["String"]["input"]>;
-    before?: InputMaybe<Scalars["String"]["input"]>;
-    filter?: InputMaybe<InterfaceSpecificationVersionFilterInput>;
-    first?: InputMaybe<Scalars["Int"]["input"]>;
-    last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<InterfaceSpecificationVersionOrder>;
-    skip?: InputMaybe<Scalars["Int"]["input"]>;
-};
 
 /**
  * Part of an Interface(Specification).
@@ -7327,14 +7327,10 @@ export type InterfacePartEdge = {
 
 /** Filter used to filter InterfacePart */
 export type InterfacePartFilterInput = {
-    /** Filter by activeOn */
-    activeOn?: InputMaybe<InterfaceSpecificationVersionListFilterInput>;
     /** Filter by affectingIssues */
     affectingIssues?: InputMaybe<IssueListFilterInput>;
     /** Connects all subformulas via and */
     and?: InputMaybe<Array<InterfacePartFilterInput>>;
-    /** Filters for nodes where the related node match this filter */
-    definedOn?: InputMaybe<InterfaceSpecificationFilterInput>;
     /** Filter by description */
     description?: InputMaybe<StringFilterInput>;
     /** Filter by id */
@@ -7351,6 +7347,8 @@ export type InterfacePartFilterInput = {
     not?: InputMaybe<InterfacePartFilterInput>;
     /** Connects all subformulas via or */
     or?: InputMaybe<Array<InterfacePartFilterInput>>;
+    /** Filters for nodes where the related node match this filter */
+    partOf?: InputMaybe<InterfaceSpecificationVersionFilterInput>;
     /** Filters for AffectedByIssues which are related to a Trackable */
     relatedTo?: InputMaybe<Scalars["ID"]["input"]>;
     /** Filters for nodes where the related node match this filter */
@@ -7520,14 +7518,8 @@ export type InterfaceSpecification = AffectedByIssue &
         __typename?: "InterfaceSpecification";
         /** The issues which affect this entity */
         affectingIssues: IssueConnection;
-        /** The Component this InterfaceSpecificaton is part of. */
+        /** The Component this InterfaceSpecification is part of. */
         component: Component;
-        /**
-         * InterfaceParts defined by this InterfaceSpecification.
-         *         Note that active parts depend on the InterfaceSpecificationVersion
-         *
-         */
-        definedParts: InterfacePartConnection;
         /** The description of this entity. */
         description: Scalars["String"]["output"];
         /** Value of an extension field by name of the extension field. Null if the field does not exist. */
@@ -7570,24 +7562,6 @@ export type InterfaceSpecificationAffectingIssuesArgs = {
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
     orderBy?: InputMaybe<IssueOrder>;
-    skip?: InputMaybe<Scalars["Int"]["input"]>;
-};
-
-/**
- * Specification of an Interface.
- *     Defined on a Component, but can be visible and invisible on different ComponentVersions.
- *     Can be affected by Issues, and be used as start / end of ServiceEffectSpecifications.
- *     Defines InterfaceParts, but active parts depend on the InterfaceSpecificationVersion.
- *     READ is granted if READ is granted on `component`, or any InterfaceSpecificationVersion in `versions`.
- *
- */
-export type InterfaceSpecificationDefinedPartsArgs = {
-    after?: InputMaybe<Scalars["String"]["input"]>;
-    before?: InputMaybe<Scalars["String"]["input"]>;
-    filter?: InputMaybe<InterfacePartFilterInput>;
-    first?: InputMaybe<Scalars["Int"]["input"]>;
-    last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<InterfacePartOrder>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -7893,8 +7867,6 @@ export type InterfaceSpecificationFilterInput = {
     and?: InputMaybe<Array<InterfaceSpecificationFilterInput>>;
     /** Filters for nodes where the related node match this filter */
     component?: InputMaybe<ComponentFilterInput>;
-    /** Filter by definedParts */
-    definedParts?: InputMaybe<InterfacePartListFilterInput>;
     /** Filter by description */
     description?: InputMaybe<StringFilterInput>;
     /** Filter by id */
@@ -7917,8 +7889,6 @@ export type InterfaceSpecificationFilterInput = {
 
 /** Input to create an InterfaceSpecification */
 export type InterfaceSpecificationInput = {
-    /** Initial defined InterfaceParts */
-    definedParts?: InputMaybe<Array<InterfacePartInput>>;
     /** The description of the NamedNode */
     description: Scalars["String"]["input"];
     /** The initial value of the extension fields */
@@ -8316,13 +8286,6 @@ export type InterfaceSpecificationVersion = AffectedByIssue &
     TemplatedNode &
     Versioned & {
         __typename?: "InterfaceSpecificationVersion";
-        /**
-         * InterfaceParts which are active on this InterfaceSpecificationVersion
-         *         Semantically, only the active parts on an InterfaceSpecificationVersion exist on the Interfaces
-         *         defined by the InterfaceSpecificationVersion.
-         *
-         */
-        activeParts: InterfacePartConnection;
         /** The issues which affect this entity */
         affectingIssues: IssueConnection;
         /** The description of this entity. */
@@ -8341,6 +8304,11 @@ export type InterfaceSpecificationVersion = AffectedByIssue &
         interfaceSpecification: InterfaceSpecification;
         /** The name of this entity. */
         name: Scalars["String"]["output"];
+        /**
+         * InterfaceParts which are part of this InterfaceSpecificationVersion
+         *
+         */
+        parts: InterfacePartConnection;
         /** The Template of this InterfaceSpecificationVersion */
         template: InterfaceSpecificationVersionTemplate;
         /** Value of a field defined by the template. Error if such a field is not defined. */
@@ -8355,26 +8323,6 @@ export type InterfaceSpecificationVersion = AffectedByIssue &
         /** The version of this InterfaceSpecificationVersion. */
         version: Scalars["String"]["output"];
     };
-
-/**
- * A specific version of an InterfaceSpecification.
- *     Defines which InterfaceParts are active.
- *     Can be both visible (generates an Interface) and invisible (does not generate an Interface)
- *     on different Components.
- *     Can be derived by Relations, and affected by Issues.
- *     READ is granted if READ is granted on `interfaceSpecification`,
- *     or any InterfaceDefinition in `definitions`
- *
- */
-export type InterfaceSpecificationVersionActivePartsArgs = {
-    after?: InputMaybe<Scalars["String"]["input"]>;
-    before?: InputMaybe<Scalars["String"]["input"]>;
-    filter?: InputMaybe<InterfacePartFilterInput>;
-    first?: InputMaybe<Scalars["Int"]["input"]>;
-    last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<InterfacePartOrder>;
-    skip?: InputMaybe<Scalars["Int"]["input"]>;
-};
 
 /**
  * A specific version of an InterfaceSpecification.
@@ -8468,6 +8416,26 @@ export type InterfaceSpecificationVersionInterfaceDefinitionsArgs = {
  *     or any InterfaceDefinition in `definitions`
  *
  */
+export type InterfaceSpecificationVersionPartsArgs = {
+    after?: InputMaybe<Scalars["String"]["input"]>;
+    before?: InputMaybe<Scalars["String"]["input"]>;
+    filter?: InputMaybe<InterfacePartFilterInput>;
+    first?: InputMaybe<Scalars["Int"]["input"]>;
+    last?: InputMaybe<Scalars["Int"]["input"]>;
+    orderBy?: InputMaybe<InterfacePartOrder>;
+    skip?: InputMaybe<Scalars["Int"]["input"]>;
+};
+
+/**
+ * A specific version of an InterfaceSpecification.
+ *     Defines which InterfaceParts are active.
+ *     Can be both visible (generates an Interface) and invisible (does not generate an Interface)
+ *     on different Components.
+ *     Can be derived by Relations, and affected by Issues.
+ *     READ is granted if READ is granted on `interfaceSpecification`,
+ *     or any InterfaceDefinition in `definitions`
+ *
+ */
 export type InterfaceSpecificationVersionTemplatedFieldArgs = {
     name: Scalars["String"]["input"];
 };
@@ -8511,8 +8479,6 @@ export type InterfaceSpecificationVersionEdge = {
 
 /** Filter used to filter InterfaceSpecificationVersion */
 export type InterfaceSpecificationVersionFilterInput = {
-    /** Filter by activeParts */
-    activeParts?: InputMaybe<InterfacePartListFilterInput>;
     /** Filter by affectingIssues */
     affectingIssues?: InputMaybe<IssueListFilterInput>;
     /** Connects all subformulas via and */
@@ -8531,6 +8497,8 @@ export type InterfaceSpecificationVersionFilterInput = {
     not?: InputMaybe<InterfaceSpecificationVersionFilterInput>;
     /** Connects all subformulas via or */
     or?: InputMaybe<Array<InterfaceSpecificationVersionFilterInput>>;
+    /** Filter by parts */
+    parts?: InputMaybe<InterfacePartListFilterInput>;
     /** Filters for AffectedByIssues which are related to a Trackable */
     relatedTo?: InputMaybe<Scalars["ID"]["input"]>;
     /** Filters for nodes where the related node match this filter */
@@ -8543,14 +8511,14 @@ export type InterfaceSpecificationVersionFilterInput = {
 
 /** Input to create an InterfaceSpecificationVersion */
 export type InterfaceSpecificationVersionInput = {
-    /** Ids of InterfaceParts of the associated InterfaceSpecification which should be the initial `activeParts` */
-    activeParts?: InputMaybe<Array<Scalars["ID"]["input"]>>;
     /** The description of the NamedNode */
     description: Scalars["String"]["input"];
     /** The initial value of the extension fields */
     extensionFields?: InputMaybe<Array<JsonFieldInput>>;
     /** The name of the NamedNode, must not be blank */
     name: Scalars["String"]["input"];
+    /** Initial InterfaceParts */
+    parts?: InputMaybe<Array<InterfacePartInput>>;
     /** Initial values for all templatedFields */
     templatedFields: Array<JsonFieldInput>;
     /** The version of the created InterfaceSpecificationVersion */
@@ -10129,6 +10097,8 @@ export type IssueRelation = AuditedNode &
     Node &
     TimelineItem & {
         __typename?: "IssueRelation";
+        /** The AggregatedIssueRelations this IssueRelation is aggregated by. */
+        aggregatedBy: AggregatedIssueRelationConnection;
         /** The DateTime this entity was created at. */
         createdAt: Scalars["DateTime"]["output"];
         /** The User who created this entity. */
@@ -10154,6 +10124,24 @@ export type IssueRelation = AuditedNode &
         /** The type of the relation, e.g. DUPLICATES. Allowed types are defined by the IssueTemplate. */
         type?: Maybe<IssueRelationType>;
     };
+
+/**
+ * Event representing that a relation between two Issues has been created.
+ *     An IssueRelation is only active if it is still in `outgoingRelations` on the `issue`,
+ *     respectively in incomingRelations on the `relatedIssue`.
+ *     Caution: This is **not** a subtype of Relation.
+ *     READ is granted if READ is granted on `issue`.
+ *
+ */
+export type IssueRelationAggregatedByArgs = {
+    after?: InputMaybe<Scalars["String"]["input"]>;
+    before?: InputMaybe<Scalars["String"]["input"]>;
+    filter?: InputMaybe<AggregatedIssueRelationFilterInput>;
+    first?: InputMaybe<Scalars["Int"]["input"]>;
+    last?: InputMaybe<Scalars["Int"]["input"]>;
+    orderBy?: InputMaybe<AggregatedIssueRelationOrder>;
+    skip?: InputMaybe<Scalars["Int"]["input"]>;
+};
 
 /**
  * Event representing that a relation between two Issues has been created.
@@ -10215,6 +10203,8 @@ export type IssueRelationEdge = {
 
 /** Filter used to filter IssueRelation */
 export type IssueRelationFilterInput = {
+    /** Filter by aggregatedBy */
+    aggregatedBy?: InputMaybe<AggregatedIssueRelationListFilterInput>;
     /** Connects all subformulas via and */
     and?: InputMaybe<Array<IssueRelationFilterInput>>;
     /** Filter by createdAt */
@@ -11326,6 +11316,36 @@ export enum MarkerType {
     /** A triangle */
     Triangle = "TRIANGLE"
 }
+
+/**
+ * An aggregated IssueRelation.
+ *     IssueRelations are aggregated by both start and end Issue.
+ *
+ */
+export type MetaAggregatedIssueRelation = Node & {
+    __typename?: "MetaAggregatedIssueRelation";
+    count: Scalars["Int"]["output"];
+    end: Component;
+    /** The unique id of this node */
+    id: Scalars["ID"]["output"];
+    issueRelations: IssueRelationConnection;
+    start: Component;
+};
+
+/**
+ * An aggregated IssueRelation.
+ *     IssueRelations are aggregated by both start and end Issue.
+ *
+ */
+export type MetaAggregatedIssueRelationIssueRelationsArgs = {
+    after?: InputMaybe<Scalars["String"]["input"]>;
+    before?: InputMaybe<Scalars["String"]["input"]>;
+    filter?: InputMaybe<IssueRelationFilterInput>;
+    first?: InputMaybe<Scalars["Int"]["input"]>;
+    last?: InputMaybe<Scalars["Int"]["input"]>;
+    orderBy?: InputMaybe<IssueRelationOrder>;
+    skip?: InputMaybe<Scalars["Int"]["input"]>;
+};
 
 /** Interface for all types which support templates describing user writeable fields. */
 export type MutableTemplatedNode = {
@@ -16794,8 +16814,6 @@ export type UpdateInterfaceSpecificationPayload = {
 
 /** Input for the updateInterfaceSpecificationVersion mutation */
 export type UpdateInterfaceSpecificationVersionInput = {
-    /** Ids of InterfaceParts defined by the associated InterfaceSpecification to add to `activeParts` */
-    addedActiveParts?: InputMaybe<Array<Scalars["ID"]["input"]>>;
     /** The description of the NamedNode */
     description?: InputMaybe<Scalars["String"]["input"]>;
     /** Extension fields to update. To remove, provide no value */
@@ -16804,8 +16822,6 @@ export type UpdateInterfaceSpecificationVersionInput = {
     id: Scalars["ID"]["input"];
     /** The new name of the NamedNode, must not be empty */
     name?: InputMaybe<Scalars["String"]["input"]>;
-    /** Ids of InterfaceParts defined by the associated InterfaceSpecification to remove from `activeParts` */
-    removedActiveParts?: InputMaybe<Array<Scalars["ID"]["input"]>>;
     /** Values for templatedFields to update */
     templatedFields?: InputMaybe<Array<JsonFieldInput>>;
     /** New version of the InterfaceSpecificationVersion */
@@ -17275,6 +17291,7 @@ export type GetComponentVersionsQuery = {
         | { __typename?: "IssueTemplate"; id: string }
         | { __typename?: "IssueType"; id: string }
         | { __typename?: "Label"; id: string }
+        | { __typename?: "MetaAggregatedIssueRelation"; id: string }
         | { __typename?: "OutgoingRelationTypeChangedEvent"; id: string }
         | { __typename?: "PriorityChangedEvent"; id: string }
         | { __typename?: "Project"; id: string }
@@ -17582,6 +17599,7 @@ export type FirstAssignmentTypesQuery = {
           }
         | { __typename?: "IssueType" }
         | { __typename?: "Label" }
+        | { __typename?: "MetaAggregatedIssueRelation" }
         | { __typename?: "OutgoingRelationTypeChangedEvent" }
         | { __typename?: "PriorityChangedEvent" }
         | { __typename?: "Project" }
@@ -17746,6 +17764,7 @@ export type GetComponentQuery = {
         | { __typename?: "IssueTemplate"; id: string }
         | { __typename?: "IssueType"; id: string }
         | { __typename?: "Label"; id: string }
+        | { __typename?: "MetaAggregatedIssueRelation"; id: string }
         | { __typename?: "OutgoingRelationTypeChangedEvent"; id: string }
         | { __typename?: "PriorityChangedEvent"; id: string }
         | { __typename?: "Project"; id: string }
@@ -17836,6 +17855,7 @@ export type GetProjectGraphQuery = {
         | { __typename?: "IssueTemplate" }
         | { __typename?: "IssueType" }
         | { __typename?: "Label" }
+        | { __typename?: "MetaAggregatedIssueRelation" }
         | { __typename?: "OutgoingRelationTypeChangedEvent" }
         | { __typename?: "PriorityChangedEvent" }
         | {
@@ -17882,6 +17902,7 @@ export type GetProjectGraphQuery = {
                                           __typename?: "AggregatedIssue";
                                           id: string;
                                           count: number;
+                                          isOpen: boolean;
                                           type: { __typename?: "IssueType"; name: string; iconPath: string };
                                           outgoingRelations: {
                                               __typename?: "AggregatedIssueRelationConnection";
@@ -17894,6 +17915,11 @@ export type GetProjectGraphQuery = {
                                                           | { __typename?: "ComponentVersion"; id: string }
                                                           | { __typename?: "Interface"; id: string };
                                                   };
+                                                  type?: {
+                                                      __typename?: "IssueRelationType";
+                                                      name: string;
+                                                      id: string;
+                                                  } | null;
                                               }>;
                                           };
                                       }>;
@@ -17964,6 +17990,7 @@ export type GetProjectGraphQuery = {
                               __typename?: "AggregatedIssue";
                               id: string;
                               count: number;
+                              isOpen: boolean;
                               type: { __typename?: "IssueType"; name: string; iconPath: string };
                               outgoingRelations: {
                                   __typename?: "AggregatedIssueRelationConnection";
@@ -17976,6 +18003,7 @@ export type GetProjectGraphQuery = {
                                               | { __typename?: "ComponentVersion"; id: string }
                                               | { __typename?: "Interface"; id: string };
                                       };
+                                      type?: { __typename?: "IssueRelationType"; name: string; id: string } | null;
                                   }>;
                               };
                           }>;
@@ -18057,6 +18085,7 @@ export type AddComponentVersionToProjectMutation = {
                                 __typename?: "AggregatedIssue";
                                 id: string;
                                 count: number;
+                                isOpen: boolean;
                                 type: { __typename?: "IssueType"; name: string; iconPath: string };
                                 outgoingRelations: {
                                     __typename?: "AggregatedIssueRelationConnection";
@@ -18069,6 +18098,7 @@ export type AddComponentVersionToProjectMutation = {
                                                 | { __typename?: "ComponentVersion"; id: string }
                                                 | { __typename?: "Interface"; id: string };
                                         };
+                                        type?: { __typename?: "IssueRelationType"; name: string; id: string } | null;
                                     }>;
                                 };
                             }>;
@@ -18139,6 +18169,7 @@ export type AddComponentVersionToProjectMutation = {
                     __typename?: "AggregatedIssue";
                     id: string;
                     count: number;
+                    isOpen: boolean;
                     type: { __typename?: "IssueType"; name: string; iconPath: string };
                     outgoingRelations: {
                         __typename?: "AggregatedIssueRelationConnection";
@@ -18151,6 +18182,7 @@ export type AddComponentVersionToProjectMutation = {
                                     | { __typename?: "ComponentVersion"; id: string }
                                     | { __typename?: "Interface"; id: string };
                             };
+                            type?: { __typename?: "IssueRelationType"; name: string; id: string } | null;
                         }>;
                     };
                 }>;
@@ -18199,6 +18231,7 @@ export type GraphComponentVersionInfoFragment = {
                         __typename?: "AggregatedIssue";
                         id: string;
                         count: number;
+                        isOpen: boolean;
                         type: { __typename?: "IssueType"; name: string; iconPath: string };
                         outgoingRelations: {
                             __typename?: "AggregatedIssueRelationConnection";
@@ -18211,6 +18244,7 @@ export type GraphComponentVersionInfoFragment = {
                                         | { __typename?: "ComponentVersion"; id: string }
                                         | { __typename?: "Interface"; id: string };
                                 };
+                                type?: { __typename?: "IssueRelationType"; name: string; id: string } | null;
                             }>;
                         };
                     }>;
@@ -18278,6 +18312,7 @@ export type GraphComponentVersionInfoFragment = {
             __typename?: "AggregatedIssue";
             id: string;
             count: number;
+            isOpen: boolean;
             type: { __typename?: "IssueType"; name: string; iconPath: string };
             outgoingRelations: {
                 __typename?: "AggregatedIssueRelationConnection";
@@ -18290,6 +18325,7 @@ export type GraphComponentVersionInfoFragment = {
                             | { __typename?: "ComponentVersion"; id: string }
                             | { __typename?: "Interface"; id: string };
                     };
+                    type?: { __typename?: "IssueRelationType"; name: string; id: string } | null;
                 }>;
             };
         }>;
@@ -18324,6 +18360,7 @@ type GraphRelationPartnerInfo_ComponentVersion_Fragment = {
             __typename?: "AggregatedIssue";
             id: string;
             count: number;
+            isOpen: boolean;
             type: { __typename?: "IssueType"; name: string; iconPath: string };
             outgoingRelations: {
                 __typename?: "AggregatedIssueRelationConnection";
@@ -18336,6 +18373,7 @@ type GraphRelationPartnerInfo_ComponentVersion_Fragment = {
                             | { __typename?: "ComponentVersion"; id: string }
                             | { __typename?: "Interface"; id: string };
                     };
+                    type?: { __typename?: "IssueRelationType"; name: string; id: string } | null;
                 }>;
             };
         }>;
@@ -18370,6 +18408,7 @@ type GraphRelationPartnerInfo_Interface_Fragment = {
             __typename?: "AggregatedIssue";
             id: string;
             count: number;
+            isOpen: boolean;
             type: { __typename?: "IssueType"; name: string; iconPath: string };
             outgoingRelations: {
                 __typename?: "AggregatedIssueRelationConnection";
@@ -18382,6 +18421,7 @@ type GraphRelationPartnerInfo_Interface_Fragment = {
                             | { __typename?: "ComponentVersion"; id: string }
                             | { __typename?: "Interface"; id: string };
                     };
+                    type?: { __typename?: "IssueRelationType"; name: string; id: string } | null;
                 }>;
             };
         }>;
@@ -18572,6 +18612,7 @@ export type GetIssuesQuery = {
         | { __typename?: "IssueTemplate" }
         | { __typename?: "IssueType" }
         | { __typename?: "Label" }
+        | { __typename?: "MetaAggregatedIssueRelation" }
         | { __typename?: "OutgoingRelationTypeChangedEvent" }
         | { __typename?: "PriorityChangedEvent" }
         | {
@@ -19963,6 +20004,7 @@ export type GetIssueQuery = {
         | { __typename?: "IssueTemplate" }
         | { __typename?: "IssueType" }
         | { __typename?: "Label" }
+        | { __typename?: "MetaAggregatedIssueRelation" }
         | { __typename?: "OutgoingRelationTypeChangedEvent" }
         | { __typename?: "PriorityChangedEvent" }
         | { __typename?: "Project" }
@@ -20356,6 +20398,7 @@ export type FirstIssueRelationTypesQuery = {
           }
         | { __typename?: "IssueType" }
         | { __typename?: "Label" }
+        | { __typename?: "MetaAggregatedIssueRelation" }
         | { __typename?: "OutgoingRelationTypeChangedEvent" }
         | { __typename?: "PriorityChangedEvent" }
         | { __typename?: "Project" }
@@ -20537,6 +20580,7 @@ export type FirstIssueStatesQuery = {
           }
         | { __typename?: "IssueType" }
         | { __typename?: "Label" }
+        | { __typename?: "MetaAggregatedIssueRelation" }
         | { __typename?: "OutgoingRelationTypeChangedEvent" }
         | { __typename?: "PriorityChangedEvent" }
         | { __typename?: "Project" }
@@ -20716,6 +20760,7 @@ export type FirstIssueTypesQuery = {
           }
         | { __typename?: "IssueType" }
         | { __typename?: "Label" }
+        | { __typename?: "MetaAggregatedIssueRelation" }
         | { __typename?: "OutgoingRelationTypeChangedEvent" }
         | { __typename?: "PriorityChangedEvent" }
         | { __typename?: "Project" }
@@ -20881,6 +20926,7 @@ export type FirstLabelsQuery = {
         | { __typename?: "IssueTemplate" }
         | { __typename?: "IssueType" }
         | { __typename?: "Label" }
+        | { __typename?: "MetaAggregatedIssueRelation" }
         | { __typename?: "OutgoingRelationTypeChangedEvent" }
         | { __typename?: "PriorityChangedEvent" }
         | { __typename?: "Project" }
@@ -21041,6 +21087,7 @@ export type GetProjectQuery = {
         | { __typename?: "IssueTemplate"; id: string }
         | { __typename?: "IssueType"; id: string }
         | { __typename?: "Label"; id: string }
+        | { __typename?: "MetaAggregatedIssueRelation"; id: string }
         | { __typename?: "OutgoingRelationTypeChangedEvent"; id: string }
         | { __typename?: "PriorityChangedEvent"; id: string }
         | {
@@ -22833,6 +22880,7 @@ export const GraphRelationPartnerInfoFragmentDoc = gql`
                     iconPath
                 }
                 count
+                isOpen
                 outgoingRelations(filter: { end: { relationPartner: { partOfProject: $project } } }) {
                     nodes {
                         end {
@@ -22840,6 +22888,10 @@ export const GraphRelationPartnerInfoFragmentDoc = gql`
                             relationPartner {
                                 id
                             }
+                        }
+                        type {
+                            name
+                            id
                         }
                     }
                 }

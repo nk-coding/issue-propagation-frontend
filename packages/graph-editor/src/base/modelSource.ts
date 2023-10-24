@@ -5,7 +5,8 @@ import {
     ComponentVersion,
     Interface as GropiusInterface,
     Relation as GropiusRelation,
-    IssueType as GropiusIssueType
+    IssueType as GropiusIssueType,
+    IssueRelation as GropiusIssueRelation
 } from "../gropiusModel";
 import { Root } from "../model/root";
 import { Component } from "../model/component";
@@ -18,6 +19,7 @@ import { Element } from "../model/element";
 import { Chip } from "../model/chip";
 import { IssueType } from "../model/issueType";
 import { Math2D } from "../line/math";
+import { IssueRelation } from "../model/issueRelation";
 
 export abstract class GraphModelSource extends LocalModelSource {
     private layout?: GraphLayout;
@@ -75,6 +77,10 @@ export abstract class GraphModelSource extends LocalModelSource {
     private createRoot(graph: Graph, layout: GraphLayout, fitToBounds: boolean): Root {
         const components = graph.components.map((component) => this.createComponent(component, layout));
         const relations = graph.relations.map((relation) => this.createRelation(relation, layout));
+        const issueTypeLookup = this.extractIssueTypeLookup(graph);
+        const issueRelations = graph.issueRelations
+            .map((issueRelation) => this.createIssueRelation(issueRelation, issueTypeLookup))
+            .filter((r) => r != undefined) as IssueRelation[];
         let targetBounds: Bounds | undefined;
         if (fitToBounds) {
             const centerBounds = this.computeCenterBounds(components);
@@ -90,7 +96,7 @@ export abstract class GraphModelSource extends LocalModelSource {
         return {
             type: "root",
             id: "root",
-            children: [...components, ...relations],
+            children: [...components, ...relations, ...issueRelations],
             targetBounds
         };
     }
@@ -178,6 +184,39 @@ export abstract class GraphModelSource extends LocalModelSource {
         };
     }
 
+    private extractIssueTypeLookup(graph: Graph): Map<string, [string, number]> {
+        const result = new Map<string, [string, number]>();
+        for (const component of graph.components) {
+            for (const affectedByIssue of [component, ...component.interfaces]) {
+                affectedByIssue.issueTypes.forEach((issueType, index) => {
+                    result.set(issueType.id, [affectedByIssue.id, index]);
+                });
+            }
+        }
+        return result;
+    }
+
+    private createIssueRelation(
+        relation: GropiusIssueRelation,
+        issueTypeLookup: Map<string, [string, number]>
+    ): IssueRelation | undefined {
+        const start = issueTypeLookup.get(relation.start);
+        const end = issueTypeLookup.get(relation.end);
+        if (start == undefined || end == undefined) {
+            return undefined;
+        }
+        return {
+            type: "issueRelation",
+            id: `${relation.start}-${relation.end}`,
+            start: start[0],
+            end: end[0],
+            startIndex: start[1],
+            endIndex: end[1],
+            count: relation.count,
+            children: []
+        };
+    }
+
     private createNameLabel(name: string, parentId: string): Label {
         return {
             type: "label",
@@ -207,6 +246,7 @@ export abstract class GraphModelSource extends LocalModelSource {
             type: IssueType.TYPE,
             id: type.id,
             iconPath: type.iconPath,
+            isOpen: type.isOpen,
             children: [countChip]
         };
     }

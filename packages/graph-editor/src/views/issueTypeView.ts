@@ -18,7 +18,9 @@ export class IssueTypeView implements IView {
         });
         const icon = svg("path", {
             class: {
-                "issue-type-icon": true
+                "issue-type-icon": true,
+                open: model.isOpen,
+                closed: !model.isOpen
             },
             attrs: {
                 d: model.iconPath

@@ -66,6 +66,7 @@ fragment GraphRelationPartnerInfo on RelationPartner {
                 iconPath
             }
             count
+            isOpen
             outgoingRelations(filter: { end: { relationPartner: { partOfProject: $project } } }) {
                 nodes {
                     end {
@@ -73,6 +74,10 @@ fragment GraphRelationPartnerInfo on RelationPartner {
                         relationPartner {
                             id
                         }
+                    }
+                    type {
+                        name
+                        id
                     }
                 }
             }

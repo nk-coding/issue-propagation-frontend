@@ -39,6 +39,9 @@ import { ChipView } from "./views/chipView";
 import { IssueType } from "./model/issueType";
 import { SIssueType } from "./smodel/sIssueType";
 import { IssueTypeView } from "./views/issueTypeView";
+import { IssueRelation } from "./model/issueRelation";
+import { SIssueRelation } from "./smodel/sIssueRelation";
+import { IssueRelationView } from "./views/issueRelationView";
 
 const diagramModule = new ContainerModule((bind, unbind, isBound, rebind) => {
     const context = { bind, unbind, isBound, rebind };
@@ -54,6 +57,7 @@ const diagramModule = new ContainerModule((bind, unbind, isBound, rebind) => {
     });
     configureModelElement(context, IssueType.TYPE, SIssueType, IssueTypeView);
     configureModelElement(context, Relation.TYPE, SRelation, RelationView);
+    configureModelElement(context, IssueRelation.TYPE, SIssueRelation, IssueRelationView);
     configureModelElement(context, Label.TYPE, SLabel, LabelView, {
         enable: [boundsFeature]
     });

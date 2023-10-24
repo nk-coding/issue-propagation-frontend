@@ -5,6 +5,7 @@ import { Shape } from "../shape/shape";
 import { ShapeGenerator } from "../shape/shapeGenerator";
 import { SIssueAffected } from "./sIssueAffected";
 import { SComponent } from "./sComponent";
+import { SLabel } from "./sLabel";
 
 const interfaceAnimatedFields = new Set(SIssueAffected.defaultAnimatedFields);
 const INTERFACE_SHAPE_SIZE = 40;
@@ -14,6 +15,7 @@ export class SInterface extends SIssueAffected implements Interface, LinearAnima
     readonly animatedFields = interfaceAnimatedFields;
     override shape!: Shape;
     pos!: Point;
+    override issueTypesCenterTopPos!: Point;
 
     constructor() {
         super();
@@ -34,6 +36,13 @@ export class SInterface extends SIssueAffected implements Interface, LinearAnima
             return {
                 x: this.x + parent.x,
                 y: this.y + parent.y
+            };
+        });
+        this.cachedProperty<Point>("issueTypesCenterTopPos", () => {
+            const nameLabel = this.children.find((child) => child instanceof SLabel) as SLabel;
+            return {
+                x: this.pos.x,
+                y: this.pos.y + this.shape.bounds.height / 2 + 2 * 3 + nameLabel!.size.height
             };
         });
     }

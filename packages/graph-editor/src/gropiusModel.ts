@@ -14,6 +14,7 @@ export interface IssueType extends Node {
     name: string;
     iconPath: string;
     count: number;
+    isOpen: boolean;
 }
 
 export interface IssueAffected extends Node {
@@ -35,10 +36,9 @@ export interface Relation extends Node {
 }
 
 export interface IssueRelation {
-    from: string;
-    to: string;
-    fromType: string;
-    toType: string;
+    start: string;
+    end: string;
+    count: number;
 }
 
 export type Interface = IssueAffected;

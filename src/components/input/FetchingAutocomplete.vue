@@ -13,7 +13,7 @@
     >
         <template #item="{ props, item }">
             <slot
-                v-if="!contextSearchMode && item.value != contextItem?.id"
+                v-if="!contextSearchMode && item.value != context?.id"
                 name="item"
                 :props="props"
                 :item="(item as ListItem<T>)"
@@ -73,25 +73,15 @@ const emit = defineEmits<{
     (event: "update:modelValue", value: string | undefined): void;
 }>();
 
-const context = ref(props.initialContext) as Ref<C | undefined>;
-const contextItem = computed(() => {
-    if (context.value == undefined) {
-        return undefined;
-    } else {
-        return {
-            ...context.value,
-            id: `context-${context.value.id}`
-        };
-    }
-})
+const context = ref(props.initialContext ? transformToContextItem(props.initialContext as C) : undefined) as Ref<C | undefined>;
 const contextMode = computed(() => props.mode == "add-context");
 const contextSearchMode = computed(() => {
     return contextMode.value && context.value == undefined;
 });
 const initialContextModel = computed(() => {
     if (contextMode.value) {
-        if (contextItem.value != undefined) {
-            return [contextItem.value];
+        if (context.value != undefined) {
+            return [context.value];
         } else {
             return [];
         }
@@ -143,13 +133,14 @@ watch(
 async function updateSearch(search: string) {
     let newItems: (T | C)[];
     if (contextSearchMode.value) {
-        newItems = await props.contextFetch!(search, 10);
+        newItems = (await props.contextFetch!(search, 10)).map((item) => transformToContextItem(item));
     } else {
-        newItems = await props.fetch(search, 10, context.value);
+        const untransformedContext = context.value != undefined ? untransformContextItem(context.value as C) : undefined;
+        newItems = await props.fetch(search, 10, untransformedContext);
     }
 
     if (contextMode.value && !contextSearchMode.value) {
-        items.value = [contextItem.value as C, ...newItems];
+        items.value = [context.value as C, ...newItems];
     } else {
         items.value = newItems;
     }
@@ -188,8 +179,8 @@ function selectedElement(value: any) {
         if (value.length == 0) {
             context.value = undefined;
         } else if (value.length == 1) {
-            items.value = [item!];
             context.value = item as C;
+            items.value = [context.value as C];
         } else {
             if (item != undefined) {
                 emit("selected-item", item as T);
@@ -207,6 +198,20 @@ function selectedElement(value: any) {
     }
     resetSearch();
 }
+
+function transformToContextItem(item: C): C {
+    return {
+        ...item,
+        id: `context-${item.id}`
+    };
+}
+
+function untransformContextItem(item: C): C {
+    return {
+        ...item,
+        id: item.id.replace("context-", "")
+    };
+}   
 
 onMounted(async () => {
     await updateSearch("");
