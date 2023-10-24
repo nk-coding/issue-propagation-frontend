@@ -100,5 +100,7 @@ watch(
     --issue-closed-color: rgb(var(--v-theme-issue-closed));
     --issue-open-color: rgb(var(--v-theme-issue-open));
     --issue-relation-stroke-color: rgba(var(--v-theme-on-surface), 0.4);
+    --highlight-stroke-color: rgb(var(--v-theme-primary));
+    --highlight-fill-color: rgba(var(--v-theme-primary), 0.2);
 }
 </style>

@@ -16,21 +16,33 @@ export class IssueRelationView implements IView {
         const endPos = Math2D.add(end.issueTypePos(model.endIndex), offset);
         const c1 = Math2D.add(startPos, { y: handleLength, x: 0 });
         const c2 = Math2D.add(endPos, { y: handleLength, x: 0 });
+        const highlighted = model.highlightedBecause.size > 0;
         const path = svg("path", {
             attrs: {
-                d: `M ${startPos.x} ${startPos.y} C ${c1.x} ${c1.y} ${c2.x} ${c2.y} ${endPos.x} ${endPos.y + 12}`,
-                stroke: "var(--issue-relation-stroke-color)",
+                d: `M ${startPos.x} ${startPos.y} C ${c1.x} ${c1.y} ${c2.x} ${c2.y} ${endPos.x} ${endPos.y + 12}`
+            },
+            class: {
+                "issue-relation": true,
+                highlighted: highlighted
+            }
+        });
+        const hiddenPath = svg("path", {
+            attrs: {
+                d: `M ${startPos.x} ${startPos.y} C ${c1.x} ${c1.y} ${c2.x} ${c2.y} ${endPos.x} ${endPos.y + 12} v -12`,
+                stroke: "transparent",
                 fill: "none",
-                "stroke-width": 3.5,
-                "stroke-dasharray": "10, 5"
+                "stroke-width": "calc(12px / var(--diagram-zoom))"
             }
         });
         const arrow = svg("path", {
             attrs: {
-                d: `M ${endPos.x} ${endPos.y} m -6 12 l 6 -11 l 6 11 z`,
-                fill: "var(--issue-relation-stroke-color)"
+                d: `M ${endPos.x} ${endPos.y} m -6 12 l 6 -11 l 6 11 z`
+            },
+            class: {
+                "issue-relation-arrow": true,
+                highlighted: highlighted
             }
         });
-        return svg("g", {}, path, arrow);
+        return svg("g", {}, path, arrow, hiddenPath);
     }
 }

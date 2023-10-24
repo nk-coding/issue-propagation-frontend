@@ -3,29 +3,36 @@ import { Root } from "../model/root";
 import { Bounds } from "sprotty-protocol";
 import { Math2D } from "../line/math";
 import { SIssueRelation } from "./sIssueRelation";
+import { SIssueType } from "./sIssueType";
 
 export class SRoot extends ViewportRootElementImpl {
     override type: typeof Root.TYPE = Root.TYPE;
     animated?: boolean;
     targetBounds?: Bounds;
     changeRevision = 0;
-    private readonly issueRelationHighlightRelation = new Map<string, Set<string>>();
+    private _issueRelationHighlightRelation!: Map<string, Set<string>>;
 
-    constructor() {
-        super();
-        for (const child of this.children) {
-            if (child instanceof SIssueRelation) {
-                this.insertIssueRelationHighlightRelation([child.startType, child.endType, child.id]);
+    private get issueRelationHighlightRelation(): Map<string, Set<string>> {
+        if (!this._issueRelationHighlightRelation) {
+            this._issueRelationHighlightRelation = new Map<string, Set<string>>();
+            for (const child of this.children) {
+                if (child instanceof SIssueRelation) {
+                    this.insertIssueRelationHighlightRelation(
+                        [child.startType, child.endType, child.id],
+                        this._issueRelationHighlightRelation
+                    );
+                }
             }
         }
+        return this._issueRelationHighlightRelation;
     }
 
-    private insertIssueRelationHighlightRelation(relevant: string[]): void {
+    private insertIssueRelationHighlightRelation(relevant: string[], mapping: Map<string, Set<string>>): void {
         for (const cause of relevant) {
-            if (!this.issueRelationHighlightRelation.has(cause)) {
-                this.issueRelationHighlightRelation.set(cause, new Set<string>());
+            if (!mapping.has(cause)) {
+                mapping.set(cause, new Set<string>());
             }
-            const set = this.issueRelationHighlightRelation.get(cause)!;
+            const set = mapping.get(cause)!;
             for (const id of relevant) {
                 set.add(id);
             }
@@ -33,7 +40,7 @@ export class SRoot extends ViewportRootElementImpl {
     }
 
     getRelatedHighlightable(cause: string): string[] {
-        return Array.from(this.issueRelationHighlightRelation.get(cause) ?? []);
+        return Array.from(this.issueRelationHighlightRelation.get(cause) ?? [cause]);
     }
 
     updateToTargetBounds(): void {
@@ -112,11 +119,32 @@ export class SRoot extends ViewportRootElementImpl {
             .sprotty .issue-type-folder {
                 stroke: var(--shape-stroke-color);
                 stroke-width: 2px;
-                fill: none;
+                fill: transparent;
             }
 
             .sprotty .issue-type-folder.highlighted {
-                stroke: var(--selected-shape-stroke-color);
+                stroke: var(--highlight-stroke-color);
+                fill: var(--highlight-fill-color);
+            }
+
+            .sprotty .issue-relation {
+                fill: none;
+                stroke: var(--issue-relation-stroke-color);
+                stroke-width: 3.5;
+                stroke-dasharray: 10, 5;
+            }
+
+            .sprotty .issue-relation.highlighted {
+                stroke: var(--highlight-stroke-color);
+            }
+
+            .sprotty .issue-relation-arrow {
+                fill: var(--issue-relation-stroke-color);
+                stroke: none;
+            }
+
+            .sprotty .issue-relation-arrow.highlighted {
+                fill: var(--highlight-stroke-color);
             }
 
             .sprotty .issue-type-icon.closed {

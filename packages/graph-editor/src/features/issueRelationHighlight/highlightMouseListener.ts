@@ -5,7 +5,7 @@ import { HoverHighlightAction } from "./hoverHighlightAction";
 import { SRoot } from "../../smodel/sRoot";
 
 export class HighlightMouseListener extends MouseListener {
-    override mouseEnter(target: SModelElementImpl, event: MouseEvent): Action[] {
+    override mouseOver(target: SModelElementImpl, event: MouseEvent): Action[] {
         if (IssueRelationHighlightable.is(target as never)) {
             const root = target.root as SRoot;
             const action: HoverHighlightAction = {
@@ -19,7 +19,7 @@ export class HighlightMouseListener extends MouseListener {
         return [];
     }
 
-    override mouseLeave(target: SModelElementImpl, event: MouseEvent): Action[] {
+    override mouseOut(target: SModelElementImpl, event: MouseEvent): Action[] {
         if (IssueRelationHighlightable.is(target as never)) {
             const root = target.root as SRoot;
             const action: HoverHighlightAction = {
