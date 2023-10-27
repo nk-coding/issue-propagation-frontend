@@ -13,14 +13,17 @@ const routes: RouteRecordRaw[] = [
             },
             {
                 path: "components",
+                name: "components",
                 component: () => import("../views/home/Components.vue")
             },
             {
                 path: "projects",
+                name: "projects",
                 component: () => import("../views/home/Projects.vue")
             },
             {
                 path: "imss",
+                name: "imss",
                 component: () => import("../views/home/Imss.vue")
             }
         ]

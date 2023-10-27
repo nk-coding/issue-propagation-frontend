@@ -8,10 +8,13 @@
 
 <script lang="ts" setup>
 import BaseLayout, { TabSegment } from "@/components/BaseLayout.vue";
-import { computed } from "vue";
+import { Events } from "@/util/eventBus";
+import { eventBusKey } from "@/util/keys";
+import { computed, inject } from "vue";
 import { useRoute } from "vue-router";
 
 const route = useRoute();
+const eventBus = inject(eventBusKey);
 
 const titleSegments = [{ name: "Gropius", path: "/" }];
 
@@ -26,13 +29,37 @@ const rightSidebarItems = computed(() => {
     if (route.name === "home") {
         return [];
     } else {
+        let name: string;
+        let eventName: keyof Events;
+        switch (route.name) {
+            case "projects": {
+                name = "project";
+                eventName = "create-project";
+                break;
+            }
+            case "components": {
+                name = "component";
+                eventName = "create-component";
+                break;
+            }
+            case "imss": {
+                name = "IMS";
+                eventName = "create-ims";
+                break;
+            }
+            default: {
+                throw new Error("Unknown route");
+            }
+        }
         return [
             [
                 {
                     icon: "mdi-plus",
-                    description: `Add ${route.name?.toString().slice(0, -1)}`,
+                    description: `Add ${name}`,
                     color: "secondary",
-                    onClick: () => {}
+                    onClick: () => {
+                        eventBus?.emit(eventName);
+                    }
                 }
             ]
         ];

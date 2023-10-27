@@ -3,6 +3,9 @@ import { eventBusKey } from "./keys";
 
 export type Events = {
     "create-issue": undefined;
+    "create-project": undefined;
+    "create-component": undefined;
+    "create-ims": undefined;
     "add-component-version-to-project": undefined;
     "layout-component-graph": undefined;
 };

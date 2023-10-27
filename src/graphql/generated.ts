@@ -13410,66 +13410,77 @@ export type QuerySearchAffectedByIssuesArgs = {
     filter?: InputMaybe<AffectedByIssueFilterInput>;
     first: Scalars["Int"]["input"];
     query: Scalars["String"]["input"];
+    skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
 export type QuerySearchAssignmentTypesArgs = {
     filter?: InputMaybe<AssignmentTypeFilterInput>;
     first: Scalars["Int"]["input"];
     query: Scalars["String"]["input"];
+    skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
 export type QuerySearchGropiusUsersArgs = {
     filter?: InputMaybe<GropiusUserFilterInput>;
     first: Scalars["Int"]["input"];
     query: Scalars["String"]["input"];
+    skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
 export type QuerySearchIssueRelationTypesArgs = {
     filter?: InputMaybe<IssueRelationTypeFilterInput>;
     first: Scalars["Int"]["input"];
     query: Scalars["String"]["input"];
+    skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
 export type QuerySearchIssueStatesArgs = {
     filter?: InputMaybe<IssueStateFilterInput>;
     first: Scalars["Int"]["input"];
     query: Scalars["String"]["input"];
+    skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
 export type QuerySearchIssueTemplatesArgs = {
     filter?: InputMaybe<IssueTemplateFilterInput>;
     first: Scalars["Int"]["input"];
     query: Scalars["String"]["input"];
+    skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
 export type QuerySearchIssueTypesArgs = {
     filter?: InputMaybe<IssueTypeFilterInput>;
     first: Scalars["Int"]["input"];
     query: Scalars["String"]["input"];
+    skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
 export type QuerySearchIssuesArgs = {
     filter?: InputMaybe<IssueFilterInput>;
     first: Scalars["Int"]["input"];
     query: Scalars["String"]["input"];
+    skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
 export type QuerySearchLabelsArgs = {
     filter?: InputMaybe<LabelFilterInput>;
     first: Scalars["Int"]["input"];
     query: Scalars["String"]["input"];
+    skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
 export type QuerySearchTrackablesArgs = {
     filter?: InputMaybe<TrackableFilterInput>;
     first: Scalars["Int"]["input"];
     query: Scalars["String"]["input"];
+    skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
 export type QuerySearchUsersArgs = {
     filter?: InputMaybe<UserFilterInput>;
     first: Scalars["Int"]["input"];
     query: Scalars["String"]["input"];
+    skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
 /**
@@ -21068,6 +21079,18 @@ export type GetProjectQuery = {
         | null;
 };
 
+export type CreateProjectMutationVariables = Exact<{
+    input: CreateProjectInput;
+}>;
+
+export type CreateProjectMutation = {
+    __typename?: "Mutation";
+    createProject?: {
+        __typename?: "CreateProjectPayload";
+        project?: { __typename?: "Project"; id: string } | null;
+    } | null;
+};
+
 type DefaultTimelineItemInfo_AddedAffectedEntityEvent_Fragment = {
     __typename: "AddedAffectedEntityEvent";
     id: string;
@@ -24160,6 +24183,15 @@ export const GetProjectDocument = gql`
     }
     ${OpenIssueCountFragmentDoc}
 `;
+export const CreateProjectDocument = gql`
+    mutation createProject($input: CreateProjectInput!) {
+        createProject(input: $input) {
+            project {
+                id
+            }
+        }
+    }
+`;
 export const SearchTrackablesDocument = gql`
     query searchTrackables($query: String!, $count: Int!) {
         searchTrackables(query: $query, first: $count) {
@@ -24773,6 +24805,20 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                     }),
                 "getProject",
                 "query"
+            );
+        },
+        createProject(
+            variables: CreateProjectMutationVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<CreateProjectMutation> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<CreateProjectMutation>(CreateProjectDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "createProject",
+                "mutation"
             );
         },
         searchTrackables(

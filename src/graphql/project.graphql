@@ -21,3 +21,11 @@ query getProject($id: ID!) {
         }
     }
 }
+
+mutation createProject($input: CreateProjectInput!) {
+    createProject(input: $input) {
+        project {
+            id
+        }
+    }
+}

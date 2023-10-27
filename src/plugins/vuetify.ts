@@ -38,6 +38,11 @@ export default createVuetify({
             density: "comfortable",
             color: "primary"
         },
+        VTextarea: {
+            variant: "outlined",
+            density: "comfortable",
+            color: "primary"
+        },
         VSelect: {
             variant: "outlined",
             density: "comfortable"
