@@ -21,3 +21,9 @@ query getComponent($id: ID!) {
         }
     }
 }
+
+query searchComponents($query: String!, $count: Int!, $filter: ComponentFilterInput) {
+    searchComponents(query: $query, first: $count, filter: $filter) {
+        ...DefaultTrackableInfo
+    }
+}

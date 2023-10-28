@@ -1,18 +1,22 @@
 query getProjectGraph($project: ID!) {
     node(id: $project) {
         ... on Project {
-            components {
-                nodes {
-                    ...GraphComponentVersionInfo
-                }
-            }
+            ...GraphInfo
         }
     }
 }
 
 mutation addComponentVersionToProject($project: ID!, $componentVersion: ID!) {
     addComponentVersionToProject(input: { componentVersion: $componentVersion, project: $project }) {
-        componentVersion {
+        project {
+            id
+        }
+    }
+}
+
+fragment GraphInfo on Project {
+    components {
+        nodes {
             ...GraphComponentVersionInfo
         }
     }

@@ -159,8 +159,8 @@
                         />
                     </template>
                     <template #ItemAutocomplete>
-                        <UserAutocomplete
-                            :fetch="searchUsers"
+                        <GropiusUserAutocomplete
+                            :filter="assignmentUserFilter"
                             label="Assign user"
                             class="mb-2"
                             hide-details
@@ -299,13 +299,13 @@ import Label from "@/components/info/Label.vue";
 import IssueState from "@/components/info/IssueState.vue";
 import IssueType from "@/components/info/IssueType.vue";
 import ListItem from "@/components/ListItem.vue";
-import FetchingAutocomplete from "@/components/input/FetchingAutocomplete.vue";
 import {
     AssignmentTimelineInfoFragment,
     DefaultAffectedByIssueInfoFragment,
     DefaultIssueInfoFragment,
     DefaultLabelInfoFragment,
     DefaultUserInfoFragment,
+    GropiusUserFilterInput,
     OutgoingRelationTimelineInfoFragment
 } from "@/graphql/generated";
 import { issueKey, trackableKey } from "@/util/keys";
@@ -314,10 +314,9 @@ import IssueStateAutocomplete from "@/components/input/IssueStateAutocomplete.vu
 import IssueInfo from "@/components/info/Issue.vue";
 import IssueRelationTypeAutocomplete from "@/components/input/IssueRelationTypeAutocomplete.vue";
 import IssueAutocomplete from "@/components/input/IssueAutocomplete.vue";
-import { transformSearchQuery } from "@/util/searchQueryTransformer";
 import TypedEditableCompartment from "@/components/TypedEditableCompartment.vue";
 import AssignmentTypeAutocomplete from "@/components/input/AssignmentTypeAutocomplete.vue";
-import UserAutocomplete from "@/components/input/UserAutocomplete.vue";
+import GropiusUserAutocomplete from "@/components/input/GropiusUserAutocomplete.vue";
 import { inject } from "vue";
 import AffectedByIssueAutocomplete from "@/components/input/AffectedByIssueAutocomplete.vue";
 import LabelAutocomplete from "@/components/input/LabelAutocomplete.vue";
@@ -487,17 +486,7 @@ async function removeAssignmentType(assignment: AssignmentTimelineInfoFragment) 
     editedAssignmentTypes.value[assignment.id] = false;
 }
 
-async function searchUsers(filter: string, count: number): Promise<DefaultUserInfoFragment[]> {
-    return await withErrorMessage(async () => {
-        const query = transformSearchQuery(filter);
-        if (query != undefined) {
-            const res = await client.searchManageIssuesUsers({ query, count, issue: issueId.value });
-            return res.searchGropiusUsers;
-        } else {
-            return [];
-        }
-    }, "Error searching users");
-}
+const assignmentUserFilter = computed(() =>({ hasNodePermission: { node: issueId.value, permission: "MANAGE_ISSUES" } } as GropiusUserFilterInput));
 
 async function assignUser(user: DefaultUserInfoFragment) {
     const event = await withErrorMessage(async () => {

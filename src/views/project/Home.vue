@@ -4,6 +4,16 @@
         <FilterChip v-model="showClosedIssues" label="Closed Issues" icon="mdi-bug" class="mr-2 closed-issue-chip" />
         <FilterChip v-model="showIssueRelations" label="Issue Relations" />
     </GraphEditor>
+    <v-dialog v-model="showAddComponentVersionDialog" :scrim="false" width="auto" class="autocomplete-dialog">
+        <v-sheet :elevation="10">
+            <ComponentVersionAutocomplete
+                hide-details
+                autofocus
+                bg-color="background"
+                @selected-item="addComponentVersion"
+            />
+        </v-sheet>
+    </v-dialog>
 </template>
 <script lang="ts" setup>
 import { NodeReturnType, useClient } from "@/graphql/client";
@@ -34,18 +44,24 @@ import { computed, ref, watch, nextTick } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { onEvent } from "@/util/eventBus";
 import FilterChip from "@/components/input/FilterChip.vue";
+import ComponentVersionAutocomplete from "@/components/input/ComponentVersionAutocomplete.vue";
+import { inject } from "vue";
+import { eventBusKey } from "@/util/keys";
 
 type ProjectGraph = NodeReturnType<"getProjectGraph", "Project">;
 
 const client = useClient();
 const router = useRouter();
 const route = useRoute();
+const eventBus = inject(eventBusKey);
 
 const trackableId = computed(() => route.params.trackable as string);
+const graphVersionCounter = ref(0);
 
 const evaluating = ref(false);
 const originalGraph = asyncComputed(
     async () => {
+        graphVersionCounter.value;
         if (!trackableId.value) {
             return null;
         }
@@ -62,6 +78,8 @@ const originalGraph = asyncComputed(
 const showOpenIssues = ref(true);
 const showClosedIssues = ref(false);
 const showIssueRelations = ref(true);
+
+const showAddComponentVersionDialog = ref(false);
 
 const graph = computed<Graph | null>(() => {
     if (!originalGraph.value) {
@@ -247,8 +265,34 @@ function extractIssueTypes(relationPartner: GraphRelationPartnerInfoFragment): I
             }
         });
 }
+
+eventBus?.on("add-component-version-to-project", () => {
+    showAddComponentVersionDialog.value = true;
+});
+
+async function addComponentVersion(componentVersion: { id: string }) {
+    showAddComponentVersionDialog.value = false;
+    await client.addComponentVersionToProject({
+        componentVersion: componentVersion.id,
+        project: trackableId.value
+    });
+    graphVersionCounter.value++;
+}
 </script>
-<style scoped>
+<style scoped lang="scss">
+@use "@/styles/settings.scss";
+
+.autocomplete-dialog {
+    :deep(.v-overlay__content) {
+        top: 120px;
+    }
+
+    .v-sheet {
+        width: min(1000px, calc(100vw - 3 * settings.$side-bar-width));
+        overflow-y: visible !important;
+    }
+}
+
 .open-issue-chip :deep(.v-icon.mdi-bug) {
     color: rgb(var(--v-theme-issue-open));
 }

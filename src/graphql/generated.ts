@@ -13292,6 +13292,10 @@ export type Query = {
     searchAffectedByIssues: Array<AffectedByIssue>;
     /** Search for nodes of type AssignmentType */
     searchAssignmentTypes: Array<AssignmentType>;
+    /** Search for nodes of type ComponentVersion */
+    searchComponentVersions: Array<ComponentVersion>;
+    /** Search for nodes of type Component */
+    searchComponents: Array<Component>;
     /** Search for nodes of type GropiusUser */
     searchGropiusUsers: Array<GropiusUser>;
     /** Search for nodes of type IssueRelationType */
@@ -13415,6 +13419,20 @@ export type QuerySearchAffectedByIssuesArgs = {
 
 export type QuerySearchAssignmentTypesArgs = {
     filter?: InputMaybe<AssignmentTypeFilterInput>;
+    first: Scalars["Int"]["input"];
+    query: Scalars["String"]["input"];
+    skip?: InputMaybe<Scalars["Int"]["input"]>;
+};
+
+export type QuerySearchComponentVersionsArgs = {
+    filter?: InputMaybe<ComponentVersionFilterInput>;
+    first: Scalars["Int"]["input"];
+    query: Scalars["String"]["input"];
+    skip?: InputMaybe<Scalars["Int"]["input"]>;
+};
+
+export type QuerySearchComponentsArgs = {
+    filter?: InputMaybe<ComponentFilterInput>;
     first: Scalars["Int"]["input"];
     query: Scalars["String"]["input"];
     skip?: InputMaybe<Scalars["Int"]["input"]>;
@@ -17228,105 +17246,6 @@ export type SearchAffectedByIssuesQuery = {
     >;
 };
 
-export type GetComponentVersionsQueryVariables = Exact<{
-    id: Scalars["ID"]["input"];
-    count: Scalars["Int"]["input"];
-}>;
-
-export type GetComponentVersionsQuery = {
-    __typename?: "Query";
-    node?:
-        | { __typename?: "AddedAffectedEntityEvent"; id: string }
-        | { __typename?: "AddedArtefactEvent"; id: string }
-        | { __typename?: "AddedLabelEvent"; id: string }
-        | { __typename?: "AddedToPinnedIssuesEvent"; id: string }
-        | { __typename?: "AddedToTrackableEvent"; id: string }
-        | { __typename?: "AggregatedIssue"; id: string }
-        | { __typename?: "AggregatedIssueRelation"; id: string }
-        | { __typename?: "Artefact"; id: string }
-        | { __typename?: "ArtefactTemplate"; id: string }
-        | { __typename?: "Assignment"; id: string }
-        | { __typename?: "AssignmentType"; id: string }
-        | { __typename?: "AssignmentTypeChangedEvent"; id: string }
-        | { __typename?: "Body"; id: string }
-        | {
-              __typename?: "Component";
-              id: string;
-              versions: {
-                  __typename?: "ComponentVersionConnection";
-                  nodes: Array<{ __typename: "ComponentVersion"; id: string; name: string; description: string }>;
-              };
-          }
-        | { __typename?: "ComponentPermission"; id: string }
-        | { __typename?: "ComponentTemplate"; id: string }
-        | { __typename?: "ComponentVersion"; id: string }
-        | { __typename?: "ComponentVersionTemplate"; id: string }
-        | { __typename?: "DueDateChangedEvent"; id: string }
-        | { __typename?: "EstimatedTimeChangedEvent"; id: string }
-        | { __typename?: "FillStyle"; id: string }
-        | { __typename?: "GlobalPermission"; id: string }
-        | { __typename?: "GropiusUser"; id: string }
-        | { __typename?: "IMS"; id: string }
-        | { __typename?: "IMSIssue"; id: string }
-        | { __typename?: "IMSIssueTemplate"; id: string }
-        | { __typename?: "IMSPermission"; id: string }
-        | { __typename?: "IMSProject"; id: string }
-        | { __typename?: "IMSProjectTemplate"; id: string }
-        | { __typename?: "IMSTemplate"; id: string }
-        | { __typename?: "IMSUser"; id: string }
-        | { __typename?: "IMSUserTemplate"; id: string }
-        | { __typename?: "IncomingRelationTypeChangedEvent"; id: string }
-        | { __typename?: "Interface"; id: string }
-        | { __typename?: "InterfaceDefinition"; id: string }
-        | { __typename?: "InterfaceDefinitionTemplate"; id: string }
-        | { __typename?: "InterfacePart"; id: string }
-        | { __typename?: "InterfacePartTemplate"; id: string }
-        | { __typename?: "InterfaceSpecification"; id: string }
-        | { __typename?: "InterfaceSpecificationDerivationCondition"; id: string }
-        | { __typename?: "InterfaceSpecificationTemplate"; id: string }
-        | { __typename?: "InterfaceSpecificationVersion"; id: string }
-        | { __typename?: "InterfaceSpecificationVersionTemplate"; id: string }
-        | { __typename?: "InterfaceTemplate"; id: string }
-        | { __typename?: "IntraComponentDependencyParticipant"; id: string }
-        | { __typename?: "IntraComponentDependencySpecification"; id: string }
-        | { __typename?: "Issue"; id: string }
-        | { __typename?: "IssueComment"; id: string }
-        | { __typename?: "IssuePriority"; id: string }
-        | { __typename?: "IssueRelation"; id: string }
-        | { __typename?: "IssueRelationType"; id: string }
-        | { __typename?: "IssueState"; id: string }
-        | { __typename?: "IssueTemplate"; id: string }
-        | { __typename?: "IssueType"; id: string }
-        | { __typename?: "Label"; id: string }
-        | { __typename?: "MetaAggregatedIssueRelation"; id: string }
-        | { __typename?: "OutgoingRelationTypeChangedEvent"; id: string }
-        | { __typename?: "PriorityChangedEvent"; id: string }
-        | { __typename?: "Project"; id: string }
-        | { __typename?: "ProjectPermission"; id: string }
-        | { __typename?: "RelatedByIssueEvent"; id: string }
-        | { __typename?: "Relation"; id: string }
-        | { __typename?: "RelationCondition"; id: string }
-        | { __typename?: "RelationTemplate"; id: string }
-        | { __typename?: "RemovedAffectedEntityEvent"; id: string }
-        | { __typename?: "RemovedArtefactEvent"; id: string }
-        | { __typename?: "RemovedAssignmentEvent"; id: string }
-        | { __typename?: "RemovedFromPinnedIssuesEvent"; id: string }
-        | { __typename?: "RemovedFromTrackableEvent"; id: string }
-        | { __typename?: "RemovedIncomingRelationEvent"; id: string }
-        | { __typename?: "RemovedLabelEvent"; id: string }
-        | { __typename?: "RemovedOutgoingRelationEvent"; id: string }
-        | { __typename?: "RemovedTemplatedFieldEvent"; id: string }
-        | { __typename?: "SpentTimeChangedEvent"; id: string }
-        | { __typename?: "StartDateChangedEvent"; id: string }
-        | { __typename?: "StateChangedEvent"; id: string }
-        | { __typename?: "StrokeStyle"; id: string }
-        | { __typename?: "TemplateChangedEvent"; id: string }
-        | { __typename?: "TemplatedFieldChangedEvent"; id: string }
-        | { __typename?: "TitleChangedEvent"; id: string }
-        | { __typename?: "TypeChangedEvent"; id: string }
-        | null;
-};
-
 type DefaultAffectedByIssueInfo_Component_Fragment = {
     __typename: "Component";
     id: string;
@@ -17800,6 +17719,134 @@ export type GetComponentQuery = {
         | null;
 };
 
+export type SearchComponentsQueryVariables = Exact<{
+    query: Scalars["String"]["input"];
+    count: Scalars["Int"]["input"];
+    filter?: InputMaybe<ComponentFilterInput>;
+}>;
+
+export type SearchComponentsQuery = {
+    __typename?: "Query";
+    searchComponents: Array<{ __typename: "Component"; id: string; name: string; description: string }>;
+};
+
+export type GetComponentVersionsQueryVariables = Exact<{
+    id: Scalars["ID"]["input"];
+    count: Scalars["Int"]["input"];
+}>;
+
+export type GetComponentVersionsQuery = {
+    __typename?: "Query";
+    node?:
+        | { __typename?: "AddedAffectedEntityEvent"; id: string }
+        | { __typename?: "AddedArtefactEvent"; id: string }
+        | { __typename?: "AddedLabelEvent"; id: string }
+        | { __typename?: "AddedToPinnedIssuesEvent"; id: string }
+        | { __typename?: "AddedToTrackableEvent"; id: string }
+        | { __typename?: "AggregatedIssue"; id: string }
+        | { __typename?: "AggregatedIssueRelation"; id: string }
+        | { __typename?: "Artefact"; id: string }
+        | { __typename?: "ArtefactTemplate"; id: string }
+        | { __typename?: "Assignment"; id: string }
+        | { __typename?: "AssignmentType"; id: string }
+        | { __typename?: "AssignmentTypeChangedEvent"; id: string }
+        | { __typename?: "Body"; id: string }
+        | {
+              __typename?: "Component";
+              id: string;
+              versions: {
+                  __typename?: "ComponentVersionConnection";
+                  nodes: Array<{ __typename: "ComponentVersion"; id: string; name: string; description: string }>;
+              };
+          }
+        | { __typename?: "ComponentPermission"; id: string }
+        | { __typename?: "ComponentTemplate"; id: string }
+        | { __typename?: "ComponentVersion"; id: string }
+        | { __typename?: "ComponentVersionTemplate"; id: string }
+        | { __typename?: "DueDateChangedEvent"; id: string }
+        | { __typename?: "EstimatedTimeChangedEvent"; id: string }
+        | { __typename?: "FillStyle"; id: string }
+        | { __typename?: "GlobalPermission"; id: string }
+        | { __typename?: "GropiusUser"; id: string }
+        | { __typename?: "IMS"; id: string }
+        | { __typename?: "IMSIssue"; id: string }
+        | { __typename?: "IMSIssueTemplate"; id: string }
+        | { __typename?: "IMSPermission"; id: string }
+        | { __typename?: "IMSProject"; id: string }
+        | { __typename?: "IMSProjectTemplate"; id: string }
+        | { __typename?: "IMSTemplate"; id: string }
+        | { __typename?: "IMSUser"; id: string }
+        | { __typename?: "IMSUserTemplate"; id: string }
+        | { __typename?: "IncomingRelationTypeChangedEvent"; id: string }
+        | { __typename?: "Interface"; id: string }
+        | { __typename?: "InterfaceDefinition"; id: string }
+        | { __typename?: "InterfaceDefinitionTemplate"; id: string }
+        | { __typename?: "InterfacePart"; id: string }
+        | { __typename?: "InterfacePartTemplate"; id: string }
+        | { __typename?: "InterfaceSpecification"; id: string }
+        | { __typename?: "InterfaceSpecificationDerivationCondition"; id: string }
+        | { __typename?: "InterfaceSpecificationTemplate"; id: string }
+        | { __typename?: "InterfaceSpecificationVersion"; id: string }
+        | { __typename?: "InterfaceSpecificationVersionTemplate"; id: string }
+        | { __typename?: "InterfaceTemplate"; id: string }
+        | { __typename?: "IntraComponentDependencyParticipant"; id: string }
+        | { __typename?: "IntraComponentDependencySpecification"; id: string }
+        | { __typename?: "Issue"; id: string }
+        | { __typename?: "IssueComment"; id: string }
+        | { __typename?: "IssuePriority"; id: string }
+        | { __typename?: "IssueRelation"; id: string }
+        | { __typename?: "IssueRelationType"; id: string }
+        | { __typename?: "IssueState"; id: string }
+        | { __typename?: "IssueTemplate"; id: string }
+        | { __typename?: "IssueType"; id: string }
+        | { __typename?: "Label"; id: string }
+        | { __typename?: "MetaAggregatedIssueRelation"; id: string }
+        | { __typename?: "OutgoingRelationTypeChangedEvent"; id: string }
+        | { __typename?: "PriorityChangedEvent"; id: string }
+        | { __typename?: "Project"; id: string }
+        | { __typename?: "ProjectPermission"; id: string }
+        | { __typename?: "RelatedByIssueEvent"; id: string }
+        | { __typename?: "Relation"; id: string }
+        | { __typename?: "RelationCondition"; id: string }
+        | { __typename?: "RelationTemplate"; id: string }
+        | { __typename?: "RemovedAffectedEntityEvent"; id: string }
+        | { __typename?: "RemovedArtefactEvent"; id: string }
+        | { __typename?: "RemovedAssignmentEvent"; id: string }
+        | { __typename?: "RemovedFromPinnedIssuesEvent"; id: string }
+        | { __typename?: "RemovedFromTrackableEvent"; id: string }
+        | { __typename?: "RemovedIncomingRelationEvent"; id: string }
+        | { __typename?: "RemovedLabelEvent"; id: string }
+        | { __typename?: "RemovedOutgoingRelationEvent"; id: string }
+        | { __typename?: "RemovedTemplatedFieldEvent"; id: string }
+        | { __typename?: "SpentTimeChangedEvent"; id: string }
+        | { __typename?: "StartDateChangedEvent"; id: string }
+        | { __typename?: "StateChangedEvent"; id: string }
+        | { __typename?: "StrokeStyle"; id: string }
+        | { __typename?: "TemplateChangedEvent"; id: string }
+        | { __typename?: "TemplatedFieldChangedEvent"; id: string }
+        | { __typename?: "TitleChangedEvent"; id: string }
+        | { __typename?: "TypeChangedEvent"; id: string }
+        | null;
+};
+
+export type DefaultComponentVersionInfoFragment = {
+    __typename: "ComponentVersion";
+    id: string;
+    name: string;
+    description: string;
+};
+
+export type SearchComponentVersionsQueryVariables = Exact<{
+    query: Scalars["String"]["input"];
+    count: Scalars["Int"]["input"];
+    component: Scalars["ID"]["input"];
+}>;
+
+export type SearchComponentVersionsQuery = {
+    __typename?: "Query";
+    searchComponentVersions: Array<{ __typename: "ComponentVersion"; id: string; name: string; description: string }>;
+};
+
 export type GetProjectGraphQueryVariables = Exact<{
     project: Scalars["ID"]["input"];
 }>;
@@ -18048,7 +18095,15 @@ export type AddComponentVersionToProjectMutation = {
     __typename?: "Mutation";
     addComponentVersionToProject: {
         __typename?: "AddComponentVersionToProjectPayload";
-        componentVersion: {
+        project: { __typename?: "Project"; id: string };
+    };
+};
+
+export type GraphInfoFragment = {
+    __typename?: "Project";
+    components: {
+        __typename?: "ComponentVersionConnection";
+        nodes: Array<{
             __typename?: "ComponentVersion";
             name: string;
             version: string;
@@ -18182,7 +18237,7 @@ export type AddComponentVersionToProjectMutation = {
                     };
                 }>;
             };
-        };
+        }>;
     };
 };
 
@@ -22793,13 +22848,13 @@ type DefaultUserInfo_ImsUser_Fragment = {
 
 export type DefaultUserInfoFragment = DefaultUserInfo_GropiusUser_Fragment | DefaultUserInfo_ImsUser_Fragment;
 
-export type SearchManageIssuesUsersQueryVariables = Exact<{
+export type SearchGropiusUsersQueryVariables = Exact<{
     query: Scalars["String"]["input"];
     count: Scalars["Int"]["input"];
-    issue: Scalars["ID"]["input"];
+    filter?: InputMaybe<GropiusUserFilterInput>;
 }>;
 
-export type SearchManageIssuesUsersQuery = {
+export type SearchGropiusUsersQuery = {
     __typename?: "Query";
     searchGropiusUsers: Array<{
         __typename?: "GropiusUser";
@@ -22810,6 +22865,14 @@ export type SearchManageIssuesUsersQuery = {
     }>;
 };
 
+export const DefaultComponentVersionInfoFragmentDoc = gql`
+    fragment DefaultComponentVersionInfo on ComponentVersion {
+        id
+        name
+        description
+        __typename
+    }
+`;
 export const StrokeStyleInfoFragmentDoc = gql`
     fragment StrokeStyleInfo on StrokeStyle {
         color
@@ -22916,6 +22979,16 @@ export const GraphComponentVersionInfoFragmentDoc = gql`
     }
     ${GraphRelationPartnerInfoFragmentDoc}
     ${GraphRelationPartnerTemplateInfoFragmentDoc}
+`;
+export const GraphInfoFragmentDoc = gql`
+    fragment GraphInfo on Project {
+        components {
+            nodes {
+                ...GraphComponentVersionInfo
+            }
+        }
+    }
+    ${GraphComponentVersionInfoFragmentDoc}
 `;
 export const DefaultIssueRelationTypeInfoFragmentDoc = gql`
     fragment DefaultIssueRelationTypeInfo on IssueRelationType {
@@ -23642,21 +23715,6 @@ export const SearchAffectedByIssuesDocument = gql`
     }
     ${DefaultAffectedByIssueInfoFragmentDoc}
 `;
-export const GetComponentVersionsDocument = gql`
-    query getComponentVersions($id: ID!, $count: Int!) {
-        node(id: $id) {
-            id
-            ... on Component {
-                versions(first: $count) {
-                    nodes {
-                        ...DefaultAffectedByIssueInfo
-                    }
-                }
-            }
-        }
-    }
-    ${DefaultAffectedByIssueInfoFragmentDoc}
-`;
 export const AddAffectedEntityToIssueDocument = gql`
     mutation addAffectedEntityToIssue($issue: ID!, $affectedEntity: ID!) {
         addAffectedEntityToIssue(input: { issue: $issue, affectedEntity: $affectedEntity }) {
@@ -23757,29 +23815,55 @@ export const GetComponentDocument = gql`
     }
     ${OpenIssueCountFragmentDoc}
 `;
-export const GetProjectGraphDocument = gql`
-    query getProjectGraph($project: ID!) {
-        node(id: $project) {
-            ... on Project {
-                components {
+export const SearchComponentsDocument = gql`
+    query searchComponents($query: String!, $count: Int!, $filter: ComponentFilterInput) {
+        searchComponents(query: $query, first: $count, filter: $filter) {
+            ...DefaultTrackableInfo
+        }
+    }
+    ${DefaultTrackableInfoFragmentDoc}
+`;
+export const GetComponentVersionsDocument = gql`
+    query getComponentVersions($id: ID!, $count: Int!) {
+        node(id: $id) {
+            id
+            ... on Component {
+                versions(first: $count) {
                     nodes {
-                        ...GraphComponentVersionInfo
+                        ...DefaultComponentVersionInfo
                     }
                 }
             }
         }
     }
-    ${GraphComponentVersionInfoFragmentDoc}
+    ${DefaultComponentVersionInfoFragmentDoc}
+`;
+export const SearchComponentVersionsDocument = gql`
+    query searchComponentVersions($query: String!, $count: Int!, $component: ID!) {
+        searchComponentVersions(query: $query, first: $count, filter: { component: { id: { eq: $component } } }) {
+            ...DefaultComponentVersionInfo
+        }
+    }
+    ${DefaultComponentVersionInfoFragmentDoc}
+`;
+export const GetProjectGraphDocument = gql`
+    query getProjectGraph($project: ID!) {
+        node(id: $project) {
+            ... on Project {
+                ...GraphInfo
+            }
+        }
+    }
+    ${GraphInfoFragmentDoc}
 `;
 export const AddComponentVersionToProjectDocument = gql`
     mutation addComponentVersionToProject($project: ID!, $componentVersion: ID!) {
         addComponentVersionToProject(input: { componentVersion: $componentVersion, project: $project }) {
-            componentVersion {
-                ...GraphComponentVersionInfo
+            project {
+                id
             }
         }
     }
-    ${GraphComponentVersionInfoFragmentDoc}
 `;
 export const GetIssuesDocument = gql`
     query getIssues($filter: String!, $orderBy: IssueOrder!, $count: Int!, $skip: Int!, $trackable: ID!) {
@@ -24208,13 +24292,9 @@ export const GetCurrentUserDocument = gql`
     }
     ${DefaultUserInfoFragmentDoc}
 `;
-export const SearchManageIssuesUsersDocument = gql`
-    query searchManageIssuesUsers($query: String!, $count: Int!, $issue: ID!) {
-        searchGropiusUsers(
-            query: $query
-            first: $count
-            filter: { hasNodePermission: { node: $issue, permission: MANAGE_ISSUES } }
-        ) {
+export const SearchGropiusUsersDocument = gql`
+    query searchGropiusUsers($query: String!, $count: Int!, $filter: GropiusUserFilterInput) {
+        searchGropiusUsers(query: $query, first: $count, filter: $filter) {
             ...DefaultUserInfo
         }
     }
@@ -24242,20 +24322,6 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "searchAffectedByIssues",
-                "query"
-            );
-        },
-        getComponentVersions(
-            variables: GetComponentVersionsQueryVariables,
-            requestHeaders?: GraphQLClientRequestHeaders
-        ): Promise<GetComponentVersionsQuery> {
-            return withWrapper(
-                (wrappedRequestHeaders) =>
-                    client.request<GetComponentVersionsQuery>(GetComponentVersionsDocument, variables, {
-                        ...requestHeaders,
-                        ...wrappedRequestHeaders
-                    }),
-                "getComponentVersions",
                 "query"
             );
         },
@@ -24383,6 +24449,48 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "getComponent",
+                "query"
+            );
+        },
+        searchComponents(
+            variables: SearchComponentsQueryVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<SearchComponentsQuery> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<SearchComponentsQuery>(SearchComponentsDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "searchComponents",
+                "query"
+            );
+        },
+        getComponentVersions(
+            variables: GetComponentVersionsQueryVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<GetComponentVersionsQuery> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<GetComponentVersionsQuery>(GetComponentVersionsDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "getComponentVersions",
+                "query"
+            );
+        },
+        searchComponentVersions(
+            variables: SearchComponentVersionsQueryVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<SearchComponentVersionsQuery> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<SearchComponentVersionsQuery>(SearchComponentVersionsDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "searchComponentVersions",
                 "query"
             );
         },
@@ -24849,17 +24957,17 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                 "query"
             );
         },
-        searchManageIssuesUsers(
-            variables: SearchManageIssuesUsersQueryVariables,
+        searchGropiusUsers(
+            variables: SearchGropiusUsersQueryVariables,
             requestHeaders?: GraphQLClientRequestHeaders
-        ): Promise<SearchManageIssuesUsersQuery> {
+        ): Promise<SearchGropiusUsersQuery> {
             return withWrapper(
                 (wrappedRequestHeaders) =>
-                    client.request<SearchManageIssuesUsersQuery>(SearchManageIssuesUsersDocument, variables, {
+                    client.request<SearchGropiusUsersQuery>(SearchGropiusUsersDocument, variables, {
                         ...requestHeaders,
                         ...wrappedRequestHeaders
                     }),
-                "searchManageIssuesUsers",
+                "searchGropiusUsers",
                 "query"
             );
         }

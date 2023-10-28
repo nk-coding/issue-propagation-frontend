@@ -1,0 +1,25 @@
+query getComponentVersions($id: ID!, $count: Int!) {
+    node(id: $id) {
+        id
+        ... on Component {
+            versions(first: $count) {
+                nodes {
+                    ...DefaultComponentVersionInfo
+                }
+            }
+        }
+    }
+}
+
+fragment DefaultComponentVersionInfo on ComponentVersion {
+    id
+    name
+    description
+    __typename
+}
+
+query searchComponentVersions($query: String!, $count: Int!, $component: ID!) {
+    searchComponentVersions(query: $query, first: $count, filter: { component: { id: { eq: $component } } }) {
+        ...DefaultComponentVersionInfo
+    }
+}

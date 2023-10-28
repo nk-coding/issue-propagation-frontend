@@ -4,19 +4,6 @@ query searchAffectedByIssues($query: String!, $count: Int!, $trackable: ID!) {
     }
 }
 
-query getComponentVersions($id: ID!, $count: Int!) {
-    node(id: $id) {
-        id
-        ... on Component {
-            versions(first: $count) {
-                nodes {
-                    ...DefaultAffectedByIssueInfo
-                }
-            }
-        }
-    }
-}
-
 fragment DefaultAffectedByIssueInfo on AffectedByIssue {
     id
     name
