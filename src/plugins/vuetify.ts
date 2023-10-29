@@ -30,6 +30,7 @@ export default createVuetify({
     blueprint: md3,
     aliases: {
         FAB: VBtn,
+        SmallFAB: VBtn,
         IconButton: VBtn
     },
     defaults: {
@@ -59,6 +60,12 @@ export default createVuetify({
             height: "56px",
             minWidth: 0,
             rounded: "lger"
+        },
+        SmallFAB: {
+            width: "40px",
+            height: "40px",
+            minWidth: 0,
+            rounded: "lg"
         },
         IconButton: {
             icon: true,

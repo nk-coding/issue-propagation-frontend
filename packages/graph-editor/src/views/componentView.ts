@@ -6,6 +6,7 @@ import { SLabel } from "../smodel/sLabel";
 import { wrapForeignElement } from "./util";
 import { SChip } from "../smodel/sChip";
 import { SInterface } from "../smodel/sInterface";
+import { SContextMenu } from "../smodel/sContextMenu";
 
 @injectable()
 export class ComponentView implements IView {
@@ -19,6 +20,8 @@ export class ComponentView implements IView {
                 otherChildren.push(model.renderVersionLabel(context, child));
             } else if (child instanceof SInterface) {
                 otherChildren.push(context.renderElement(child));
+            } else if (child instanceof SContextMenu) {
+                otherChildren.push(model.renderContextMenuContainer(context, child));
             }
         }
         otherChildren.push(...model.renderIssueTypes(context));

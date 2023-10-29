@@ -1,7 +1,7 @@
 import { ShapeStyle } from "../gropiusModel";
-import { Element } from "./element";
+import { Selectable } from "./selectable";
 
-export interface IssueAffected extends Element {
+export interface IssueAffected extends Selectable {
     style: ShapeStyle;
     x: number;
     y: number;

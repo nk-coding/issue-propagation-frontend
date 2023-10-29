@@ -1,7 +1,8 @@
-import { RelationStyle, StrokeStyle } from "../gropiusModel";
+import { RelationStyle } from "../gropiusModel";
 import { Element } from "./element";
+import { Selectable } from "./selectable";
 
-export interface Relation extends Element {
+export interface Relation extends Selectable {
     type: typeof Relation.TYPE;
     start: string;
     end: string;

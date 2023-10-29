@@ -6,7 +6,8 @@ import {
     Interface as GropiusInterface,
     Relation as GropiusRelation,
     IssueType as GropiusIssueType,
-    IssueRelation as GropiusIssueRelation
+    IssueRelation as GropiusIssueRelation,
+    Selectable as GropiusSelectable
 } from "../gropiusModel";
 import { Root } from "../model/root";
 import { Component } from "../model/component";
@@ -14,11 +15,13 @@ import { Interface } from "../model/interface";
 import { Label } from "../model/label";
 import { Relation } from "../model/relation";
 import { UpdateLayoutAction } from "../features/move/updateLayoutAction";
-import { Action, Bounds, SModelElement, UpdateModelAction } from "sprotty-protocol";
+import { Action, Bounds, SModelElement, SelectAction, SelectAllAction, UpdateModelAction } from "sprotty-protocol";
 import { Element } from "../model/element";
 import { Chip } from "../model/chip";
 import { IssueType } from "../model/issueType";
 import { IssueRelation } from "../model/issueRelation";
+import { ContextMenu } from "../model/contextMenu";
+import { SSelectable } from "../smodel/sSelectable";
 
 export abstract class GraphModelSource extends LocalModelSource {
     private layout?: GraphLayout;
@@ -26,10 +29,14 @@ export abstract class GraphModelSource extends LocalModelSource {
 
     protected abstract layoutUpdated(partialUpdate: GraphLayout, resultingLayout: GraphLayout): void;
 
+    protected abstract handleSelectionChanged(selectedElements: SelectedElement<any>[]): void;
+
     override initialize(registry: ActionHandlerRegistry): void {
         super.initialize(registry);
 
         registry.register(UpdateLayoutAction.KIND, this);
+        registry.register(SelectAction.KIND, this);
+        registry.register(SelectAllAction.KIND, this);
     }
 
     override handle(action: Action): void {
@@ -42,6 +49,15 @@ export abstract class GraphModelSource extends LocalModelSource {
                 };
                 this.layoutUpdated(update.partialLayout, this.layout!);
                 this.updateLayoutPartially(update.partialLayout);
+                break;
+            }
+            case SelectAction.KIND: {
+                this.handleSelectionChangedAction();
+                break;
+            }
+            case SelectAllAction.KIND: {
+                this.handleSelectionChangedAction();
+                break;
             }
             default: {
                 super.handle(action);
@@ -63,6 +79,20 @@ export abstract class GraphModelSource extends LocalModelSource {
             this.layout = layout;
         }
         this.rebuildRoot(fitToBounds);
+    }
+
+    private async handleSelectionChangedAction() {
+        const selection = await this.getSelection();
+        const elements: SelectedElement<any>[] = [
+            ...selection
+                .filter((element) => "contextMenuData" in element && element.contextMenuData != undefined)
+                .map((element) => ({
+                    id: element.id,
+                    contextMenuContainerId: `${this.viewerOptions.baseDiv}_${element.id}-context-menu`,
+                    contextMenuData: (element as SSelectable).contextMenuData
+                }))
+        ];
+        this.handleSelectionChanged(elements);
     }
 
     private rebuildRoot(fitToBounds: boolean) {
@@ -140,12 +170,16 @@ export abstract class GraphModelSource extends LocalModelSource {
         }
         children.push(...component.issueTypes.map((issueType) => this.createIssueType(issueType)));
         children.push(this.createNameLabel(component.name, component.id));
+        if (component.contextMenu != undefined) {
+            children.push(this.createContextMenu(component));
+        }
         return {
             type: "component",
             id: component.id,
             style: component.style,
             x: pos.x,
             y: pos.y,
+            contextMenuData: component.contextMenu,
             children
         };
     }
@@ -158,24 +192,43 @@ export abstract class GraphModelSource extends LocalModelSource {
         }
         children.push(...gropiusInterface.issueTypes.map((issueType) => this.createIssueType(issueType)));
         children.push(this.createNameLabel(gropiusInterface.name, gropiusInterface.id));
+        if (gropiusInterface.contextMenu != undefined) {
+            children.push(this.createContextMenu(gropiusInterface));
+        }
         return {
             type: "interface",
             id: gropiusInterface.id,
             style: gropiusInterface.style,
             x: pos.x,
             y: pos.y,
+            contextMenuData: gropiusInterface.contextMenu,
             children
         };
     }
 
     private createRelation(relation: GropiusRelation, layout: GraphLayout): Relation {
+        const children: Element[] = [];
+        children.push(this.createNameLabel(relation.name, relation.id));
+        if (relation.contextMenu != undefined) {
+            children.push(this.createContextMenu(relation));
+        }
         return {
             type: "relation",
             id: relation.id,
             style: relation.style,
             start: relation.start,
             end: relation.end,
-            children: [this.createNameLabel(relation.name, relation.id)]
+            contextMenuData: relation.contextMenu,
+            children
+        };
+    }
+
+    private createContextMenu(selectable: GropiusSelectable): ContextMenu {
+        return {
+            type: "contextMenu",
+            id: `${selectable.id}-context-menu`,
+            targetId: selectable.id,
+            children: []
         };
     }
 
@@ -270,6 +323,7 @@ export abstract class GraphModelSource extends LocalModelSource {
         this.updateLayoutRecursively(this.model, partialLayout);
         const model = this.model as Root;
         model.animated = false;
+        model.targetBounds = undefined;
         this.actionDispatcher.dispatch(UpdateModelAction.create(this.model));
     }
 
@@ -290,4 +344,10 @@ export abstract class GraphModelSource extends LocalModelSource {
             }
         }
     }
+}
+
+export interface SelectedElement<T> {
+    id: string;
+    contextMenuContainerId: string;
+    contextMenuData: T;
 }

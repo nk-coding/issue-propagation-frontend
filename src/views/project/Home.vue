@@ -1,5 +1,10 @@
 <template>
-    <GraphEditor v-if="graph != undefined" v-model:layout="layout" :graph="graph">
+    <GraphEditor
+        v-if="graph != undefined"
+        v-model:layout="layout"
+        :graph="graph"
+        @remove-component="removeComponentVersion"
+    >
         <FilterChip v-model="showOpenIssues" label="Open Issues" icon="mdi-bug" class="mr-2 open-issue-chip" />
         <FilterChip v-model="showClosedIssues" label="Closed Issues" icon="mdi-bug" class="mr-2 closed-issue-chip" />
         <FilterChip v-model="showIssueRelations" label="Issue Relations" />
@@ -25,7 +30,7 @@ import {
 } from "@/graphql/generated";
 import { withErrorMessage } from "@/util/withErrorMessage";
 import { asyncComputed } from "@vueuse/core";
-import GraphEditor, { GraphLayoutWrapper } from "@/components/GraphEditor.vue";
+import GraphEditor, { ContextMenuData, GraphLayoutWrapper } from "@/components/GraphEditor.vue";
 import {
     Graph,
     ShapeStyle,
@@ -198,7 +203,12 @@ function extractComponent(component: GraphComponentVersionInfoFragment): Compone
         version: component.version,
         style: extractShapeStyle(component.component.template),
         issueTypes: extractIssueTypes(component),
-        interfaces
+        interfaces,
+        contextMenu: {
+            type: "component",
+            remove: true,
+            createRelation: true
+        } satisfies ContextMenuData
     };
 }
 
@@ -272,10 +282,22 @@ eventBus?.on("add-component-version-to-project", () => {
 
 async function addComponentVersion(componentVersion: { id: string }) {
     showAddComponentVersionDialog.value = false;
-    await client.addComponentVersionToProject({
-        componentVersion: componentVersion.id,
-        project: trackableId.value
-    });
+    await withErrorMessage(async () => {
+        await client.addComponentVersionToProject({
+            componentVersion: componentVersion.id,
+            project: trackableId.value
+        });
+    }, "Error adding component version to project");
+    graphVersionCounter.value++;
+}
+
+async function removeComponentVersion(componentVersion: string) {
+    await withErrorMessage(async () => {
+        await client.removeComponentVersionFromProject({
+            componentVersion,
+            project: trackableId.value
+        });
+    }, "Error removing component version from project");
     graphVersionCounter.value++;
 }
 </script>

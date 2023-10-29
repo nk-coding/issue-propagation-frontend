@@ -1,6 +1,20 @@
 <template>
     <div class="sprotty-wrapper">
         <div :id="editorId" class="sprotty" />
+        <Teleport v-for="selected in selecteds" :key="selected.id" :to="`#${selected.contextMenuContainerId}`">
+            <div class="context-menu ml-2">
+                <template v-if="selected.contextMenuData.type == 'component'">
+                    <SmallFAB class="d-block" icon="mdi-arrow-top-right" color="primary-container" :disabled="!selected.contextMenuData.createRelation" />
+                    <SmallFAB
+                        class="d-block mt-2"
+                        icon="mdi-close"
+                        color="primary-container"
+                        :disabled="!selected.contextMenuData.remove"
+                        @click="$emit('removeComponent', selected.id)"
+                    />
+                </template>
+            </div>
+        </Teleport>
         <div class="ui-container ma-3">
             <slot />
         </div>
@@ -8,7 +22,7 @@
 </template>
 <script setup lang="ts">
 import "reflect-metadata";
-import { Graph, GraphLayout, GraphModelSource, createContainer } from "@gropius/graph-editor";
+import { Graph, GraphLayout, GraphModelSource, SelectedElement, createContainer } from "@gropius/graph-editor";
 import { TYPES } from "sprotty";
 import { PropType, onMounted, shallowRef, watch, ref } from "vue";
 import { v4 as uuidv4 } from "uuid";
@@ -17,6 +31,21 @@ export interface GraphLayoutWrapper {
     layout: GraphLayout;
     resetViewport: boolean;
 }
+
+export type ContextMenuData =
+    | {
+          type: "component";
+          remove: boolean;
+          createRelation: boolean;
+      }
+    | {
+          type: "interface";
+          createRelation: boolean;
+      }
+    | {
+          type: "relation";
+          delete: boolean;
+      };
 
 const props = defineProps({
     graph: {
@@ -31,16 +60,23 @@ const props = defineProps({
 
 const emit = defineEmits<{
     (event: "update:layout", value: GraphLayout): void;
+    (event: "removeComponent", value: string): void;
 }>();
 
 class ModelSource extends GraphModelSource {
     protected layoutUpdated(partialUpdate: GraphLayout, resultingLayout: GraphLayout): void {
         // TODO
     }
+
+    protected handleSelectionChanged(selectedElements: SelectedElement<any>[]): void {
+        console.log(selectedElements)
+        selecteds.value = selectedElements;
+    }
 }
 
 const editorId = ref(`graph-editor-${uuidv4()}`);
 const modelSource = shallowRef<ModelSource | undefined>();
+const selecteds = ref<SelectedElement<ContextMenuData>[]>([]);
 
 onMounted(async () => {
     const container = createContainer(editorId.value);
@@ -73,6 +109,10 @@ watch(
     position: absolute;
     top: 0;
     right: 0;
+}
+
+.context-menu {
+    pointer-events: all;
 }
 
 /* Sprotty */

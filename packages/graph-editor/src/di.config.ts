@@ -43,6 +43,9 @@ import { IssueRelation } from "./model/issueRelation";
 import { SIssueRelation } from "./smodel/sIssueRelation";
 import { IssueRelationView } from "./views/issueRelationView";
 import { hoverHighlightModule } from "./features/issueRelationHighlight/di.config";
+import { ContextMenu } from "./model/contextMenu";
+import { SContextMenu } from "./smodel/sContextMenu";
+import { ContextMenuView } from "./views/contextMenuView";
 
 const diagramModule = new ContainerModule((bind, unbind, isBound, rebind) => {
     const context = { bind, unbind, isBound, rebind };
@@ -65,6 +68,7 @@ const diagramModule = new ContainerModule((bind, unbind, isBound, rebind) => {
     configureModelElement(context, Chip.TYPE, SChip, ChipView, {
         enable: [boundsFeature]
     });
+    configureModelElement(context, ContextMenu.TYPE, SContextMenu, ContextMenuView);
 });
 
 /**

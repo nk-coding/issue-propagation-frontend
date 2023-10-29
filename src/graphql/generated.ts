@@ -18099,6 +18099,19 @@ export type AddComponentVersionToProjectMutation = {
     };
 };
 
+export type RemoveComponentVersionFromProjectMutationVariables = Exact<{
+    project: Scalars["ID"]["input"];
+    componentVersion: Scalars["ID"]["input"];
+}>;
+
+export type RemoveComponentVersionFromProjectMutation = {
+    __typename?: "Mutation";
+    removeComponentVersionFromProject?: {
+        __typename?: "RemoveComponentVersionFromProjectPayload";
+        project?: { __typename?: "Project"; id: string } | null;
+    } | null;
+};
+
 export type GraphInfoFragment = {
     __typename?: "Project";
     components: {
@@ -23865,6 +23878,15 @@ export const AddComponentVersionToProjectDocument = gql`
         }
     }
 `;
+export const RemoveComponentVersionFromProjectDocument = gql`
+    mutation removeComponentVersionFromProject($project: ID!, $componentVersion: ID!) {
+        removeComponentVersionFromProject(input: { componentVersion: $componentVersion, project: $project }) {
+            project {
+                id
+            }
+        }
+    }
+`;
 export const GetIssuesDocument = gql`
     query getIssues($filter: String!, $orderBy: IssueOrder!, $count: Int!, $skip: Int!, $trackable: ID!) {
         node(id: $trackable) {
@@ -24520,6 +24542,21 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         { ...requestHeaders, ...wrappedRequestHeaders }
                     ),
                 "addComponentVersionToProject",
+                "mutation"
+            );
+        },
+        removeComponentVersionFromProject(
+            variables: RemoveComponentVersionFromProjectMutationVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<RemoveComponentVersionFromProjectMutation> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<RemoveComponentVersionFromProjectMutation>(
+                        RemoveComponentVersionFromProjectDocument,
+                        variables,
+                        { ...requestHeaders, ...wrappedRequestHeaders }
+                    ),
+                "removeComponentVersionFromProject",
                 "mutation"
             );
         },

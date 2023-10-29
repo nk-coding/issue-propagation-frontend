@@ -107,8 +107,8 @@ export class SRoot extends ViewportRootElementImpl {
             .sprotty .selected-shape {
                 fill: var(--selected-shape-fill-color);
                 stroke: var(--selected-shape-stroke-color);
-                stroke-width: calc(6px / var(--diagram-zoom));
-                stroke-dasharray: calc(16px / var(--diagram-zoom));
+                stroke-width: calc(3px / var(--diagram-zoom));
+                stroke-dasharray: calc(6px / var(--diagram-zoom));
                 cursor: pointer;
             }
 

@@ -17,7 +17,11 @@ export interface IssueType extends Node {
     isOpen: boolean;
 }
 
-export interface IssueAffected extends Node {
+export interface Selectable extends Node {
+    contextMenu?: any;
+}
+
+export interface IssueAffected extends Selectable {
     name: string;
     version?: string;
     style: ShapeStyle;
@@ -28,7 +32,7 @@ export interface ComponentVersion extends IssueAffected {
     interfaces: Interface[];
 }
 
-export interface Relation extends Node {
+export interface Relation extends Selectable {
     name: string;
     start: string;
     end: string;

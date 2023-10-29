@@ -1,8 +1,8 @@
-import { Locateable, RenderingContext, Selectable, svg } from "sprotty";
+import { Locateable, RenderingContext, Selectable, html, svg } from "sprotty";
 import { VNode } from "snabbdom";
 import { ShapeStyle, StrokeStyle } from "../gropiusModel";
 import { IssueAffected } from "../model/issueAffected";
-import { SNamedElement } from "./sNamedElement";
+import { SSelectable } from "./sSelectable";
 import { Point } from "sprotty-protocol";
 import { Shape } from "../shape/shape";
 import { wrapForeignElement } from "../views/util";
@@ -12,7 +12,7 @@ import { Math2D } from "../line/math";
 import { IssueType } from "../model/issueType";
 import { SIssueType } from "./sIssueType";
 
-export abstract class SIssueAffected extends SNamedElement implements IssueAffected, Selectable, Locateable {
+export abstract class SIssueAffected extends SSelectable implements IssueAffected, Selectable, Locateable {
     style!: ShapeStyle;
     x!: number;
     y!: number;
@@ -20,6 +20,14 @@ export abstract class SIssueAffected extends SNamedElement implements IssueAffec
     abstract shape: Shape;
     abstract issueTypesCenterTopPos: Point;
     issueTypes!: SIssueType[];
+
+    get contextMenuPos(): Point {
+        const shape = this.shape;
+        return {
+            x: shape.bounds.x + shape.bounds.width,
+            y: shape.bounds.y
+        };
+    }
 
     constructor() {
         super();

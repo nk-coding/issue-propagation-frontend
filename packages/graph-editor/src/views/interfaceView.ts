@@ -9,6 +9,7 @@ import { SComponent } from "../smodel/sComponent";
 import { Bounds } from "sprotty-protocol";
 import { Math2D } from "../line/math";
 import { SChip } from "../smodel/sChip";
+import { SContextMenu } from "../smodel/sContextMenu";
 
 const MAX_CONTROL_POINT_DISTANCE = 75;
 
@@ -22,6 +23,8 @@ export class InterfaceView implements IView {
                 nameLabel = child;
             } else if (child instanceof SChip) {
                 otherChildren.push(model.renderVersionLabel(context, child));
+            } else if (child instanceof SContextMenu) {
+                otherChildren.push(model.renderContextMenuContainer(context, child));
             }
         }
         otherChildren.push(...model.renderIssueTypes(context));

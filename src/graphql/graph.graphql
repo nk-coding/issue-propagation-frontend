@@ -14,6 +14,14 @@ mutation addComponentVersionToProject($project: ID!, $componentVersion: ID!) {
     }
 }
 
+mutation removeComponentVersionFromProject($project: ID!, $componentVersion: ID!) {
+  removeComponentVersionFromProject(input: { componentVersion: $componentVersion, project: $project }) {
+        project {
+            id
+        }
+    }
+}
+
 fragment GraphInfo on Project {
     components {
         nodes {
