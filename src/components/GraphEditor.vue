@@ -4,14 +4,36 @@
         <Teleport v-for="selected in selecteds" :key="selected.id" :to="`#${selected.contextMenuContainerId}`">
             <div class="context-menu ml-2">
                 <template v-if="selected.contextMenuData.type == 'component'">
-                    <SmallFAB class="d-block" icon="mdi-arrow-top-right" color="primary-container" :disabled="!selected.contextMenuData.createRelation" />
+                    <SmallFAB
+                        class="d-block"
+                        icon
+                        color="primary-container"
+                        :disabled="!selected.contextMenuData.createRelation"
+                    >
+                        <v-icon icon="mdi-arrow-top-right" />
+                        <v-tooltip activator="parent">Create relation</v-tooltip>
+                    </SmallFAB>
                     <SmallFAB
                         class="d-block mt-2"
-                        icon="mdi-close"
+                        icon
                         color="primary-container"
                         :disabled="!selected.contextMenuData.remove"
                         @click="$emit('removeComponent', selected.id)"
-                    />
+                    >
+                        <v-icon icon="mdi-close" />
+                        <v-tooltip activator="parent">Remove component version from project</v-tooltip>
+                    </SmallFAB>
+                </template>
+                <template v-else-if="selected.contextMenuData.type == 'interface'">
+                    <SmallFAB
+                        class="d-block"
+                        icon
+                        color="primary-container"
+                        :disabled="!selected.contextMenuData.createRelation"
+                    >
+                        <v-icon icon="mdi-arrow-top-right" />
+                        <v-tooltip activator="parent">Create relation</v-tooltip>
+                    </SmallFAB>
                 </template>
             </div>
         </Teleport>
@@ -69,7 +91,6 @@ class ModelSource extends GraphModelSource {
     }
 
     protected handleSelectionChanged(selectedElements: SelectedElement<any>[]): void {
-        console.log(selectedElements)
         selecteds.value = selectedElements;
     }
 }

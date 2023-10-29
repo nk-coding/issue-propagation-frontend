@@ -86,6 +86,7 @@ export class SRoot extends ViewportRootElementImpl {
 
             .sprotty .chip {
                 user-select: none;
+                pointer-events: all;
                 border-radius: 9999px;
                 display: table;
                 min-height: 0;
@@ -97,6 +98,7 @@ export class SRoot extends ViewportRootElementImpl {
                 padding: 5px 0.5em;
                 background: var(--version-chip-background);
                 color: var(--version-chip-color);
+                cursor: pointer;
             }
 
             .sprotty .issue-affected .issue-type .chip {

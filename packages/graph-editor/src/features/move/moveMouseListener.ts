@@ -15,6 +15,7 @@ import { SComponent } from "../../smodel/sComponent";
 import { SInterface } from "../../smodel/sInterface";
 import { ElementMoveHandler } from "./elementMoveHandler";
 import { SRoot } from "../../smodel/sRoot";
+import { SContextMenu } from "../../smodel/sContextMenu";
 
 export class MoveMouseListener extends MouseListener {
     private startPosition?: Point;
@@ -25,7 +26,7 @@ export class MoveMouseListener extends MouseListener {
     override mouseDown(target: SModelElementImpl, event: MouseEvent): Action[] {
         if (event.button === 0) {
             const moveableTarget = findParentByFeature(target, isMovable);
-            if (moveableTarget != undefined) {
+            if (moveableTarget != undefined && !(target instanceof SContextMenu)) {
                 this.startPosition = { x: event.pageX, y: event.pageY };
                 this.targetElement = event.target as Element | undefined;
             } else {
