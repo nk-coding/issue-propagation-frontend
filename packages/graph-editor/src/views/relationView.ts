@@ -28,7 +28,7 @@ export class RelationView implements IView {
         const controlPointDistance = Math.min(distance / 2, 75);
         const controlPoint1 = Math2D.add(startPoint, Math2D.scaleTo(startVector, controlPointDistance));
         const controlPoint2 = Math2D.add(endPoint, Math2D.scaleTo(endVector, controlPointDistance));
-        const markerAngle = Math2D.angle(endVector) + Math.PI;
+        const markerAngle = Math2D.angle(Math2D.sub(endPoint, startPoint));
         const strokeWidth = StrokeStyle.strokeWidth(model.style);
         const pathStyle = {
             "stroke-width": strokeWidth,

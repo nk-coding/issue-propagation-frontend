@@ -125,7 +125,7 @@ export abstract class GraphModelSource extends LocalModelSource {
         return {
             type: "root",
             id: "root",
-            children: [...issueRelations, ...components, ...relations],
+            children: [...issueRelations, ...relations, ...components],
             targetBounds
         };
     }

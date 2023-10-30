@@ -156,6 +156,11 @@ export class SRoot extends ViewportRootElementImpl {
             .sprotty .issue-type-icon.open {
                 fill: var(--issue-open-color);
             }
+
+            .sprotty .context-menu {
+                width: fit-content;
+                height: fit-content;
+            }
         `;
     }
 }
