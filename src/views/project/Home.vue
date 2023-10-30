@@ -14,7 +14,10 @@
             <ComponentVersionAutocomplete
                 hide-details
                 autofocus
+                auto-select-first
                 bg-color="background"
+                menu-mode="repeating"
+                hide-no-data
                 @selected-item="addComponentVersion"
             />
         </v-sheet>
