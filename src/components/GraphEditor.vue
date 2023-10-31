@@ -84,10 +84,13 @@ const props = defineProps({
 const emit = defineEmits<{
     (event: "update:layout", value: GraphLayout): void;
     (event: "removeComponent", value: string): void;
+    (event: "createRelation", start: string, end: string ): void;
 }>();
 
 class ModelSource extends GraphModelSource {
-    protected handleCreateRelation(start: string, end: string): void {}
+    protected handleCreateRelation(start: string, end: string): void {
+        emit("createRelation", start, end);
+    }
 
     protected layoutUpdated(partialUpdate: GraphLayout, resultingLayout: GraphLayout): void {
         // TODO
@@ -102,7 +105,6 @@ const editorId = ref(`graph-editor-${uuidv4()}`);
 const modelSource = shallowRef<ModelSource | undefined>();
 const selecteds = ref<SelectedElement<ContextMenuData>[]>([]);
 const selected = computed(() => selecteds.value[0]);
-const hideShit = ref(false);
 
 onMounted(async () => {
     const container = createContainer(editorId.value);

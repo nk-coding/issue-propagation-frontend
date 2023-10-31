@@ -1,6 +1,6 @@
 <template>
     <FetchingAutocomplete
-        mode="add-context"
+        mode="add"
         :fetch="searchRelationTemplates"
         :label="label"
         placeholder="Search relation template"
@@ -13,11 +13,7 @@
 </template>
 <script setup lang="ts">
 import { useClient } from "@/graphql/client";
-import {
-    RelationTemplateFilterInput,
-    DefaultRelationTemplateInfoFragment,
-    DefaultTrackableInfoFragment
-} from "@/graphql/generated";
+import { RelationTemplateFilterInput, DefaultRelationTemplateInfoFragment } from "@/graphql/generated";
 import { withErrorMessage } from "@/util/withErrorMessage";
 import FetchingAutocomplete from "./FetchingAutocomplete.vue";
 import { transformSearchQuery } from "@/util/searchQueryTransformer";
@@ -37,17 +33,14 @@ const props = defineProps({
 
 const client = useClient();
 
-async function searchRelationTemplates(
-    filter: string,
-    count: number
-): Promise<DefaultRelationTemplateInfoFragment[]> {
+async function searchRelationTemplates(filter: string, count: number): Promise<DefaultRelationTemplateInfoFragment[]> {
     return await withErrorMessage(async () => {
         const query = transformSearchQuery(filter);
         if (query != undefined) {
-            const res = await client.searchRelationTemplates({ query, count });
+            const res = await client.searchRelationTemplates({ query, count, filter: props.relationTemplateFilter });
             return res.searchRelationTemplates;
         } else {
-            const res = await client.getRelationTemplates({ count: count - 1 })
+            const res = await client.getRelationTemplates({ count: count - 1, filter: props.relationTemplateFilter });
             return res.relationTemplates.nodes;
         }
     }, "Error searching relation templates");

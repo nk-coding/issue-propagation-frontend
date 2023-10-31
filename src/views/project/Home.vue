@@ -4,6 +4,7 @@
         v-model:layout="layout"
         :graph="graph"
         @remove-component="removeComponentVersion"
+        @create-relation="beginCreateRelation"
     >
         <FilterChip v-model="showOpenIssues" label="Open Issues" icon="mdi-bug" class="mr-2 open-issue-chip" />
         <FilterChip v-model="showClosedIssues" label="Closed Issues" icon="mdi-bug" class="mr-2 closed-issue-chip" />
@@ -29,8 +30,9 @@
                 autofocus
                 auto-select-first
                 bg-color="background"
+                menu-mode="initial"
                 :relation-template-filter="relationTemplateFilter"
-                @selected-item="addRelation"
+                @selected-item="createRelation"
             />
         </v-sheet>
     </v-dialog>
@@ -363,8 +365,20 @@ async function removeComponentVersion(componentVersion: string) {
     graphVersionCounter.value++;
 }
 
-async function addRelation(relationTemplate: string) {
-    
+function beginCreateRelation(start: string, end: string) {
+    currentRelationStart.value = start;
+    currentRelationEnd.value = end;
+    showSelectRelationTemplateDialog.value = true;
+}
+
+async function createRelation(relationTemplate: string) {
+    await withErrorMessage(async () => {
+        await client.createRelation({
+            start: currentRelationStart.value!,
+            end: currentRelationEnd.value!,
+            template: relationTemplate
+        });
+    }, "Error creating relation");
 }
 </script>
 <style scoped lang="scss">

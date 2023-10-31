@@ -1,5 +1,5 @@
 query getRelationTemplates($count: Int!, $filter: RelationTemplateFilterInput) {
-    relationTemplates(first: $count) {
+    relationTemplates(first: $count, filter: $filter) {
         nodes {
             ...DefaultRelationTemplateInfo
         }

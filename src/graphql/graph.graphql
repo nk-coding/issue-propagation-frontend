@@ -15,8 +15,16 @@ mutation addComponentVersionToProject($project: ID!, $componentVersion: ID!) {
 }
 
 mutation removeComponentVersionFromProject($project: ID!, $componentVersion: ID!) {
-  removeComponentVersionFromProject(input: { componentVersion: $componentVersion, project: $project }) {
+    removeComponentVersionFromProject(input: { componentVersion: $componentVersion, project: $project }) {
         project {
+            id
+        }
+    }
+}
+
+mutation createRelation($start: ID!, $end: ID!, $template: ID!) {
+    createRelation(input: { start: $start, end: $end, template: $template, templatedFields: [] }) {
+        relation {
             id
         }
     }
