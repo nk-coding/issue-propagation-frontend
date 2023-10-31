@@ -109,7 +109,13 @@ export abstract class GraphModelSource extends LocalModelSource {
             relation: relation.id,
             start
         };
-        this.actionDispatcher.dispatch(connectAction);
+        await this.actionDispatcher.dispatch(connectAction);
+        const deselectAction: SelectAction = {
+            kind: SelectAction.KIND,
+            selectedElementsIDs: [],
+            deselectedElementsIDs: [start]
+        };
+        await this.actionDispatcher.dispatch(deselectAction);
     }
 
     private async handleSelectionChangedAction() {

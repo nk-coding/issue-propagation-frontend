@@ -1,7 +1,7 @@
 <template>
     <div class="sprotty-wrapper">
         <div :id="editorId" class="sprotty" />
-        <Teleport v-for="selected in selecteds" :key="selected.id" :to="`#${selected.contextMenuContainerId}`">
+        <Teleport v-if="selecteds.length == 1" :key="selected.id" :to="`#${selected.contextMenuContainerId}`">
             <div class="context-menu ml-2">
                 <template v-if="selected.contextMenuData.type == 'component'">
                     <SmallFAB
@@ -47,7 +47,7 @@
 import "reflect-metadata";
 import { Graph, GraphLayout, GraphModelSource, SelectedElement, createContainer } from "@gropius/graph-editor";
 import { TYPES } from "sprotty";
-import { PropType, onMounted, shallowRef, watch, ref } from "vue";
+import { PropType, onMounted, shallowRef, watch, ref, computed } from "vue";
 import { v4 as uuidv4 } from "uuid";
 
 export interface GraphLayoutWrapper {
@@ -87,9 +87,7 @@ const emit = defineEmits<{
 }>();
 
 class ModelSource extends GraphModelSource {
-    protected handleCreateRelation(start: string, end: string): void {
-        
-    }
+    protected handleCreateRelation(start: string, end: string): void {}
 
     protected layoutUpdated(partialUpdate: GraphLayout, resultingLayout: GraphLayout): void {
         // TODO
@@ -103,6 +101,7 @@ class ModelSource extends GraphModelSource {
 const editorId = ref(`graph-editor-${uuidv4()}`);
 const modelSource = shallowRef<ModelSource | undefined>();
 const selecteds = ref<SelectedElement<ContextMenuData>[]>([]);
+const selected = computed(() => selecteds.value[0]);
 const hideShit = ref(false);
 
 onMounted(async () => {
