@@ -46,6 +46,7 @@ import { hoverHighlightModule } from "./features/issueRelationHighlight/di.confi
 import { ContextMenu } from "./model/contextMenu";
 import { SContextMenu } from "./smodel/sContextMenu";
 import { ContextMenuView } from "./views/contextMenuView";
+import { connectModule } from "./features/connect/di.config";
 
 const diagramModule = new ContainerModule((bind, unbind, isBound, rebind) => {
     const context = { bind, unbind, isBound, rebind };
@@ -83,7 +84,7 @@ export function createContainer(widgetId: string): Container {
         exclude: [sprottyUpdateModule, sprottyMoveModule, sprottyZOrderModule, decorationModule, undoRedoModule]
     });
 
-    container.load(zorderModule, updateModule, boundsModule, moveModule, hoverHighlightModule);
+    container.load(zorderModule, updateModule, boundsModule, moveModule, hoverHighlightModule, connectModule);
 
     container.load(diagramModule);
 

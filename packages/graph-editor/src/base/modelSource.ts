@@ -22,6 +22,8 @@ import { IssueType } from "../model/issueType";
 import { IssueRelation } from "../model/issueRelation";
 import { ContextMenu } from "../model/contextMenu";
 import { SSelectable } from "../smodel/sSelectable";
+import { CreateRelationAction } from "../features/connect/createRelationAction";
+import { ConnectAction } from "../features/connect/connectAction";
 
 export abstract class GraphModelSource extends LocalModelSource {
     private layout?: GraphLayout;
@@ -31,12 +33,15 @@ export abstract class GraphModelSource extends LocalModelSource {
 
     protected abstract handleSelectionChanged(selectedElements: SelectedElement<any>[]): void;
 
+    protected abstract handleCreateRelation(start: string, end: string): void;
+
     override initialize(registry: ActionHandlerRegistry): void {
         super.initialize(registry);
 
         registry.register(UpdateLayoutAction.KIND, this);
         registry.register(SelectAction.KIND, this);
         registry.register(SelectAllAction.KIND, this);
+        registry.register(CreateRelationAction.KIND, this);
     }
 
     override handle(action: Action): void {
@@ -59,6 +64,11 @@ export abstract class GraphModelSource extends LocalModelSource {
                 this.handleSelectionChangedAction();
                 break;
             }
+            case CreateRelationAction.KIND: {
+                const createRelationAction = action as CreateRelationAction;
+                this.handleCreateRelation(createRelationAction.start, createRelationAction.end);
+                break;
+            }
             default: {
                 super.handle(action);
             }
@@ -79,6 +89,27 @@ export abstract class GraphModelSource extends LocalModelSource {
             this.layout = layout;
         }
         this.rebuildRoot(fitToBounds);
+    }
+
+    async startRelation(start: string) {
+        const relation: Relation = {
+            type: "relation",
+            id: `temp-relation-${start}`,
+            start,
+            end: start,
+            style: {
+                marker: "ARROW"
+            },
+            children: []
+        };
+        this.currentRoot.children = [...(this.currentRoot.children ?? []), relation];
+        await this.updateModel(this.currentRoot);
+        const connectAction: ConnectAction = {
+            kind: ConnectAction.KIND,
+            relation: relation.id,
+            start
+        };
+        this.actionDispatcher.dispatch(connectAction);
     }
 
     private async handleSelectionChangedAction() {

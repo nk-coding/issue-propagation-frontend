@@ -1,11 +1,12 @@
+import { Point } from "sprotty-protocol";
 import { RelationStyle } from "../gropiusModel";
 import { Element } from "./element";
 import { Selectable } from "./selectable";
 
 export interface Relation extends Selectable {
     type: typeof Relation.TYPE;
-    start: string;
-    end: string;
+    start: string | Point;
+    end: string | Point;
     style: RelationStyle;
 }
 

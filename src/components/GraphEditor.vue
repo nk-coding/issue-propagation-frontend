@@ -9,6 +9,7 @@
                         icon
                         color="primary-container"
                         :disabled="!selected.contextMenuData.createRelation"
+                        @mousedown="() => modelSource!.startRelation(selected.id)"
                     >
                         <v-icon icon="mdi-arrow-top-right" />
                         <v-tooltip activator="parent">Create relation</v-tooltip>
@@ -86,6 +87,10 @@ const emit = defineEmits<{
 }>();
 
 class ModelSource extends GraphModelSource {
+    protected handleCreateRelation(start: string, end: string): void {
+        
+    }
+
     protected layoutUpdated(partialUpdate: GraphLayout, resultingLayout: GraphLayout): void {
         // TODO
     }
@@ -98,6 +103,7 @@ class ModelSource extends GraphModelSource {
 const editorId = ref(`graph-editor-${uuidv4()}`);
 const modelSource = shallowRef<ModelSource | undefined>();
 const selecteds = ref<SelectedElement<ContextMenuData>[]>([]);
+const hideShit = ref(false);
 
 onMounted(async () => {
     const container = createContainer(editorId.value);

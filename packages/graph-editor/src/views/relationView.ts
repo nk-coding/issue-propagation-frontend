@@ -8,27 +8,48 @@ import { LineEngine } from "../line/engine/lineEngine";
 import { Math2D } from "../line/math";
 import { StrokeStyle } from "../gropiusModel";
 import { MarkerGenerator } from "../marker/markerGenerator";
+import { Point } from "bezier-js";
 
 @injectable()
 export class RelationView implements IView {
     render(model: Readonly<SRelation>, context: RenderingContext, args?: {} | undefined): VNode | undefined {
-        const start = model.root.index.getById(model.start) as SIssueAffected;
-        const end = model.root.index.getById(model.end) as SIssueAffected;
-        const startShape = start.shape;
-        const endShape = end.shape;
-        const startCenter = Bounds.center(startShape.bounds);
-        const endCenter = Bounds.center(endShape.bounds);
-        const endPos = LineEngine.DEFAULT.projectPoint(startCenter, endShape.outline).pos;
-        const endPoint = LineEngine.DEFAULT.getPoint(endPos, 0, endShape.outline);
-        const startPos = LineEngine.DEFAULT.projectPoint(endCenter, startShape.outline).pos;
-        const startPoint = LineEngine.DEFAULT.getPoint(startPos, 0, startShape.outline);
-        const startVector = LineEngine.DEFAULT.getNormal(startPos, startShape.outline);
-        const endVector = LineEngine.DEFAULT.getNormal(endPos, endShape.outline);
-        const distance = Math2D.distance(startPoint, endPoint);
-        const controlPointDistance = Math.min(distance / 2, 75);
-        const controlPoint1 = Math2D.add(startPoint, Math2D.scaleTo(startVector, controlPointDistance));
-        const controlPoint2 = Math2D.add(endPoint, Math2D.scaleTo(endVector, controlPointDistance));
-        const markerAngle = Math2D.angle(Math2D.sub(endPoint, startPoint));
+        let initialStartPos: Point;
+        let initialEndPos: Point;
+        if (typeof model.start === "string") {
+            const start = model.root.index.getById(model.start) as SIssueAffected;
+            initialStartPos = Bounds.center(start.shape.bounds);
+        } else {
+            initialStartPos = model.start;
+        }
+        if (typeof model.end === "string") {
+            const end = model.root.index.getById(model.end) as SIssueAffected;
+            initialEndPos = Bounds.center(end.shape.bounds);
+        } else {
+            initialEndPos = model.end;
+        }
+        let startPoint: Point;
+        let endPoint: Point;
+        if (typeof model.start === "string") {
+            const start = model.root.index.getById(model.start) as SIssueAffected;
+            const startShape = start.shape;
+            const startPos = LineEngine.DEFAULT.projectPoint(initialEndPos, startShape.outline).pos;
+            startPoint = LineEngine.DEFAULT.getPoint(startPos, 0, startShape.outline);
+        } else {
+            startPoint = initialStartPos;
+        }
+        if (typeof model.end === "string") {
+            const end = model.root.index.getById(model.end) as SIssueAffected;
+            const endShape = end.shape;
+            const endPos = LineEngine.DEFAULT.projectPoint(initialStartPos, endShape.outline).pos;
+            endPoint = LineEngine.DEFAULT.getPoint(endPos, 0, endShape.outline);
+        } else {
+            endPoint = initialEndPos;
+        }
+        let endVector = Math2D.sub(startPoint, endPoint);
+        if (Math2D.length(endVector) == 0) {
+            endVector = { x: 1, y: 0 };
+        }
+        const markerAngle = Math2D.angle(endVector) + Math.PI;
         const strokeWidth = StrokeStyle.strokeWidth(model.style);
         const pathStyle = {
             "stroke-width": strokeWidth,
