@@ -3,7 +3,7 @@
         <div :id="editorId" class="sprotty" />
         <Teleport v-if="selecteds.length == 1" :key="selected.id" :to="`#${selected.contextMenuContainerId}`">
             <div class="context-menu ml-2">
-                <template v-if="selected.contextMenuData.type == 'component'">
+                <template v-if="selected.contextMenuData.type == 'component' || selected.contextMenuData.type == 'interface'">
                     <SmallFAB
                         class="d-block"
                         icon
@@ -14,6 +14,8 @@
                         <v-icon icon="mdi-arrow-top-right" />
                         <v-tooltip activator="parent">Create relation</v-tooltip>
                     </SmallFAB>
+                </template>
+                <template v-if="selected.contextMenuData.type == 'component'">
                     <SmallFAB
                         class="d-block mt-2"
                         icon
@@ -23,17 +25,6 @@
                     >
                         <v-icon icon="mdi-close" />
                         <v-tooltip activator="parent">Remove component version from project</v-tooltip>
-                    </SmallFAB>
-                </template>
-                <template v-else-if="selected.contextMenuData.type == 'interface'">
-                    <SmallFAB
-                        class="d-block"
-                        icon
-                        color="primary-container"
-                        :disabled="!selected.contextMenuData.createRelation"
-                    >
-                        <v-icon icon="mdi-arrow-top-right" />
-                        <v-tooltip activator="parent">Create relation</v-tooltip>
                     </SmallFAB>
                 </template>
             </div>

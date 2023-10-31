@@ -24,6 +24,7 @@ import { ContextMenu } from "../model/contextMenu";
 import { SSelectable } from "../smodel/sSelectable";
 import { CreateRelationAction } from "../features/connect/createRelationAction";
 import { ConnectAction } from "../features/connect/connectAction";
+import { CancelConnectAction } from "../features/connect/cancelConnectAction";
 
 export abstract class GraphModelSource extends LocalModelSource {
     private layout?: GraphLayout;
@@ -42,6 +43,7 @@ export abstract class GraphModelSource extends LocalModelSource {
         registry.register(SelectAction.KIND, this);
         registry.register(SelectAllAction.KIND, this);
         registry.register(CreateRelationAction.KIND, this);
+        registry.register(CancelConnectAction.KIND, this)
     }
 
     override handle(action: Action): void {
@@ -69,10 +71,21 @@ export abstract class GraphModelSource extends LocalModelSource {
                 this.handleCreateRelation(createRelationAction.start, createRelationAction.end);
                 break;
             }
+            case CancelConnectAction.KIND: {
+                const cancelConnectAction = action as CancelConnectAction;
+                this.handleCancelConnect(cancelConnectAction);
+                break;
+            }
             default: {
                 super.handle(action);
             }
         }
+    }
+
+    private handleCancelConnect(cancelConnectAction: CancelConnectAction) {
+        const model = this.model as Root;
+        model.children = model.children.filter((child) => child.id !== cancelConnectAction.relation);
+        this.updateModel(model);
     }
 
     updateGraph(graphAndLayout: { graph?: Graph; layout?: GraphLayout; fitToBounds: boolean }) {

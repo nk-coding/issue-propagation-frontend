@@ -63,6 +63,7 @@ fragment GraphComponentVersionInfo on ComponentVersion {
             ...GraphRelationPartnerTemplateInfo
         }
     }
+    relateFromComponent: hasPermission(permission: RELATE_FROM_COMPONENT)
 }
 
 fragment GraphRelationPartnerInfo on RelationPartner {
@@ -115,6 +116,7 @@ fragment StrokeStyleInfo on StrokeStyle {
 }
 
 fragment GraphRelationPartnerTemplateInfo on RelationPartnerTemplate {
+    id
     fill {
         ...FillStyleInfo
     }

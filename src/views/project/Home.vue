@@ -43,7 +43,8 @@ import {
     GraphRelationPartnerTemplateInfoFragment,
     GraphRelationPartnerInfoFragment,
     GraphComponentVersionInfoFragment,
-    GraphRelationTemplateInfoFragment
+    GraphRelationTemplateInfoFragment,
+RelationTemplateFilterInput
 } from "@/graphql/generated";
 import { withErrorMessage } from "@/util/withErrorMessage";
 import { asyncComputed } from "@vueuse/core";
@@ -98,16 +99,16 @@ const originalGraph = asyncComputed(
     { shallow: false, evaluating }
 );
 
-const relationPartnerTemplateLookup = computed(() => {
-    const res = new Map<string, GraphRelationPartnerTemplateInfoFragment>();
+const relationPartnerTemplateLookup = computed<Map<string, string>>(() => {
+    const res = new Map<string, string>();
     if (originalGraph.value != undefined) {
         originalGraph.value.components.nodes.forEach((component) => {
-            res.set(component.id, component.component.template);
+            res.set(component.id, component.component.template.id);
             component.interfaceDefinitions.nodes.forEach((definition) => {
                 if (definition.visibleInterface != undefined) {
                     res.set(
                         definition.visibleInterface.id,
-                        definition.interfaceSpecificationVersion.interfaceSpecification.template
+                        definition.interfaceSpecificationVersion.interfaceSpecification.template.id
                     );
                 }
             });
@@ -124,7 +125,7 @@ const showAddComponentVersionDialog = ref(false);
 const showSelectRelationTemplateDialog = ref(false);
 const currentRelationStart = ref<string | undefined>(undefined);
 const currentRelationEnd = ref<string | undefined>(undefined);
-const relationTemplateFilter = computed(() => {
+const relationTemplateFilter = computed<RelationTemplateFilterInput | undefined>(() => {
     if (currentRelationStart.value == undefined || currentRelationEnd.value == undefined) {
         return undefined;
     }
@@ -134,14 +135,14 @@ const relationTemplateFilter = computed(() => {
                 from: {
                     any: {
                         id: {
-                            eq: currentRelationStart.value
+                            eq: relationPartnerTemplateLookup.value.get(currentRelationStart.value)
                         }
                     }
                 },
                 to: {
                     any: {
                         id: {
-                            eq: currentRelationEnd.value
+                            eq: relationPartnerTemplateLookup.value.get(currentRelationEnd.value)
                         }
                     }
                 }
@@ -249,6 +250,7 @@ function extractIssueRelations(relationPartner: GraphRelationPartnerInfoFragment
 }
 
 function extractComponent(component: GraphComponentVersionInfoFragment): ComponentVersion {
+    const createRelation = component.relateFromComponent
     const interfaces: Interface[] = component.interfaceDefinitions.nodes
         .filter((definition) => definition.visibleInterface != undefined)
         .map((definition) => {
@@ -258,7 +260,11 @@ function extractComponent(component: GraphComponentVersionInfoFragment): Compone
                 name: definition.interfaceSpecificationVersion.name,
                 version: definition.interfaceSpecificationVersion.version,
                 style: extractShapeStyle(definition.interfaceSpecificationVersion.interfaceSpecification.template),
-                issueTypes: extractIssueTypes(inter)
+                issueTypes: extractIssueTypes(inter),
+                contextMenu: {
+                    type: "interface",
+                    createRelation
+                } satisfies ContextMenuData
             };
         });
     return {
@@ -271,7 +277,7 @@ function extractComponent(component: GraphComponentVersionInfoFragment): Compone
         contextMenu: {
             type: "component",
             remove: true,
-            createRelation: true
+            createRelation
         } satisfies ContextMenuData
     };
 }
@@ -371,14 +377,16 @@ function beginCreateRelation(start: string, end: string) {
     showSelectRelationTemplateDialog.value = true;
 }
 
-async function createRelation(relationTemplate: string) {
+async function createRelation(relationTemplate: { id: string }) {
+    showSelectRelationTemplateDialog.value = false;
     await withErrorMessage(async () => {
         await client.createRelation({
             start: currentRelationStart.value!,
             end: currentRelationEnd.value!,
-            template: relationTemplate
+            template: relationTemplate.id
         });
     }, "Error creating relation");
+    graphVersionCounter.value++;
 }
 </script>
 <style scoped lang="scss">
