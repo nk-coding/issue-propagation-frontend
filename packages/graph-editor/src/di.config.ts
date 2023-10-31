@@ -47,6 +47,8 @@ import { ContextMenu } from "./model/contextMenu";
 import { SContextMenu } from "./smodel/sContextMenu";
 import { ContextMenuView } from "./views/contextMenuView";
 import { connectModule } from "./features/connect/di.config";
+import { connectFeature } from "./features/connect/connectFeature";
+import { issueHighlightableFeature } from "./features/issueRelationHighlight/issueHighlightableFeature";
 
 const diagramModule = new ContainerModule((bind, unbind, isBound, rebind) => {
     const context = { bind, unbind, isBound, rebind };
@@ -55,14 +57,20 @@ const diagramModule = new ContainerModule((bind, unbind, isBound, rebind) => {
 
     configureModelElement(context, Root.TYPE, SRoot, RootView);
     configureModelElement(context, Component.TYPE, SComponent, ComponentView, {
-        enable: [selectFeature, moveFeature]
+        enable: [selectFeature, moveFeature, connectFeature]
     });
     configureModelElement(context, Interface.TYPE, SInterface, InterfaceView, {
-        enable: [selectFeature, moveFeature]
+        enable: [selectFeature, moveFeature, connectFeature]
     });
-    configureModelElement(context, IssueType.TYPE, SIssueType, IssueTypeView);
-    configureModelElement(context, Relation.TYPE, SRelation, RelationView);
-    configureModelElement(context, IssueRelation.TYPE, SIssueRelation, IssueRelationView);
+    configureModelElement(context, IssueType.TYPE, SIssueType, IssueTypeView, {
+        enable: [issueHighlightableFeature]
+    });
+    configureModelElement(context, Relation.TYPE, SRelation, RelationView, {
+        enable: [selectFeature]
+    });
+    configureModelElement(context, IssueRelation.TYPE, SIssueRelation, IssueRelationView, {
+        enable: [issueHighlightableFeature]
+    });
     configureModelElement(context, Label.TYPE, SLabel, LabelView, {
         enable: [boundsFeature]
     });

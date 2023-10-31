@@ -13,6 +13,7 @@ export class ConnectMouseListener extends MouseListener implements IActionHandle
 
     private lastMouseMoveEvent?: MouseEvent;
     private lastMouseMoveTarget?: SModelElementImpl;
+    private hoveredConnectable?: string;
 
     handle(action: Action): void | Action | ICommand {
         if (ConnectAction.is(action)) {
@@ -32,34 +33,53 @@ export class ConnectMouseListener extends MouseListener implements IActionHandle
         return this.commitConnection(target);
     }
 
-    override mouseEnter(target: SModelElementImpl, event: MouseEvent): Action[] {
+    override mouseOver(target: SModelElementImpl, event: MouseEvent): Action[] {
         if (this.connectAction == undefined) {
             return [];
         }
         if (event.buttons === 0) {
             return this.commitConnection(target);
         }
+        const connectable = findParentByFeature(target, isConnectable);
+        if (connectable != undefined) {
+            this.hoveredConnectable = connectable.id;
+        } else {
+            this.hoveredConnectable = undefined;
+        }
+        return this.updateRelation();
         return [];
     }
 
     override mouseMove(target: SModelElementImpl, event: MouseEvent): Action[] {
         this.lastMouseMoveEvent = event;
         this.lastMouseMoveTarget = target;
+        return this.updateRelation();
+    }
+
+    private updateRelation(): Action[] {
         if (this.connectAction == undefined) {
             return [];
         }
-        const point = this.getLastPoint();
+        let end: Point | string;
+        if (this.hoveredConnectable != undefined) {
+            end = this.hoveredConnectable;
+        } else {
+            end = this.getLastPoint();
+        }
         const updateAction: UpdateRelationEndAction = {
             kind: UpdateRelationEndAction.KIND,
             relation: this.connectAction.relation,
-            end: point
+            end
         };
         return [updateAction];
     }
 
     private commitConnection(target: SModelElementImpl): Action[] {
+        if (this.connectAction == undefined) {
+            return [];
+        }
         const connectable = findParentByFeature(target, isConnectable);
-        if (connectable == undefined || this.connectAction == undefined) {
+        if (connectable == undefined) {
             return this.cancel();
         }
         const targetId = connectable?.id;
@@ -72,6 +92,7 @@ export class ConnectMouseListener extends MouseListener implements IActionHandle
             start: this.connectAction.start,
             end: targetId
         };
+        this.connectAction = undefined;
         return [connectAction];
     }
 

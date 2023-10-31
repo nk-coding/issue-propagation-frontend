@@ -15,7 +15,7 @@ import { Interface } from "../model/interface";
 import { Label } from "../model/label";
 import { Relation } from "../model/relation";
 import { UpdateLayoutAction } from "../features/move/updateLayoutAction";
-import { Action, Bounds, SModelElement, SelectAction, SelectAllAction, UpdateModelAction } from "sprotty-protocol";
+import { Action, Bounds, SModelElement, SelectAction, SelectAllAction } from "sprotty-protocol";
 import { Element } from "../model/element";
 import { Chip } from "../model/chip";
 import { IssueType } from "../model/issueType";
@@ -96,14 +96,15 @@ export abstract class GraphModelSource extends LocalModelSource {
             type: "relation",
             id: `temp-relation-${start}`,
             start,
-            end: start,
             style: {
                 marker: "ARROW"
             },
             children: []
         };
-        this.currentRoot.children = [...(this.currentRoot.children ?? []), relation];
-        await this.updateModel(this.currentRoot);
+        const model = this.model as Root;
+        model.children = [...model.children, relation];
+        model.targetBounds = undefined;
+        await this.updateModel(model);
         const connectAction: ConnectAction = {
             kind: ConnectAction.KIND,
             relation: relation.id,
@@ -361,7 +362,7 @@ export abstract class GraphModelSource extends LocalModelSource {
         const model = this.model as Root;
         model.animated = false;
         model.targetBounds = undefined;
-        this.actionDispatcher.dispatch(UpdateModelAction.create(this.model));
+        this.updateModel(model);
     }
 
     private updateLayoutRecursively(element: SModelElement, partialLayout: GraphLayout) {

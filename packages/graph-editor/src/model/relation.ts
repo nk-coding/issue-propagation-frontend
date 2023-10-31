@@ -5,8 +5,8 @@ import { Selectable } from "./selectable";
 
 export interface Relation extends Selectable {
     type: typeof Relation.TYPE;
-    start: string | Point;
-    end: string | Point;
+    start?: string | Point;
+    end?: string | Point;
     style: RelationStyle;
 }
 

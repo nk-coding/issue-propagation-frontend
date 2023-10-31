@@ -5,7 +5,7 @@ export interface IssueRelationHighlightable extends Element {
 }
 
 export namespace IssueRelationHighlightable {
-    export function is(element: Element): element is IssueRelationHighlightable {
+    export function is(element: any): element is IssueRelationHighlightable {
         return "highlightedBecause" in element;
     }
 }

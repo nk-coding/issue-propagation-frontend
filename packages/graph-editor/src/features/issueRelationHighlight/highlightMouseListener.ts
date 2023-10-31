@@ -1,31 +1,30 @@
-import { MouseListener, SModelElementImpl } from "sprotty";
+import { MouseListener, SModelElementImpl, findParentByFeature } from "sprotty";
 import { Action } from "sprotty-protocol";
-import { IssueRelationHighlightable } from "./IssueRelationHighlightable";
 import { HoverHighlightAction } from "./hoverHighlightAction";
 import { SRoot } from "../../smodel/sRoot";
+import { isIssueRelationHighlightable } from "./issueHighlightableFeature";
 
 export class HighlightMouseListener extends MouseListener {
+    lastHighlighted?: string;
+
     override mouseOver(target: SModelElementImpl, event: MouseEvent): Action[] {
-        if (IssueRelationHighlightable.is(target as never)) {
+        const highlightable = findParentByFeature(target, isIssueRelationHighlightable);
+        if (highlightable != undefined && event.buttons === 0) {
+            this.lastHighlighted = highlightable.id;
             const root = target.root as SRoot;
             const action: HoverHighlightAction = {
                 kind: HoverHighlightAction.KIND,
-                cause: target.id,
-                affected: root.getRelatedHighlightable(target.id),
+                cause: highlightable.id,
+                affected: root.getRelatedHighlightable(highlightable.id),
                 unaffected: []
             };
             return [action];
-        }
-        return [];
-    }
-
-    override mouseOut(target: SModelElementImpl, event: MouseEvent): Action[] {
-        if (IssueRelationHighlightable.is(target as never)) {
+        } else if (highlightable == undefined && this.lastHighlighted != undefined) {
             const root = target.root as SRoot;
             const action: HoverHighlightAction = {
                 kind: HoverHighlightAction.KIND,
-                cause: target.id,
-                unaffected: root.getRelatedHighlightable(target.id),
+                cause: this.lastHighlighted,
+                unaffected: root.getRelatedHighlightable(this.lastHighlighted),
                 affected: []
             };
             return [action];

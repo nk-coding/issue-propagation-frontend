@@ -6,8 +6,8 @@ import { Point } from "sprotty-protocol";
 
 export class SRelation extends SSelectable implements Relation, Selectable {
     declare type: typeof Relation.TYPE;
-    start!: string | Point;
-    end!: string | Point;
+    start?: string | Point;
+    end?: string | Point;
     style!: RelationStyle;
     selected = false;
 

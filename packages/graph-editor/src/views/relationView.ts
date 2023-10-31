@@ -13,6 +13,9 @@ import { Point } from "bezier-js";
 @injectable()
 export class RelationView implements IView {
     render(model: Readonly<SRelation>, context: RenderingContext, args?: {} | undefined): VNode | undefined {
+        if (model.start == undefined || model.end == undefined) {
+            return undefined;
+        }
         let initialStartPos: Point;
         let initialEndPos: Point;
         if (typeof model.start === "string") {
