@@ -13310,6 +13310,8 @@ export type Query = {
     searchIssues: Array<Issue>;
     /** Search for nodes of type Label */
     searchLabels: Array<Label>;
+    /** Search for nodes of type RelationTemplate */
+    searchRelationTemplates: Array<RelationTemplate>;
     /** Search for nodes of type Trackable */
     searchTrackables: Array<Trackable>;
     /** Search for nodes of type User */
@@ -13482,6 +13484,13 @@ export type QuerySearchIssuesArgs = {
 
 export type QuerySearchLabelsArgs = {
     filter?: InputMaybe<LabelFilterInput>;
+    first: Scalars["Int"]["input"];
+    query: Scalars["String"]["input"];
+    skip?: InputMaybe<Scalars["Int"]["input"]>;
+};
+
+export type QuerySearchRelationTemplatesArgs = {
+    filter?: InputMaybe<RelationTemplateFilterInput>;
     first: Scalars["Int"]["input"];
     query: Scalars["String"]["input"];
     skip?: InputMaybe<Scalars["Int"]["input"]>;
@@ -21159,6 +21168,37 @@ export type CreateProjectMutation = {
     } | null;
 };
 
+export type GetRelationTemplatesQueryVariables = Exact<{
+    count: Scalars["Int"]["input"];
+    filter?: InputMaybe<RelationTemplateFilterInput>;
+}>;
+
+export type GetRelationTemplatesQuery = {
+    __typename?: "Query";
+    relationTemplates: {
+        __typename?: "RelationTemplateConnection";
+        nodes: Array<{ __typename?: "RelationTemplate"; id: string; name: string; description: string }>;
+    };
+};
+
+export type SearchRelationTemplatesQueryVariables = Exact<{
+    query: Scalars["String"]["input"];
+    count: Scalars["Int"]["input"];
+    filter?: InputMaybe<RelationTemplateFilterInput>;
+}>;
+
+export type SearchRelationTemplatesQuery = {
+    __typename?: "Query";
+    searchRelationTemplates: Array<{ __typename?: "RelationTemplate"; id: string; name: string; description: string }>;
+};
+
+export type DefaultRelationTemplateInfoFragment = {
+    __typename?: "RelationTemplate";
+    id: string;
+    name: string;
+    description: string;
+};
+
 type DefaultTimelineItemInfo_AddedAffectedEntityEvent_Fragment = {
     __typename: "AddedAffectedEntityEvent";
     id: string;
@@ -23017,6 +23057,13 @@ export const DefaultIssueTemplateInfoFragmentDoc = gql`
         description
     }
 `;
+export const DefaultRelationTemplateInfoFragmentDoc = gql`
+    fragment DefaultRelationTemplateInfo on RelationTemplate {
+        id
+        name
+        description
+    }
+`;
 export const DefaultUserInfoFragmentDoc = gql`
     fragment DefaultUserInfo on User {
         id
@@ -24298,6 +24345,24 @@ export const CreateProjectDocument = gql`
         }
     }
 `;
+export const GetRelationTemplatesDocument = gql`
+    query getRelationTemplates($count: Int!, $filter: RelationTemplateFilterInput) {
+        relationTemplates(first: $count) {
+            nodes {
+                ...DefaultRelationTemplateInfo
+            }
+        }
+    }
+    ${DefaultRelationTemplateInfoFragmentDoc}
+`;
+export const SearchRelationTemplatesDocument = gql`
+    query searchRelationTemplates($query: String!, $count: Int!, $filter: RelationTemplateFilterInput) {
+        searchRelationTemplates(query: $query, first: $count, filter: $filter) {
+            ...DefaultRelationTemplateInfo
+        }
+    }
+    ${DefaultRelationTemplateInfoFragmentDoc}
+`;
 export const SearchTrackablesDocument = gql`
     query searchTrackables($query: String!, $count: Int!) {
         searchTrackables(query: $query, first: $count) {
@@ -24964,6 +25029,34 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                     }),
                 "createProject",
                 "mutation"
+            );
+        },
+        getRelationTemplates(
+            variables: GetRelationTemplatesQueryVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<GetRelationTemplatesQuery> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<GetRelationTemplatesQuery>(GetRelationTemplatesDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "getRelationTemplates",
+                "query"
+            );
+        },
+        searchRelationTemplates(
+            variables: SearchRelationTemplatesQueryVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<SearchRelationTemplatesQuery> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<SearchRelationTemplatesQuery>(SearchRelationTemplatesDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "searchRelationTemplates",
+                "query"
             );
         },
         searchTrackables(

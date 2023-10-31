@@ -22,6 +22,18 @@
             />
         </v-sheet>
     </v-dialog>
+    <v-dialog v-model="showSelectRelationTemplateDialog" :scrim="false" width="auto" class="autocomplete-dialog">
+        <v-sheet :elevation="10">
+            <RelationTemplateAutocomplete
+                hide-details
+                autofocus
+                auto-select-first
+                bg-color="background"
+                :relation-template-filter="relationTemplateFilter"
+                @selected-item="addRelation"
+            />
+        </v-sheet>
+    </v-dialog>
 </template>
 <script lang="ts" setup>
 import { NodeReturnType, useClient } from "@/graphql/client";
@@ -55,6 +67,7 @@ import FilterChip from "@/components/input/FilterChip.vue";
 import ComponentVersionAutocomplete from "@/components/input/ComponentVersionAutocomplete.vue";
 import { inject } from "vue";
 import { eventBusKey } from "@/util/keys";
+import RelationTemplateAutocomplete from "@/components/input/RelationTemplateAutocomplete.vue";
 
 type ProjectGraph = NodeReturnType<"getProjectGraph", "Project">;
 
@@ -83,11 +96,57 @@ const originalGraph = asyncComputed(
     { shallow: false, evaluating }
 );
 
+const relationPartnerTemplateLookup = computed(() => {
+    const res = new Map<string, GraphRelationPartnerTemplateInfoFragment>();
+    if (originalGraph.value != undefined) {
+        originalGraph.value.components.nodes.forEach((component) => {
+            res.set(component.id, component.component.template);
+            component.interfaceDefinitions.nodes.forEach((definition) => {
+                if (definition.visibleInterface != undefined) {
+                    res.set(
+                        definition.visibleInterface.id,
+                        definition.interfaceSpecificationVersion.interfaceSpecification.template
+                    );
+                }
+            });
+        });
+    }
+    return res;
+});
+
 const showOpenIssues = ref(true);
 const showClosedIssues = ref(false);
 const showIssueRelations = ref(true);
 
 const showAddComponentVersionDialog = ref(false);
+const showSelectRelationTemplateDialog = ref(false);
+const currentRelationStart = ref<string | undefined>(undefined);
+const currentRelationEnd = ref<string | undefined>(undefined);
+const relationTemplateFilter = computed(() => {
+    if (currentRelationStart.value == undefined || currentRelationEnd.value == undefined) {
+        return undefined;
+    }
+    return {
+        relationConditions: {
+            any: {
+                from: {
+                    any: {
+                        id: {
+                            eq: currentRelationStart.value
+                        }
+                    }
+                },
+                to: {
+                    any: {
+                        id: {
+                            eq: currentRelationEnd.value
+                        }
+                    }
+                }
+            }
+        }
+    };
+});
 
 const graph = computed<Graph | null>(() => {
     if (!originalGraph.value) {
@@ -302,6 +361,10 @@ async function removeComponentVersion(componentVersion: string) {
         });
     }, "Error removing component version from project");
     graphVersionCounter.value++;
+}
+
+async function addRelation(relationTemplate: string) {
+    
 }
 </script>
 <style scoped lang="scss">
