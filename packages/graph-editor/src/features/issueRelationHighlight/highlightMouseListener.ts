@@ -9,7 +9,7 @@ export class HighlightMouseListener extends MouseListener {
 
     override mouseOver(target: SModelElementImpl, event: MouseEvent): Action[] {
         const highlightable = findParentByFeature(target, isIssueRelationHighlightable);
-        const currentHighlighted = highlightable?.id;
+        const currentHighlighted = event.buttons != 0 ? undefined : highlightable?.id;
         if (this.lastHighlighted != currentHighlighted) {
             const root = target.root as SRoot;
             const action: HoverHighlightAction = {

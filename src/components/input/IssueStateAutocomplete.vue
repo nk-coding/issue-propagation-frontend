@@ -11,7 +11,7 @@
                 <template #prepend>
                     <v-icon
                         :color="item.raw.isOpen ? 'issue-open' : 'issue-closed'"
-                        class="full-opacity"
+                        class="full-opacity mr-4"
                         icon="mdi-circle"
                     />
                 </template>

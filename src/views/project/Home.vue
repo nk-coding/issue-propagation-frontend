@@ -31,6 +31,7 @@
                 auto-select-first
                 bg-color="background"
                 menu-mode="initial"
+                :menu-delay="350"
                 :relation-template-filter="relationTemplateFilter"
                 @selected-item="createRelation"
             />
@@ -373,7 +374,7 @@ async function removeComponentVersion(componentVersion: string) {
 }
 
 function beginCreateRelation(context: CreateRelationContext) {
-    createRelationContext.value = context
+    createRelationContext.value = context;
     showSelectRelationTemplateDialog.value = true;
 }
 
@@ -393,11 +394,10 @@ async function createRelation(relationTemplate: { id: string }) {
 
 watch(showSelectRelationTemplateDialog, (newValue) => {
     if (!newValue && createRelationContext.value != undefined) {
-        console.log("cancel")
         createRelationContext.value.cancel();
         createRelationContext.value = undefined;
     }
-})
+});
 </script>
 <style scoped lang="scss">
 @use "@/styles/settings.scss";
