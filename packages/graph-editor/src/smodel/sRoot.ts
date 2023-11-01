@@ -39,7 +39,10 @@ export class SRoot extends ViewportRootElementImpl {
         }
     }
 
-    getRelatedHighlightable(cause: string): string[] {
+    getRelatedHighlightable(cause: string | undefined): string[] {
+        if (cause === undefined) {
+            return [];
+        }
         return Array.from(this.issueRelationHighlightRelation.get(cause) ?? [cause]);
     }
 

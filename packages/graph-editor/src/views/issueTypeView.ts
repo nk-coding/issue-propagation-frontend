@@ -29,7 +29,7 @@ export class IssueTypeView implements IView {
         const folder = svg("path", {
             class: {
                 "issue-type-folder": true,
-                highlighted: model.highlightedBecause.size > 0
+                highlighted: model.highlighted
             },
             attrs: {
                 d: issueTypeFolderPath

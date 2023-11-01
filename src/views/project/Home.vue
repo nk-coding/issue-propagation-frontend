@@ -44,7 +44,7 @@ import {
     GraphRelationPartnerInfoFragment,
     GraphComponentVersionInfoFragment,
     GraphRelationTemplateInfoFragment,
-RelationTemplateFilterInput
+    RelationTemplateFilterInput
 } from "@/graphql/generated";
 import { withErrorMessage } from "@/util/withErrorMessage";
 import { asyncComputed } from "@vueuse/core";
@@ -61,7 +61,8 @@ import {
     RelationStyle,
     IssueRelation,
     GraphLayout,
-    LayoutEngine
+    LayoutEngine,
+    CreateRelationContext
 } from "@gropius/graph-editor";
 import { computed, ref, watch, nextTick } from "vue";
 import { useRoute, useRouter } from "vue-router";
@@ -123,26 +124,26 @@ const showIssueRelations = ref(true);
 
 const showAddComponentVersionDialog = ref(false);
 const showSelectRelationTemplateDialog = ref(false);
-const currentRelationStart = ref<string | undefined>(undefined);
-const currentRelationEnd = ref<string | undefined>(undefined);
+const createRelationContext = ref<CreateRelationContext | undefined>(undefined);
 const relationTemplateFilter = computed<RelationTemplateFilterInput | undefined>(() => {
-    if (currentRelationStart.value == undefined || currentRelationEnd.value == undefined) {
+    if (createRelationContext.value == undefined) {
         return undefined;
     }
+    const context = createRelationContext.value;
     return {
         relationConditions: {
             any: {
                 from: {
                     any: {
                         id: {
-                            eq: relationPartnerTemplateLookup.value.get(currentRelationStart.value)
+                            eq: relationPartnerTemplateLookup.value.get(context.start)
                         }
                     }
                 },
                 to: {
                     any: {
                         id: {
-                            eq: relationPartnerTemplateLookup.value.get(currentRelationEnd.value)
+                            eq: relationPartnerTemplateLookup.value.get(context.end)
                         }
                     }
                 }
@@ -250,7 +251,7 @@ function extractIssueRelations(relationPartner: GraphRelationPartnerInfoFragment
 }
 
 function extractComponent(component: GraphComponentVersionInfoFragment): ComponentVersion {
-    const createRelation = component.relateFromComponent
+    const createRelation = component.relateFromComponent;
     const interfaces: Interface[] = component.interfaceDefinitions.nodes
         .filter((definition) => definition.visibleInterface != undefined)
         .map((definition) => {
@@ -371,23 +372,32 @@ async function removeComponentVersion(componentVersion: string) {
     graphVersionCounter.value++;
 }
 
-function beginCreateRelation(start: string, end: string) {
-    currentRelationStart.value = start;
-    currentRelationEnd.value = end;
+function beginCreateRelation(context: CreateRelationContext) {
+    createRelationContext.value = context
     showSelectRelationTemplateDialog.value = true;
 }
 
 async function createRelation(relationTemplate: { id: string }) {
+    const context = createRelationContext.value!;
+    createRelationContext.value = undefined;
     showSelectRelationTemplateDialog.value = false;
     await withErrorMessage(async () => {
         await client.createRelation({
-            start: currentRelationStart.value!,
-            end: currentRelationEnd.value!,
+            start: context.start,
+            end: context.end,
             template: relationTemplate.id
         });
     }, "Error creating relation");
     graphVersionCounter.value++;
 }
+
+watch(showSelectRelationTemplateDialog, (newValue) => {
+    if (!newValue && createRelationContext.value != undefined) {
+        console.log("cancel")
+        createRelationContext.value.cancel();
+        createRelationContext.value = undefined;
+    }
+})
 </script>
 <style scoped lang="scss">
 @use "@/styles/settings.scss";

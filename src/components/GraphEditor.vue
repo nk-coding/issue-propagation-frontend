@@ -36,7 +36,7 @@
 </template>
 <script setup lang="ts">
 import "reflect-metadata";
-import { Graph, GraphLayout, GraphModelSource, SelectedElement, createContainer } from "@gropius/graph-editor";
+import { Graph, GraphLayout, GraphModelSource, SelectedElement, createContainer, CreateRelationContext } from "@gropius/graph-editor";
 import { TYPES } from "sprotty";
 import { PropType, onMounted, shallowRef, watch, ref, computed } from "vue";
 import { v4 as uuidv4 } from "uuid";
@@ -75,12 +75,12 @@ const props = defineProps({
 const emit = defineEmits<{
     (event: "update:layout", value: GraphLayout): void;
     (event: "removeComponent", value: string): void;
-    (event: "createRelation", start: string, end: string ): void;
+    (event: "createRelation", value: CreateRelationContext ): void;
 }>();
 
 class ModelSource extends GraphModelSource {
-    protected handleCreateRelation(start: string, end: string): void {
-        emit("createRelation", start, end);
+    protected handleCreateRelation(context: CreateRelationContext): void {
+        emit("createRelation", context);
     }
 
     protected layoutUpdated(partialUpdate: GraphLayout, resultingLayout: GraphLayout): void {

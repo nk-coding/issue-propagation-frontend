@@ -34,7 +34,7 @@ export abstract class GraphModelSource extends LocalModelSource {
 
     protected abstract handleSelectionChanged(selectedElements: SelectedElement<any>[]): void;
 
-    protected abstract handleCreateRelation(start: string, end: string): void;
+    protected abstract handleCreateRelation(context: CreateRelationContext): void;
 
     override initialize(registry: ActionHandlerRegistry): void {
         super.initialize(registry);
@@ -43,7 +43,7 @@ export abstract class GraphModelSource extends LocalModelSource {
         registry.register(SelectAction.KIND, this);
         registry.register(SelectAllAction.KIND, this);
         registry.register(CreateRelationAction.KIND, this);
-        registry.register(CancelConnectAction.KIND, this)
+        registry.register(CancelConnectAction.KIND, this);
     }
 
     override handle(action: Action): void {
@@ -68,7 +68,17 @@ export abstract class GraphModelSource extends LocalModelSource {
             }
             case CreateRelationAction.KIND: {
                 const createRelationAction = action as CreateRelationAction;
-                this.handleCreateRelation(createRelationAction.start, createRelationAction.end);
+                this.handleCreateRelation({
+                    start: createRelationAction.start,
+                    end: createRelationAction.end,
+                    cancel: () => {
+                        const action: CancelConnectAction = {
+                            kind: CancelConnectAction.KIND,
+                            relation: createRelationAction.relation
+                        };
+                        this.actionDispatcher.dispatch(action);
+                    }
+                });
                 break;
             }
             case CancelConnectAction.KIND: {
@@ -401,4 +411,10 @@ export interface SelectedElement<T> {
     id: string;
     contextMenuContainerId: string;
     contextMenuData: T;
+}
+
+export interface CreateRelationContext {
+    start: string;
+    end: string;
+    cancel: () => void;
 }

@@ -14,16 +14,16 @@ export class HoverHighlightCommand extends SystemCommand {
     override execute(context: CommandExecutionContext): CommandReturn {
         const root = context.root;
         const index = root.index;
-        for (const affected of this.action.affected) {
-            const element = index.getById(affected) as unknown as IssueRelationHighlightable | undefined;
-            if (element != undefined) {
-                element.highlightedBecause.add(this.action.cause);
-            }
-        }
         for (const unaffected of this.action.unaffected) {
             const element = index.getById(unaffected) as unknown as IssueRelationHighlightable | undefined;
             if (element != undefined) {
-                element.highlightedBecause.delete(this.action.cause);
+                element.highlighted = false;
+            }
+        }
+        for (const affected of this.action.affected) {
+            const element = index.getById(affected) as unknown as IssueRelationHighlightable | undefined;
+            if (element != undefined) {
+                element.highlighted = true;
             }
         }
         return root;
