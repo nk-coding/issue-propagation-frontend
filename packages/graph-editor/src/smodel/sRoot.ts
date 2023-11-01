@@ -117,7 +117,7 @@ export class SRoot extends ViewportRootElementImpl {
                 cursor: pointer;
             }
 
-            .sprotty .shape {
+            .sprotty .selectable {
                 cursor: pointer;
             }
 
@@ -163,6 +163,12 @@ export class SRoot extends ViewportRootElementImpl {
             .sprotty .context-menu {
                 width: fit-content;
                 height: fit-content;
+            }
+
+            .sprotty .hidden-path {
+                fill: none;
+                stroke: transparent;
+                stroke-width: calc(12px / var(--diagram-zoom));
             }
         `;
     }

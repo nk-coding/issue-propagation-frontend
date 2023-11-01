@@ -66,7 +66,8 @@ export abstract class SIssueAffected extends SSelectable implements IssueAffecte
                     ...this.generateShapeAttrs()
                 },
                 class: {
-                    shape: true
+                    shape: true,
+                    selectable: true
                 }
             })
         );

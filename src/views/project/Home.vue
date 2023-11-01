@@ -5,6 +5,7 @@
         :graph="graph"
         @remove-component="removeComponentVersion"
         @create-relation="beginCreateRelation"
+        @delete-relation="deleteRelation"
     >
         <FilterChip v-model="showOpenIssues" label="Open Issues" icon="mdi-bug" class="mr-2 open-issue-chip" />
         <FilterChip v-model="showClosedIssues" label="Closed Issues" icon="mdi-bug" class="mr-2 closed-issue-chip" />
@@ -65,7 +66,7 @@ import {
     LayoutEngine,
     CreateRelationContext
 } from "@gropius/graph-editor";
-import { computed, ref, watch, nextTick } from "vue";
+import { computed, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { onEvent } from "@/util/eventBus";
 import FilterChip from "@/components/input/FilterChip.vue";
@@ -160,10 +161,11 @@ const graph = computed<Graph | null>(() => {
     const components = originalGraph.value.components.nodes;
     const mappedComponents = components.map<ComponentVersion>((component) => extractComponent(component));
     const mappedRelations = components.flatMap((component) => {
-        const res = [...extractRelations(component)];
+        const deleteRelation = component.relateFromComponent;
+        const res = [...extractRelations(component, deleteRelation)];
         for (const definition of component.interfaceDefinitions.nodes) {
             if (definition.visibleInterface != undefined) {
-                res.push(...extractRelations(definition.visibleInterface));
+                res.push(...extractRelations(definition.visibleInterface, deleteRelation));
             }
         }
         return res;
@@ -219,14 +221,18 @@ async function autolayout(graph: Graph): Promise<GraphLayout> {
     return resultingLayout;
 }
 
-function extractRelations(relationPartner: GraphRelationPartnerInfoFragment): Relation[] {
+function extractRelations(relationPartner: GraphRelationPartnerInfoFragment, deleteRelation: boolean): Relation[] {
     return relationPartner.outgoingRelations.nodes.map((relation) => {
         return {
             id: relation.id,
             name: relation.template.name,
             start: relationPartner.id,
             end: relation.end!.id,
-            style: extractRelationStyle(relation.template)
+            style: extractRelationStyle(relation.template),
+            contextMenu: {
+                type: "relation",
+                delete: deleteRelation
+            } satisfies ContextMenuData
         };
     });
 }
@@ -398,6 +404,15 @@ watch(showSelectRelationTemplateDialog, (newValue) => {
         createRelationContext.value = undefined;
     }
 });
+
+async function deleteRelation(relation: string) {
+    await withErrorMessage(async () => {
+        await client.deleteRelation({
+            id: relation
+        });
+    }, "Error deleting relation");
+    graphVersionCounter.value++;
+}
 </script>
 <style scoped lang="scss">
 @use "@/styles/settings.scss";

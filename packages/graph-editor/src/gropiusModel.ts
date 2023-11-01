@@ -18,7 +18,7 @@ export interface IssueType extends Node {
 }
 
 export interface Selectable extends Node {
-    contextMenu?: any;
+    contextMenu: any;
 }
 
 export interface IssueAffected extends Selectable {

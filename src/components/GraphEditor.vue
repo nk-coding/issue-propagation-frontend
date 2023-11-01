@@ -1,7 +1,7 @@
 <template>
     <div class="sprotty-wrapper">
         <div :id="editorId" class="sprotty" />
-        <Teleport v-if="selecteds.length == 1" :key="selected.id" :to="`#${selected.contextMenuContainerId}`">
+        <Teleport v-if="selecteds.length == 1" :key="selected.id" :to="`#${selected.contextMenuContainerId}>.context-menu`">
             <div class="context-menu ml-2">
                 <template v-if="selected.contextMenuData.type == 'component' || selected.contextMenuData.type == 'interface'">
                     <SmallFAB
@@ -25,6 +25,18 @@
                     >
                         <v-icon icon="mdi-close" />
                         <v-tooltip activator="parent">Remove component version from project</v-tooltip>
+                    </SmallFAB>
+                </template>
+                <template v-if="selected.contextMenuData.type == 'relation'">
+                    <SmallFAB
+                        class="d-block"
+                        icon
+                        color="primary-container"
+                        :disabled="!selected.contextMenuData.delete"
+                        @click="$emit('deleteRelation', selected.id)"
+                    >
+                        <v-icon icon="mdi-close" />
+                        <v-tooltip activator="parent">Delete relation</v-tooltip>
                     </SmallFAB>
                 </template>
             </div>
@@ -76,6 +88,7 @@ const emit = defineEmits<{
     (event: "update:layout", value: GraphLayout): void;
     (event: "removeComponent", value: string): void;
     (event: "createRelation", value: CreateRelationContext ): void;
+    (event: "deleteRelation", value: string): void;
 }>();
 
 class ModelSource extends GraphModelSource {

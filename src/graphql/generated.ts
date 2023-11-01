@@ -18138,6 +18138,15 @@ export type CreateRelationMutation = {
     } | null;
 };
 
+export type DeleteRelationMutationVariables = Exact<{
+    id: Scalars["ID"]["input"];
+}>;
+
+export type DeleteRelationMutation = {
+    __typename?: "Mutation";
+    deleteRelation: { __typename?: "DeleteNodePayload"; id: string };
+};
+
 export type GraphInfoFragment = {
     __typename?: "Project";
     components: {
@@ -23970,6 +23979,13 @@ export const CreateRelationDocument = gql`
         }
     }
 `;
+export const DeleteRelationDocument = gql`
+    mutation deleteRelation($id: ID!) {
+        deleteRelation(input: { id: $id }) {
+            id
+        }
+    }
+`;
 export const GetIssuesDocument = gql`
     query getIssues($filter: String!, $orderBy: IssueOrder!, $count: Int!, $skip: Int!, $trackable: ID!) {
         node(id: $trackable) {
@@ -24672,6 +24688,20 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "createRelation",
+                "mutation"
+            );
+        },
+        deleteRelation(
+            variables: DeleteRelationMutationVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<DeleteRelationMutation> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<DeleteRelationMutation>(DeleteRelationDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "deleteRelation",
                 "mutation"
             );
         },

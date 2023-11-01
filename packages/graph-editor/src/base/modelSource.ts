@@ -122,7 +122,8 @@ export abstract class GraphModelSource extends LocalModelSource {
             style: {
                 marker: "ARROW"
             },
-            children: []
+            children: [],
+            contextMenuData: null
         };
         const model = this.model as Root;
         model.children = [...model.children, relation];
@@ -171,6 +172,13 @@ export abstract class GraphModelSource extends LocalModelSource {
         const issueRelations = graph.issueRelations
             .map((issueRelation) => this.createIssueRelation(issueRelation, issueTypeLookup))
             .filter((r) => r != undefined) as IssueRelation[];
+        const contextMenus = [
+            ...graph.components.flatMap((component) => [
+                this.createContextMenu(component),
+                ...component.interfaces.map((i) => this.createContextMenu(i))
+            ]),
+            ...graph.relations.map((relation) => this.createContextMenu(relation))
+        ];
         let targetBounds: Bounds | undefined;
         if (fitToBounds) {
             const centerBounds = this.computeCenterBounds(components);
@@ -186,7 +194,7 @@ export abstract class GraphModelSource extends LocalModelSource {
         return {
             type: "root",
             id: "root",
-            children: [...issueRelations, ...relations, ...components],
+            children: [...issueRelations, ...relations, ...components, ...contextMenus],
             targetBounds
         };
     }
@@ -231,9 +239,6 @@ export abstract class GraphModelSource extends LocalModelSource {
         }
         children.push(...component.issueTypes.map((issueType) => this.createIssueType(issueType)));
         children.push(this.createNameLabel(component.name, component.id));
-        if (component.contextMenu != undefined) {
-            children.push(this.createContextMenu(component));
-        }
         return {
             type: "component",
             id: component.id,
@@ -253,9 +258,6 @@ export abstract class GraphModelSource extends LocalModelSource {
         }
         children.push(...gropiusInterface.issueTypes.map((issueType) => this.createIssueType(issueType)));
         children.push(this.createNameLabel(gropiusInterface.name, gropiusInterface.id));
-        if (gropiusInterface.contextMenu != undefined) {
-            children.push(this.createContextMenu(gropiusInterface));
-        }
         return {
             type: "interface",
             id: gropiusInterface.id,
@@ -270,9 +272,6 @@ export abstract class GraphModelSource extends LocalModelSource {
     private createRelation(relation: GropiusRelation, layout: GraphLayout): Relation {
         const children: Element[] = [];
         children.push(this.createNameLabel(relation.name, relation.id));
-        if (relation.contextMenu != undefined) {
-            children.push(this.createContextMenu(relation));
-        }
         return {
             type: "relation",
             id: relation.id,

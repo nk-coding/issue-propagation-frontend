@@ -30,6 +30,12 @@ mutation createRelation($start: ID!, $end: ID!, $template: ID!) {
     }
 }
 
+mutation deleteRelation($id: ID!) {
+    deleteRelation(input: { id: $id }) {
+        id
+    }
+}
+
 fragment GraphInfo on Project {
     components {
         nodes {
