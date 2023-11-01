@@ -2,7 +2,7 @@
     <div class="sprotty-wrapper">
         <div :id="editorId" class="sprotty" />
         <Teleport v-if="selecteds.length == 1" :key="selected.id" :to="`#${selected.contextMenuContainerId}>.context-menu`">
-            <div class="context-menu ml-2">
+            <div class="context-menu ml-2" @mousedown.stop.prevent>
                 <template v-if="selected.contextMenuData.type == 'component' || selected.contextMenuData.type == 'interface'">
                     <SmallFAB
                         class="d-block"
@@ -164,15 +164,16 @@ watch(
     border-width: 0px;
     outline: none;
     --diagram-grid: rgba(var(--v-theme-on-surface), 0.2);
+    --background-overlay-color: rgba(var(--v-theme-surface), 0.6);
     --shape-stroke-color: rgb(var(--v-theme-on-surface));
     --version-chip-background: rgb(var(--v-theme-primary-container));
     --version-chip-color: rgb(var(--v-theme-on-primary-container));
     --selected-shape-stroke-color: rgb(var(--v-theme-primary));
-    --selected-shape-fill-color: rgba(var(--v-theme-primary), 0.2);
+    --selected-shape-fill-color: rgba(var(--v-theme-primary), 0.4);
     --issue-closed-color: rgb(var(--v-theme-issue-closed));
     --issue-open-color: rgb(var(--v-theme-issue-open));
     --issue-relation-stroke-color: rgba(var(--v-theme-on-surface), 0.4);
     --highlight-stroke-color: rgb(var(--v-theme-primary));
-    --highlight-fill-color: rgba(var(--v-theme-primary), 0.2);
+    --highlight-fill-color: rgba(var(--v-theme-primary), 0.4);
 }
 </style>

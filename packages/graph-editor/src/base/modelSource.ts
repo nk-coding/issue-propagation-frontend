@@ -257,7 +257,7 @@ export abstract class GraphModelSource extends LocalModelSource {
             children.push(this.createChip(gropiusInterface.version, gropiusInterface.id));
         }
         children.push(...gropiusInterface.issueTypes.map((issueType) => this.createIssueType(issueType)));
-        children.push(this.createNameLabel(gropiusInterface.name, gropiusInterface.id));
+        children.push(this.createNameLabel(gropiusInterface.name, gropiusInterface.id, true));
         return {
             type: "interface",
             id: gropiusInterface.id,
@@ -327,11 +327,12 @@ export abstract class GraphModelSource extends LocalModelSource {
         };
     }
 
-    private createNameLabel(name: string, parentId: string): Label {
+    private createNameLabel(name: string, parentId: string, withBackground: boolean = false): Label {
         return {
             type: "label",
             id: `${parentId}-name`,
             text: name,
+            withBackground,
             children: []
         };
     }

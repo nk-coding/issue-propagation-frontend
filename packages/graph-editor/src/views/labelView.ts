@@ -1,6 +1,6 @@
 import { injectable } from "inversify";
 import { VNode } from "snabbdom";
-import { IView, IViewArgs, RenderingContext, html } from "sprotty";
+import { IView, RenderingContext, html } from "sprotty";
 import { SLabel } from "../smodel/sLabel";
 
 @injectable()
@@ -10,7 +10,8 @@ export class LabelView implements IView {
             "span",
             {
                 class: {
-                    label: true
+                    label: true,
+                    "with-background": model.withBackground
                 }
             },
             model.text

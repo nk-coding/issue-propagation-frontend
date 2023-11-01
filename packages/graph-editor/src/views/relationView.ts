@@ -27,6 +27,7 @@ export class RelationView implements IView {
         };
         const markerInfo = MarkerGenerator.DEFAULT.getMarkerInfo(model.style);
         const markerStartPoint = Math2D.add(end, Math2D.scaleTo(endVector, markerInfo.startOffset));
+        const children: (VNode | undefined)[] = [];
         const endMarker = svg("path", {
             attrs: {
                 d: markerInfo.path,
@@ -37,6 +38,7 @@ export class RelationView implements IView {
                 fill: markerInfo.filled ? pathStyle.stroke : "none"
             }
         });
+        children.push(endMarker);
         const lineEndPoint = Math2D.add(end, Math2D.scaleTo(endVector, markerInfo.startOffset - markerInfo.lineOffset));
         const pathPath = `M ${start.x} ${start.y} L ${lineEndPoint.x} ${lineEndPoint.y}`;
         const pathAttributes: Record<string, string | number> = {
@@ -50,6 +52,7 @@ export class RelationView implements IView {
         const path = svg("path", {
             attrs: pathAttributes
         });
+        children.push(path);
         const hiddenPath = svg("path", {
             attrs: {
                 d: pathPath
@@ -58,7 +61,20 @@ export class RelationView implements IView {
                 "hidden-path": true
             }
         });
-        const otherChildren: (VNode | undefined)[] = [];
+        children.push(hiddenPath);
+        if (model.selected) {
+            const selectedPath = svg("path", {
+                attrs: {
+                    d: pathPath,
+                    fill: "none"
+                },
+                class: {
+                    "selected-path": true
+                }
+            });
+            children.push(selectedPath);
+        }
+
         for (const child of model.children) {
             if (child instanceof SLabel) {
                 // TODO
@@ -71,10 +87,7 @@ export class RelationView implements IView {
                     selectable: true
                 }
             },
-            path,
-            hiddenPath,
-            endMarker,
-            ...otherChildren
+            ...children
         );
     }
 }

@@ -75,6 +75,12 @@ export class SRoot extends ViewportRootElementImpl {
                 font-size: 1.2em;
             }
 
+            .sprotty .label.with-background {
+                background: var(--background-overlay-color);
+                line-height: normal;
+                border-radius: 0.3em;
+            }
+
             .sprotty svg {
                 background:
                   conic-gradient(from 90deg at 1px 1px, transparent 90deg, var(--diagram-grid) 0) 
@@ -111,6 +117,9 @@ export class SRoot extends ViewportRootElementImpl {
 
             .sprotty .selected-shape {
                 fill: var(--selected-shape-fill-color);
+            }
+
+            .sprotty .selected-path {
                 stroke: var(--selected-shape-stroke-color);
                 stroke-width: calc(3px / var(--diagram-zoom));
                 stroke-dasharray: calc(6px / var(--diagram-zoom));
@@ -124,7 +133,7 @@ export class SRoot extends ViewportRootElementImpl {
             .sprotty .issue-type-folder {
                 stroke: var(--shape-stroke-color);
                 stroke-width: 2px;
-                fill: transparent;
+                fill: var(--background-overlay-color);
             }
 
             .sprotty .issue-type-folder.highlighted {

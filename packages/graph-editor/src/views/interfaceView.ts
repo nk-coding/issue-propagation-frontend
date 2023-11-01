@@ -44,8 +44,8 @@ export class InterfaceView implements IView {
                     "issue-affected": true
                 }
             },
-            interfaceView,
             connectionLine,
+            interfaceView,
             ...otherChildren
         );
     }
