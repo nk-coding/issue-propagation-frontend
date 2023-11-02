@@ -1,26 +1,29 @@
 <template>
-    <v-dialog v-model="createProjectDialog" persistent width="auto">
-        <v-card color="surface-elevated-3" rounded="lger" class="pa-3 create-project-dialog" elevation="0">
-            <v-form @submit.prevent="createproject">
-                <v-card-title class="p4-3">Create project</v-card-title>
+    <v-dialog v-model="createComponentDialog" persistent width="auto">
+        <v-card color="surface-elevated-3" rounded="lger" class="pa-3 create-component-dialog" elevation="0">
+            <v-form @submit.prevent="createcomponent">
+                <v-card-title class="p4-3">Create component</v-card-title>
                 <div class="pa-4">
-                    <v-text-field v-bind="name" label="Name" class="mb-1" />
+                    <div class="d-flex flex-wrap mx-n2">
+                        <v-text-field v-bind="name" label="Name" class="wrap-input mx-2 mb-1 flex-1-1-0" />
+                        <ComponentTemplateAutocomplete v-bind="template" class="wrap-input mx-2 mb-1 flex-1-1-0" />
+                    </div>
                     <v-textarea v-bind="description" label="Description" class="mb-1"/>
                     <v-text-field v-bind="repositoryURL" label="Repository URL" class="mb-1" />
                 </div>
                 <v-card-actions>
                     <v-spacer />
-                    <v-btn variant="text" color="" @click="!isDirty && cancelCreateProject()">
+                    <v-btn variant="text" color="" @click="!isDirty && cancelCreateComponent()">
                         Cancel
                         <ConfirmationDialog
                             v-if="isDirty"
-                            title="Discard project?"
-                            message="Are you sure you want to discard this project?"
+                            title="Discard component?"
+                            message="Are you sure you want to discard this component?"
                             confirm-text="Discard"
-                            @confirm="cancelCreateProject"
+                            @confirm="cancelCreateComponent"
                         />
                     </v-btn>
-                    <v-btn variant="text" color="primary" type="submit">Create project</v-btn>
+                    <v-btn variant="text" color="primary" type="submit">Create component</v-btn>
                 </v-card-actions>
             </v-form>
         </v-card>
@@ -36,17 +39,19 @@ import { withErrorMessage } from "@/util/withErrorMessage";
 import { useClient } from "@/graphql/client";
 import { toTypedSchema } from "@vee-validate/yup";
 import ConfirmationDialog from "./ConfirmationDialog.vue";
+import ComponentTemplateAutocomplete from "../input/ComponentTemplateAutocomplete.vue";
 
-const createProjectDialog = ref(false);
+const createComponentDialog = ref(false);
 const client = useClient();
 
 const emit = defineEmits<{
-    (event: "created-project", project: { id: string }): void;
+    (event: "created-component", component: { id: string }): void;
 }>();
 
 const schema = toTypedSchema(
     yup.object().shape({
         name: yup.string().required().label("Name"),
+        template: yup.string().required().label("Template"),
         description: yup.string().notRequired().label("Description"),
         repositoryURL: yup.string().notRequired().label("Repository URL")
     })
@@ -60,35 +65,37 @@ const isDirty = useIsFormDirty();
 const defineBinds = wrapBinds(defineComponentBinds);
 
 const name = defineBinds("name");
+const template = defineBinds("template")
 const description = defineBinds("description");
 const repositoryURL = defineBinds("repositoryURL");
 
-onEvent("create-project", () => {
+onEvent("create-component", () => {
     resetForm();
-    createProjectDialog.value = true;
+    createComponentDialog.value = true;
 });
 
-const createproject = handleSubmit(async (state) => {
-    const project = await withErrorMessage(async () => {
-        const res = await client.createProject({
+const createcomponent = handleSubmit(async (state) => {
+    const component = await withErrorMessage(async () => {
+        const res = await client.createComponent({
             input: {
                 ...state,
-                description: state.description ?? ""
+                description: state.description ?? "",
+                templatedFields: []
             }
         });
-        return res.createProject!.project!;
-    }, "Error creating project");
-    createProjectDialog.value = false;
-    emit("created-project", project);
+        return res.createComponent!.component!;
+    }, "Error creating component");
+    createComponentDialog.value = false;
+    emit("created-component", component);
 });
 
-function cancelCreateProject() {
-    createProjectDialog.value = false;
+function cancelCreateComponent() {
+    createComponentDialog.value = false;
 }
 </script>
 <style scoped lang="scss">
 @use "@/styles/settings.scss";
-.create-project-dialog {
+.create-component-dialog {
     width: min(1000px, calc(100vw - 3 * settings.$side-bar-width));
 }
 </style>

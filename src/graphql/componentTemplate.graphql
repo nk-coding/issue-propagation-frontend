@@ -1,0 +1,19 @@
+fragment DefaultComponentTemplateInfo on ComponentTemplate {
+    id
+    name
+    description
+}
+
+query searchComponentTemplates($query: String!, $count: Int!) {
+    searchComponentTemplates(query: $query, first: $count) {
+        ...DefaultComponentTemplateInfo
+    }
+}
+
+query firstComponentTemplates($count: Int!) {
+    componentTemplates(first: $count, orderBy: { field: NAME }) {
+        nodes {
+            ...DefaultComponentTemplateInfo
+        }
+    }
+}

@@ -27,3 +27,11 @@ query searchComponents($query: String!, $count: Int!, $filter: ComponentFilterIn
         ...DefaultTrackableInfo
     }
 }
+
+mutation createComponent($input: CreateComponentInput!) {
+    createComponent(input: $input) {
+        component {
+            id
+        }
+    }
+}
