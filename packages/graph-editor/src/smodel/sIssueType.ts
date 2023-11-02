@@ -6,5 +6,5 @@ export class SIssueType extends SElement implements IssueType, IssueRelationHigh
     declare type: typeof IssueType.TYPE;
     iconPath!: string;
     isOpen!: boolean;
-    highlightedBecause = new Set<string>();
+    highlighted = false;
 }

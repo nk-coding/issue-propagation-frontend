@@ -39,7 +39,10 @@ export class SRoot extends ViewportRootElementImpl {
         }
     }
 
-    getRelatedHighlightable(cause: string): string[] {
+    getRelatedHighlightable(cause: string | undefined): string[] {
+        if (cause === undefined) {
+            return [];
+        }
         return Array.from(this.issueRelationHighlightRelation.get(cause) ?? [cause]);
     }
 
@@ -70,6 +73,12 @@ export class SRoot extends ViewportRootElementImpl {
                 text-align: center;
                 user-select: none;
                 font-size: 1.2em;
+            }
+
+            .sprotty .label.with-background {
+                background: var(--background-overlay-color);
+                line-height: normal;
+                border-radius: 0.3em;
             }
 
             .sprotty svg {
@@ -108,20 +117,23 @@ export class SRoot extends ViewportRootElementImpl {
 
             .sprotty .selected-shape {
                 fill: var(--selected-shape-fill-color);
+            }
+
+            .sprotty .selected-path {
                 stroke: var(--selected-shape-stroke-color);
                 stroke-width: calc(3px / var(--diagram-zoom));
                 stroke-dasharray: calc(6px / var(--diagram-zoom));
                 cursor: pointer;
             }
 
-            .sprotty .shape {
+            .sprotty .selectable {
                 cursor: pointer;
             }
 
             .sprotty .issue-type-folder {
                 stroke: var(--shape-stroke-color);
                 stroke-width: 2px;
-                fill: transparent;
+                fill: var(--background-overlay-color);
             }
 
             .sprotty .issue-type-folder.highlighted {
@@ -160,6 +172,12 @@ export class SRoot extends ViewportRootElementImpl {
             .sprotty .context-menu {
                 width: fit-content;
                 height: fit-content;
+            }
+
+            .sprotty .hidden-path {
+                fill: none;
+                stroke: transparent;
+                stroke-width: calc(12px / var(--diagram-zoom));
             }
         `;
     }

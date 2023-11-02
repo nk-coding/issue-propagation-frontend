@@ -16,7 +16,7 @@ export class IssueRelationView implements IView {
         const endPos = Math2D.add(end.issueTypePos(model.endIndex), offset);
         const c1 = Math2D.add(startPos, { y: handleLength, x: 0 });
         const c2 = Math2D.add(endPos, { y: handleLength, x: 0 });
-        const highlighted = model.highlightedBecause.size > 0;
+        const highlighted = model.highlighted;
         const path = svg("path", {
             attrs: {
                 d: `M ${startPos.x} ${startPos.y} C ${c1.x} ${c1.y} ${c2.x} ${c2.y} ${endPos.x} ${endPos.y + 12}`
@@ -28,10 +28,10 @@ export class IssueRelationView implements IView {
         });
         const hiddenPath = svg("path", {
             attrs: {
-                d: `M ${startPos.x} ${startPos.y} C ${c1.x} ${c1.y} ${c2.x} ${c2.y} ${endPos.x} ${endPos.y + 12} v -12`,
-                stroke: "transparent",
-                fill: "none",
-                "stroke-width": "calc(12px / var(--diagram-zoom))"
+                d: `M ${startPos.x} ${startPos.y} C ${c1.x} ${c1.y} ${c2.x} ${c2.y} ${endPos.x} ${endPos.y + 12} v -12`
+            },
+            class: {
+                "hidden-path": true
             }
         });
         const arrow = svg("path", {
@@ -43,6 +43,6 @@ export class IssueRelationView implements IView {
                 highlighted: highlighted
             }
         });
-        return svg("g", {}, path, arrow, hiddenPath);
+        return svg("g", null, path, arrow, hiddenPath);
     }
 }

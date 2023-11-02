@@ -3,6 +3,7 @@ import { Element } from "./element";
 export interface Label extends Element {
     type: typeof Label.TYPE;
     text: string;
+    withBackground: boolean;
 }
 
 export namespace Label {

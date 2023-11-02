@@ -99,9 +99,12 @@
                     </template>
                     <template #edit>
                         <div v-for="label in labels">
-                            <ListItem :title="label.name" :subtitle="label.description">
+                            <v-list-item class="px-0 py-2" :title="label.name" :subtitle="label.description">
+                                <template #title>
+                                    <v-list-item-title class="mb-1">{{ label.name }}</v-list-item-title>
+                                </template>
                                 <template #prepend>
-                                    <v-icon :color="label.color" class="mr-2" icon="mdi-circle " />
+                                    <v-icon :color="label.color" class="mr-2 full-opacity" icon="mdi-circle " />
                                 </template>
                                 <template #append>
                                     <IconButton @click="removeLabel(label.id)">
@@ -109,7 +112,7 @@
                                         <v-tooltip activator="parent"> Remove label </v-tooltip>
                                     </IconButton>
                                 </template>
-                            </ListItem>
+                            </v-list-item>
                             <v-divider />
                         </div>
                         <LabelAutocomplete
@@ -239,23 +242,25 @@
                                 {{ itemGroup?.type }}
                             </span>
                             <div v-for="item in itemGroup.items">
-                                <AffectedByIssue
-                                    :affected-entity="item"
-                                    class="d-block my-2 ml-2"
-                                />
+                                <AffectedByIssue :affected-entity="item" class="d-block my-2 ml-2" />
                             </div>
                         </div>
                     </template>
                     <template #edit>
                         <div v-for="affectedEntity in affectedEntities">
-                            <ListItem :title="`${affectedEntity.name} [${affectedEntity.__typename}]`" :subtitle="affectedEntity.description">
+                            <v-list-item class="px-0 py-2" :subtitle="affectedEntity.description">
+                                <template #title>
+                                    <v-list-item-title class="mb-1">{{
+                                        `${affectedEntity.name} [${affectedEntity.__typename}]`
+                                    }}</v-list-item-title>
+                                </template>
                                 <template #append>
                                     <IconButton @click="removeAffectedEntity(affectedEntity.id)">
                                         <v-icon icon="mdi-close" />
                                         <v-tooltip activator="parent"> Remove affected entity </v-tooltip>
                                     </IconButton>
                                 </template>
-                            </ListItem>
+                            </v-list-item>
                             <v-divider />
                         </div>
                         <AffectedByIssueAutocomplete
@@ -298,7 +303,6 @@ import EditableCompartment from "@/components/EditableCompartment.vue";
 import Label from "@/components/info/Label.vue";
 import IssueState from "@/components/info/IssueState.vue";
 import IssueType from "@/components/info/IssueType.vue";
-import ListItem from "@/components/ListItem.vue";
 import {
     AssignmentTimelineInfoFragment,
     DefaultAffectedByIssueInfoFragment,
@@ -486,7 +490,9 @@ async function removeAssignmentType(assignment: AssignmentTimelineInfoFragment) 
     editedAssignmentTypes.value[assignment.id] = false;
 }
 
-const assignmentUserFilter = computed(() =>({ hasNodePermission: { node: issueId.value, permission: "MANAGE_ISSUES" } } as GropiusUserFilterInput));
+const assignmentUserFilter = computed(
+    () => ({ hasNodePermission: { node: issueId.value, permission: "MANAGE_ISSUES" } } as GropiusUserFilterInput)
+);
 
 async function assignUser(user: DefaultUserInfoFragment) {
     const event = await withErrorMessage(async () => {
@@ -605,7 +611,10 @@ async function addAffectedEntity(affectedEntity: DefaultAffectedByIssueInfoFragm
 
 async function removeAffectedEntity(affectedEntityId: string) {
     const event = await withErrorMessage(async () => {
-        const res = await client.removeAffectedEntityFromIssue({ issue: issueId.value, affectedEntity: affectedEntityId });
+        const res = await client.removeAffectedEntityFromIssue({
+            issue: issueId.value,
+            affectedEntity: affectedEntityId
+        });
         return res.removeAffectedEntityFromIssue!.removedAffectedEntityEvent!;
     }, "Error removing affectedentity from issue");
     timeline.value.push(event);

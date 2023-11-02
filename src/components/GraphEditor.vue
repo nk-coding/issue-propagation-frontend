@@ -1,9 +1,9 @@
 <template>
     <div class="sprotty-wrapper">
         <div :id="editorId" class="sprotty" />
-        <Teleport v-if="selecteds.length == 1" :key="selected.id" :to="`#${selected.contextMenuContainerId}`">
-            <div class="context-menu ml-2">
-                <template v-if="selected.contextMenuData.type == 'component'">
+        <Teleport v-if="selecteds.length == 1" :key="selected.id" :to="`#${selected.contextMenuContainerId}>.context-menu`">
+            <div class="context-menu ml-2" @mousedown.stop.prevent>
+                <template v-if="selected.contextMenuData.type == 'component' || selected.contextMenuData.type == 'interface'">
                     <SmallFAB
                         class="d-block"
                         icon
@@ -14,6 +14,8 @@
                         <v-icon icon="mdi-arrow-top-right" />
                         <v-tooltip activator="parent">Create relation</v-tooltip>
                     </SmallFAB>
+                </template>
+                <template v-if="selected.contextMenuData.type == 'component'">
                     <SmallFAB
                         class="d-block mt-2"
                         icon
@@ -25,15 +27,16 @@
                         <v-tooltip activator="parent">Remove component version from project</v-tooltip>
                     </SmallFAB>
                 </template>
-                <template v-else-if="selected.contextMenuData.type == 'interface'">
+                <template v-if="selected.contextMenuData.type == 'relation'">
                     <SmallFAB
                         class="d-block"
                         icon
                         color="primary-container"
-                        :disabled="!selected.contextMenuData.createRelation"
+                        :disabled="!selected.contextMenuData.delete"
+                        @click="$emit('deleteRelation', selected.id)"
                     >
-                        <v-icon icon="mdi-arrow-top-right" />
-                        <v-tooltip activator="parent">Create relation</v-tooltip>
+                        <v-icon icon="mdi-close" />
+                        <v-tooltip activator="parent">Delete relation</v-tooltip>
                     </SmallFAB>
                 </template>
             </div>
@@ -45,7 +48,7 @@
 </template>
 <script setup lang="ts">
 import "reflect-metadata";
-import { Graph, GraphLayout, GraphModelSource, SelectedElement, createContainer } from "@gropius/graph-editor";
+import { Graph, GraphLayout, GraphModelSource, SelectedElement, createContainer, CreateRelationContext } from "@gropius/graph-editor";
 import { TYPES } from "sprotty";
 import { PropType, onMounted, shallowRef, watch, ref, computed } from "vue";
 import { v4 as uuidv4 } from "uuid";
@@ -84,12 +87,13 @@ const props = defineProps({
 const emit = defineEmits<{
     (event: "update:layout", value: GraphLayout): void;
     (event: "removeComponent", value: string): void;
-    (event: "createRelation", start: string, end: string ): void;
+    (event: "createRelation", value: CreateRelationContext ): void;
+    (event: "deleteRelation", value: string): void;
 }>();
 
 class ModelSource extends GraphModelSource {
-    protected handleCreateRelation(start: string, end: string): void {
-        emit("createRelation", start, end);
+    protected handleCreateRelation(context: CreateRelationContext): void {
+        emit("createRelation", context);
     }
 
     protected layoutUpdated(partialUpdate: GraphLayout, resultingLayout: GraphLayout): void {
@@ -160,15 +164,16 @@ watch(
     border-width: 0px;
     outline: none;
     --diagram-grid: rgba(var(--v-theme-on-surface), 0.2);
+    --background-overlay-color: rgba(var(--v-theme-surface), 0.6);
     --shape-stroke-color: rgb(var(--v-theme-on-surface));
     --version-chip-background: rgb(var(--v-theme-primary-container));
     --version-chip-color: rgb(var(--v-theme-on-primary-container));
     --selected-shape-stroke-color: rgb(var(--v-theme-primary));
-    --selected-shape-fill-color: rgba(var(--v-theme-primary), 0.2);
+    --selected-shape-fill-color: rgba(var(--v-theme-primary), 0.4);
     --issue-closed-color: rgb(var(--v-theme-issue-closed));
     --issue-open-color: rgb(var(--v-theme-issue-open));
     --issue-relation-stroke-color: rgba(var(--v-theme-on-surface), 0.4);
     --highlight-stroke-color: rgb(var(--v-theme-primary));
-    --highlight-fill-color: rgba(var(--v-theme-primary), 0.2);
+    --highlight-fill-color: rgba(var(--v-theme-primary), 0.4);
 }
 </style>

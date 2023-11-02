@@ -11,5 +11,5 @@ export class SIssueRelation extends SElement implements IssueRelation, IssueRela
     startType!: string;
     endType!: string;
     count!: number;
-    highlightedBecause = new Set<string>();
+    highlighted = false;
 }

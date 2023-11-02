@@ -24,6 +24,7 @@ import { ContextMenu } from "../model/contextMenu";
 import { SSelectable } from "../smodel/sSelectable";
 import { CreateRelationAction } from "../features/connect/createRelationAction";
 import { ConnectAction } from "../features/connect/connectAction";
+import { CancelConnectAction } from "../features/connect/cancelConnectAction";
 
 export abstract class GraphModelSource extends LocalModelSource {
     private layout?: GraphLayout;
@@ -33,7 +34,7 @@ export abstract class GraphModelSource extends LocalModelSource {
 
     protected abstract handleSelectionChanged(selectedElements: SelectedElement<any>[]): void;
 
-    protected abstract handleCreateRelation(start: string, end: string): void;
+    protected abstract handleCreateRelation(context: CreateRelationContext): void;
 
     override initialize(registry: ActionHandlerRegistry): void {
         super.initialize(registry);
@@ -42,6 +43,7 @@ export abstract class GraphModelSource extends LocalModelSource {
         registry.register(SelectAction.KIND, this);
         registry.register(SelectAllAction.KIND, this);
         registry.register(CreateRelationAction.KIND, this);
+        registry.register(CancelConnectAction.KIND, this);
     }
 
     override handle(action: Action): void {
@@ -66,13 +68,34 @@ export abstract class GraphModelSource extends LocalModelSource {
             }
             case CreateRelationAction.KIND: {
                 const createRelationAction = action as CreateRelationAction;
-                this.handleCreateRelation(createRelationAction.start, createRelationAction.end);
+                this.handleCreateRelation({
+                    start: createRelationAction.start,
+                    end: createRelationAction.end,
+                    cancel: () => {
+                        const action: CancelConnectAction = {
+                            kind: CancelConnectAction.KIND,
+                            relation: createRelationAction.relation
+                        };
+                        this.actionDispatcher.dispatch(action);
+                    }
+                });
+                break;
+            }
+            case CancelConnectAction.KIND: {
+                const cancelConnectAction = action as CancelConnectAction;
+                this.handleCancelConnect(cancelConnectAction);
                 break;
             }
             default: {
                 super.handle(action);
             }
         }
+    }
+
+    private handleCancelConnect(cancelConnectAction: CancelConnectAction) {
+        const model = this.model as Root;
+        model.children = model.children.filter((child) => child.id !== cancelConnectAction.relation);
+        this.updateModel(model);
     }
 
     updateGraph(graphAndLayout: { graph?: Graph; layout?: GraphLayout; fitToBounds: boolean }) {
@@ -99,7 +122,8 @@ export abstract class GraphModelSource extends LocalModelSource {
             style: {
                 marker: "ARROW"
             },
-            children: []
+            children: [],
+            contextMenuData: null
         };
         const model = this.model as Root;
         model.children = [...model.children, relation];
@@ -148,6 +172,13 @@ export abstract class GraphModelSource extends LocalModelSource {
         const issueRelations = graph.issueRelations
             .map((issueRelation) => this.createIssueRelation(issueRelation, issueTypeLookup))
             .filter((r) => r != undefined) as IssueRelation[];
+        const contextMenus = [
+            ...graph.components.flatMap((component) => [
+                this.createContextMenu(component),
+                ...component.interfaces.map((i) => this.createContextMenu(i))
+            ]),
+            ...graph.relations.map((relation) => this.createContextMenu(relation))
+        ];
         let targetBounds: Bounds | undefined;
         if (fitToBounds) {
             const centerBounds = this.computeCenterBounds(components);
@@ -163,7 +194,7 @@ export abstract class GraphModelSource extends LocalModelSource {
         return {
             type: "root",
             id: "root",
-            children: [...issueRelations, ...relations, ...components],
+            children: [...issueRelations, ...relations, ...components, ...contextMenus],
             targetBounds
         };
     }
@@ -208,9 +239,6 @@ export abstract class GraphModelSource extends LocalModelSource {
         }
         children.push(...component.issueTypes.map((issueType) => this.createIssueType(issueType)));
         children.push(this.createNameLabel(component.name, component.id));
-        if (component.contextMenu != undefined) {
-            children.push(this.createContextMenu(component));
-        }
         return {
             type: "component",
             id: component.id,
@@ -229,10 +257,7 @@ export abstract class GraphModelSource extends LocalModelSource {
             children.push(this.createChip(gropiusInterface.version, gropiusInterface.id));
         }
         children.push(...gropiusInterface.issueTypes.map((issueType) => this.createIssueType(issueType)));
-        children.push(this.createNameLabel(gropiusInterface.name, gropiusInterface.id));
-        if (gropiusInterface.contextMenu != undefined) {
-            children.push(this.createContextMenu(gropiusInterface));
-        }
+        children.push(this.createNameLabel(gropiusInterface.name, gropiusInterface.id, true));
         return {
             type: "interface",
             id: gropiusInterface.id,
@@ -247,9 +272,6 @@ export abstract class GraphModelSource extends LocalModelSource {
     private createRelation(relation: GropiusRelation, layout: GraphLayout): Relation {
         const children: Element[] = [];
         children.push(this.createNameLabel(relation.name, relation.id));
-        if (relation.contextMenu != undefined) {
-            children.push(this.createContextMenu(relation));
-        }
         return {
             type: "relation",
             id: relation.id,
@@ -305,11 +327,12 @@ export abstract class GraphModelSource extends LocalModelSource {
         };
     }
 
-    private createNameLabel(name: string, parentId: string): Label {
+    private createNameLabel(name: string, parentId: string, withBackground: boolean = false): Label {
         return {
             type: "label",
             id: `${parentId}-name`,
             text: name,
+            withBackground,
             children: []
         };
     }
@@ -388,4 +411,10 @@ export interface SelectedElement<T> {
     id: string;
     contextMenuContainerId: string;
     contextMenuData: T;
+}
+
+export interface CreateRelationContext {
+    start: string;
+    end: string;
+    cancel: () => void;
 }

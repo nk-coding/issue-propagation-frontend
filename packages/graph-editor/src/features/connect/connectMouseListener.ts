@@ -47,7 +47,6 @@ export class ConnectMouseListener extends MouseListener implements IActionHandle
             this.hoveredConnectable = undefined;
         }
         return this.updateRelation();
-        return [];
     }
 
     override mouseMove(target: SModelElementImpl, event: MouseEvent): Action[] {

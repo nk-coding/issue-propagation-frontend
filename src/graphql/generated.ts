@@ -17985,6 +17985,7 @@ export type GetProjectGraphQuery = {
                       name: string;
                       version: string;
                       id: string;
+                      relateFromComponent: boolean;
                       interfaceDefinitions: {
                           __typename?: "InterfaceDefinitionConnection";
                           nodes: Array<{
@@ -18050,6 +18051,7 @@ export type GetProjectGraphQuery = {
                                       __typename?: "InterfaceSpecification";
                                       template: {
                                           __typename?: "InterfaceSpecificationTemplate";
+                                          id: string;
                                           shapeType: ShapeType;
                                           shapeRadius?: number | null;
                                           fill?: { __typename?: "FillStyle"; color: string } | null;
@@ -18067,6 +18069,7 @@ export type GetProjectGraphQuery = {
                           __typename?: "Component";
                           template: {
                               __typename?: "ComponentTemplate";
+                              id: string;
                               shapeType: ShapeType;
                               shapeRadius?: number | null;
                               fill?: { __typename?: "FillStyle"; color: string } | null;
@@ -18190,6 +18193,15 @@ export type CreateRelationMutation = {
     } | null;
 };
 
+export type DeleteRelationMutationVariables = Exact<{
+    id: Scalars["ID"]["input"];
+}>;
+
+export type DeleteRelationMutation = {
+    __typename?: "Mutation";
+    deleteRelation: { __typename?: "DeleteNodePayload"; id: string };
+};
+
 export type GraphInfoFragment = {
     __typename?: "Project";
     components: {
@@ -18199,6 +18211,7 @@ export type GraphInfoFragment = {
             name: string;
             version: string;
             id: string;
+            relateFromComponent: boolean;
             interfaceDefinitions: {
                 __typename?: "InterfaceDefinitionConnection";
                 nodes: Array<{
@@ -18260,6 +18273,7 @@ export type GraphInfoFragment = {
                             __typename?: "InterfaceSpecification";
                             template: {
                                 __typename?: "InterfaceSpecificationTemplate";
+                                id: string;
                                 shapeType: ShapeType;
                                 shapeRadius?: number | null;
                                 fill?: { __typename?: "FillStyle"; color: string } | null;
@@ -18277,6 +18291,7 @@ export type GraphInfoFragment = {
                 __typename?: "Component";
                 template: {
                     __typename?: "ComponentTemplate";
+                    id: string;
                     shapeType: ShapeType;
                     shapeRadius?: number | null;
                     fill?: { __typename?: "FillStyle"; color: string } | null;
@@ -18337,6 +18352,7 @@ export type GraphComponentVersionInfoFragment = {
     name: string;
     version: string;
     id: string;
+    relateFromComponent: boolean;
     interfaceDefinitions: {
         __typename?: "InterfaceDefinitionConnection";
         nodes: Array<{
@@ -18398,6 +18414,7 @@ export type GraphComponentVersionInfoFragment = {
                     __typename?: "InterfaceSpecification";
                     template: {
                         __typename?: "InterfaceSpecificationTemplate";
+                        id: string;
                         shapeType: ShapeType;
                         shapeRadius?: number | null;
                         fill?: { __typename?: "FillStyle"; color: string } | null;
@@ -18415,6 +18432,7 @@ export type GraphComponentVersionInfoFragment = {
         __typename?: "Component";
         template: {
             __typename?: "ComponentTemplate";
+            id: string;
             shapeType: ShapeType;
             shapeRadius?: number | null;
             fill?: { __typename?: "FillStyle"; color: string } | null;
@@ -18561,6 +18579,7 @@ export type StrokeStyleInfoFragment = {
 
 type GraphRelationPartnerTemplateInfo_ComponentTemplate_Fragment = {
     __typename?: "ComponentTemplate";
+    id: string;
     shapeType: ShapeType;
     shapeRadius?: number | null;
     fill?: { __typename?: "FillStyle"; color: string } | null;
@@ -18569,6 +18588,7 @@ type GraphRelationPartnerTemplateInfo_ComponentTemplate_Fragment = {
 
 type GraphRelationPartnerTemplateInfo_InterfaceSpecificationTemplate_Fragment = {
     __typename?: "InterfaceSpecificationTemplate";
+    id: string;
     shapeType: ShapeType;
     shapeRadius?: number | null;
     fill?: { __typename?: "FillStyle"; color: string } | null;
@@ -23067,6 +23087,7 @@ export const FillStyleInfoFragmentDoc = gql`
 `;
 export const GraphRelationPartnerTemplateInfoFragmentDoc = gql`
     fragment GraphRelationPartnerTemplateInfo on RelationPartnerTemplate {
+        id
         fill {
             ...FillStyleInfo
         }
@@ -23105,6 +23126,7 @@ export const GraphComponentVersionInfoFragmentDoc = gql`
                 ...GraphRelationPartnerTemplateInfo
             }
         }
+        relateFromComponent: hasPermission(permission: RELATE_FROM_COMPONENT)
     }
     ${GraphRelationPartnerInfoFragmentDoc}
     ${GraphRelationPartnerTemplateInfoFragmentDoc}
@@ -24046,6 +24068,13 @@ export const CreateRelationDocument = gql`
         }
     }
 `;
+export const DeleteRelationDocument = gql`
+    mutation deleteRelation($id: ID!) {
+        deleteRelation(input: { id: $id }) {
+            id
+        }
+    }
+`;
 export const GetIssuesDocument = gql`
     query getIssues($filter: String!, $orderBy: IssueOrder!, $count: Int!, $skip: Int!, $trackable: ID!) {
         node(id: $trackable) {
@@ -24790,6 +24819,20 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "createRelation",
+                "mutation"
+            );
+        },
+        deleteRelation(
+            variables: DeleteRelationMutationVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<DeleteRelationMutation> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<DeleteRelationMutation>(DeleteRelationDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "deleteRelation",
                 "mutation"
             );
         },

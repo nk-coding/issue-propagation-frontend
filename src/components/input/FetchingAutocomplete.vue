@@ -9,6 +9,7 @@
         item-value="id"
         :filter-keys="['id']"
         :custom-filter="(item: any) => item.value != context?.id"
+        :menu-props="{ maxWidth: 0 }"
         @update:focused="resetFromFocus"
     >
         <template #item="{ props, item }">
@@ -39,6 +40,11 @@ const props = defineProps({
     menuMode: {
         type: String as PropType<"initial" | "repeating">,
         required: false
+    },
+    menuDelay: {
+        type: Number as PropType<number>,
+        required: false,
+        default: 0
     },
     modelValue: {
         type: String,
@@ -92,7 +98,7 @@ const initialContextModel = computed(() => {
 
 const items = ref(contextMode.value ? initialContextModel.value : props.initialItems) as Ref<(T | C)[]>;
 const search = ref<undefined | string>("");
-const menu = ref<boolean>(!!props.menuMode);
+const menu = ref<boolean>(!!props.menuMode && !props.menuDelay);
 const updatedModelValue = ref(false);
 
 const proxiedModel = ref(contextMode.value ? initialContextModel.value.map((it) => it.id) : props.modelValue);
@@ -214,6 +220,11 @@ function untransformContextItem(item: C): C {
 }   
 
 onMounted(async () => {
+    if (!!props.menuMode && props.menuDelay > 0) {
+        setTimeout(() => {
+            menu.value = true;
+        }, props.menuDelay);
+    }
     await updateSearch("");
 });
 </script>

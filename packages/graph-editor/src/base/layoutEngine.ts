@@ -79,6 +79,9 @@ export class LayoutEngine {
         const finalStressCoordinates = this.extractCoordinates(finalStressRes);
         const idealAngle2 = this.calculateOptimalRotation(finalStressRes, finalStressCoordinates);
         this.rotateGraph(finalStressRes, -idealAngle2);
+        if (this.isTallArea(finalStressRes)) {
+            this.rotateGraph(finalStressRes, Math.PI / 2);
+        }
         const finalCoordinates = this.extractCoordinates(finalStressRes);
         return this.computeFinalPositions(finalCoordinates);
     }
@@ -155,6 +158,23 @@ export class LayoutEngine {
             node.x = rotated.x;
             node.y = rotated.y;
         }
+    }
+
+    private isTallArea(graph: ElkNode): boolean {
+        if (graph.children == undefined) {
+            return false;
+        }
+        let minX = Number.MAX_VALUE;
+        let maxX = Number.MIN_VALUE;
+        let minY = Number.MAX_VALUE;
+        let maxY = Number.MIN_VALUE;
+        for (const node of graph.children) {
+            minX = Math.min(minX, node.x ?? 0);
+            maxX = Math.max(maxX, node.x ?? 0);
+            minY = Math.min(minY, node.y ?? 0);
+            maxY = Math.max(maxY, node.y ?? 0);
+        }
+        return maxY - minY > maxX - minX;
     }
 
     private computeFinalPositions(coordinates: Map<string, Point>): Map<string, Point> {

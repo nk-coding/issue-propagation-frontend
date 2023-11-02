@@ -5,6 +5,7 @@
         :graph="graph"
         @remove-component="removeComponentVersion"
         @create-relation="beginCreateRelation"
+        @delete-relation="deleteRelation"
     >
         <FilterChip v-model="showOpenIssues" label="Open Issues" icon="mdi-bug" class="mr-2 open-issue-chip" />
         <FilterChip v-model="showClosedIssues" label="Closed Issues" icon="mdi-bug" class="mr-2 closed-issue-chip" />
@@ -31,6 +32,7 @@
                 auto-select-first
                 bg-color="background"
                 menu-mode="initial"
+                :menu-delay="350"
                 :relation-template-filter="relationTemplateFilter"
                 @selected-item="createRelation"
             />
@@ -43,7 +45,8 @@ import {
     GraphRelationPartnerTemplateInfoFragment,
     GraphRelationPartnerInfoFragment,
     GraphComponentVersionInfoFragment,
-    GraphRelationTemplateInfoFragment
+    GraphRelationTemplateInfoFragment,
+    RelationTemplateFilterInput
 } from "@/graphql/generated";
 import { withErrorMessage } from "@/util/withErrorMessage";
 import { asyncComputed } from "@vueuse/core";
@@ -60,9 +63,10 @@ import {
     RelationStyle,
     IssueRelation,
     GraphLayout,
-    LayoutEngine
+    LayoutEngine,
+    CreateRelationContext
 } from "@gropius/graph-editor";
-import { computed, ref, watch, nextTick } from "vue";
+import { computed, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { onEvent } from "@/util/eventBus";
 import FilterChip from "@/components/input/FilterChip.vue";
@@ -98,16 +102,16 @@ const originalGraph = asyncComputed(
     { shallow: false, evaluating }
 );
 
-const relationPartnerTemplateLookup = computed(() => {
-    const res = new Map<string, GraphRelationPartnerTemplateInfoFragment>();
+const relationPartnerTemplateLookup = computed<Map<string, string>>(() => {
+    const res = new Map<string, string>();
     if (originalGraph.value != undefined) {
         originalGraph.value.components.nodes.forEach((component) => {
-            res.set(component.id, component.component.template);
+            res.set(component.id, component.component.template.id);
             component.interfaceDefinitions.nodes.forEach((definition) => {
                 if (definition.visibleInterface != undefined) {
                     res.set(
                         definition.visibleInterface.id,
-                        definition.interfaceSpecificationVersion.interfaceSpecification.template
+                        definition.interfaceSpecificationVersion.interfaceSpecification.template.id
                     );
                 }
             });
@@ -122,26 +126,26 @@ const showIssueRelations = ref(true);
 
 const showAddComponentVersionDialog = ref(false);
 const showSelectRelationTemplateDialog = ref(false);
-const currentRelationStart = ref<string | undefined>(undefined);
-const currentRelationEnd = ref<string | undefined>(undefined);
-const relationTemplateFilter = computed(() => {
-    if (currentRelationStart.value == undefined || currentRelationEnd.value == undefined) {
+const createRelationContext = ref<CreateRelationContext | undefined>(undefined);
+const relationTemplateFilter = computed<RelationTemplateFilterInput | undefined>(() => {
+    if (createRelationContext.value == undefined) {
         return undefined;
     }
+    const context = createRelationContext.value;
     return {
         relationConditions: {
             any: {
                 from: {
                     any: {
                         id: {
-                            eq: currentRelationStart.value
+                            eq: relationPartnerTemplateLookup.value.get(context.start)
                         }
                     }
                 },
                 to: {
                     any: {
                         id: {
-                            eq: currentRelationEnd.value
+                            eq: relationPartnerTemplateLookup.value.get(context.end)
                         }
                     }
                 }
@@ -157,10 +161,11 @@ const graph = computed<Graph | null>(() => {
     const components = originalGraph.value.components.nodes;
     const mappedComponents = components.map<ComponentVersion>((component) => extractComponent(component));
     const mappedRelations = components.flatMap((component) => {
-        const res = [...extractRelations(component)];
+        const deleteRelation = component.relateFromComponent;
+        const res = [...extractRelations(component, deleteRelation)];
         for (const definition of component.interfaceDefinitions.nodes) {
             if (definition.visibleInterface != undefined) {
-                res.push(...extractRelations(definition.visibleInterface));
+                res.push(...extractRelations(definition.visibleInterface, deleteRelation));
             }
         }
         return res;
@@ -216,14 +221,18 @@ async function autolayout(graph: Graph): Promise<GraphLayout> {
     return resultingLayout;
 }
 
-function extractRelations(relationPartner: GraphRelationPartnerInfoFragment): Relation[] {
+function extractRelations(relationPartner: GraphRelationPartnerInfoFragment, deleteRelation: boolean): Relation[] {
     return relationPartner.outgoingRelations.nodes.map((relation) => {
         return {
             id: relation.id,
             name: relation.template.name,
             start: relationPartner.id,
             end: relation.end!.id,
-            style: extractRelationStyle(relation.template)
+            style: extractRelationStyle(relation.template),
+            contextMenu: {
+                type: "relation",
+                delete: deleteRelation
+            } satisfies ContextMenuData
         };
     });
 }
@@ -249,6 +258,7 @@ function extractIssueRelations(relationPartner: GraphRelationPartnerInfoFragment
 }
 
 function extractComponent(component: GraphComponentVersionInfoFragment): ComponentVersion {
+    const createRelation = component.relateFromComponent;
     const interfaces: Interface[] = component.interfaceDefinitions.nodes
         .filter((definition) => definition.visibleInterface != undefined)
         .map((definition) => {
@@ -258,7 +268,11 @@ function extractComponent(component: GraphComponentVersionInfoFragment): Compone
                 name: definition.interfaceSpecificationVersion.name,
                 version: definition.interfaceSpecificationVersion.version,
                 style: extractShapeStyle(definition.interfaceSpecificationVersion.interfaceSpecification.template),
-                issueTypes: extractIssueTypes(inter)
+                issueTypes: extractIssueTypes(inter),
+                contextMenu: {
+                    type: "interface",
+                    createRelation
+                } satisfies ContextMenuData
             };
         });
     return {
@@ -271,7 +285,7 @@ function extractComponent(component: GraphComponentVersionInfoFragment): Compone
         contextMenu: {
             type: "component",
             remove: true,
-            createRelation: true
+            createRelation
         } satisfies ContextMenuData
     };
 }
@@ -365,20 +379,39 @@ async function removeComponentVersion(componentVersion: string) {
     graphVersionCounter.value++;
 }
 
-function beginCreateRelation(start: string, end: string) {
-    currentRelationStart.value = start;
-    currentRelationEnd.value = end;
+function beginCreateRelation(context: CreateRelationContext) {
+    createRelationContext.value = context;
     showSelectRelationTemplateDialog.value = true;
 }
 
-async function createRelation(relationTemplate: string) {
+async function createRelation(relationTemplate: { id: string }) {
+    const context = createRelationContext.value!;
+    createRelationContext.value = undefined;
+    showSelectRelationTemplateDialog.value = false;
     await withErrorMessage(async () => {
         await client.createRelation({
-            start: currentRelationStart.value!,
-            end: currentRelationEnd.value!,
-            template: relationTemplate
+            start: context.start,
+            end: context.end,
+            template: relationTemplate.id
         });
     }, "Error creating relation");
+    graphVersionCounter.value++;
+}
+
+watch(showSelectRelationTemplateDialog, (newValue) => {
+    if (!newValue && createRelationContext.value != undefined) {
+        createRelationContext.value.cancel();
+        createRelationContext.value = undefined;
+    }
+});
+
+async function deleteRelation(relation: string) {
+    await withErrorMessage(async () => {
+        await client.deleteRelation({
+            id: relation
+        });
+    }, "Error deleting relation");
+    graphVersionCounter.value++;
 }
 </script>
 <style scoped lang="scss">

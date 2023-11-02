@@ -66,7 +66,8 @@ export abstract class SIssueAffected extends SSelectable implements IssueAffecte
                     ...this.generateShapeAttrs()
                 },
                 class: {
-                    shape: true
+                    shape: true,
+                    selectable: true
                 }
             })
         );
@@ -77,7 +78,8 @@ export abstract class SIssueAffected extends SSelectable implements IssueAffecte
                         d: pathString
                     },
                     class: {
-                        "selected-shape": true
+                        "selected-shape": true,
+                        "selected-path": true
                     }
                 })
             );
