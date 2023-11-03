@@ -64,7 +64,7 @@ import Label from "@/components/info/Label.vue";
 import UserStack from "@/components/UserStack.vue";
 import CreateIssueDialog from "@/components/dialog/CreateIssueDialog.vue";
 
-type Trackable = NodeReturnType<"getIssues", "Component">;
+type Trackable = NodeReturnType<"getIssueList", "Component">;
 type Issue = Trackable["issues"]["nodes"][0];
 
 const client = useClient();
@@ -90,7 +90,7 @@ const itemManager: ItemManager<Issue, keyof typeof sortFields> = {
         count: number,
         page: number
     ): Promise<[Issue[], number]> {
-        const res = await client.getIssues({
+        const res = await client.getIssueList({
             filter,
             orderBy: {
                 field: sortFields[sortField],

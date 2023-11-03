@@ -1,7 +1,7 @@
 <template>
     <v-dialog v-model="createProjectDialog" persistent width="auto">
         <v-card color="surface-elevated-3" rounded="lger" class="pa-3 create-project-dialog" elevation="0">
-            <v-form @submit.prevent="createproject">
+            <v-form @submit.prevent="createProject">
                 <v-card-title class="p4-3">Create project</v-card-title>
                 <div class="pa-4">
                     <v-text-field v-bind="name" label="Name" class="mb-1" />
@@ -68,7 +68,7 @@ onEvent("create-project", () => {
     createProjectDialog.value = true;
 });
 
-const createproject = handleSubmit(async (state) => {
+const createProject = handleSubmit(async (state) => {
     const project = await withErrorMessage(async () => {
         const res = await client.createProject({
             input: {

@@ -59,6 +59,22 @@ const routes: RouteRecordRaw[] = [
                 ]
             },
             {
+                path: "versions",
+                component: () => import("../views/RouterOnly.vue"),
+                children: [
+                    {
+                        path: "",
+                        name: "component-versions",
+                        component: () => import("../views/component/versions/Versions.vue")
+                    },
+                    {
+                        path: ":version",
+                        name: "component-version",
+                        component: () => import("../views/component/versions/Version.vue")
+                    }
+                ]
+            },
+            {
                 path: "issues",
                 component: () => import("../views/RouterOnly.vue"),
                 children: [

@@ -1,4 +1,4 @@
-query getComponents($filter: String!, $orderBy: ComponentOrder!, $count: Int!, $skip: Int!) {
+query getComponentList($filter: String!, $orderBy: ComponentOrder!, $count: Int!, $skip: Int!) {
     components(filter: { name: { contains: $filter } }, orderBy: $orderBy, first: $count, skip: $skip) {
         nodes {
             id

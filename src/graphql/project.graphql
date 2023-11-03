@@ -1,4 +1,4 @@
-query getProjects($filter: String!, $orderBy: ProjectOrder!, $count: Int!, $skip: Int!) {
+query getProjectList($filter: String!, $orderBy: ProjectOrder!, $count: Int!, $skip: Int!) {
     projects(filter: { name: { contains: $filter } }, orderBy: $orderBy, first: $count, skip: $skip) {
         nodes {
             id

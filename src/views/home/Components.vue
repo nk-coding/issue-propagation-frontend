@@ -25,7 +25,7 @@ import { RouteLocationRaw, useRouter } from "vue-router";
 import ListItem from "@/components/ListItem.vue";
 import CreateComponentDialog from "@/components/dialog/CreateComponentDialog.vue";
 
-type Component = ClientReturnType<"getComponents">["components"]["nodes"][0];
+type Component = ClientReturnType<"getComponentList">["components"]["nodes"][0];
 
 const client = useClient();
 const router = useRouter();
@@ -46,7 +46,7 @@ const itemManager: ItemManager<Component, keyof typeof sortFields> = {
         count: number,
         page: number
     ): Promise<[Component[], number]> {
-        const res = await client.getComponents({
+        const res = await client.getComponentList({
             filter,
             orderBy: {
                 field: sortFields[sortField],

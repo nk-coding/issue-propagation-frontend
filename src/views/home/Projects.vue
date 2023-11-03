@@ -25,7 +25,7 @@ import { RouteLocationRaw, useRouter } from "vue-router";
 import ListItem from "@/components/ListItem.vue";
 import CreateProjectDialog from "@/components/dialog/CreateProjectDialog.vue";
 
-type Project = ClientReturnType<"getProjects">["projects"]["nodes"][0];
+type Project = ClientReturnType<"getProjectList">["projects"]["nodes"][0];
 
 const client = useClient();
 const router = useRouter();
@@ -46,7 +46,7 @@ const itemManager: ItemManager<Project, keyof typeof sortFields> = {
         count: number,
         page: number
     ): Promise<[Project[], number]> {
-        const res = await client.getProjects({
+        const res = await client.getProjectList({
             filter,
             orderBy: {
                 field: sortFields[sortField],

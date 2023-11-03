@@ -50,7 +50,7 @@ function projectPath(name: string): RouteLocationRaw {
 }
 
 const titleSegments = computed(() => [
-    { icon: "mdi-note-multiple", path: "/projects" },
+    { icon: "mdi-alpha-p-circle-outline", path: "/projects" },
     { name: project.value?.name ?? "", path: projectPath("") }
 ]);
 

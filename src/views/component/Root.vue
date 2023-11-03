@@ -54,13 +54,14 @@ function componentPath(name: string): RouteLocationRaw {
 }
 
 const titleSegments = computed(() => [
-    { icon: "mdi-note-multiple", path: "/components" },
+    { icon: "mdi-alpha-c-circle-outline", path: "/components" },
     { name: component.value?.name ?? "", path: componentPath("") }
 ]);
 
 const tabs = computed(() => [
     { name: "Home", path: componentPath("component") },
     { name: "Details", path: componentPath("component-details-general"), exact: false },
+    { name: "Versions", path: componentPath("component-versions"), exact: false },
     { name: "Issues", path: componentPath("component-issues"), exact: false }
 ]);
 
@@ -94,9 +95,7 @@ const leftSidebarItems = computed(() => {
 });
 
 const rightSidebarItems = computed(() => {
-    if (route.name != "component-issues") {
-        return [];
-    } else {
+    if (route.name == "component-issues") {
         return [
             [
                 {
@@ -109,6 +108,21 @@ const rightSidebarItems = computed(() => {
                 }
             ]
         ];
+    } else if (route.name == "component-versions") {
+        return [
+            [
+                {
+                    icon: "mdi-plus",
+                    description: `Create component version`,
+                    color: "secondary",
+                    onClick: () => {
+                        eventBus?.emit("create-component-version", undefined);
+                    }
+                }
+            ]
+        ];
+    } else {
+        return [];
     }
 });
 </script>

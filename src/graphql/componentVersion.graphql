@@ -11,6 +11,31 @@ query getComponentVersions($id: ID!, $count: Int!) {
     }
 }
 
+query getComponentVersionList(
+    $filter: String!
+    $orderBy: ComponentVersionOrder!
+    $count: Int!
+    $skip: Int!
+    $component: ID!
+) {
+    node(id: $component) {
+        ... on Component {
+            versions(filter: { name: { contains: $filter } }, orderBy: $orderBy, first: $count, skip: $skip) {
+                nodes {
+                    id
+                    name
+                    description
+                    version
+                    interfaceDefinitions(filter: { visibleInterface: {} }) {
+                        totalCount
+                    }
+                }
+                totalCount
+            }
+        }
+    }
+}
+
 fragment DefaultComponentVersionInfo on ComponentVersion {
     id
     name
@@ -21,5 +46,13 @@ fragment DefaultComponentVersionInfo on ComponentVersion {
 query searchComponentVersions($query: String!, $count: Int!, $component: ID!) {
     searchComponentVersions(query: $query, first: $count, filter: { component: { id: { eq: $component } } }) {
         ...DefaultComponentVersionInfo
+    }
+}
+
+mutation createComponentVersion($input: CreateComponentVersionInput!) {
+    createComponentVersion(input: $input) {
+        componentVersion {
+            id
+        }
     }
 }

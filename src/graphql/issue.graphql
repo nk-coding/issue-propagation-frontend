@@ -1,4 +1,4 @@
-query getIssues($filter: String!, $orderBy: IssueOrder!, $count: Int!, $skip: Int!, $trackable: ID!) {
+query getIssueList($filter: String!, $orderBy: IssueOrder!, $count: Int!, $skip: Int!, $trackable: ID!) {
     node(id: $trackable) {
         ... on Trackable {
             issues(filter: { title: { contains: $filter } }, orderBy: $orderBy, first: $count, skip: $skip) {

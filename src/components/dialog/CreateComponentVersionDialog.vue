@@ -1,29 +1,28 @@
 <template>
-    <v-dialog v-model="createComponentDialog" persistent width="auto">
+    <v-dialog v-model="createComponentVersionDialog" persistent width="auto">
         <v-card color="surface-elevated-3" rounded="lger" class="pa-3 create-component-dialog" elevation="0">
-            <v-form @submit.prevent="createComponent">
+            <v-form @submit.prevent="createComponentVersion">
                 <v-card-title class="p4-3">Create component</v-card-title>
                 <div class="pa-4">
                     <div class="d-flex flex-wrap mx-n2">
                         <v-text-field v-bind="name" label="Name" class="wrap-input mx-2 mb-1 flex-1-1-0" />
-                        <ComponentTemplateAutocomplete v-bind="template" class="wrap-input mx-2 mb-1 flex-1-1-0" />
+                        <v-text-field v-bind="version" label="Version" class="wrap-input mx-2 mb-1 flex-1-1-0" />
                     </div>
-                    <v-textarea v-bind="description" label="Description" class="mb-1"/>
-                    <v-text-field v-bind="repositoryURL" label="Repository URL" class="mb-1" />
+                    <v-textarea v-bind="description" label="Description" class="mb-1" />
                 </div>
                 <v-card-actions>
                     <v-spacer />
-                    <v-btn variant="text" color="" @click="!isDirty && cancelCreateComponent()">
+                    <v-btn variant="text" color="" @click="!isDirty && cancelCreateComponentVersion()">
                         Cancel
                         <ConfirmationDialog
                             v-if="isDirty"
-                            title="Discard component?"
-                            message="Are you sure you want to discard this component?"
+                            title="Discard component version?"
+                            message="Are you sure you want to discard this component version?"
                             confirm-text="Discard"
-                            @confirm="cancelCreateComponent"
+                            @confirm="cancelCreateComponentVersion"
                         />
                     </v-btn>
-                    <v-btn variant="text" color="primary" type="submit">Create component</v-btn>
+                    <v-btn variant="text" color="primary" type="submit">Create component version</v-btn>
                 </v-card-actions>
             </v-form>
         </v-card>
@@ -39,21 +38,26 @@ import { withErrorMessage } from "@/util/withErrorMessage";
 import { useClient } from "@/graphql/client";
 import { toTypedSchema } from "@vee-validate/yup";
 import ConfirmationDialog from "./ConfirmationDialog.vue";
-import ComponentTemplateAutocomplete from "../input/ComponentTemplateAutocomplete.vue";
 
-const createComponentDialog = ref(false);
+const createComponentVersionDialog = ref(false);
 const client = useClient();
 
+const props = defineProps({
+    component: {
+        type: String,
+        required: true
+    }
+});
+
 const emit = defineEmits<{
-    (event: "created-component", component: { id: string }): void;
+    (event: "created-component-version", componentVersion: { id: string }): void;
 }>();
 
 const schema = toTypedSchema(
     yup.object().shape({
         name: yup.string().required().label("Name"),
-        template: yup.string().required().label("Template"),
-        description: yup.string().notRequired().label("Description"),
-        repositoryURL: yup.string().notRequired().label("Repository URL")
+        version: yup.string().required().label("Version"),
+        description: yup.string().notRequired().label("Description")
     })
 );
 
@@ -65,32 +69,32 @@ const isDirty = useIsFormDirty();
 const defineBinds = wrapBinds(defineComponentBinds);
 
 const name = defineBinds("name");
-const template = defineBinds("template")
+const version = defineBinds("version");
 const description = defineBinds("description");
-const repositoryURL = defineBinds("repositoryURL");
 
-onEvent("create-component", () => {
+onEvent("create-component-version", () => {
     resetForm();
-    createComponentDialog.value = true;
+    createComponentVersionDialog.value = true;
 });
 
-const createComponent = handleSubmit(async (state) => {
+const createComponentVersion = handleSubmit(async (state) => {
     const component = await withErrorMessage(async () => {
-        const res = await client.createComponent({
+        const res = await client.createComponentVersion({
             input: {
                 ...state,
                 description: state.description ?? "",
-                templatedFields: []
+                templatedFields: [],
+                component: props.component
             }
         });
-        return res.createComponent!.component!;
+        return res.createComponentVersion!.componentVersion!;
     }, "Error creating component");
-    createComponentDialog.value = false;
-    emit("created-component", component);
+    createComponentVersionDialog.value = false;
+    emit("created-component-version", component);
 });
 
-function cancelCreateComponent() {
-    createComponentDialog.value = false;
+function cancelCreateComponentVersion() {
+    createComponentVersionDialog.value = false;
 }
 </script>
 <style scoped lang="scss">
