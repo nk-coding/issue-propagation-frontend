@@ -13,7 +13,10 @@ export abstract class CancelableAnimation extends Animation {
      * @param newModel the new model which is returned on cancel
      * @param context the context to pass to super
      */
-    constructor(protected readonly newModel: SModelRootImpl, context: CommandExecutionContext) {
+    constructor(
+        protected readonly newModel: SModelRootImpl,
+        context: CommandExecutionContext
+    ) {
         super(context);
     }
 

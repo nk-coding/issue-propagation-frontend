@@ -2,17 +2,21 @@
     <div class="root d-flex flex-column">
         <div class="header d-flex align-center my-2">
             <div class="ml-5">
-                <v-btn class="d-flex" variant="text" icon size="small" @click="router.push('/')">
-                    <img src="@/assets/logo.svg" width="40" />
-                </v-btn>
+                <router-link to="/">
+                    <v-btn class="d-flex" variant="text" icon size="small">
+                        <img src="@/assets/logo.svg" width="40" />
+                    </v-btn>
+                </router-link>
             </div>
             <slot name="header-title">
                 <div v-for="(segment, index) in titleSegments" :key="index" class="d-flex align-center">
                     <span v-if="index != 0" class="text-h6">/</span>
-                    <v-btn variant="text" class="px-1" min-width="0" rounded="lger" @click="router.push(segment.path)">
-                        <span v-if="'name' in segment" class="text-h6">{{ segment.name }}</span>
-                        <v-icon v-else :icon="segment.icon" size="large" />
-                    </v-btn>
+                    <router-link :to="segment.path">
+                        <v-btn variant="text" class="px-1" min-width="0" rounded="lger">
+                            <span v-if="'name' in segment" class="text-h6">{{ segment.name }}</span>
+                            <v-icon v-else :icon="segment.icon" size="large" />
+                        </v-btn>
+                    </router-link>
                 </div>
             </slot>
             <slot name="header-content">

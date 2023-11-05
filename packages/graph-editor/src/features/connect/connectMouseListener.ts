@@ -92,6 +92,7 @@ export class ConnectMouseListener extends MouseListener implements IActionHandle
             end: targetId
         };
         this.connectAction = undefined;
+        this.hoveredConnectable = undefined;
         return [connectAction];
     }
 
@@ -104,6 +105,7 @@ export class ConnectMouseListener extends MouseListener implements IActionHandle
             relation: this.connectAction.relation
         };
         this.connectAction = undefined;
+        this.hoveredConnectable = undefined;
         return [cancelAction];
     }
 
