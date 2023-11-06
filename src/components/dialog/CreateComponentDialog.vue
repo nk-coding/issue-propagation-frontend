@@ -2,7 +2,7 @@
     <v-dialog v-model="createComponentDialog" persistent width="auto">
         <v-card color="surface-elevated-3" rounded="lger" class="pa-3 create-component-dialog" elevation="0">
             <v-form @submit.prevent="createComponent">
-                <v-card-title class="p4-3">Create component</v-card-title>
+                <v-card-title class="pl-4">Create component</v-card-title>
                 <div class="pa-4">
                     <div class="d-flex flex-wrap mx-n2">
                         <v-text-field v-bind="name" label="Name" class="wrap-input mx-2 mb-1 flex-1-1-0" />

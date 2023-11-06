@@ -2,7 +2,7 @@
     <v-dialog v-model="createIssueDialog" persistent width="auto">
         <v-card color="surface-elevated-3" rounded="lger" class="pa-3 create-issue-dialog" elevation="0">
             <v-form @submit.prevent="createIssue">
-                <v-card-title class="p4-3">Create issue</v-card-title>
+                <v-card-title class="pl-4">Create issue</v-card-title>
                 <div class="pa-4">
                     <div class="d-flex">
                         <v-card

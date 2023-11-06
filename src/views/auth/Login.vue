@@ -1,10 +1,7 @@
 <template>
     <BaseLayout>
         <template #content>
-            <v-sheet color="surface-elevated-2" rounded="xl" class="login-container px-5 py-4 mt-5">
-                <div class="d-flex align-center justify-center">
-                    <img src="@/assets/logo.svg" width="50" /><span class="text-primary text-h4 ml-2">Gropius</span>
-                </div>
+            <GropiusCard class="login-container mt-5">
                 <p class="text-center text-body-1 mt-2">{{ isLogin ? "Login to continue" : "Sign up to continue" }}</p>
                 <v-tabs v-model="credentialTab" align-tabs="center">
                     <v-tab v-for="(strategy, index) in currentStrategies.credential" :key="index" :value="index">
@@ -51,7 +48,7 @@
                 >
                     {{ `${isLogin ? "Login" : "Sign up"} with ${strategy.name}` }}
                 </DefaultButton>
-            </v-sheet>
+            </GropiusCard>
             <v-dialog v-model="showSyncDialog" width="auto">
                 <v-card color="surface-elevated-3" rounded="lger" class="pa-3" elevation="0">
                     <v-card-title>Allow sync?</v-card-title>
@@ -79,6 +76,7 @@ import {
     StrategyInstance
 } from "./model";
 import { testStrategies } from "./testData";
+import GropiusCard from "@/components/GropiusCard.vue";
 
 const isLogin = ref(true);
 const allowModeSwitch = ref(true);

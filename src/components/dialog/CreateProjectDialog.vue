@@ -2,7 +2,7 @@
     <v-dialog v-model="createProjectDialog" persistent width="auto">
         <v-card color="surface-elevated-3" rounded="lger" class="pa-3 create-project-dialog" elevation="0">
             <v-form @submit.prevent="createProject">
-                <v-card-title class="p4-3">Create project</v-card-title>
+                <v-card-title class="pl-4">Create project</v-card-title>
                 <div class="pa-4">
                     <v-text-field v-bind="name" label="Name" class="mb-1" />
                     <v-textarea v-bind="description" label="Description" class="mb-1"/>
