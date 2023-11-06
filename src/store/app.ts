@@ -1,31 +1,37 @@
 // Utilities
 import { defineStore } from "pinia";
 import axios from "axios";
-import { useClient } from "@/graphql/client";
 import { DefaultUserInfoFragment } from "@/graphql/generated";
+import { useLocalStorage } from "@vueuse/core";
+import { Lock } from "@/util/lock";
+import { jwtDecode } from "jwt-decode";
 
 export const useAppStore = defineStore("app", {
     state: () => ({
         user: undefined as undefined | DefaultUserInfoFragment,
-        token: undefined as string | undefined,
+        accessToken: useLocalStorage("accessToken", ""),
+        refreshToken: useLocalStorage("refreshToken", ""),
+        tokenLock: new Lock(),
         errors: [] as string[]
     }),
     getters: {
         isLoggedIn(): boolean {
-            return !!this.token && !!this.user;
+            return !!this.accessToken && !!this.user;
         }
     },
     actions: {
-        async loginDemoUser() {
-            const tokenResponse = await axios.get(`/api/login/token`, {
-                params: {
-                    username: "test-user"
-                }
-            });
-            this.token = tokenResponse.data;
-            const client = useClient();
-            const currentUser = await client.getCurrentUser();
-            this.user = currentUser.currentUser ?? undefined;
+        async getAccessToken(): Promise<string> {
+            if (!this.isLoggedIn) {
+                throw new Error("Not logged in");
+            }
+            await this.tokenLock.acquire();
+            const decoded = jwtDecode(this.accessToken);
+            if (decoded.exp != undefined && decoded.exp * 1000 < Date.now()) {
+                
+            }
+            // refresh if necessary
+            this.tokenLock.release();
+            return this.accessToken!;
         },
         pushError(error: string) {
             this.errors = [...this.errors, error];
