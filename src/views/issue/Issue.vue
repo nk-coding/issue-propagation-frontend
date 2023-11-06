@@ -15,8 +15,8 @@
                             <v-tooltip activator="parent"> Edit title </v-tooltip>
                         </IconButton>
                         <template v-if="editTitle">
-                            <v-btn variant="outlined" color="error" @click="cancelEditTitle"> Cancel </v-btn>
-                            <v-btn color="primary" class="mx-3" @click="saveTitle">Save</v-btn>
+                            <DefaultButton variant="outlined" color="error" @click="cancelEditTitle"> Cancel </DefaultButton>
+                            <DefaultButton color="primary" class="mx-3" @click="saveTitle">Save</DefaultButton>
                         </template>
                     </div>
                     <div class="text-medium-emphasis text-subtitle-1">

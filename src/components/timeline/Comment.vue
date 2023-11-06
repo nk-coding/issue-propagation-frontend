@@ -140,7 +140,7 @@
                             <v-divider />
                             <div class="d-flex justify-end mt-2">
                                 <template v-if="!newComment">
-                                    <v-btn variant="outlined" color="error" @click="!hasChanged && cancelComment()">
+                                    <DefaultButton variant="outlined" color="error" @click="!hasChanged && cancelComment()">
                                         Cancel
                                         <ConfirmationDialog
                                             v-if="hasChanged"
@@ -149,10 +149,10 @@
                                             confirm-text="Discard"
                                             @confirm="cancelComment"
                                         />
-                                    </v-btn>
-                                    <v-btn color="primary" class="mx-3" @click="saveComment">Save</v-btn>
+                                    </DefaultButton>
+                                    <DefaultButton color="primary" class="mx-3" @click="saveComment">Save</DefaultButton>
                                 </template>
-                                <v-btn v-else color="primary" class="mx-3" @click="createComment"> Comment </v-btn>
+                                <DefaultButton v-else color="primary" class="mx-3" @click="createComment"> Comment </DefaultButton>
                             </div>
                         </div>
                     </v-sheet>

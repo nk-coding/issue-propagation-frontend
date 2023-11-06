@@ -31,7 +31,8 @@ export default createVuetify({
     aliases: {
         FAB: VBtn,
         SmallFAB: VBtn,
-        IconButton: VBtn
+        IconButton: VBtn,
+        DefaultButton: VBtn
     },
     defaults: {
         VTextField: {
@@ -54,6 +55,11 @@ export default createVuetify({
         },
         VTooltip: {
             openDelay: 250
+        },
+        DefaultButton: {
+            height: "40px",
+            color: "primary",
+            rounded: "xl"
         },
         FAB: {
             width: "56px",

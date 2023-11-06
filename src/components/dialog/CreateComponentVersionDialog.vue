@@ -12,7 +12,7 @@
                 </div>
                 <v-card-actions>
                     <v-spacer />
-                    <v-btn variant="text" color="" @click="!isDirty && cancelCreateComponentVersion()">
+                    <DefaultButton variant="text" color="" @click="!isDirty && cancelCreateComponentVersion()">
                         Cancel
                         <ConfirmationDialog
                             v-if="isDirty"
@@ -21,8 +21,8 @@
                             confirm-text="Discard"
                             @confirm="cancelCreateComponentVersion"
                         />
-                    </v-btn>
-                    <v-btn variant="text" color="primary" type="submit">Create component version</v-btn>
+                    </DefaultButton>
+                    <DefaultButton variant="text" color="primary" type="submit">Create component version</DefaultButton>
                 </v-card-actions>
             </v-form>
         </v-card>

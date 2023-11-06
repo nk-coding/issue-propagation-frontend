@@ -7,8 +7,8 @@
             </v-card-text>
             <v-card-actions>
                 <v-spacer />
-                <v-btn variant="text" color="" @click="cancel">{{ cancelText }}</v-btn>
-                <v-btn variant="text" color="error" @click="confirm">{{ confirmText }}</v-btn>
+                <DefaultButton variant="text" color="" @click="cancel">{{ cancelText }}</DefaultButton>
+                <DefaultButton variant="text" color="error" @click="confirm">{{ confirmText }}</DefaultButton>
             </v-card-actions>
         </v-card>
     </v-dialog>

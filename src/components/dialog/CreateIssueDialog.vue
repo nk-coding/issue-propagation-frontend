@@ -40,7 +40,7 @@
                 </div>
                 <v-card-actions>
                     <v-spacer />
-                    <v-btn variant="text" color="" @click="!isDirty && cancelCreateIssue()">
+                    <DefaultButton variant="text" color="" @click="!isDirty && cancelCreateIssue()">
                         Cancel
                         <ConfirmationDialog
                             v-if="isDirty"
@@ -49,8 +49,8 @@
                             confirm-text="Discard"
                             @confirm="cancelCreateIssue"
                         />
-                    </v-btn>
-                    <v-btn variant="text" color="primary" type="submit">Create issue</v-btn>
+                    </DefaultButton>
+                    <DefaultButton variant="text" color="primary" type="submit">Create issue</DefaultButton>
                 </v-card-actions>
             </v-form>
         </v-card>
