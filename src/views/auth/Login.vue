@@ -10,19 +10,15 @@
                 </v-tabs>
                 <v-divider />
                 <v-window v-model="credentialTab">
-                    <v-window-item
-                        v-for="(strategy, index) in currentStrategies.credential"
-                        :key="index"
-                        :value="index"
-                        class="pt-4"
-                    >
+                    <v-window-item v-for="(strategy, index) in currentStrategies.credential" :key="index" :value="index"
+                        class="pt-4">
                         <v-form>
-                            <v-text-field
-                                v-for="(field, idx) in isLogin ? strategy.loginFields : strategy.registerFields"
-                                :key="idx"
-                                :label="field.name"
+                            <v-text-field v-for="(field, idx) in isLogin ? strategy.loginFields : strategy.registerFields"
+                                :key="idx" :label="field.displayName ?? field.name"
                                 v-model="formDataAt(strategy.id)[field.name]"
-                            />
+                                :type="(isPwdVisibleAt(strategy.id)[field.name] || field.type != 'password') ? 'text' : 'password'"
+                                :append-icon="field.type == 'password' ? (isPwdVisibleAt(strategy.id)[field.name] ? 'mdi-eye' : 'mdi-eye-off') : undefined"
+                                @click:append="isPwdVisibleAt(strategy.id)[field.name] = !isPwdVisibleAt(strategy.id)[field.name]"></v-text-field>
                         </v-form>
                     </v-window-item>
                 </v-window>
@@ -38,14 +34,8 @@
                     </p>
                 </div>
                 <v-divider class="mt-4 mb-3" />
-                <DefaultButton
-                    v-for="strategy in currentStrategies.redirect"
-                    :key="strategy.id"
-                    class="full-width-btn my-2"
-                    variant="outlined"
-                    density="default"
-                    @click="redirect(strategy)"
-                >
+                <DefaultButton v-for="strategy in currentStrategies.redirect" :key="strategy.id" class="full-width-btn my-2"
+                    variant="outlined" density="default" @click="redirect(strategy)">
                     {{ `${isLogin ? "Login" : "Sign up"} with ${strategy.name}` }}
                 </DefaultButton>
             </GropiusCard>
@@ -53,7 +43,7 @@
                 <v-card color="surface-elevated-3" rounded="lger" class="pa-3" elevation="0">
                     <v-card-title>Allow sync?</v-card-title>
                     <v-card-text>
-                        Shoule we sync issues with this account?<br/>You can always agree to this later.
+                        Shoule we sync issues with this account?<br />You can always agree to this later.
                     </v-card-text>
                     <v-card-actions>
                         <v-spacer />
@@ -73,17 +63,61 @@ import {
     CredentialStrategyInstance,
     GroupedStrategyInstances,
     RedirectStrategyInstance,
-    StrategyInstance
+    LoginStrategy,
+    LoginStrategyInstance
 } from "./model";
 import { testStrategies } from "./testData";
 import GropiusCard from "@/components/GropiusCard.vue";
+import { withErrorMessage } from "@/util/withErrorMessage";
+import { asyncComputed } from "@vueuse/core";
+import client from "undici-types/client";
+import axios from "axios";
+import router from "@/router";
 
 const isLogin = ref(true);
 const allowModeSwitch = ref(true);
-const strategies = ref<StrategyInstance[]>(testStrategies);
+//const strategies = ref<StrategyInstance[]>(testStrategies);
+
+const loadingStrategies = ref(true)
+const strategies = asyncComputed(
+    async () => {
+        const strategies: LoginStrategy[] = await withErrorMessage(
+            async () => (await axios.get(`/api/login/login/strategy/`, {})).data,
+            "Could not fetch available strategies"
+        );
+        const instances: LoginStrategyInstance[] = await withErrorMessage(
+            async () => (await axios.get(`/api/login/login/strategyInstance/`, {})).data,
+            "Could not fetch available strategy instances"
+        );
+        const strategiesByName = new Map(strategies.map(s => [s.typeName, s]));
+        const redirectInstances = instances.filter(instance => strategiesByName.get(instance.type)?.needsRedirectFlow)
+            .map(instance => ({
+                ...instance,
+                type: "redirect",
+            } satisfies RedirectStrategyInstance));
+
+        const credentialInstances = instances
+            .filter(instance => Object.keys(strategiesByName.get(instance.type)?.acceptsVariables ?? {}).length > 0)
+            .map(instance => {
+                const strategy = strategiesByName.get(instance.type);
+                const fields = Object.values(strategy?.acceptsVariables ?? {})
+                return {
+                    ...instance,
+                    type: "credential",
+                    loginFields: fields,
+                    registerFields: fields,
+                } satisfies CredentialStrategyInstance
+            });
+
+        return [...redirectInstances, ...credentialInstances]
+    },
+    [],
+    { shallow: false, evaluating: loadingStrategies }
+);
+
 const currentStrategies = computed<GroupedStrategyInstances>(() => {
     const loginInstances = strategies.value.filter(
-        (strategy) => (strategy.isLoginActive && isLogin.value) || (strategy.isSelfRegistrationActive && !isLogin.value)
+        (strategy) => (strategy.isLoginActive && isLogin.value) || (strategy.isSelfRegisterActive && !isLogin.value)
     );
     return {
         credential: loginInstances.filter((strategy) => strategy.type === "credential") as CredentialStrategyInstance[],
@@ -100,6 +134,14 @@ function formDataAt(id: string) {
         formData.value[id] = {};
     }
     return formData.value[id];
+}
+
+const isPwdVisible = ref<Record<string, Record<string, boolean>>>({});
+function isPwdVisibleAt(id: string) {
+    if (!(id in isPwdVisible.value)) {
+        isPwdVisible.value[id] = {};
+    }
+    return isPwdVisible.value[id];
 }
 
 function toggleIsLogin() {
@@ -155,8 +197,9 @@ function submitFormRegister(
 }
 
 function redirectLogin(strategyInstance: RedirectStrategyInstance) {
-    // TODO: implement
-    console.log(strategyInstance);
+    // TODO: add oauth state
+    window.location.href = `/api/login/authenticate/oauth/${strategyInstance.id}/authorize/login?client_id=${import.meta.env.VITE_LOGIN_OAUTH_CLIENT_ID}`
+
 }
 
 function redirectRegister(strategyInstance: RedirectStrategyInstance, sync: boolean) {
