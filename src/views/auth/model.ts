@@ -66,3 +66,17 @@ export enum TokenScope {
     REFRESH_TOKEN = "token",
     NONE = "none",
 }
+
+export enum UserDataSuggestionStatus {
+    ALREADY_REGISTERED = "already-registered",
+    USERNAME_TAKEN = "username-taken",
+    NO_DATA = "no-data",
+    OK = "ok",
+}
+
+export interface UserDataSuggestionResponse {
+    status: UserDataSuggestionStatus;
+    username?: string;
+    displayName?: string;
+    email?: string;
+}

@@ -8,18 +8,18 @@ import { jwtDecode } from "jwt-decode";
 import { withErrorMessage } from "@/util/withErrorMessage";
 import { useRouter } from "vue-router";
 import { OAuthRespose, TokenScope } from "@/views/auth/model";
+import { shallowReactive } from "vue";
 
 export const useAppStore = defineStore("app", {
     state: () => ({
         user: undefined as undefined | DefaultUserInfoFragment,
         accessToken: useLocalStorage("accessToken", ""),
         refreshToken: useLocalStorage("refreshToken", ""),
-        tokenLock: new Lock(),
         errors: [] as string[]
     }),
     getters: {
         isLoggedIn(): boolean {
-            return !!this.accessToken && !!this.user;
+            return this.validTokenScope.includes(TokenScope.BACKEND);
         },
         validTokenScope(): TokenScope[] {
             if (!this.accessToken || this.accessToken.length <= 0) {
@@ -39,37 +39,37 @@ export const useAppStore = defineStore("app", {
     },
     actions: {
         async setNewTokenPair(accessToken: string, refreshToken: string): Promise<void> {
-            await this.tokenLock.acquire();
             this.accessToken = accessToken;
             this.refreshToken = refreshToken;
-            this.tokenLock.release()
+        },
+        async forceTokenRefresh(): Promise<void> {
+            console.log("Refreshing token")
+            const tokenResponse: OAuthRespose = await withErrorMessage(
+                async () => (await axios.post("/api/login/authenticate/oauth/this-does-not-matter/token", {
+                    grant_type: "refresh_token",
+                    refresh_token: this.refreshToken,
+                    client_id: import.meta.env.VITE_LOGIN_OAUTH_CLIENT_ID
+                })).data,
+                "Could not refresh access token."
+            );
+            console.log(tokenResponse)
+            this.accessToken = tokenResponse.access_token;
+            this.refreshToken = tokenResponse.refresh_token;
         },
         async getAccessToken(): Promise<string | undefined> {
             if (!this.isLoggedIn) {
                 throw new Error("Not logged in");
             }
-            await this.tokenLock.acquire();
             const decoded = jwtDecode(this.accessToken);
             if (decoded.exp != undefined && decoded.exp * 1000 < Date.now()) {
                 try {
-                    const tokenResponse: OAuthRespose = await withErrorMessage(
-                        async () => (await axios.post("/api/login/authenticate/oauth/this-does-not-matter/token", {
-                            grant_type: "refresh_token",
-                            refresh_token: this.refreshToken,
-                            client_id: import.meta.env.VITE_LOGIN_OAUTH_CLIENT_ID
-                        })).data,
-                        "Could not refresh access token."
-                    );
-                    console.log(tokenResponse)
-                    this.accessToken = tokenResponse.access_token;
-                    this.refreshToken = tokenResponse.refresh_token;
+                    await this.forceTokenRefresh();
                 } catch (err) {
                     useRouter().push({
                         name: "login"
                     });
                 }
             }
-            this.tokenLock.release();
             return this.accessToken!;
         },
         pushError(error: string) {

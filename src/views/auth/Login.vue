@@ -1,7 +1,12 @@
 <template>
     <BaseLayout>
         <template #content>
-            <GropiusCard class="login-container mt-5">
+            <GropiusCard class="login-container mt-5" v-if="store.isLoggedIn">
+                <p class="text-center text-body-1 my-2">Logged in as {{ me?.displayName }} ({{ me?.username }})</p>
+                <DefaultButton class="full-width-btn" @click="logout"> Logout
+                </DefaultButton>
+            </GropiusCard>
+            <GropiusCard class="login-container mt-5" v-else>
                 <p class="text-center text-body-1 mt-2">{{ isLogin ? "Login to continue" : "Sign up to continue" }}</p>
                 <v-tabs v-model="credentialTab" align-tabs="center">
                     <v-tab v-for="(strategy, index) in currentStrategies.credential" :key="index" :value="index">
@@ -57,22 +62,26 @@
 </template>
 <script setup lang="ts">
 import BaseLayout from "@/components/BaseLayout.vue";
-import { computed } from "vue";
+import { Ref, computed } from "vue";
 import { ref } from "vue";
 import {
     CredentialStrategyInstance,
     GroupedStrategyInstances,
     RedirectStrategyInstance,
     LoginStrategy,
-    LoginStrategyInstance
+    LoginStrategyInstance,
+    OAuthRespose
 } from "./model";
 import { testStrategies } from "./testData";
 import GropiusCard from "@/components/GropiusCard.vue";
 import { withErrorMessage } from "@/util/withErrorMessage";
-import { asyncComputed } from "@vueuse/core";
-import client from "undici-types/client";
+import { asyncComputed, computedAsync } from "@vueuse/core";
 import axios from "axios";
 import router from "@/router";
+import { handleOAuthResponse } from "./oauthResponse";
+import { useAppStore } from "@/store/app";
+import { useClient } from "@/graphql/client";
+const store = useAppStore();
 
 const isLogin = ref(true);
 const allowModeSwitch = ref(true);
@@ -108,7 +117,6 @@ const strategies = asyncComputed(
                     registerFields: fields,
                 } satisfies CredentialStrategyInstance
             });
-
         return [...redirectInstances, ...credentialInstances]
     },
     [],
@@ -128,6 +136,18 @@ const credentialTab = ref(0);
 const showSyncDialog = ref(false);
 const afterSelectSync = ref<undefined | ((sync: boolean) => void)>();
 const formData = ref<Record<string, Record<string, string>>>({});
+
+const client = useClient();
+const me: Ref<any> = computedAsync(async () => {
+    if (!store.isLoggedIn) {
+        return undefined;
+    }
+    const meResponse = await withErrorMessage(
+        () => client.getCurrentUser(),
+        "Could not load user data");
+    return meResponse.currentUser
+    return undefined
+}, undefined, { shallow: false });
 
 function formDataAt(id: string) {
     if (!(id in formData.value)) {
@@ -182,9 +202,23 @@ function redirect(strategy: RedirectStrategyInstance) {
     }
 }
 
-function submitFormLogin(strategyInstance: CredentialStrategyInstance, formData: Record<string, string>) {
-    // TODO: implement
-    console.log(formData);
+async function submitFormLogin(strategyInstance: CredentialStrategyInstance, formData: Record<string, string>) {
+    const loginResult: OAuthRespose = await withErrorMessage(
+        async () => (await axios.post(`/api/login/authenticate/oauth/${strategyInstance.id}/token`,
+            {
+                ...formData,
+                grant_type: "password",
+                client_id: import.meta.env.VITE_LOGIN_OAUTH_CLIENT_ID
+            }
+        )).data,
+        "Could not log in. Error Messgage see console, todo: better error logging");
+    const newRoute = await handleOAuthResponse(loginResult);
+    if (newRoute === true) {
+    } else if (newRoute === false) {
+        try { withErrorMessage(() => { throw new Error() }, "Unknown error during login"); } catch (err) { }
+    } else {
+        router.push(newRoute);
+    }
 }
 
 function submitFormRegister(
@@ -205,6 +239,10 @@ function redirectLogin(strategyInstance: RedirectStrategyInstance) {
 function redirectRegister(strategyInstance: RedirectStrategyInstance, sync: boolean) {
     // TODO: implement
     console.log(strategyInstance);
+}
+
+function logout() {
+    store.setNewTokenPair("", "");
 }
 </script>
 <style scoped>

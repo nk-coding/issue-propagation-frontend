@@ -23,8 +23,16 @@ import { toTypedSchema } from "@vee-validate/yup";
 import { useForm } from "vee-validate";
 import { ref } from "vue";
 import * as yup from "yup";
-import { OAuthRespose } from "./model";
-import { useRoute } from "vue-router";
+import { OAuthRespose, TokenScope, UserDataSuggestionResponse, UserDataSuggestionStatus } from "./model";
+import { useRoute, useRouter } from "vue-router";
+import { withErrorMessage } from "@/util/withErrorMessage";
+import axios from "axios";
+import { useAppStore } from "@/store/app"
+import { computedAsync, useMounted } from "@vueuse/core";
+import { wrapBinds } from "@/util/vuetifyFormConfig";
+import { onMounted } from "vue";
+const store = useAppStore()
+const router = useRouter()
 
 const schema = toTypedSchema(
     yup.object().shape({
@@ -38,13 +46,58 @@ const { defineComponentBinds, resetForm, handleSubmit, setValues } = useForm({
     validationSchema: schema
 });
 
-const username = defineComponentBinds("username");
-const displayName = defineComponentBinds("displayName");
-const email = defineComponentBinds("email");
+const defineBinds = wrapBinds(defineComponentBinds);
 
-function register() {
+const username = defineBinds("username");
+const displayName = defineBinds("displayName");
+const email = defineBinds("email");
 
-}
+onMounted(async () => {
+    const recommendedData: UserDataSuggestionResponse = await withErrorMessage(
+        async () => (await axios.post("/api/login/login/registration/data-suggestion", {
+            register_token: store.accessToken
+        })).data,
+        "Could not prefill registration fields"
+    );
+
+    switch (recommendedData.status) {
+        case UserDataSuggestionStatus.ALREADY_REGISTERED:
+            router.replace({ name: "login" });
+            try { withErrorMessage(() => { throw new Error() }, "User already registered"); } catch (err) { }
+            break;
+        case UserDataSuggestionStatus.USERNAME_TAKEN:
+            try { withErrorMessage(() => { throw new Error() }, "Username already taken. Choose another"); } catch (err) { }
+    }
+    setValues({
+        username: recommendedData.username ?? "",
+        displayName: recommendedData.displayName ?? recommendedData.username ?? "",
+        email: recommendedData.email ?? ""
+    });
+});
+
+const register = handleSubmit(async state => {
+    console.log("On register")
+    const registerRes = await withErrorMessage(
+        async () => (await axios.post("/api/login/login/registration/self-register",
+            {
+                username: state.username,
+                displayName: state.displayName ?? state.username,
+                email: state.email,
+                register_token: store.accessToken
+            }
+        )),
+        "Could not register. Maybe try another username. Or re log in. I don't know because this is a generic error message. You might get details from the dev console. Or you might not. I don't know."
+    );
+    if (registerRes.data.result != "success") {
+        try { withErrorMessage(() => { throw new Error() }, "Registration failed"); } catch (err) { }
+    }
+    await withErrorMessage(() => store.forceTokenRefresh(), "Could not log in after registration")
+    if (store.validTokenScope.includes(TokenScope.BACKEND)) {
+        router.replace({ name: "home" });
+    } else {
+        try { withErrorMessage(() => { throw new Error() }, "Could not log in after registration"); } catch (err) { }
+    }
+})
 </script>
 <style scoped>
 .register-container {
