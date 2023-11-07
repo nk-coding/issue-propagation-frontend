@@ -21,7 +21,10 @@ import BaseLayout from "@/components/BaseLayout.vue";
 import GropiusCard from "@/components/GropiusCard.vue";
 import { toTypedSchema } from "@vee-validate/yup";
 import { useForm } from "vee-validate";
+import { ref } from "vue";
 import * as yup from "yup";
+import { OAuthRespose } from "./model";
+import { useRoute } from "vue-router";
 
 const schema = toTypedSchema(
     yup.object().shape({
