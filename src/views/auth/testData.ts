@@ -6,7 +6,7 @@ export const testStrategies: StrategyInstance[] = [
         id: "1",
         name: "Gropius",
         isLoginActive: true,
-        isSelfRegistrationActive: true,
+        isSelfRegisterActive: true,
         isSyncActive: true,
         doesImplicitRegister: false,
         loginFields: [
@@ -35,7 +35,7 @@ export const testStrategies: StrategyInstance[] = [
         id: "2",
         name: "Not Gropius",
         isLoginActive: true,
-        isSelfRegistrationActive: true,
+        isSelfRegisterActive: true,
         isSyncActive: true,
         doesImplicitRegister: false,
         loginFields: [
@@ -72,7 +72,7 @@ export const testStrategies: StrategyInstance[] = [
         id: "3",
         name: "GitHub",
         isLoginActive: true,
-        isSelfRegistrationActive: true,
+        isSelfRegisterActive: true,
         isSyncActive: true,
         doesImplicitRegister: false
     },
@@ -81,7 +81,7 @@ export const testStrategies: StrategyInstance[] = [
         id: "4",
         name: "Jira",
         isLoginActive: true,
-        isSelfRegistrationActive: true,
+        isSelfRegisterActive: true,
         isSyncActive: true,
         doesImplicitRegister: false
     }

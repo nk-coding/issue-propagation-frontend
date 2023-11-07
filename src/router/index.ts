@@ -1,4 +1,5 @@
 // Composables
+import { onLoginEnter, onRegisterEnter } from "@/views/auth/oauthResponse";
 import { RouteRecordRaw, createRouter, createWebHistory } from "vue-router";
 
 const routes: RouteRecordRaw[] = [
@@ -138,12 +139,14 @@ const routes: RouteRecordRaw[] = [
     {
         path: "/login",
         name: "login",
-        component: () => import("../views/auth/Login.vue")
+        component: () => import("../views/auth/Login.vue"),
+        beforeEnter: onLoginEnter
     },
     {
         path: "/register",
         name: "register",
-        component: () => import("../views/auth/Register.vue")
+        component: () => import("../views/auth/Register.vue"),
+        beforeEnter: onRegisterEnter,
     }
 ];
 

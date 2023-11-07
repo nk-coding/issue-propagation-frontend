@@ -5,6 +5,9 @@ import { DefaultUserInfoFragment } from "@/graphql/generated";
 import { useLocalStorage } from "@vueuse/core";
 import { Lock } from "@/util/lock";
 import { jwtDecode } from "jwt-decode";
+import { withErrorMessage } from "@/util/withErrorMessage";
+import { useRouter } from "vue-router";
+import { OAuthRespose, TokenScope } from "@/views/auth/model";
 
 export const useAppStore = defineStore("app", {
     state: () => ({
@@ -17,17 +20,51 @@ export const useAppStore = defineStore("app", {
     getters: {
         isLoggedIn(): boolean {
             return !!this.accessToken && !!this.user;
+        },
+        validTokenScope(): TokenScope[] {
+            if (!this.accessToken || this.accessToken.length <= 0) {
+                return [];
+            }
+            const payload = jwtDecode(this.accessToken);
+            const now = Date.now() / 1000;
+            if ((payload.exp ?? now) < now || (payload.nbf ?? now) > now) {
+                return [];
+            }
+            const audience = payload.aud;
+            if (typeof audience == "string") {
+                return [audience as TokenScope];
+            }
+            return audience as TokenScope[];
         }
     },
     actions: {
-        async getAccessToken(): Promise<string> {
+        async setNewTokenPair(accessToken: string, refreshToken: string): Promise<void> {
+            await this.tokenLock.acquire();
+            this.accessToken = accessToken;
+            this.refreshToken = refreshToken;
+            this.tokenLock.release()
+        },
+        async getAccessToken(): Promise<string | undefined> {
             if (!this.isLoggedIn) {
                 throw new Error("Not logged in");
             }
             await this.tokenLock.acquire();
             const decoded = jwtDecode(this.accessToken);
             if (decoded.exp != undefined && decoded.exp * 1000 < Date.now()) {
-                
+                try {
+                    const tokenResponse: OAuthRespose = await withErrorMessage(
+                        async () => (await axios.post("/api/login/authenticate/oauth/this-does-not-matter/token")).data,
+                        "Could not refresh access token."
+                    );
+                    console.log(tokenResponse)
+                    const store = useAppStore();
+                    this.accessToken = tokenResponse.access_token;
+                    this.refreshToken = tokenResponse.refresh_token;
+                } catch (err) {
+                    useRouter().push({
+                        name: "login"
+                    });
+                }
             }
             // refresh if necessary
             this.tokenLock.release();
