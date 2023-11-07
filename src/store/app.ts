@@ -53,11 +53,14 @@ export const useAppStore = defineStore("app", {
             if (decoded.exp != undefined && decoded.exp * 1000 < Date.now()) {
                 try {
                     const tokenResponse: OAuthRespose = await withErrorMessage(
-                        async () => (await axios.post("/api/login/authenticate/oauth/this-does-not-matter/token")).data,
+                        async () => (await axios.post("/api/login/authenticate/oauth/this-does-not-matter/token", {
+                            grant_type: "refresh_token",
+                            refresh_token: this.refreshToken,
+                            client_id: import.meta.env.VITE_LOGIN_OAUTH_CLIENT_ID
+                        })).data,
                         "Could not refresh access token."
                     );
                     console.log(tokenResponse)
-                    const store = useAppStore();
                     this.accessToken = tokenResponse.access_token;
                     this.refreshToken = tokenResponse.refresh_token;
                 } catch (err) {
@@ -66,7 +69,6 @@ export const useAppStore = defineStore("app", {
                     });
                 }
             }
-            // refresh if necessary
             this.tokenLock.release();
             return this.accessToken!;
         },
