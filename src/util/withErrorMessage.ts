@@ -4,9 +4,13 @@ export async function withErrorMessage<T>(action: () => Promise<T>, message: str
     try {
         return await action();
     } catch (error) {
-        const store = useAppStore();
-        store.pushError(message);
+        pushErrorMessage(message);
         console.error(error);
         throw error;
     }
+}
+
+export function pushErrorMessage(message: string) {
+    const store = useAppStore();
+    store.pushError(message);
 }
