@@ -12,21 +12,21 @@ export const testStrategies: StrategyInstance[] = [
         loginFields: [
             {
                 name: "username",
-                isPassword: false
+                type: "string",
             },
             {
                 name: "password",
-                isPassword: true
+                type: "password"
             }
         ],
         registerFields: [
             {
                 name: "username",
-                isPassword: false
+                type: "string"
             },
             {
                 name: "password",
-                isPassword: true
+                type: "password"
             }
         ]
     },
@@ -41,29 +41,29 @@ export const testStrategies: StrategyInstance[] = [
         loginFields: [
             {
                 name: "username",
-                isPassword: false
+                type: "string"
             },
             {
                 name: "email",
-                isPassword: false
+                type: "string"
             },
             {
                 name: "password",
-                isPassword: true
+                type: "password"
             }
         ],
         registerFields: [
             {
                 name: "username",
-                isPassword: false
+                type: "string"
             },
             {
                 name: "email",
-                isPassword: false
+                type: "string"
             },
             {
                 name: "password",
-                isPassword: true
+                type: "password"
             }
         ]
     },
