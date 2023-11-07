@@ -27,9 +27,14 @@ export const useAppStore = defineStore("app", {
             await this.tokenLock.acquire();
             const decoded = jwtDecode(this.accessToken);
             if (decoded.exp != undefined && decoded.exp * 1000 < Date.now()) {
-                
+                const response = await axios.post(`/api/login/authenticate/oauth/a/token`, {
+                    grant_type: "refresh_token",
+                    refresh_token: this.refreshToken,
+                    client_id: import.meta.env.VITE_LOGIN_OAUTH_CLIENT_ID
+                });
+                this.accessToken = response.data.accessToken;
+                this.refreshToken = response.data.refreshToken;
             }
-            // refresh if necessary
             this.tokenLock.release();
             return this.accessToken!;
         },
