@@ -35,6 +35,18 @@ export const useAppStore = defineStore("app", {
                 return [audience as TokenScope];
             }
             return audience as TokenScope[];
+        },
+        tokenValidityDuration(): number {
+            if (!this.accessToken || this.accessToken.length <= 0) {
+                return 0;
+            }
+            const payload = jwtDecode(this.accessToken);
+            const exp = payload.exp;
+            if (exp === undefined) {
+                return Infinity;
+            }
+            const nbf = payload.nbf ?? payload.iat ?? (Date.now() / 1000);
+            return (exp - nbf) * 1000;
         }
     },
     actions: {
@@ -57,11 +69,11 @@ export const useAppStore = defineStore("app", {
             this.refreshToken = tokenResponse.refresh_token;
         },
         async getAccessToken(): Promise<string | undefined> {
-            if (!this.isLoggedIn) {
+            if (!this.refreshToken || this.refreshToken.length <= 0) {
                 throw new Error("Not logged in");
             }
             const decoded = jwtDecode(this.accessToken);
-            if (decoded.exp != undefined && decoded.exp * 1000 < Date.now()) {
+            if (decoded.exp != undefined && (decoded.exp * 1000) - Date.now() < 30 * 1000) {
                 try {
                     await this.forceTokenRefresh();
                 } catch (err) {
