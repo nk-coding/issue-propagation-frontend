@@ -2,7 +2,7 @@ import { useAppStore } from "@/store/app";
 import { withErrorMessage } from "@/util/withErrorMessage";
 import axios from "axios";
 import { RouteLocationNormalized, NavigationGuardNext, RouteLocationRaw } from "vue-router";
-import { OAuthRespose, TokenScope } from "./model";
+import { OAuthRespose, TokenScope } from "../views/auth/model";
 
 export async function handleOAuthResponse(tokenResponse: OAuthRespose, store = useAppStore()): Promise<RouteLocationRaw | boolean> {
     console.log(tokenResponse);
@@ -63,6 +63,22 @@ export async function onRegisterEnter(to: RouteLocationNormalized, from: RouteLo
         return {
             name: "login",
             replace: true
+        }
+    }
+    return true
+}
+
+export async function onAnyEnter(to: RouteLocationNormalized, from: RouteLocationNormalized): Promise<RouteLocationRaw | boolean> {
+    if (to.name == "login" || to.name == "register") {
+        return true;
+    }
+    if (!useAppStore().isLoggedIn) {
+        if (from.name == "login" || to.redirectedFrom?.name == "login") {
+            try { withErrorMessage(() => { throw new Error() }, "Redirect loop. This should not happen.") } catch (err) { }
+            return false
+        }
+        return {
+            name: "login"
         }
     }
     return true

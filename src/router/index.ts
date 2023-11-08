@@ -1,5 +1,5 @@
 // Composables
-import { onLoginEnter, onRegisterEnter } from "@/views/auth/oauthResponse";
+import { onAnyEnter, onLoginEnter, onRegisterEnter } from "@/router/navigationGuards";
 import { RouteRecordRaw, createRouter, createWebHistory } from "vue-router";
 
 const routes: RouteRecordRaw[] = [
@@ -154,5 +154,7 @@ const router = createRouter({
     history: createWebHistory(process.env.BASE_URL),
     routes
 });
+
+router.beforeEach(onAnyEnter)
 
 export default router;

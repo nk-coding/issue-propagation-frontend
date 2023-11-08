@@ -78,7 +78,7 @@ import { withErrorMessage } from "@/util/withErrorMessage";
 import { asyncComputed, computedAsync } from "@vueuse/core";
 import axios from "axios";
 import router from "@/router";
-import { handleOAuthResponse } from "./oauthResponse";
+import { handleOAuthResponse } from "../../router/navigationGuards";
 import { useAppStore } from "@/store/app";
 import { useClient } from "@/graphql/client";
 const store = useAppStore();
