@@ -22,8 +22,8 @@
                                 :key="idx" :label="field.displayName ?? field.name"
                                 v-model="formDataAt(strategy.id)[field.name]"
                                 :type="(isPwdVisibleAt(strategy.id)[field.name] || field.type != 'password') ? 'text' : 'password'"
-                                :append-icon="field.type == 'password' ? (isPwdVisibleAt(strategy.id)[field.name] ? 'mdi-eye' : 'mdi-eye-off') : undefined"
-                                @click:append="isPwdVisibleAt(strategy.id)[field.name] = !isPwdVisibleAt(strategy.id)[field.name]"></v-text-field>
+                                :append-inner-icon="field.type == 'password' ? (isPwdVisibleAt(strategy.id)[field.name] ? 'mdi-eye' : 'mdi-eye-off') : undefined"
+                                @click:appendInner="isPwdVisibleAt(strategy.id)[field.name] = !isPwdVisibleAt(strategy.id)[field.name]"></v-text-field>
                         </v-form>
                     </v-window-item>
                 </v-window>

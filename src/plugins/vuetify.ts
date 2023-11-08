@@ -3,7 +3,7 @@ import "vuetify/styles";
 import { createVuetify } from "vuetify";
 import { md3 } from "vuetify/blueprints";
 import { generateThemeColors } from "./theme";
-import { VBtn } from "vuetify/lib/components/index.mjs";
+import { VBtn, VContainer } from "vuetify/lib/components/index.mjs";
 
 const themeIndependentVariables = {
     "hover-opacity": 0.08
@@ -82,5 +82,8 @@ export default createVuetify({
         VChip: {
             rounded: "pill"
         }
+    },
+    components: {
+        VContainer
     }
 });
