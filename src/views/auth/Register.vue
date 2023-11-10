@@ -21,18 +21,16 @@ import BaseLayout from "@/components/BaseLayout.vue";
 import GropiusCard from "@/components/GropiusCard.vue";
 import { toTypedSchema } from "@vee-validate/yup";
 import { useForm } from "vee-validate";
-import { ref } from "vue";
 import * as yup from "yup";
-import { OAuthRespose, TokenScope, UserDataSuggestionResponse, UserDataSuggestionStatus } from "./model";
-import { useRoute, useRouter } from "vue-router";
+import { TokenScope, UserDataSuggestionResponse, UserDataSuggestionStatus } from "./model";
+import { useRouter } from "vue-router";
 import { withErrorMessage } from "@/util/withErrorMessage";
 import axios from "axios";
-import { useAppStore } from "@/store/app"
-import { computedAsync, useMounted } from "@vueuse/core";
+import { useAppStore } from "@/store/app";
 import { wrapBinds } from "@/util/vuetifyFormConfig";
 import { onMounted } from "vue";
-const store = useAppStore()
-const router = useRouter()
+const store = useAppStore();
+const router = useRouter();
 
 const schema = toTypedSchema(
     yup.object().shape({
@@ -54,19 +52,30 @@ const email = defineBinds("email");
 
 onMounted(async () => {
     const recommendedData: UserDataSuggestionResponse = await withErrorMessage(
-        async () => (await axios.post("/api/login/login/registration/data-suggestion", {
-            register_token: store.accessToken
-        })).data,
+        async () =>
+            (
+                await axios.post("/api/login/login/registration/data-suggestion", {
+                    register_token: store.accessToken
+                })
+            ).data,
         "Could not prefill registration fields"
     );
 
     switch (recommendedData.status) {
         case UserDataSuggestionStatus.ALREADY_REGISTERED:
             router.replace({ name: "login" });
-            try { withErrorMessage(() => { throw new Error() }, "User already registered"); } catch (err) { }
+            try {
+                withErrorMessage(() => {
+                    throw new Error();
+                }, "User already registered");
+            } catch (err) {}
             break;
         case UserDataSuggestionStatus.USERNAME_TAKEN:
-            try { withErrorMessage(() => { throw new Error() }, "Username already taken. Choose another"); } catch (err) { }
+            try {
+                withErrorMessage(() => {
+                    throw new Error();
+                }, "Username already taken. Choose another");
+            } catch (err) {}
     }
     setValues({
         username: recommendedData.username ?? "",
@@ -75,29 +84,36 @@ onMounted(async () => {
     });
 });
 
-const register = handleSubmit(async state => {
-    console.log("On register")
+const register = handleSubmit(async (state) => {
+    console.log("On register");
     const registerRes = await withErrorMessage(
-        async () => (await axios.post("/api/login/login/registration/self-register",
-            {
+        async () =>
+            await axios.post("/api/login/login/registration/self-register", {
                 username: state.username,
                 displayName: state.displayName ?? state.username,
                 email: state.email,
                 register_token: store.accessToken
-            }
-        )),
+            }),
         "Could not register. Maybe try another username. Or re log in. I don't know because this is a generic error message. You might get details from the dev console. Or you might not. I don't know."
     );
     if (registerRes.data.result != "success") {
-        try { withErrorMessage(() => { throw new Error() }, "Registration failed"); } catch (err) { }
+        try {
+            withErrorMessage(() => {
+                throw new Error();
+            }, "Registration failed");
+        } catch (err) {}
     }
-    await withErrorMessage(() => store.forceTokenRefresh(), "Could not log in after registration")
+    await withErrorMessage(() => store.forceTokenRefresh(), "Could not log in after registration");
     if (store.validTokenScope.includes(TokenScope.BACKEND)) {
         router.replace({ name: "home" });
     } else {
-        try { withErrorMessage(() => { throw new Error() }, "Could not log in after registration"); } catch (err) { }
+        try {
+            withErrorMessage(() => {
+                throw new Error();
+            }, "Could not log in after registration");
+        } catch (err) {}
     }
-})
+});
 </script>
 <style scoped>
 .register-container {

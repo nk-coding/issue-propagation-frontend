@@ -33,30 +33,30 @@ export interface LoginStrategyVariable {
 }
 
 export interface LoginStrategy {
-    typeName: string,
-    canLoginRegister: boolean,
-    canSync: boolean,
-    needsRedirectFlow: boolean,
-    allowsImplicitSignup: boolean,
-    acceptsVariables: { [name: string]: LoginStrategyVariable },
+    typeName: string;
+    canLoginRegister: boolean;
+    canSync: boolean;
+    needsRedirectFlow: boolean;
+    allowsImplicitSignup: boolean;
+    acceptsVariables: { [name: string]: LoginStrategyVariable };
 }
 
 export interface LoginStrategyInstance {
-    id: string,
-    name: string,
-    type: string,
-    isLoginActive: boolean,
-    isSelfRegisterActive: boolean,
-    isSyncActive: boolean,
-    doesImplicitRegister: boolean,
+    id: string;
+    name: string;
+    type: string;
+    isLoginActive: boolean;
+    isSelfRegisterActive: boolean;
+    isSyncActive: boolean;
+    doesImplicitRegister: boolean;
 }
 
 export interface OAuthRespose {
-    access_token: string,
-    token_type: string,
-    expires_in: number,
-    refresh_token: string,
-    scope: string,
+    access_token: string;
+    token_type: string;
+    expires_in: number;
+    refresh_token: string;
+    scope: string;
 }
 
 export enum TokenScope {
@@ -64,14 +64,14 @@ export enum TokenScope {
     LOGIN_SERVICE_REGISTER = "login-register",
     BACKEND = "backend",
     REFRESH_TOKEN = "token",
-    NONE = "none",
+    NONE = "none"
 }
 
 export enum UserDataSuggestionStatus {
     ALREADY_REGISTERED = "already-registered",
     USERNAME_TAKEN = "username-taken",
     NO_DATA = "no-data",
-    OK = "ok",
+    OK = "ok"
 }
 
 export interface UserDataSuggestionResponse {

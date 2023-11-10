@@ -45,7 +45,7 @@ export const useAppStore = defineStore("app", {
             if (exp === undefined) {
                 return Infinity;
             }
-            const nbf = payload.nbf ?? payload.iat ?? (Date.now() / 1000);
+            const nbf = payload.nbf ?? payload.iat ?? Date.now() / 1000;
             return (exp - nbf) * 1000;
         }
     },
@@ -55,16 +55,19 @@ export const useAppStore = defineStore("app", {
             this.refreshToken = refreshToken;
         },
         async forceTokenRefresh(): Promise<void> {
-            console.log("Refreshing token")
+            console.log("Refreshing token");
             const tokenResponse: OAuthRespose = await withErrorMessage(
-                async () => (await axios.post("/api/login/authenticate/oauth/this-does-not-matter/token", {
-                    grant_type: "refresh_token",
-                    refresh_token: this.refreshToken,
-                    client_id: import.meta.env.VITE_LOGIN_OAUTH_CLIENT_ID
-                })).data,
+                async () =>
+                    (
+                        await axios.post("/api/login/authenticate/oauth/this-does-not-matter/token", {
+                            grant_type: "refresh_token",
+                            refresh_token: this.refreshToken,
+                            client_id: import.meta.env.VITE_LOGIN_OAUTH_CLIENT_ID
+                        })
+                    ).data,
                 "Could not refresh access token."
             );
-            console.log(tokenResponse)
+            console.log(tokenResponse);
             this.accessToken = tokenResponse.access_token;
             this.refreshToken = tokenResponse.refresh_token;
         },
@@ -73,7 +76,7 @@ export const useAppStore = defineStore("app", {
                 throw new Error("Not logged in");
             }
             const decoded = jwtDecode(this.accessToken);
-            if (decoded.exp != undefined && (decoded.exp * 1000) - Date.now() < 30 * 1000) {
+            if (decoded.exp != undefined && decoded.exp * 1000 - Date.now() < 30 * 1000) {
                 try {
                     await this.forceTokenRefresh();
                 } catch (err) {

@@ -146,7 +146,7 @@ const routes: RouteRecordRaw[] = [
         path: "/register",
         name: "register",
         component: () => import("../views/auth/Register.vue"),
-        beforeEnter: onRegisterEnter,
+        beforeEnter: onRegisterEnter
     }
 ];
 
@@ -155,6 +155,6 @@ const router = createRouter({
     routes
 });
 
-router.beforeEach(onAnyEnter)
+router.beforeEach(onAnyEnter);
 
 export default router;

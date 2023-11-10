@@ -17,7 +17,9 @@ import { useAppStore } from "@/store/app";
 
 export function registerPlugins(app: App) {
     loadFonts();
-    app.use(vuetify).use(router).use(pinia)
+    app.use(vuetify)
+        .use(router)
+        .use(pinia)
         .use(globalTimer, {
             initialListeners: [() => console.log("Tick")]
         });
@@ -30,5 +32,5 @@ export function registerPlugins(app: App) {
             globalTimer.setTime(duration / 10);
         }
         return store;
-    })
+    });
 }

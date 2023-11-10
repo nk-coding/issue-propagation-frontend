@@ -3,8 +3,7 @@
         <template #content>
             <GropiusCard class="login-container mt-5" v-if="store.isLoggedIn">
                 <p class="text-center text-body-1 my-2">Logged in as {{ me?.displayName }} ({{ me?.username }})</p>
-                <DefaultButton class="full-width-btn" @click="logout"> Logout
-                </DefaultButton>
+                <DefaultButton class="full-width-btn" @click="logout"> Logout </DefaultButton>
             </GropiusCard>
             <GropiusCard class="login-container mt-5" v-else>
                 <p class="text-center text-body-1 mt-2">{{ isLogin ? "Login to continue" : "Sign up to continue" }}</p>
@@ -15,15 +14,35 @@
                 </v-tabs>
                 <v-divider />
                 <v-window v-model="credentialTab">
-                    <v-window-item v-for="(strategy, index) in currentStrategies.credential" :key="index" :value="index"
-                        class="pt-4">
-                        <v-form>
-                            <v-text-field v-for="(field, idx) in isLogin ? strategy.loginFields : strategy.registerFields"
-                                :key="idx" :label="field.displayName ?? field.name"
+                    <v-window-item
+                        v-for="(strategy, index) in currentStrategies.credential"
+                        :key="index"
+                        :value="index"
+                        class="pt-4"
+                    >
+                        <v-form @submit.prevent="submitForm">
+                            <v-text-field
+                                v-for="(field, idx) in isLogin ? strategy.loginFields : strategy.registerFields"
+                                :key="idx"
+                                :label="field.displayName ?? field.name"
                                 v-model="formDataAt(strategy.id)[field.name]"
-                                :type="(isPwdVisibleAt(strategy.id)[field.name] || field.type != 'password') ? 'text' : 'password'"
-                                :append-inner-icon="field.type == 'password' ? (isPwdVisibleAt(strategy.id)[field.name] ? 'mdi-eye' : 'mdi-eye-off') : undefined"
-                                @click:appendInner="isPwdVisibleAt(strategy.id)[field.name] = !isPwdVisibleAt(strategy.id)[field.name]"></v-text-field>
+                                :type="
+                                    isPwdVisibleAt(strategy.id)[field.name] || field.type != 'password'
+                                        ? 'text'
+                                        : 'password'
+                                "
+                                :append-inner-icon="
+                                    field.type == 'password'
+                                        ? isPwdVisibleAt(strategy.id)[field.name]
+                                            ? 'mdi-eye'
+                                            : 'mdi-eye-off'
+                                        : undefined
+                                "
+                                @click:appendInner="
+                                    isPwdVisibleAt(strategy.id)[field.name] = !isPwdVisibleAt(strategy.id)[field.name]
+                                "
+                            ></v-text-field>
+                            <input type="submit" hidden />
                         </v-form>
                     </v-window-item>
                 </v-window>
@@ -39,8 +58,14 @@
                     </p>
                 </div>
                 <v-divider class="mt-4 mb-3" />
-                <DefaultButton v-for="strategy in currentStrategies.redirect" :key="strategy.id" class="full-width-btn my-2"
-                    variant="outlined" density="default" @click="redirect(strategy)">
+                <DefaultButton
+                    v-for="strategy in currentStrategies.redirect"
+                    :key="strategy.id"
+                    class="full-width-btn my-2"
+                    variant="outlined"
+                    density="default"
+                    @click="redirect(strategy)"
+                >
                     {{ `${isLogin ? "Login" : "Sign up"} with ${strategy.name}` }}
                 </DefaultButton>
             </GropiusCard>
@@ -72,7 +97,6 @@ import {
     LoginStrategyInstance,
     OAuthRespose
 } from "./model";
-import { testStrategies } from "./testData";
 import GropiusCard from "@/components/GropiusCard.vue";
 import { withErrorMessage } from "@/util/withErrorMessage";
 import { asyncComputed, computedAsync } from "@vueuse/core";
@@ -87,7 +111,7 @@ const isLogin = ref(true);
 const allowModeSwitch = ref(true);
 //const strategies = ref<StrategyInstance[]>(testStrategies);
 
-const loadingStrategies = ref(true)
+const loadingStrategies = ref(true);
 const strategies = asyncComputed(
     async () => {
         const strategies: LoginStrategy[] = await withErrorMessage(
@@ -98,26 +122,30 @@ const strategies = asyncComputed(
             async () => (await axios.get(`/api/login/login/strategyInstance/`, {})).data,
             "Could not fetch available strategy instances"
         );
-        const strategiesByName = new Map(strategies.map(s => [s.typeName, s]));
-        const redirectInstances = instances.filter(instance => strategiesByName.get(instance.type)?.needsRedirectFlow)
-            .map(instance => ({
-                ...instance,
-                type: "redirect",
-            } satisfies RedirectStrategyInstance));
+        const strategiesByName = new Map(strategies.map((s) => [s.typeName, s]));
+        const redirectInstances = instances
+            .filter((instance) => strategiesByName.get(instance.type)?.needsRedirectFlow)
+            .map(
+                (instance) =>
+                    ({
+                        ...instance,
+                        type: "redirect"
+                    }) satisfies RedirectStrategyInstance
+            );
 
         const credentialInstances = instances
-            .filter(instance => Object.keys(strategiesByName.get(instance.type)?.acceptsVariables ?? {}).length > 0)
-            .map(instance => {
+            .filter((instance) => Object.keys(strategiesByName.get(instance.type)?.acceptsVariables ?? {}).length > 0)
+            .map((instance) => {
                 const strategy = strategiesByName.get(instance.type);
-                const fields = Object.values(strategy?.acceptsVariables ?? {})
+                const fields = Object.values(strategy?.acceptsVariables ?? {});
                 return {
                     ...instance,
                     type: "credential",
                     loginFields: fields,
-                    registerFields: fields,
-                } satisfies CredentialStrategyInstance
+                    registerFields: fields
+                } satisfies CredentialStrategyInstance;
             });
-        return [...redirectInstances, ...credentialInstances]
+        return [...redirectInstances, ...credentialInstances];
     },
     [],
     { shallow: false, evaluating: loadingStrategies }
@@ -138,16 +166,18 @@ const afterSelectSync = ref<undefined | ((sync: boolean) => void)>();
 const formData = ref<Record<string, Record<string, string>>>({});
 
 const client = useClient();
-const me: Ref<any> = computedAsync(async () => {
-    if (!store.isLoggedIn) {
+const me: Ref<any> = computedAsync(
+    async () => {
+        if (!store.isLoggedIn) {
+            return undefined;
+        }
+        const meResponse = await withErrorMessage(() => client.getCurrentUser(), "Could not load user data");
+        return meResponse.currentUser;
         return undefined;
-    }
-    const meResponse = await withErrorMessage(
-        () => client.getCurrentUser(),
-        "Could not load user data");
-    return meResponse.currentUser
-    return undefined
-}, undefined, { shallow: false });
+    },
+    undefined,
+    { shallow: false }
+);
 
 function formDataAt(id: string) {
     if (!(id in formData.value)) {
@@ -204,18 +234,24 @@ function redirect(strategy: RedirectStrategyInstance) {
 
 async function submitFormLogin(strategyInstance: CredentialStrategyInstance, formData: Record<string, string>) {
     const loginResult: OAuthRespose = await withErrorMessage(
-        async () => (await axios.post(`/api/login/authenticate/oauth/${strategyInstance.id}/token`,
-            {
-                ...formData,
-                grant_type: "password",
-                client_id: import.meta.env.VITE_LOGIN_OAUTH_CLIENT_ID
-            }
-        )).data,
-        "Could not log in. Error Messgage see console, todo: better error logging");
+        async () =>
+            (
+                await axios.post(`/api/login/authenticate/oauth/${strategyInstance.id}/token`, {
+                    ...formData,
+                    grant_type: "password",
+                    client_id: import.meta.env.VITE_LOGIN_OAUTH_CLIENT_ID
+                })
+            ).data,
+        "Could not log in. Error Messgage see console, todo: better error logging"
+    );
     const newRoute = await handleOAuthResponse(loginResult);
     if (newRoute === true) {
     } else if (newRoute === false) {
-        try { withErrorMessage(() => { throw new Error() }, "Unknown error during login"); } catch (err) { }
+        try {
+            withErrorMessage(() => {
+                throw new Error();
+            }, "Unknown error during login");
+        } catch (err) {}
     } else {
         router.push(newRoute);
     }
@@ -232,8 +268,9 @@ function submitFormRegister(
 
 function redirectLogin(strategyInstance: RedirectStrategyInstance) {
     // TODO: add oauth state
-    window.location.href = `/api/login/authenticate/oauth/${strategyInstance.id}/authorize/login?client_id=${import.meta.env.VITE_LOGIN_OAUTH_CLIENT_ID}`
-
+    window.location.href = `/api/login/authenticate/oauth/${strategyInstance.id}/authorize/login?client_id=${
+        import.meta.env.VITE_LOGIN_OAUTH_CLIENT_ID
+    }`;
 }
 
 function redirectRegister(strategyInstance: RedirectStrategyInstance, sync: boolean) {
