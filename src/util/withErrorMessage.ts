@@ -1,10 +1,17 @@
 import { useAppStore } from "@/store/app";
 
-export async function withErrorMessage<T>(action: () => Promise<T>, message: string): Promise<T> {
+export async function withErrorMessage<T>(
+    action: () => Promise<T>,
+    message: string | ((error: unknown) => string)
+): Promise<T> {
     try {
         return await action();
     } catch (error) {
-        pushErrorMessage(message);
+        if (typeof message === "function") {
+            pushErrorMessage(message(error));
+        } else {
+            pushErrorMessage(message);
+        }
         console.error(error);
         throw error;
     }

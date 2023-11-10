@@ -57,17 +57,19 @@
                         <v-btn variant="text" density="comfortable" class="px-0" @click="toggleIsLogin">Login</v-btn>
                     </p>
                 </div>
-                <v-divider class="mt-4 mb-3" />
-                <DefaultButton
-                    v-for="strategy in currentStrategies.redirect"
-                    :key="strategy.id"
-                    class="full-width-btn my-2"
-                    variant="outlined"
-                    density="default"
-                    @click="redirect(strategy)"
-                >
-                    {{ `${isLogin ? "Login" : "Sign up"} with ${strategy.name}` }}
-                </DefaultButton>
+                <template v-if="currentStrategies.redirect.length > 0">
+                    <v-divider class="mt-4 mb-3" />
+                    <DefaultButton
+                        v-for="strategy in currentStrategies.redirect"
+                        :key="strategy.id"
+                        class="full-width-btn my-2"
+                        variant="outlined"
+                        density="default"
+                        @click="redirect(strategy)"
+                    >
+                        {{ `${isLogin ? "Login" : "Sign up"} with ${strategy.name}` }}
+                    </DefaultButton>
+                </template>
             </GropiusCard>
             <v-dialog v-model="showSyncDialog" width="auto">
                 <v-card color="surface-elevated-3" rounded="lger" class="pa-3" elevation="0">
@@ -98,7 +100,7 @@ import {
     OAuthRespose
 } from "./model";
 import GropiusCard from "@/components/GropiusCard.vue";
-import { withErrorMessage } from "@/util/withErrorMessage";
+import { pushErrorMessage, withErrorMessage } from "@/util/withErrorMessage";
 import { asyncComputed, computedAsync } from "@vueuse/core";
 import axios from "axios";
 import router from "@/router";
@@ -164,6 +166,7 @@ const credentialTab = ref(0);
 const showSyncDialog = ref(false);
 const afterSelectSync = ref<undefined | ((sync: boolean) => void)>();
 const formData = ref<Record<string, Record<string, string>>>({});
+const isPwdVisible = ref<Record<string, Record<string, boolean>>>({});
 
 const client = useClient();
 const me: Ref<any> = computedAsync(
@@ -186,7 +189,6 @@ function formDataAt(id: string) {
     return formData.value[id];
 }
 
-const isPwdVisible = ref<Record<string, Record<string, boolean>>>({});
 function isPwdVisibleAt(id: string) {
     if (!(id in isPwdVisible.value)) {
         isPwdVisible.value[id] = {};
@@ -197,6 +199,8 @@ function isPwdVisibleAt(id: string) {
 function toggleIsLogin() {
     isLogin.value = !isLogin.value;
     credentialTab.value = 0;
+    formData.value = {};
+    isPwdVisible.value = {};
 }
 
 function submitForm() {
@@ -247,11 +251,7 @@ async function submitFormLogin(strategyInstance: CredentialStrategyInstance, for
     const newRoute = await handleOAuthResponse(loginResult);
     if (newRoute === true) {
     } else if (newRoute === false) {
-        try {
-            withErrorMessage(() => {
-                throw new Error();
-            }, "Unknown error during login");
-        } catch (err) {}
+        pushErrorMessage("Unknown error during login")
     } else {
         router.push(newRoute);
     }

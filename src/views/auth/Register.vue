@@ -24,7 +24,7 @@ import { useForm } from "vee-validate";
 import * as yup from "yup";
 import { TokenScope, UserDataSuggestionResponse, UserDataSuggestionStatus } from "./model";
 import { useRouter } from "vue-router";
-import { withErrorMessage } from "@/util/withErrorMessage";
+import { pushErrorMessage, withErrorMessage } from "@/util/withErrorMessage";
 import axios from "axios";
 import { useAppStore } from "@/store/app";
 import { wrapBinds } from "@/util/vuetifyFormConfig";
@@ -64,18 +64,11 @@ onMounted(async () => {
     switch (recommendedData.status) {
         case UserDataSuggestionStatus.ALREADY_REGISTERED:
             router.replace({ name: "login" });
-            try {
-                withErrorMessage(() => {
-                    throw new Error();
-                }, "User already registered");
-            } catch (err) {}
+            pushErrorMessage("User already registered");
             break;
         case UserDataSuggestionStatus.USERNAME_TAKEN:
-            try {
-                withErrorMessage(() => {
-                    throw new Error();
-                }, "Username already taken. Choose another");
-            } catch (err) {}
+            pushErrorMessage("Username already taken. Choose another");
+            break;
     }
     setValues({
         username: recommendedData.username ?? "",
@@ -97,21 +90,13 @@ const register = handleSubmit(async (state) => {
         "Could not register. Maybe try another username. Or re log in. I don't know because this is a generic error message. You might get details from the dev console. Or you might not. I don't know."
     );
     if (registerRes.data.result != "success") {
-        try {
-            withErrorMessage(() => {
-                throw new Error();
-            }, "Registration failed");
-        } catch (err) {}
+        pushErrorMessage("Registration failed");
     }
     await withErrorMessage(() => store.forceTokenRefresh(), "Could not log in after registration");
     if (store.validTokenScope.includes(TokenScope.BACKEND)) {
         router.replace({ name: "home" });
     } else {
-        try {
-            withErrorMessage(() => {
-                throw new Error();
-            }, "Could not log in after registration");
-        } catch (err) {}
+        pushErrorMessage("Could not log in after registration");
     }
 });
 </script>
