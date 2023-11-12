@@ -8,7 +8,6 @@ export async function handleOAuthResponse(
     tokenResponse: OAuthRespose,
     store = useAppStore()
 ): Promise<RouteLocationRaw | boolean> {
-    console.log(tokenResponse);
     store.setNewTokenPair(tokenResponse.access_token, tokenResponse.refresh_token);
 
     const scopes = tokenResponse.scope.split(" ");
@@ -42,6 +41,12 @@ export async function onLoginEnter(
 ): Promise<RouteLocationRaw | boolean> {
     const oauthCode = to.query["code"] ?? "";
     const store = useAppStore();
+    if (await store.isLoggedIn()) {
+        return {
+            name: "logout",
+            replace: true
+        };
+    }
     if (oauthCode !== undefined && oauthCode.length > 0) {
         try {
             const tokenResponse: OAuthRespose = await withErrorMessage(

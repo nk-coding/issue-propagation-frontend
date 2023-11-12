@@ -17,12 +17,7 @@ import { useAppStore } from "@/store/app";
 
 export function registerPlugins(app: App) {
     loadFonts();
-    app.use(vuetify)
-        .use(router)
-        .use(pinia)
-        .use(globalTimer, {
-            initialListeners: [() => console.log("Tick")]
-        });
+    app.use(vuetify).use(router).use(pinia).use(globalTimer, {});
 
     globalTimer.addListener(async (state: ReturnType<typeof useAppStore>) => {
         const store = state ?? useAppStore();

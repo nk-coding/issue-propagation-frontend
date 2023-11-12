@@ -27,7 +27,6 @@ class GlobalTimer {
         }
 
         if (this.timerHandle === undefined) {
-            console.log("Setting timer with interval ", options.interval);
             this.timerHandle = setInterval(this.onTimer.bind(this), options.interval ?? 1000);
         }
     }
@@ -39,7 +38,10 @@ class GlobalTimer {
                 const response = listener(data.state);
                 if (response instanceof Promise) {
                     data.currentPromise = response;
-                    response.then((newState) => (data.state = newState));
+                    response.then((newState) => {
+                        data.state = newState;
+                        data.currentPromise = undefined;
+                    });
                 } else {
                     data.state = response;
                 }
@@ -66,7 +68,6 @@ class GlobalTimer {
             throw new Error("Timer time must be bigger than 0");
         }
         if (this.timerHandle !== undefined) {
-            console.log("Setting interval to " + ms);
             clearInterval(this.timerHandle);
             this.timerHandle = setInterval(this.onTimer.bind(this), ms);
         }

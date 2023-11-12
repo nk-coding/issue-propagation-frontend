@@ -143,6 +143,11 @@ const routes: RouteRecordRaw[] = [
         beforeEnter: onLoginEnter
     },
     {
+        path: "/logout",
+        name: "logout",
+        component: () => import("../views/auth/Logout.vue")
+    },
+    {
         path: "/register",
         name: "register",
         component: () => import("../views/auth/Register.vue"),

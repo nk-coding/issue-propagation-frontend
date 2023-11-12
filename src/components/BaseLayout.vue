@@ -132,7 +132,7 @@ function updateColorMode() {
 }
 
 function logout() {
-    store.setNewTokenPair(undefined, undefined);
+    store.setNewTokenPair("", "");
     router.push({
         name: "login"
     });

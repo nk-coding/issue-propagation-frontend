@@ -1,7 +1,7 @@
 <template>
     <BaseLayout>
         <template #content>
-            <GropiusCard class="login-container mt-5">
+            <GropiusCard class="login-container mt-5" v-if="!loadingStrategies">
                 <p class="text-center text-body-1 mt-2">{{ isLogin ? "Login to continue" : "Sign up to continue" }}</p>
                 <v-tabs v-model="credentialTab" align-tabs="center">
                     <v-tab v-for="(strategy, index) in currentStrategies.credential" :key="index" :value="index">
@@ -42,7 +42,7 @@
                         </v-form>
                     </v-window-item>
                 </v-window>
-                <DefaultButton class="full-width-btn" @click="submitForm"> Continue </DefaultButton>
+                <DefaultButton class="full-width" @click="submitForm"> Continue </DefaultButton>
                 <div v-if="allowModeSwitch" class="mt-2">
                     <p v-if="isLogin">
                         <span class="text-middle">Don't have an account?</span>
@@ -58,7 +58,7 @@
                     <DefaultButton
                         v-for="strategy in currentStrategies.redirect"
                         :key="strategy.id"
-                        class="full-width-btn my-2"
+                        class="full-width my-2"
                         variant="outlined"
                         density="default"
                         @click="redirect(strategy)"
@@ -85,8 +85,7 @@
 </template>
 <script setup lang="ts">
 import BaseLayout from "@/components/BaseLayout.vue";
-import { Ref, computed } from "vue";
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import {
     CredentialStrategyInstance,
     GroupedStrategyInstances,
@@ -97,17 +96,12 @@ import {
 } from "./model";
 import GropiusCard from "@/components/GropiusCard.vue";
 import { pushErrorMessage, withErrorMessage } from "@/util/withErrorMessage";
-import { asyncComputed, computedAsync } from "@vueuse/core";
+import { asyncComputed } from "@vueuse/core";
 import axios from "axios";
 import router from "@/router";
 import { handleOAuthResponse } from "../../router/navigationGuards";
-import { useAppStore } from "@/store/app";
-import { useClient } from "@/graphql/client";
-const store = useAppStore();
-
 const isLogin = ref(true);
 const allowModeSwitch = ref(true);
-//const strategies = ref<StrategyInstance[]>(testStrategies);
 
 const loadingStrategies = ref(true);
 const strategies = asyncComputed(
@@ -163,8 +157,6 @@ const showSyncDialog = ref(false);
 const afterSelectSync = ref<undefined | ((sync: boolean) => void)>();
 const formData = ref<Record<string, Record<string, string>>>({});
 const isPwdVisible = ref<Record<string, Record<string, boolean>>>({});
-
-const client = useClient();
 
 function formDataAt(id: string) {
     if (!(id in formData.value)) {
@@ -247,7 +239,6 @@ function submitFormRegister(
     sync: boolean
 ) {
     // TODO: implement
-    console.log(formData);
 }
 
 function redirectLogin(strategyInstance: RedirectStrategyInstance) {
@@ -259,17 +250,12 @@ function redirectLogin(strategyInstance: RedirectStrategyInstance) {
 
 function redirectRegister(strategyInstance: RedirectStrategyInstance, sync: boolean) {
     // TODO: implement
-    console.log(strategyInstance);
 }
 </script>
 <style scoped>
 .login-container {
     max-width: 500px;
     margin: 0 auto;
-}
-
-.full-width-btn {
-    width: 100%;
 }
 
 .text-middle {

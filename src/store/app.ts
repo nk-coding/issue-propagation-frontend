@@ -11,8 +11,8 @@ import { ClientReturnType, useClient } from "@/graphql/client";
 export const useAppStore = defineStore("app", {
     state: () => ({
         user: undefined as undefined | ClientReturnType<"getCurrentUser">["currentUser"],
-        accessToken: useLocalStorage<string | undefined>("accessToken", undefined),
-        refreshToken: useLocalStorage<string | undefined>("refreshToken", undefined),
+        accessToken: useLocalStorage<string>("accessToken", ""),
+        refreshToken: useLocalStorage<string>("refreshToken", ""),
         errors: [] as string[]
     }),
     getters: {
@@ -30,7 +30,7 @@ export const useAppStore = defineStore("app", {
         }
     },
     actions: {
-        async setNewTokenPair(accessToken: string | undefined, refreshToken: string | undefined): Promise<void> {
+        async setNewTokenPair(accessToken: string, refreshToken: string): Promise<void> {
             this.accessToken = accessToken;
             this.refreshToken = refreshToken;
             await this.validateUser();
@@ -44,7 +44,6 @@ export const useAppStore = defineStore("app", {
             }
         },
         async forceTokenRefresh(): Promise<void> {
-            console.log("Refreshing token");
             const tokenResponse: OAuthRespose = await withErrorMessage(
                 async () =>
                     (
@@ -56,17 +55,11 @@ export const useAppStore = defineStore("app", {
                     ).data,
                 "Could not refresh access token."
             );
-            console.log(tokenResponse);
             this.accessToken = tokenResponse.access_token;
             this.refreshToken = tokenResponse.refresh_token;
         },
-        async getAccessToken(redirect: boolean = true): Promise<string | undefined> {
+        async getAccessToken(): Promise<string | undefined> {
             if (!this.refreshToken || !this.accessToken) {
-                if (redirect) {
-                    useRouter().push({
-                        name: "login"
-                    });
-                }
                 return undefined;
             }
             const decoded = jwtDecode(this.accessToken);
@@ -74,11 +67,6 @@ export const useAppStore = defineStore("app", {
                 try {
                     await this.forceTokenRefresh();
                 } catch (err) {
-                    if (redirect) {
-                        useRouter().push({
-                            name: "login"
-                        });
-                    }
                     return undefined;
                 }
             }
@@ -88,7 +76,7 @@ export const useAppStore = defineStore("app", {
             return (await this.getValidTokenScopes()).includes(TokenScope.BACKEND);
         },
         async getValidTokenScopes(): Promise<TokenScope[]> {
-            const token = await this.getAccessToken(false);
+            const token = await this.getAccessToken();
             if (token == undefined) {
                 return [];
             }

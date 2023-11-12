@@ -78,7 +78,6 @@ onMounted(async () => {
 });
 
 const register = handleSubmit(async (state) => {
-    console.log("On register");
     const registerRes = await withErrorMessage(
         async () =>
             await axios.post("/api/login/login/registration/self-register", {
