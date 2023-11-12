@@ -1,5 +1,5 @@
 import { useAppStore } from "@/store/app";
-import { withErrorMessage } from "@/util/withErrorMessage";
+import { pushErrorMessage, withErrorMessage } from "@/util/withErrorMessage";
 import axios from "axios";
 import { RouteLocationNormalized, NavigationGuardNext, RouteLocationRaw } from "vue-router";
 import { OAuthRespose, TokenScope } from "../views/auth/model";
@@ -63,7 +63,7 @@ export async function onLoginEnter(
                 replace: true
             };
         }
-    } else if (store.validTokenScope.includes(TokenScope.LOGIN_SERVICE_REGISTER)) {
+    } else if ((await store.getValidTokenScopes()).includes(TokenScope.LOGIN_SERVICE_REGISTER)) {
         return {
             name: "register",
             replace: true
@@ -76,7 +76,7 @@ export async function onRegisterEnter(
     to: RouteLocationNormalized,
     from: RouteLocationNormalized
 ): Promise<RouteLocationRaw | boolean> {
-    const tokenScope = useAppStore().validTokenScope;
+    const tokenScope = await useAppStore().getValidTokenScopes();
     if (!tokenScope.includes(TokenScope.LOGIN_SERVICE_REGISTER)) {
         return {
             name: "login",
@@ -93,18 +93,17 @@ export async function onAnyEnter(
     if (to.name == "login" || to.name == "register") {
         return true;
     }
-    if (!useAppStore().isLoggedIn) {
+    const store = useAppStore();
+    if (!(await store.isLoggedIn())) {
         if (from.name == "login" || to.redirectedFrom?.name == "login") {
-            try {
-                withErrorMessage(() => {
-                    throw new Error();
-                }, "Redirect loop. This should not happen.");
-            } catch (err) {}
+            pushErrorMessage("Redirect loop. This should not happen.");
             return false;
         }
         return {
             name: "login"
         };
+    } else {
+        store.validateUser();
     }
     return true;
 }

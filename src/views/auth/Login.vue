@@ -1,11 +1,7 @@
 <template>
     <BaseLayout>
         <template #content>
-            <GropiusCard class="login-container mt-5" v-if="store.isLoggedIn">
-                <p class="text-center text-body-1 my-2">Logged in as {{ me?.displayName }} ({{ me?.username }})</p>
-                <DefaultButton class="full-width-btn" @click="logout"> Logout </DefaultButton>
-            </GropiusCard>
-            <GropiusCard class="login-container mt-5" v-else>
+            <GropiusCard class="login-container mt-5">
                 <p class="text-center text-body-1 mt-2">{{ isLogin ? "Login to continue" : "Sign up to continue" }}</p>
                 <v-tabs v-model="credentialTab" align-tabs="center">
                     <v-tab v-for="(strategy, index) in currentStrategies.credential" :key="index" :value="index">
@@ -169,18 +165,6 @@ const formData = ref<Record<string, Record<string, string>>>({});
 const isPwdVisible = ref<Record<string, Record<string, boolean>>>({});
 
 const client = useClient();
-const me: Ref<any> = computedAsync(
-    async () => {
-        if (!store.isLoggedIn) {
-            return undefined;
-        }
-        const meResponse = await withErrorMessage(() => client.getCurrentUser(), "Could not load user data");
-        return meResponse.currentUser;
-        return undefined;
-    },
-    undefined,
-    { shallow: false }
-);
 
 function formDataAt(id: string) {
     if (!(id in formData.value)) {
@@ -251,7 +235,7 @@ async function submitFormLogin(strategyInstance: CredentialStrategyInstance, for
     const newRoute = await handleOAuthResponse(loginResult);
     if (newRoute === true) {
     } else if (newRoute === false) {
-        pushErrorMessage("Unknown error during login")
+        pushErrorMessage("Unknown error during login");
     } else {
         router.push(newRoute);
     }
@@ -276,10 +260,6 @@ function redirectLogin(strategyInstance: RedirectStrategyInstance) {
 function redirectRegister(strategyInstance: RedirectStrategyInstance, sync: boolean) {
     // TODO: implement
     console.log(strategyInstance);
-}
-
-function logout() {
-    store.setNewTokenPair("", "");
 }
 </script>
 <style scoped>

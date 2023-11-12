@@ -27,10 +27,31 @@
                 </v-tabs>
             </slot>
             <v-spacer />
-            <div class="side-bar-width">
-                <v-btn icon variant="outlined" size="small" class="mx-auto d-flex" @click="toggleDarkMode()">
-                    <v-icon :icon="lightMode ? 'mdi-weather-sunny' : 'mdi-weather-night'" />
+            <div class="mr-5">
+                <v-btn icon variant="tonal" size="small" @click="toggleDarkMode()">
+                    <v-icon :icon="lightMode ? 'mdi-weather-sunny' : 'mdi-weather-night'" size="large" />
                     <v-tooltip activator="parent" location="bottom"> Toggle light/dark mode </v-tooltip>
+                </v-btn>
+                <v-btn v-if="store.user != undefined" icon size="small" variant="text" class="ml-3">
+                    <img :src="store.user.avatar" class="avatar rounded-circle" />
+                    <v-menu activator="parent">
+                        <v-card
+                            color="surface-elevated-3"
+                            rounded="lger"
+                            class="mt-2 pa-3 d-flex flex-column align-center account-card"
+                            elevation="4"
+                        >
+                            <img :src="store.user.avatar" class="large-avatar rounded-circle mb-2" />
+                            <p class="text-h5 text-on-surface text-ellipses">Hi {{ store.user.displayName }}</p>
+                            <p class="text-medium-emphasis">
+                                {{ store.user.username }}
+                            </p>
+                            <p v-if="store.user.email" class="text-medium-emphasis text-ellipses">
+                                {{ store.user.email }}
+                            </p>
+                            <DefaultButton variant="tonal" class="mt-3 full-width text-ellipses" @click="logout">Logout</DefaultButton>
+                        </v-card>
+                    </v-menu>
                 </v-btn>
             </div>
         </div>
@@ -59,6 +80,7 @@ import { RouteLocationRaw, useRouter } from "vue-router";
 import { useTheme } from "vuetify/lib/framework.mjs";
 import SideBar, { SideBarItem } from "./SideBar.vue";
 import ErrorSnackbar from "./ErrorSnackbar.vue";
+import { useAppStore } from "@/store/app";
 
 export type TitleSegment = {
     path: RouteLocationRaw;
@@ -97,6 +119,7 @@ const props = defineProps({
 
 const theme = useTheme();
 const lightMode = useLocalStorage("lightMode", true);
+const store = useAppStore();
 const router = useRouter();
 
 function toggleDarkMode() {
@@ -106,6 +129,13 @@ function toggleDarkMode() {
 
 function updateColorMode() {
     theme.global.name.value = lightMode.value ? "light" : "dark";
+}
+
+function logout() {
+    store.setNewTokenPair(undefined, undefined);
+    router.push({
+        name: "login"
+    });
 }
 
 updateColorMode();
@@ -141,5 +171,26 @@ updateColorMode();
 
 .main-sheet {
     overflow: hidden;
+}
+
+.avatar {
+    width: 100%;
+    height: 100%;
+}
+
+.large-avatar {
+    width: 80px;
+    height: 80px;
+}
+
+.account-card {
+    width: 300px;
+    overflow: hidden !important;
+}
+
+.text-ellipses {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%;
 }
 </style>

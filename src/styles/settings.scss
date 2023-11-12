@@ -19,6 +19,9 @@
         'subtitle-1': (
             'weight': 500
         ),
+    ),
+    $icon-sizes: (
+        "x-large": 2.5em
     )
 );
 
@@ -29,8 +32,7 @@ $avatar-sizes: (
     "small": 1.25em,
     "default": 1.5em,
     "large": 1.75em,
-    "x-large": 2em,
-    "xx-large": 2.5em
+    "x-large": 2.5em
 );
 
 $timeline-offset: 80px;

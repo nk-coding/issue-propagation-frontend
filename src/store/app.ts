@@ -1,43 +1,23 @@
 // Utilities
 import { defineStore } from "pinia";
 import axios from "axios";
-import { DefaultUserInfoFragment } from "@/graphql/generated";
 import { useLocalStorage } from "@vueuse/core";
-import { Lock } from "@/util/lock";
 import { jwtDecode } from "jwt-decode";
 import { withErrorMessage } from "@/util/withErrorMessage";
 import { useRouter } from "vue-router";
 import { OAuthRespose, TokenScope } from "@/views/auth/model";
-import { shallowReactive } from "vue";
+import { ClientReturnType, useClient } from "@/graphql/client";
 
 export const useAppStore = defineStore("app", {
     state: () => ({
-        user: undefined as undefined | DefaultUserInfoFragment,
-        accessToken: useLocalStorage("accessToken", ""),
-        refreshToken: useLocalStorage("refreshToken", ""),
+        user: undefined as undefined | ClientReturnType<"getCurrentUser">["currentUser"],
+        accessToken: useLocalStorage<string | undefined>("accessToken", undefined),
+        refreshToken: useLocalStorage<string | undefined>("refreshToken", undefined),
         errors: [] as string[]
     }),
     getters: {
-        isLoggedIn(): boolean {
-            return this.validTokenScope.includes(TokenScope.BACKEND);
-        },
-        validTokenScope(): TokenScope[] {
-            if (!this.accessToken || this.accessToken.length <= 0) {
-                return [];
-            }
-            const payload = jwtDecode(this.accessToken);
-            const now = Date.now() / 1000;
-            if ((payload.exp ?? now) < now || (payload.nbf ?? now) > now) {
-                return [];
-            }
-            const audience = payload.aud;
-            if (typeof audience == "string") {
-                return [audience as TokenScope];
-            }
-            return audience as TokenScope[];
-        },
         tokenValidityDuration(): number {
-            if (!this.accessToken || this.accessToken.length <= 0) {
+            if (!this.accessToken) {
                 return 0;
             }
             const payload = jwtDecode(this.accessToken);
@@ -50,9 +30,18 @@ export const useAppStore = defineStore("app", {
         }
     },
     actions: {
-        async setNewTokenPair(accessToken: string, refreshToken: string): Promise<void> {
+        async setNewTokenPair(accessToken: string | undefined, refreshToken: string | undefined): Promise<void> {
             this.accessToken = accessToken;
             this.refreshToken = refreshToken;
+            await this.validateUser();
+        },
+        async validateUser(): Promise<void> {
+            if (!this.accessToken) {
+                this.user = undefined;
+            } else {
+                const client = useClient();
+                this.user = (await client.getCurrentUser()).currentUser ?? undefined;
+            }
         },
         async forceTokenRefresh(): Promise<void> {
             console.log("Refreshing token");
@@ -71,21 +60,44 @@ export const useAppStore = defineStore("app", {
             this.accessToken = tokenResponse.access_token;
             this.refreshToken = tokenResponse.refresh_token;
         },
-        async getAccessToken(): Promise<string | undefined> {
-            if (!this.refreshToken || this.refreshToken.length <= 0) {
-                throw new Error("Not logged in");
+        async getAccessToken(redirect: boolean = true): Promise<string | undefined> {
+            if (!this.refreshToken || !this.accessToken) {
+                if (redirect) {
+                    useRouter().push({
+                        name: "login"
+                    });
+                }
+                return undefined;
             }
             const decoded = jwtDecode(this.accessToken);
             if (decoded.exp != undefined && decoded.exp * 1000 - Date.now() < 30 * 1000) {
                 try {
                     await this.forceTokenRefresh();
                 } catch (err) {
-                    useRouter().push({
-                        name: "login"
-                    });
+                    if (redirect) {
+                        useRouter().push({
+                            name: "login"
+                        });
+                    }
+                    return undefined;
                 }
             }
             return this.accessToken!;
+        },
+        async isLoggedIn(): Promise<boolean> {
+            return (await this.getValidTokenScopes()).includes(TokenScope.BACKEND);
+        },
+        async getValidTokenScopes(): Promise<TokenScope[]> {
+            const token = await this.getAccessToken(false);
+            if (token == undefined) {
+                return [];
+            }
+            const payload = jwtDecode(token);
+            const audience = payload.aud;
+            if (typeof audience == "string") {
+                return [audience as TokenScope];
+            }
+            return audience as TokenScope[];
         },
         pushError(error: string) {
             this.errors = [...this.errors, error];

@@ -8,7 +8,7 @@
                         <v-text-field v-if="editTitle" v-model="editTitleText" hide-details autofocus class="mr-3" />
                         <div v-else class="text-h4 mr-3">{{ issue.title }}</div>
                         <IconButton
-                            v-if="!!issue.manageIssues && store.isLoggedIn && !editTitle"
+                            v-if="!!issue.manageIssues && !editTitle"
                             @click="startEditTitle"
                         >
                             <v-icon icon="mdi-pencil" />
@@ -38,7 +38,7 @@
                 />
                 <TimelineBreak />
                 <Comment
-                    v-if="issue.comment && store.isLoggedIn"
+                    v-if="issue.comment"
                     ref="newComment"
                     :item="newCommentItem"
                     :new-comment="true"
@@ -51,7 +51,7 @@
             <v-sheet class="sidebar ml-8 mr-3 mb-3" color="surface-container" rounded="xl">
                 <EditableCompartment
                     name="Type"
-                    :editable="!!issue.manageIssues && store.isLoggedIn"
+                    :editable="!!issue.manageIssues"
                     :close-hierarchy="false"
                 >
                     <template #display>
@@ -73,7 +73,7 @@
                 <v-divider />
                 <EditableCompartment
                     name="State"
-                    :editable="!!issue.manageIssues && store.isLoggedIn"
+                    :editable="!!issue.manageIssues"
                     :close-hierarchy="false"
                 >
                     <template #display>
@@ -93,7 +93,7 @@
                     </template>
                 </EditableCompartment>
                 <v-divider />
-                <EditableCompartment name="Labels" :editable="!!issue.manageIssues && store.isLoggedIn">
+                <EditableCompartment name="Labels" :editable="!!issue.manageIssues">
                     <template #display>
                         <Label v-for="label in labels" :label="label" class="mr-1" />
                     </template>
@@ -133,7 +133,7 @@
                 <TypedEditableCompartment
                     name="Assignments"
                     name-inline="assignment"
-                    :editable="!!issue.manageIssues && store.isLoggedIn"
+                    :editable="!!issue.manageIssues"
                     :items="assignments"
                     :edited-types="editedAssignmentTypes"
                     @remove-item="removeAssignment"
@@ -176,7 +176,7 @@
                 <TypedEditableCompartment
                     name="Outgoing Relations"
                     name-inline="relation"
-                    :editable="!!issue.manageIssues && store.isLoggedIn"
+                    :editable="!!issue.manageIssues"
                     :items="outgoingRelations"
                     :edited-types="editedRelationTypes"
                     @remove-item="removeOutgoingRelation"
@@ -235,7 +235,7 @@
                     </template>
                 </TypedEditableCompartment>
                 <v-divider />
-                <EditableCompartment name="Affects" :editable="!!issue.manageIssues && store.isLoggedIn">
+                <EditableCompartment name="Affects" :editable="!!issue.manageIssues">
                     <template #display>
                         <div v-for="itemGroup in groupedAffectedEntities">
                             <span class="text-subtitle-2">

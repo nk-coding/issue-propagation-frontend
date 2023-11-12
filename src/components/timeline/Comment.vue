@@ -6,7 +6,14 @@
                 'mb-5': !newComment
             }"
         >
-            <User :user="item.createdBy" :show-name="false" size="xx-large"></User>
+            <User v-if="item.createdBy" :user="item.createdBy" :show-name="false" size="x-large"></User>
+            <v-icon
+                v-else
+                icon="mdi-account"
+                color="background"
+                size="x-large"
+                class="backup-icon rounded-circle"
+            ></v-icon>
             <v-hover>
                 <template #default="{ isHovering, props }">
                     <v-sheet
@@ -28,16 +35,14 @@
                                     'text-decoration-line-through': isDeleted
                                 }"
                             >
-                                <User :user="item.createdBy" :show-avatar="false" /> commented
+                                <User v-if="item.createdBy != undefined" :user="item.createdBy" :show-avatar="false" />
+                                commented
                                 <RelativeTime :time="item.createdAt" />
                             </div>
                             <v-spacer />
                             <v-fade-transition>
                                 <div v-show="issue?.comment && (isHovering || menuOpen)">
-                                    <IconButton
-                                        :disabled="isDeleted || !issue?.comment || !store.isLoggedIn"
-                                        @click="reply"
-                                    >
+                                    <IconButton :disabled="isDeleted || !issue?.comment" @click="reply">
                                         <v-icon icon="mdi-reply" />
                                         <v-tooltip activator="parent" location="top"> Reply </v-tooltip>
                                     </IconButton>
@@ -50,7 +55,7 @@
                                         >
                                             <v-list>
                                                 <v-list-item
-                                                    :disabled="editMode || isDeleted || !store.isLoggedIn"
+                                                    :disabled="editMode || isDeleted"
                                                     @click="activateEditMode"
                                                 >
                                                     <v-list-item-title>Edit</v-list-item-title>
@@ -59,12 +64,7 @@
                                                     </template>
                                                 </v-list-item>
                                                 <v-list-item
-                                                    :disabled="
-                                                        editMode ||
-                                                        item.__typename === 'Body' ||
-                                                        isDeleted ||
-                                                        !store.isLoggedIn
-                                                    "
+                                                    :disabled="editMode || item.__typename === 'Body' || isDeleted"
                                                     @click=""
                                                 >
                                                     <v-list-item-title>Delete</v-list-item-title>
@@ -103,7 +103,8 @@
                                                 'text-decoration-line-through': isItemDeleted(answers)
                                             }"
                                         >
-                                            <User :user="answers.createdBy" /> commented
+                                            <User v-if="answers.createdBy != undefined" :user="answers.createdBy" />
+                                            commented
                                             <RelativeTime :time="answers.createdAt" />
                                         </div>
                                         <div v-if="!isItemDeleted(answers)" class="answer-text">
@@ -140,7 +141,11 @@
                             <v-divider />
                             <div class="d-flex justify-end mt-2">
                                 <template v-if="!newComment">
-                                    <DefaultButton variant="outlined" color="error" @click="!hasChanged && cancelComment()">
+                                    <DefaultButton
+                                        variant="outlined"
+                                        color="error"
+                                        @click="!hasChanged && cancelComment()"
+                                    >
                                         Cancel
                                         <ConfirmationDialog
                                             v-if="hasChanged"
@@ -150,9 +155,13 @@
                                             @confirm="cancelComment"
                                         />
                                     </DefaultButton>
-                                    <DefaultButton color="primary" class="mx-3" @click="saveComment">Save</DefaultButton>
+                                    <DefaultButton color="primary" class="mx-3" @click="saveComment"
+                                        >Save</DefaultButton
+                                    >
                                 </template>
-                                <DefaultButton v-else color="primary" class="mx-3" @click="createComment"> Comment </DefaultButton>
+                                <DefaultButton v-else color="primary" class="mx-3" @click="createComment">
+                                    Comment
+                                </DefaultButton>
                             </div>
                         </div>
                     </v-sheet>
@@ -175,7 +184,8 @@ import { useRouter } from "vue-router";
 import { issueKey } from "@/util/keys";
 import { useAppStore } from "@/store/app";
 
-type Comment = TimelineItemType<"IssueComment"> | TimelineItemType<"Body">;
+type Comment = (Omit<TimelineItemType<"IssueComment">, "createdBy"> | Omit<TimelineItemType<"Body">, "createdBy">) &
+    Partial<Pick<TimelineItemType<"IssueComment">, "createdBy">>;
 
 const props = defineProps({
     item: {
@@ -312,5 +322,9 @@ async function deleteComment() {
 
 .answer-wrapper {
     min-width: 0;
+}
+
+.backup-icon {
+    background: rgb(var(--v-theme-secondary));
 }
 </style>

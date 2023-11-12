@@ -23090,7 +23090,14 @@ export type GetCurrentUserQueryVariables = Exact<{ [key: string]: never }>;
 
 export type GetCurrentUserQuery = {
     __typename?: "Query";
-    currentUser?: { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any } | null;
+    currentUser?: {
+        __typename?: "GropiusUser";
+        email?: string | null;
+        id: string;
+        username: string;
+        displayName: string;
+        avatar: any;
+    } | null;
 };
 
 type DefaultUserInfo_GropiusUser_Fragment = {
@@ -24672,6 +24679,7 @@ export const GetCurrentUserDocument = gql`
     query getCurrentUser {
         currentUser {
             ...DefaultUserInfo
+            email
         }
     }
     ${DefaultUserInfoFragmentDoc}
