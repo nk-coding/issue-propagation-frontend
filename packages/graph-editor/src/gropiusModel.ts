@@ -77,7 +77,14 @@ export interface RelationStyle extends StrokeStyle {
 
 export type Shape = "RECT" | "CIRCLE" | "ELLIPSE" | "RHOMBUS" | "HEXAGON";
 
-export type Marker = "ARROW" | "DIAMOND" | "FILLED_DIAMOND" | "TRIANGLE" | "FILLED_TRIANGLE";
+export type Marker =
+    | "ARROW"
+    | "DIAMOND"
+    | "FILLED_DIAMOND"
+    | "TRIANGLE"
+    | "FILLED_TRIANGLE"
+    | "CIRCLE"
+    | "FILLED_CIRCLE";
 
 export interface GraphLayout {
     [id: string]:

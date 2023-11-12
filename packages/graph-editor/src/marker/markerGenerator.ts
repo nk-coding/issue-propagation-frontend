@@ -3,6 +3,7 @@ import { MarkerEngine } from "./engines/markerEngine";
 import { Marker as GropiusMarker, RelationStyle, StrokeStyle } from "../gropiusModel";
 import { DiamondEngine } from "./engines/diamondEngine";
 import { TriangleEngine } from "./engines/triangleEngine";
+import { CircleEngine } from "./engines/circleEngine";
 
 export class MarkerGenerator {
     static readonly DEFAULT = new MarkerGenerator();
@@ -12,7 +13,9 @@ export class MarkerGenerator {
         ["DIAMOND", new DiamondEngine(false)],
         ["FILLED_DIAMOND", new DiamondEngine(true)],
         ["TRIANGLE", new TriangleEngine(false)],
-        ["FILLED_TRIANGLE", new TriangleEngine(true)]
+        ["FILLED_TRIANGLE", new TriangleEngine(true)],
+        ["CIRCLE", new CircleEngine(false)],
+        ["FILLED_CIRCLE", new CircleEngine(true)]
     ]);
 
     getMarkerInfo(style: RelationStyle): MarkerInfo {
