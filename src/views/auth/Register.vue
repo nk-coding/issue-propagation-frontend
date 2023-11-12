@@ -93,7 +93,7 @@ const register = handleSubmit(async (state) => {
         pushErrorMessage("Registration failed");
     }
     await withErrorMessage(() => store.forceTokenRefresh(), "Could not log in after registration");
-    if (store.validTokenScope.includes(TokenScope.BACKEND)) {
+    if ((await store.getValidTokenScopes()).includes(TokenScope.BACKEND)) {
         router.replace({ name: "home" });
     } else {
         pushErrorMessage("Could not log in after registration");
