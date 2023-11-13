@@ -233,12 +233,30 @@ async function submitFormLogin(strategyInstance: CredentialStrategyInstance, for
     }
 }
 
-function submitFormRegister(
+async function submitFormRegister(
     strategyInstance: CredentialStrategyInstance,
     formData: Record<string, string>,
     sync: boolean
 ) {
-    // TODO: implement
+    const mode = sync ? "register-sync" : "register";
+    const loginResult: OAuthRespose = await withErrorMessage(
+        async () =>
+            (
+                await axios.post(`/api/login/authenticate/oauth/${strategyInstance.id}/token/${mode}`, {
+                    ...formData,
+                    grant_type: "password",
+                    client_id: import.meta.env.VITE_LOGIN_OAUTH_CLIENT_ID
+                })
+            ).data,
+        "Could not log in. Error Messgage see console, todo: better error logging"
+    );
+    const newRoute = await handleOAuthResponse(loginResult);
+    if (newRoute === true) {
+    } else if (newRoute === false) {
+        pushErrorMessage("Unknown error during login");
+    } else {
+        router.push(newRoute);
+    }
 }
 
 function redirectLogin(strategyInstance: RedirectStrategyInstance) {
@@ -249,7 +267,11 @@ function redirectLogin(strategyInstance: RedirectStrategyInstance) {
 }
 
 function redirectRegister(strategyInstance: RedirectStrategyInstance, sync: boolean) {
-    // TODO: implement
+    // TODO: add oauth state
+    const mode = sync ? "register-sync" : "register";
+    window.location.href = `/api/login/authenticate/oauth/${strategyInstance.id}/authorize/${mode}?client_id=${
+        import.meta.env.VITE_LOGIN_OAUTH_CLIENT_ID
+    }`;
 }
 </script>
 <style scoped>

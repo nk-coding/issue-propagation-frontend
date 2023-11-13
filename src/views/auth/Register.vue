@@ -83,7 +83,7 @@ const register = handleSubmit(async (state) => {
             await axios.post("/api/login/login/registration/self-register", {
                 username: state.username,
                 displayName: state.displayName ?? state.username,
-                email: state.email,
+                email: state.email || undefined,
                 register_token: store.accessToken
             }),
         "Could not register. Maybe try another username. Or re log in. I don't know because this is a generic error message. You might get details from the dev console. Or you might not. I don't know."

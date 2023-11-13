@@ -36,7 +36,7 @@ export const useAppStore = defineStore("app", {
             await this.validateUser();
         },
         async validateUser(): Promise<void> {
-            if (!this.accessToken) {
+            if (!(await this.isLoggedIn())) {
                 this.user = undefined;
             } else {
                 const client = useClient();
