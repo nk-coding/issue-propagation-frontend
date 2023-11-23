@@ -13,7 +13,8 @@ export const useAppStore = defineStore("app", {
         user: undefined as undefined | ClientReturnType<"getCurrentUser">["currentUser"],
         accessToken: useLocalStorage<string>("accessToken", ""),
         refreshToken: useLocalStorage<string>("refreshToken", ""),
-        errors: [] as string[]
+        errors: [] as string[],
+        clientId: import.meta.env.VITE_LOGIN_OAUTH_CLIENT_ID as string | undefined
     }),
     getters: {
         tokenValidityDuration(): number {
@@ -50,7 +51,7 @@ export const useAppStore = defineStore("app", {
                         await axios.post("/api/login/authenticate/oauth/this-does-not-matter/token", {
                             grant_type: "refresh_token",
                             refresh_token: this.refreshToken,
-                            client_id: import.meta.env.VITE_LOGIN_OAUTH_CLIENT_ID
+                            client_id: await this.getClientId()
                         })
                     ).data,
                 "Could not refresh access token."
@@ -92,6 +93,12 @@ export const useAppStore = defineStore("app", {
         },
         popError(): string | undefined {
             return this.errors.pop();
+        },
+        async getClientId(): Promise<string> {
+            if (this.clientId == undefined) {
+                this.clientId = (await axios.get("/api/login-client-id")).data;
+            }
+            return this.clientId!;
         }
     }
 });

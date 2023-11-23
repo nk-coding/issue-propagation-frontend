@@ -54,7 +54,7 @@ export async function onLoginEnter(
                     (
                         await axios.post("/api/login/authenticate/oauth/some_value/token", {
                             grant_type: "authorization_code",
-                            client_id: import.meta.env.VITE_LOGIN_OAUTH_CLIENT_ID,
+                            client_id: await store.getClientId(),
                             code: oauthCode
                         })
                     ).data,

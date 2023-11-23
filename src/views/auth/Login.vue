@@ -100,8 +100,10 @@ import { asyncComputed } from "@vueuse/core";
 import axios from "axios";
 import router from "@/router";
 import { handleOAuthResponse } from "../../router/navigationGuards";
+import { useAppStore } from "@/store/app";
 const isLogin = ref(true);
 const allowModeSwitch = ref(true);
+const store = useAppStore();
 
 const loadingStrategies = ref(true);
 const strategies = asyncComputed(
@@ -219,7 +221,7 @@ async function submitFormLogin(strategyInstance: CredentialStrategyInstance, for
                 await axios.post(`/api/login/authenticate/oauth/${strategyInstance.id}/token`, {
                     ...formData,
                     grant_type: "password",
-                    client_id: import.meta.env.VITE_LOGIN_OAUTH_CLIENT_ID
+                    client_id: await store.getClientId()
                 })
             ).data,
         "Could not log in. Error Messgage see console, todo: better error logging"
@@ -245,7 +247,7 @@ async function submitFormRegister(
                 await axios.post(`/api/login/authenticate/oauth/${strategyInstance.id}/token/${mode}`, {
                     ...formData,
                     grant_type: "password",
-                    client_id: import.meta.env.VITE_LOGIN_OAUTH_CLIENT_ID
+                    client_id: await store.getClientId()
                 })
             ).data,
         "Could not log in. Error Messgage see console, todo: better error logging"
@@ -259,18 +261,18 @@ async function submitFormRegister(
     }
 }
 
-function redirectLogin(strategyInstance: RedirectStrategyInstance) {
+async function redirectLogin(strategyInstance: RedirectStrategyInstance) {
     // TODO: add oauth state
     window.location.href = `/api/login/authenticate/oauth/${strategyInstance.id}/authorize/login?client_id=${
-        import.meta.env.VITE_LOGIN_OAUTH_CLIENT_ID
+        await store.getClientId()
     }`;
 }
 
-function redirectRegister(strategyInstance: RedirectStrategyInstance, sync: boolean) {
+async function redirectRegister(strategyInstance: RedirectStrategyInstance, sync: boolean) {
     // TODO: add oauth state
     const mode = sync ? "register-sync" : "register";
     window.location.href = `/api/login/authenticate/oauth/${strategyInstance.id}/authorize/${mode}?client_id=${
-        import.meta.env.VITE_LOGIN_OAUTH_CLIENT_ID
+        await store.getClientId()
     }`;
 }
 </script>
