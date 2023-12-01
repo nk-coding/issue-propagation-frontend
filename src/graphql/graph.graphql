@@ -42,6 +42,7 @@ fragment GraphInfo on Project {
             ...GraphComponentVersionInfo
         }
     }
+    manageComponents: hasPermission(permission: MANAGE_COMPONENTS)
 }
 
 fragment GraphComponentVersionInfo on ComponentVersion {

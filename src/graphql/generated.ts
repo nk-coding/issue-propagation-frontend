@@ -13278,6 +13278,8 @@ export type Query = {
     components: ComponentConnection;
     /** The current authenticated user */
     currentUser?: Maybe<GropiusUser>;
+    /** Checks if the current user has a specific global permission */
+    hasGlobalPermission: Scalars["Boolean"]["output"];
     /** Query for nodes of type IMSTemplate */
     imsTemplates: ImsTemplateConnection;
     /** Query for nodes of type IMS */
@@ -13352,6 +13354,10 @@ export type QueryComponentsArgs = {
     last?: InputMaybe<Scalars["Int"]["input"]>;
     orderBy?: InputMaybe<ComponentOrder>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
+};
+
+export type QueryHasGlobalPermissionArgs = {
+    permission: PermissionEntry;
 };
 
 export type QueryImsTemplatesArgs = {
@@ -17669,6 +17675,8 @@ export type GetComponentQuery = {
               name: string;
               description: string;
               id: string;
+              createIssues: boolean;
+              admin: boolean;
               openIssues: { __typename?: "IssueConnection"; totalCount: number };
           }
         | { __typename?: "ComponentPermission"; id: string }
@@ -18103,6 +18111,7 @@ export type GetProjectGraphQuery = {
         | { __typename?: "PriorityChangedEvent" }
         | {
               __typename?: "Project";
+              manageComponents: boolean;
               components: {
                   __typename?: "ComponentVersionConnection";
                   nodes: Array<{
@@ -18329,6 +18338,7 @@ export type DeleteRelationMutation = {
 
 export type GraphInfoFragment = {
     __typename?: "Project";
+    manageComponents: boolean;
     components: {
         __typename?: "ComponentVersionConnection";
         nodes: Array<{
@@ -21343,6 +21353,8 @@ export type GetProjectQuery = {
               name: string;
               description: string;
               id: string;
+              createIssues: boolean;
+              manageComponents: boolean;
               openIssues: { __typename?: "IssueConnection"; totalCount: number };
           }
         | { __typename?: "ProjectPermission"; id: string }
@@ -23094,6 +23106,10 @@ export type GetCurrentUserQueryVariables = Exact<{ [key: string]: never }>;
 
 export type GetCurrentUserQuery = {
     __typename?: "Query";
+    canCreateProjects: boolean;
+    canCreateComponents: boolean;
+    canCreateIMSs: boolean;
+    canCreateTemplates: boolean;
     currentUser?: {
         __typename?: "GropiusUser";
         email?: string | null;
@@ -23270,6 +23286,7 @@ export const GraphInfoFragmentDoc = gql`
                 ...GraphComponentVersionInfo
             }
         }
+        manageComponents: hasPermission(permission: MANAGE_COMPONENTS)
     }
     ${GraphComponentVersionInfoFragmentDoc}
 `;
@@ -24100,6 +24117,8 @@ export const GetComponentDocument = gql`
                 name
                 description
                 ...OpenIssueCount
+                createIssues: hasPermission(permission: CREATE_ISSUES)
+                admin: hasPermission(permission: ADMIN)
             }
         }
     }
@@ -24639,6 +24658,8 @@ export const GetProjectDocument = gql`
                 name
                 description
                 ...OpenIssueCount
+                createIssues: hasPermission(permission: CREATE_ISSUES)
+                manageComponents: hasPermission(permission: MANAGE_COMPONENTS)
             }
         }
     }
@@ -24685,6 +24706,10 @@ export const GetCurrentUserDocument = gql`
             ...DefaultUserInfo
             email
         }
+        canCreateProjects: hasGlobalPermission(permission: CAN_CREATE_PROJECTS)
+        canCreateComponents: hasGlobalPermission(permission: CAN_CREATE_COMPONENTS)
+        canCreateIMSs: hasGlobalPermission(permission: CAN_CREATE_IMSS)
+        canCreateTemplates: hasGlobalPermission(permission: CAN_CREATE_TEMPLATES)
     }
     ${DefaultUserInfoFragmentDoc}
 `;

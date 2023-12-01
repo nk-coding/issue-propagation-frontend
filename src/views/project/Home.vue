@@ -159,7 +159,9 @@ const graph = computed<Graph | null>(() => {
         return null;
     }
     const components = originalGraph.value.components.nodes;
-    const mappedComponents = components.map<ComponentVersion>((component) => extractComponent(component));
+    const mappedComponents = components.map<ComponentVersion>((component) =>
+        extractComponent(component, originalGraph.value?.manageComponents ?? false)
+    );
     const mappedRelations = components.flatMap((component) => {
         const deleteRelation = component.relateFromComponent;
         const res = [...extractRelations(component, deleteRelation)];
@@ -257,7 +259,7 @@ function extractIssueRelations(relationPartner: GraphRelationPartnerInfoFragment
     return Array.from(aggregatedRelations.values());
 }
 
-function extractComponent(component: GraphComponentVersionInfoFragment): ComponentVersion {
+function extractComponent(component: GraphComponentVersionInfoFragment, remove: boolean): ComponentVersion {
     const createRelation = component.relateFromComponent;
     const interfaces: Interface[] = component.interfaceDefinitions.nodes
         .filter((definition) => definition.visibleInterface != undefined)
@@ -284,7 +286,7 @@ function extractComponent(component: GraphComponentVersionInfoFragment): Compone
         interfaces,
         contextMenu: {
             type: "component",
-            remove: true,
+            remove,
             createRelation
         } satisfies ContextMenuData
     };

@@ -102,6 +102,7 @@ const rightSidebarItems = computed(() => {
                     icon: "mdi-plus",
                     description: `Create issue`,
                     color: "secondary",
+                    disabled: !(component?.value?.createIssues ?? false),
                     onClick: () => {
                         eventBus?.emit("create-issue", undefined);
                     }
@@ -115,6 +116,7 @@ const rightSidebarItems = computed(() => {
                     icon: "mdi-plus",
                     description: `Create component version`,
                     color: "secondary",
+                    disabled: !(component?.value?.admin ?? false),
                     onClick: () => {
                         eventBus?.emit("create-component-version", undefined);
                     }

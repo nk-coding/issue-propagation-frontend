@@ -12,7 +12,13 @@
                     :color="item.color"
                     :to="item.to"
                 ></SideBarButton>
-                <FAB v-else :color="`${item.color}-container`" elevation="0" @click="item.onClick">
+                <FAB
+                    v-else
+                    :color="`${item.color}-container`"
+                    elevation="0"
+                    :disabled="item.disabled"
+                    @click="item.onClick"
+                >
                     <v-icon class="fab-icon" :icon="item.icon" />
                     <v-tooltip v-if="item.description" activator="parent" location="bottom">{{
                         item.description
@@ -35,6 +41,7 @@ export interface BaseSideBarItem {
 export interface FABSideBarItem extends BaseSideBarItem {
     description?: string;
     onClick: () => void;
+    disabled?: boolean;
 }
 
 export interface IconSideBarItem extends BaseSideBarItem {

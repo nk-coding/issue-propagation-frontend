@@ -18,6 +18,8 @@ query getProject($id: ID!) {
             name
             description
             ...OpenIssueCount
+            createIssues: hasPermission(permission: CREATE_ISSUES)
+            manageComponents: hasPermission(permission: MANAGE_COMPONENTS)
         }
     }
 }

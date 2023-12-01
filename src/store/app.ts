@@ -8,9 +8,16 @@ import { useRouter } from "vue-router";
 import { OAuthRespose, TokenScope } from "@/views/auth/model";
 import { ClientReturnType, useClient } from "@/graphql/client";
 
+interface GlobalUserPermissions {
+    canCreateProjects: boolean;
+    canCreateComponents: boolean;
+    canCreateIMSs: boolean;
+    canCreateTemplates: boolean;
+}
+
 export const useAppStore = defineStore("app", {
     state: () => ({
-        user: undefined as undefined | ClientReturnType<"getCurrentUser">["currentUser"],
+        user: undefined as undefined | (ClientReturnType<"getCurrentUser">["currentUser"] & GlobalUserPermissions),
         accessToken: useLocalStorage<string>("accessToken", ""),
         refreshToken: useLocalStorage<string>("refreshToken", ""),
         errors: [] as string[],
@@ -41,7 +48,18 @@ export const useAppStore = defineStore("app", {
                 this.user = undefined;
             } else {
                 const client = useClient();
-                this.user = (await client.getCurrentUser()).currentUser ?? undefined;
+                const userRes = await client.getCurrentUser();
+                if (userRes.currentUser != undefined) {
+                    this.user = {
+                        ...userRes.currentUser,
+                        canCreateProjects: userRes.canCreateProjects,
+                        canCreateComponents: userRes.canCreateComponents,
+                        canCreateIMSs: userRes.canCreateIMSs,
+                        canCreateTemplates: userRes.canCreateTemplates
+                    };
+                } else {
+                    this.user = undefined;
+                }
             }
         },
         async forceTokenRefresh(): Promise<void> {

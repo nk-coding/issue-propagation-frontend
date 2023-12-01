@@ -3,6 +3,11 @@ query getCurrentUser {
         ...DefaultUserInfo
         email
     }
+
+    canCreateProjects: hasGlobalPermission(permission: CAN_CREATE_PROJECTS)
+    canCreateComponents: hasGlobalPermission(permission: CAN_CREATE_COMPONENTS)
+    canCreateIMSs: hasGlobalPermission(permission: CAN_CREATE_IMSS)
+    canCreateTemplates: hasGlobalPermission(permission: CAN_CREATE_TEMPLATES)
 }
 
 fragment DefaultUserInfo on User {
@@ -13,11 +18,7 @@ fragment DefaultUserInfo on User {
 }
 
 query searchGropiusUsers($query: String!, $count: Int!, $filter: GropiusUserFilterInput) {
-    searchGropiusUsers(
-        query: $query
-        first: $count
-        filter: $filter
-    ) {
+    searchGropiusUsers(query: $query, first: $count, filter: $filter) {
         ...DefaultUserInfo
     }
 }

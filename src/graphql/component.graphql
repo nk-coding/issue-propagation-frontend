@@ -18,6 +18,8 @@ query getComponent($id: ID!) {
             name
             description
             ...OpenIssueCount
+            createIssues: hasPermission(permission: CREATE_ISSUES)
+            admin: hasPermission(permission: ADMIN)
         }
     }
 }
