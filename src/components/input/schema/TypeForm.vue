@@ -1,5 +1,5 @@
 <template>
-    <v-text-field v-if="isString || isNumber" :rules="rules" />
+    <v-text-field v-if="isString || isNumber" v-model="cachedValue" :rules="rules" :label="name" />
 </template>
 <script setup lang="ts">
 import { Schema, SchemaFormType } from "jtd";
@@ -7,6 +7,7 @@ import { computed, ref } from "vue";
 import { PropType } from "vue";
 import { Rule, ifPresent, requiredRule } from "./rules";
 import { watch } from "vue";
+import { parseValue } from "graphql";
 
 const props = defineProps({
     schema: {
@@ -26,7 +27,7 @@ const props = defineProps({
     }
 });
 
-defineEmits({
+const emit = defineEmits({
     "update:modelValue": (value: any) => true
 });
 
@@ -53,6 +54,25 @@ watch(
         }
     }
 );
+
+watch(cachedValue, (value) => {
+    let parsedValue: null | undefined | string | number | boolean = undefined;
+    if (isNumber) {
+        const parsedFloat = Number.parseFloat(value as string);
+        if (!Number.isNaN(parsedFloat) || (value as string).trim() == "NaN") {
+            parsedValue = parsedFloat;
+        }
+    } else if (isString) {
+        parsedValue = value as string;
+    } else if (isBoolean) {
+        parsedValue = value as boolean;
+    } else if (isTimestamp) {
+        parsedValue = value as string;
+    }
+    if (parsedValue !== undefined) {
+        emit("update:modelValue", parsedValue);
+    }
+})
 
 const isNumber = computed(() => {
     const type = props.schema.type;

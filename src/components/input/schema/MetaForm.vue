@@ -15,7 +15,7 @@
         :modelValue="props.modelValue"
         @update:model-value="$emit('update:modelValue', $event)"
     />
-    <ObjectForm
+    <TypeForm
         v-else-if="isTypeForm(schema)"
         :schema="(derefSchema as any)"
         :root-schema="props.rootSchema"
@@ -48,6 +48,7 @@ import { PropType } from "vue";
 import ElementsForm from "./ElementsForm.vue";
 import ObjectForm from "./ObjectForm.vue";
 import EnumForm from "./EnumForm.vue";
+import TypeForm from "./TypeForm.vue";
 
 const props = defineProps({
     schema: {

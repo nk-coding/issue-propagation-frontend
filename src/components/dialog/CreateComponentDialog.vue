@@ -39,11 +39,9 @@ import { withErrorMessage } from "@/util/withErrorMessage";
 import { NodeReturnType, useClient } from "@/graphql/client";
 import { toTypedSchema } from "@vee-validate/yup";
 import ComponentTemplateAutocomplete from "../input/ComponentTemplateAutocomplete.vue";
-import { computed } from "vue";
 import TemplatedNodeDialogContent from "./TemplatedNodeDialogContent.vue";
 import TemplatedFieldsInput, { Field } from "../input/schema/TemplatedFieldsInput.vue";
 import { asyncComputed } from "@vueuse/core";
-import { watch } from "vue";
 
 const createComponentDialog = ref(false);
 const client = useClient();
@@ -102,7 +100,7 @@ const createComponent = handleSubmit(async (state) => {
             input: {
                 ...state,
                 description: state.description ?? "",
-                templatedFields: []
+                templatedFields: templatedFields.value
             }
         });
         return res.createComponent!.component!;
