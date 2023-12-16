@@ -2,6 +2,10 @@ fragment DefaultComponentTemplateInfo on ComponentTemplate {
     id
     name
     description
+    templateFieldSpecifications {
+        name
+        value
+    }
 }
 
 query searchComponentTemplates($query: String!, $count: Int!) {
@@ -13,6 +17,14 @@ query searchComponentTemplates($query: String!, $count: Int!) {
 query firstComponentTemplates($count: Int!) {
     componentTemplates(first: $count, orderBy: { field: NAME }) {
         nodes {
+            ...DefaultComponentTemplateInfo
+        }
+    }
+}
+
+query getComponentTemplate($id: ID!) {
+    node(id: $id) {
+        ...on ComponentTemplate {
             ...DefaultComponentTemplateInfo
         }
     }

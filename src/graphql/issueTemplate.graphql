@@ -2,6 +2,10 @@ fragment DefaultIssueTemplateInfo on IssueTemplate {
     id
     name
     description
+    templateFieldSpecifications {
+        name
+        value
+    }
 }
 
 query searchIssueTemplates($query: String!, $count: Int!) {
