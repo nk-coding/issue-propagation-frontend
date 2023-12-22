@@ -12,6 +12,7 @@
 import { Schema, SchemaFormEnum } from 'jtd';
 import { computed } from 'vue';
 import { PropType } from 'vue';
+import { Rule, requiredRule } from './rules';
 
 const props = defineProps({
     schema: {
@@ -37,9 +38,9 @@ defineEmits({
 })
 
 const rules = computed(() => {
-    const rules: ((value: string | undefined) => true | string)[] = [];
+    const rules: Rule[] = [];
     if (!props.schema.nullable) {
-        rules.push((value: string | undefined) => value != undefined || 'Required');
+        rules.push(requiredRule)
     }
     return rules;
 })

@@ -1,5 +1,5 @@
 <template>
-    TODO
+    TODO:object
 </template>
 <script setup lang="ts">
 import { Schema, SchemaFormDiscriminator, SchemaFormProperties, SchemaFormValues } from 'jtd';
