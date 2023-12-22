@@ -1,4 +1,4 @@
-export type Rule = ((value: string | undefined) => true | string);
+export type Rule = (value: string | undefined) => true | string;
 
 export const requiredRule: Rule = (value: any) => {
     if (value != undefined) {
@@ -6,7 +6,7 @@ export const requiredRule: Rule = (value: any) => {
     } else {
         return "This field is required";
     }
-}
+};
 
 export function ifPresent(rule: (value: string) => true | string): Rule {
     return (value: string | undefined) => {
@@ -15,5 +15,5 @@ export function ifPresent(rule: (value: string) => true | string): Rule {
         } else {
             return true;
         }
-    }
+    };
 }
