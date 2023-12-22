@@ -8,6 +8,16 @@ fragment DefaultComponentTemplateInfo on ComponentTemplate {
     }
 }
 
+fragment DefaultComponentVersionTemplateInfo on ComponentVersionTemplate {
+    id
+    name
+    description
+    templateFieldSpecifications {
+        name
+        value
+    }
+}
+
 query searchComponentTemplates($query: String!, $count: Int!) {
     searchComponentTemplates(query: $query, first: $count) {
         ...DefaultComponentTemplateInfo
@@ -26,6 +36,18 @@ query getComponentTemplate($id: ID!) {
     node(id: $id) {
         ...on ComponentTemplate {
             ...DefaultComponentTemplateInfo
+        }
+    }
+}
+
+query getComponentVersionTemplate($component: ID!) {
+    node(id: $component) {
+        ...on Component {
+            template {
+                componentVersionTemplate {
+                    ...DefaultComponentVersionTemplateInfo
+                }
+            }
         }
     }
 }

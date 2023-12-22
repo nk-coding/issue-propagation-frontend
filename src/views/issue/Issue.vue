@@ -296,7 +296,7 @@ import { provide } from "vue";
 import { withErrorMessage } from "@/util/withErrorMessage";
 import TimelineBreak from "@/components/timeline/TimelineBreak.vue";
 import { useAppStore } from "@/store/app";
-import Comment from "@/components/timeline/Comment.vue";
+import Comment, { Comment as CommentType } from "@/components/timeline/Comment.vue";
 import { TimelineItemType } from "@/components/timeline/TimelineItemBase.vue";
 import { nextTick } from "vue";
 import EditableCompartment from "@/components/EditableCompartment.vue";
@@ -359,7 +359,7 @@ const newCommentItem = computed(() => {
         body: "",
         createdBy: store.user,
         answers: answers.value ? { id: answers.value } : undefined
-    } as TimelineItemType<"IssueComment">;
+    } as CommentType;
 });
 const newComment = ref<InstanceType<typeof Comment> | null>(null);
 

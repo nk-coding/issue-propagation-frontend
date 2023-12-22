@@ -21,3 +21,11 @@ query firstIssueTemplates($count: Int!) {
         }
     }
 }
+
+query getIssueTemplate($id: ID!) {
+    node(id: $id) {
+        ...on IssueTemplate {
+            ...DefaultIssueTemplateInfo
+        }
+    }
+}

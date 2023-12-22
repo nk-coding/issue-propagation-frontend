@@ -1,9 +1,16 @@
 <template>
     <v-dialog v-model="createIssueDialog" persistent width="auto">
         <v-card color="surface-elevated-3" rounded="lger" class="pa-3 create-issue-dialog" elevation="0">
-            <v-form @submit.prevent="createIssue">
-                <v-card-title class="pl-4">Create issue</v-card-title>
-                <div class="pa-4">
+            <TemplatedNodeDialogContent
+                item-name="issue"
+                confirmation-message="Create issue"
+                :form-meta="meta"
+                :form-validate="validate"
+                color="surface-elevated-3"
+                @cancel="cancelCreateIssue"
+                @confirm="createIssue"
+            >
+                <template #general>
                     <div class="d-flex">
                         <v-card
                             v-if="icon"
@@ -37,22 +44,15 @@
                     <SimpleField v-bind="body" variant="outlined" label="Body" color="primary" class="markdown-field">
                         <Markdown v-bind="body" edit-mode class="full-width ma-2" />
                     </SimpleField>
-                </div>
-                <v-card-actions>
-                    <v-spacer />
-                    <DefaultButton variant="text" color="" @click="!isDirty && cancelCreateIssue()">
-                        Cancel
-                        <ConfirmationDialog
-                            v-if="isDirty"
-                            title="Discard issue?"
-                            message="Are you sure you want to discard this issue?"
-                            confirm-text="Discard"
-                            @confirm="cancelCreateIssue"
-                        />
-                    </DefaultButton>
-                    <DefaultButton variant="text" color="primary" type="submit">Create issue</DefaultButton>
-                </v-card-actions>
-            </v-form>
+                </template>
+                <template #templatedFields>
+                    <TemplatedFieldsInputVue
+                        v-if="templateValue != undefined"
+                        :schema="templateValue.templateFieldSpecifications"
+                        :model-value="templatedFields"
+                    />
+                </template>
+            </TemplatedNodeDialogContent>
         </v-card>
     </v-dialog>
 </template>
@@ -65,15 +65,17 @@ import { onEvent } from "@/util/eventBus";
 import IssueTypeAutocomplete from "../input/IssueTypeAutocomplete.vue";
 import IssueStateAutocomplete from "../input/IssueStateAutocomplete.vue";
 import * as yup from "yup";
-import { useForm, useIsFormDirty } from "vee-validate";
+import { useForm } from "vee-validate";
 import { wrapBinds } from "@/util/vuetifyFormConfig";
 import { withErrorMessage } from "@/util/withErrorMessage";
-import { useClient } from "@/graphql/client";
+import { NodeReturnType, useClient } from "@/graphql/client";
 import { toTypedSchema } from "@vee-validate/yup";
-import ConfirmationDialog from "./ConfirmationDialog.vue";
 import IssueIcon from "../IssueIcon.vue";
 import { DefaultIssueIconInfoFragment } from "@/graphql/generated";
 import { computed } from "vue";
+import TemplatedNodeDialogContent from "./TemplatedNodeDialogContent.vue";
+import TemplatedFieldsInputVue, { Field } from "../input/schema/TemplatedFieldsInput.vue";
+import { asyncComputed } from "@vueuse/core";
 
 const createIssueDialog = ref(false);
 const client = useClient();
@@ -101,10 +103,9 @@ const schema = toTypedSchema(
     })
 );
 
-const { defineComponentBinds, resetForm, handleSubmit, setValues } = useForm({
+const { defineComponentBinds, resetForm, handleSubmit, setValues, meta, validate } = useForm({
     validationSchema: schema
 });
-const isDirty = useIsFormDirty();
 
 const defineBinds = wrapBinds(defineComponentBinds);
 
@@ -134,6 +135,26 @@ const icon = computed<DefaultIssueIconInfoFragment | undefined>(() => {
     return undefined;
 });
 
+const templatedFields = ref<Field[]>([])
+const templateValue = asyncComputed(
+    async () => {
+        if (template.value.modelValue == null) {
+            return null;
+        }
+        const templateRes = await withErrorMessage(async () => {
+            return client.getIssueTemplate({ id: template.value.modelValue });
+        }, "Error loading template");
+        const templateNode = templateRes.node as NodeReturnType<"getIssueTemplate", "IssueTemplate">;
+        templatedFields.value = templateNode.templateFieldSpecifications.map((spec) => ({
+            name: spec.name,
+            value: null
+        }));
+        return templateNode;
+    },
+    null,
+    { shallow: false }
+);
+
 onEvent("create-issue", () => {
     resetForm();
     createIssueDialog.value = true;
@@ -152,7 +173,7 @@ const createIssue = handleSubmit(async (state) => {
             input: {
                 ...state,
                 body: state.body ?? "",
-                templatedFields: [],
+                templatedFields: templatedFields.value,
                 trackables: [props.trackable]
             }
         });

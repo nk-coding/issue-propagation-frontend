@@ -9,12 +9,14 @@
             :schema="field.schema.value"
             :root-schema="field.schema.value"
         />
+        <div v-if="mergedFields.length == 0">
+            No templated fields available
+        </div>
     </div>
 </template>
 <script setup lang="ts">
 import { PropType, computed } from "vue";
 import MetaForm from "@/components/input/schema/MetaForm.vue";
-import { watch } from "vue";
 
 export interface Field {
     name: string;

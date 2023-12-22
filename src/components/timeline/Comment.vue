@@ -184,7 +184,7 @@ import { useRouter } from "vue-router";
 import { issueKey } from "@/util/keys";
 import { useAppStore } from "@/store/app";
 
-type Comment = (Omit<TimelineItemType<"IssueComment">, "createdBy"> | Omit<TimelineItemType<"Body">, "createdBy">) &
+export type Comment = (Omit<TimelineItemType<"IssueComment">, "createdBy"> | Omit<TimelineItemType<"Body">, "createdBy">) &
     Partial<Pick<TimelineItemType<"IssueComment">, "createdBy">>;
 
 const props = defineProps({

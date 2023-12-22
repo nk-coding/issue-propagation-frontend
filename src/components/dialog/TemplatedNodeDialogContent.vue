@@ -1,6 +1,6 @@
 <template>
     <v-card-title class="pl-4">Create component</v-card-title>
-    <v-stepper v-model="step" :items="['General', 'Templated fields']" hide-actions :bg-color="color" elevation="0">
+    <v-stepper class="stepper" v-model="step" :items="['General', 'Templated fields']" hide-actions :bg-color="color" flat>
         <template v-slot:item.1>
             <v-form ref="form1" v-model="form1Valid" validate-on="blur">
                 <slot name="general" />
@@ -65,7 +65,7 @@ const emit = defineEmits<{
 
 const step = ref(1)
 const form1Valid = ref(false)
-const form2Valid = ref(false)
+const form2Valid = ref(true)
 
 const isDirty = computed(() => {
     return step.value > 1 || props.formMeta.dirty;
@@ -96,5 +96,10 @@ function previous() {
 <style scoped>
 :deep(.v-window) {
     overflow: visible !important;
+}
+
+.stepper :deep(.v-stepper-header) {
+    box-shadow: none;
+    border-bottom: thin solid rgba(var(--v-border-color), var(--v-border-opacity));
 }
 </style>
