@@ -13306,6 +13306,8 @@ export type Query = {
     searchComponents: Array<Component>;
     /** Search for nodes of type GropiusUser */
     searchGropiusUsers: Array<GropiusUser>;
+    /** Search for nodes of type IssuePriority */
+    searchIssuePriorities: Array<IssuePriority>;
     /** Search for nodes of type IssueRelationType */
     searchIssueRelationTypes: Array<IssueRelationType>;
     /** Search for nodes of type IssueState */
@@ -13461,6 +13463,13 @@ export type QuerySearchComponentsArgs = {
 
 export type QuerySearchGropiusUsersArgs = {
     filter?: InputMaybe<GropiusUserFilterInput>;
+    first: Scalars["Int"]["input"];
+    query: Scalars["String"]["input"];
+    skip?: InputMaybe<Scalars["Int"]["input"]>;
+};
+
+export type QuerySearchIssuePrioritiesArgs = {
+    filter?: InputMaybe<IssuePriorityFilterInput>;
     first: Scalars["Int"]["input"];
     query: Scalars["String"]["input"];
     skip?: InputMaybe<Scalars["Int"]["input"]>;
@@ -20713,6 +20722,161 @@ export type DefaultIssuePriorityInfoFragment = {
     value: number;
 };
 
+export type SearchIssuePrioritiesQueryVariables = Exact<{
+    template: Scalars["ID"]["input"];
+    query: Scalars["String"]["input"];
+    count: Scalars["Int"]["input"];
+}>;
+
+export type SearchIssuePrioritiesQuery = {
+    __typename?: "Query";
+    searchIssuePriorities: Array<{
+        __typename?: "IssuePriority";
+        id: string;
+        name: string;
+        description: string;
+        value: number;
+    }>;
+};
+
+export type FirstIssuePrioritiesQueryVariables = Exact<{
+    template: Scalars["ID"]["input"];
+    count: Scalars["Int"]["input"];
+}>;
+
+export type FirstIssuePrioritiesQuery = {
+    __typename?: "Query";
+    node?:
+        | { __typename?: "AddedAffectedEntityEvent" }
+        | { __typename?: "AddedArtefactEvent" }
+        | { __typename?: "AddedLabelEvent" }
+        | { __typename?: "AddedToPinnedIssuesEvent" }
+        | { __typename?: "AddedToTrackableEvent" }
+        | { __typename?: "AggregatedIssue" }
+        | { __typename?: "AggregatedIssueRelation" }
+        | { __typename?: "Artefact" }
+        | { __typename?: "ArtefactTemplate" }
+        | { __typename?: "Assignment" }
+        | { __typename?: "AssignmentType" }
+        | { __typename?: "AssignmentTypeChangedEvent" }
+        | { __typename?: "Body" }
+        | { __typename?: "Component" }
+        | { __typename?: "ComponentPermission" }
+        | { __typename?: "ComponentTemplate" }
+        | { __typename?: "ComponentVersion" }
+        | { __typename?: "ComponentVersionTemplate" }
+        | { __typename?: "DueDateChangedEvent" }
+        | { __typename?: "EstimatedTimeChangedEvent" }
+        | { __typename?: "FillStyle" }
+        | { __typename?: "GlobalPermission" }
+        | { __typename?: "GropiusUser" }
+        | { __typename?: "IMS" }
+        | { __typename?: "IMSIssue" }
+        | { __typename?: "IMSIssueTemplate" }
+        | { __typename?: "IMSPermission" }
+        | { __typename?: "IMSProject" }
+        | { __typename?: "IMSProjectTemplate" }
+        | { __typename?: "IMSTemplate" }
+        | { __typename?: "IMSUser" }
+        | { __typename?: "IMSUserTemplate" }
+        | { __typename?: "IncomingRelationTypeChangedEvent" }
+        | { __typename?: "Interface" }
+        | { __typename?: "InterfaceDefinition" }
+        | { __typename?: "InterfaceDefinitionTemplate" }
+        | { __typename?: "InterfacePart" }
+        | { __typename?: "InterfacePartTemplate" }
+        | { __typename?: "InterfaceSpecification" }
+        | { __typename?: "InterfaceSpecificationDerivationCondition" }
+        | { __typename?: "InterfaceSpecificationTemplate" }
+        | { __typename?: "InterfaceSpecificationVersion" }
+        | { __typename?: "InterfaceSpecificationVersionTemplate" }
+        | { __typename?: "InterfaceTemplate" }
+        | { __typename?: "IntraComponentDependencyParticipant" }
+        | { __typename?: "IntraComponentDependencySpecification" }
+        | { __typename?: "Issue" }
+        | { __typename?: "IssueComment" }
+        | { __typename?: "IssuePriority" }
+        | { __typename?: "IssueRelation" }
+        | { __typename?: "IssueRelationType" }
+        | { __typename?: "IssueState" }
+        | {
+              __typename?: "IssueTemplate";
+              issuePriorities: {
+                  __typename?: "IssuePriorityConnection";
+                  nodes: Array<{
+                      __typename?: "IssuePriority";
+                      id: string;
+                      name: string;
+                      description: string;
+                      value: number;
+                  }>;
+              };
+          }
+        | { __typename?: "IssueType" }
+        | { __typename?: "Label" }
+        | { __typename?: "MetaAggregatedIssueRelation" }
+        | { __typename?: "OutgoingRelationTypeChangedEvent" }
+        | { __typename?: "PriorityChangedEvent" }
+        | { __typename?: "Project" }
+        | { __typename?: "ProjectPermission" }
+        | { __typename?: "RelatedByIssueEvent" }
+        | { __typename?: "Relation" }
+        | { __typename?: "RelationCondition" }
+        | { __typename?: "RelationTemplate" }
+        | { __typename?: "RemovedAffectedEntityEvent" }
+        | { __typename?: "RemovedArtefactEvent" }
+        | { __typename?: "RemovedAssignmentEvent" }
+        | { __typename?: "RemovedFromPinnedIssuesEvent" }
+        | { __typename?: "RemovedFromTrackableEvent" }
+        | { __typename?: "RemovedIncomingRelationEvent" }
+        | { __typename?: "RemovedLabelEvent" }
+        | { __typename?: "RemovedOutgoingRelationEvent" }
+        | { __typename?: "RemovedTemplatedFieldEvent" }
+        | { __typename?: "SpentTimeChangedEvent" }
+        | { __typename?: "StartDateChangedEvent" }
+        | { __typename?: "StateChangedEvent" }
+        | { __typename?: "StrokeStyle" }
+        | { __typename?: "TemplateChangedEvent" }
+        | { __typename?: "TemplatedFieldChangedEvent" }
+        | { __typename?: "TitleChangedEvent" }
+        | { __typename?: "TypeChangedEvent" }
+        | null;
+};
+
+export type ChangeIssuePriorityMutationVariables = Exact<{
+    issue: Scalars["ID"]["input"];
+    priority: Scalars["ID"]["input"];
+}>;
+
+export type ChangeIssuePriorityMutation = {
+    __typename?: "Mutation";
+    changeIssuePriority?: {
+        __typename?: "ChangeIssuePriorityPayload";
+        priorityChangedEvent?: {
+            __typename: "PriorityChangedEvent";
+            id: string;
+            createdAt: any;
+            oldPriority?: {
+                __typename?: "IssuePriority";
+                id: string;
+                name: string;
+                description: string;
+                value: number;
+            } | null;
+            newPriority?: {
+                __typename?: "IssuePriority";
+                id: string;
+                name: string;
+                description: string;
+                value: number;
+            } | null;
+            createdBy:
+                | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+                | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+        } | null;
+    } | null;
+};
+
 export type RemoveIssueRelationMutationVariables = Exact<{
     id: Scalars["ID"]["input"];
 }>;
@@ -24830,6 +24994,38 @@ export const SearchIssuesDocument = gql`
     }
     ${DefaultIssueInfoFragmentDoc}
 `;
+export const SearchIssuePrioritiesDocument = gql`
+    query searchIssuePriorities($template: ID!, $query: String!, $count: Int!) {
+        searchIssuePriorities(query: $query, first: $count, filter: { partOf: { any: { id: { eq: $template } } } }) {
+            ...DefaultIssuePriorityInfo
+        }
+    }
+    ${DefaultIssuePriorityInfoFragmentDoc}
+`;
+export const FirstIssuePrioritiesDocument = gql`
+    query firstIssuePriorities($template: ID!, $count: Int!) {
+        node(id: $template) {
+            ... on IssueTemplate {
+                issuePriorities(first: $count, orderBy: { field: NAME }) {
+                    nodes {
+                        ...DefaultIssuePriorityInfo
+                    }
+                }
+            }
+        }
+    }
+    ${DefaultIssuePriorityInfoFragmentDoc}
+`;
+export const ChangeIssuePriorityDocument = gql`
+    mutation changeIssuePriority($issue: ID!, $priority: ID!) {
+        changeIssuePriority(input: { issue: $issue, priority: $priority }) {
+            priorityChangedEvent {
+                ...PriorityChangedEventTimelineInfo
+            }
+        }
+    }
+    ${PriorityChangedEventTimelineInfoFragmentDoc}
+`;
 export const RemoveIssueRelationDocument = gql`
     mutation removeIssueRelation($id: ID!) {
         removeIssueRelation(input: { issueRelation: $id }) {
@@ -25598,6 +25794,48 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                     }),
                 "searchIssues",
                 "query"
+            );
+        },
+        searchIssuePriorities(
+            variables: SearchIssuePrioritiesQueryVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<SearchIssuePrioritiesQuery> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<SearchIssuePrioritiesQuery>(SearchIssuePrioritiesDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "searchIssuePriorities",
+                "query"
+            );
+        },
+        firstIssuePriorities(
+            variables: FirstIssuePrioritiesQueryVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<FirstIssuePrioritiesQuery> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<FirstIssuePrioritiesQuery>(FirstIssuePrioritiesDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "firstIssuePriorities",
+                "query"
+            );
+        },
+        changeIssuePriority(
+            variables: ChangeIssuePriorityMutationVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<ChangeIssuePriorityMutation> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<ChangeIssuePriorityMutation>(ChangeIssuePriorityDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "changeIssuePriority",
+                "mutation"
             );
         },
         removeIssueRelation(
