@@ -173,6 +173,28 @@
                     </template>
                 </TypedEditableCompartment>
                 <v-divider />
+                <EditableCompartment
+                    name="Priority"
+                    :editable="!!issue.manageIssues"
+                    :close-hierarchy="false"
+                >
+                    <template #display>
+                        <IssuePriority v-if="issue.priority != undefined" :priority="issue.priority" />
+                    </template>
+                    <template #edit>
+                        <IssuePriorityAutocomplete
+                            class="mb-2"
+                            autofocus
+                            hide-details
+                            menu-mode="initial"
+                            :template="issue.template.id"
+                            :initial-items="[issue.priority]"
+                            :model-value="issue.priority?.id"
+                            @update:model-value="updateIssuePriority"
+                        />
+                    </template>
+                </EditableCompartment>
+                <v-divider />
                 <TypedEditableCompartment
                     name="Outgoing Relations"
                     name-inline="relation"
@@ -303,6 +325,7 @@ import EditableCompartment from "@/components/EditableCompartment.vue";
 import Label from "@/components/info/Label.vue";
 import IssueState from "@/components/info/IssueState.vue";
 import IssueType from "@/components/info/IssueType.vue";
+import IssuePriority from "@/components/info/IssuePriority.vue";
 import {
     AssignmentTimelineInfoFragment,
     DefaultAffectedByIssueInfoFragment,
@@ -315,6 +338,7 @@ import {
 import { issueKey, trackableKey } from "@/util/keys";
 import IssueTypeAutocomplete from "@/components/input/IssueTypeAutocomplete.vue";
 import IssueStateAutocomplete from "@/components/input/IssueStateAutocomplete.vue";
+import IssuePriorityAutocomplete from "@/components/input/IssuePriorityAutocomplete.vue";
 import IssueInfo from "@/components/info/Issue.vue";
 import IssueRelationTypeAutocomplete from "@/components/input/IssueRelationTypeAutocomplete.vue";
 import IssueAutocomplete from "@/components/input/IssueAutocomplete.vue";
@@ -429,6 +453,18 @@ async function updateIssueState(state: string | null) {
     }, "Error updating issue state");
     timeline.value.push(event);
     issue.value!.state = event.newState;
+}
+
+async function updateIssuePriority(priority: string | null) {
+    if (!priority) {
+        return;
+    }
+    const event = await withErrorMessage(async () => {
+        const res = await client.changeIssuePriority({ issue: issueId.value, priority: priority });
+        return res.changeIssuePriority!.priorityChangedEvent!;
+    }, "Error updating issue priority");
+    timeline.value.push(event);
+    issue.value!.priority = event.newPriority;
 }
 
 async function addLabel(label: DefaultLabelInfoFragment) {

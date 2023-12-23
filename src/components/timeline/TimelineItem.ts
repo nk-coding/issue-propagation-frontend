@@ -14,6 +14,7 @@ import RemovedIncomingRelationEvent from "./RemovedIncomingRelationEvent.vue";
 import Assignment from "./Assignment.vue";
 import AssignmentTypeChangedEvent from "./AssignmentTypeChangedEvent.vue";
 import RemovedAssignmentEvent from "./RemovedAssignmentEvent.vue";
+import PriorityChangedEvent from "./PriorityChangedEvent.vue";
 
 type TimelineItemProps = {
     item: any;
@@ -40,7 +41,8 @@ const timelineItems: Record<string, Component> = {
     RemovedIncomingRelationEvent: RemovedIncomingRelationEvent,
     Assignment: Assignment,
     AssignmentTypeChangedEvent: AssignmentTypeChangedEvent,
-    RemovedAssignmentEvent: RemovedAssignmentEvent
+    RemovedAssignmentEvent: RemovedAssignmentEvent,
+    PriorityChangedEvent: PriorityChangedEvent
 };
 
 export default function TimelineItem(props: TimelineItemProps, context: SetupContext<TimelineItemEvents>) {

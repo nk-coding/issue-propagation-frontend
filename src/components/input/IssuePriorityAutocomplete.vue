@@ -5,8 +5,11 @@
         :dependency="template"
         label="Priority"
         item-title="name"
-        item-subtitle="description"
     >
+        <template #item="{ props, item }">
+            <v-list-item :title="item.raw.name" :subtitle="item.raw.description" v-bind="props">
+            </v-list-item>
+        </template>
     </FetchingAutocomplete>
 </template>
 <script setup lang="ts">
