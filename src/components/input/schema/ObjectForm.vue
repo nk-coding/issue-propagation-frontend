@@ -37,7 +37,7 @@
                         <v-tooltip activator="parent" location="bottom"> Set to null </v-tooltip>
                     </IconButton>
                 </div>
-                <v-divider v-if="currentSchema != undefined" class="mb-3" />
+                <v-divider v-if="Object.keys(modelValue ?? {}).length > 0" class="mb-3" />
             </div>
             <template v-if="currentSchema != undefined">
                 <MetaForm
