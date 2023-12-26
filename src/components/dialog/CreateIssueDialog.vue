@@ -76,6 +76,7 @@ import { computed } from "vue";
 import TemplatedNodeDialogContent from "./TemplatedNodeDialogContent.vue";
 import TemplatedFieldsInputVue, { Field } from "../input/schema/TemplatedFieldsInput.vue";
 import { asyncComputed } from "@vueuse/core";
+import { generateDefaultData } from "../input/schema/generateDefaultData";
 
 const createIssueDialog = ref(false);
 const client = useClient();
@@ -147,7 +148,7 @@ const templateValue = asyncComputed(
         const templateNode = templateRes.node as NodeReturnType<"getIssueTemplate", "IssueTemplate">;
         templatedFields.value = templateNode.templateFieldSpecifications.map((spec) => ({
             name: spec.name,
-            value: null
+            value: generateDefaultData(spec.value, spec.value)
         }));
         return templateNode;
     },

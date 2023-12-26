@@ -1,6 +1,6 @@
 <template>
-    <ElementsForm
-        v-if="isElementsForm(derefSchema)"
+    <ItemsForm
+        v-if="isElementsForm(derefSchema) || isValuesForm(derefSchema)"
         :schema="(derefSchema as any)"
         :root-schema="props.rootSchema"
         :name="props.name"
@@ -8,11 +8,11 @@
         @update:model-value="$emit('update:modelValue', $event)"
     />
     <ObjectForm
-        v-else-if="isPropertiesForm(schema) || isDiscriminatorForm(schema) || isValuesForm(schema)"
+        v-else-if="isPropertiesForm(schema) || isDiscriminatorForm(schema)"
         :schema="(derefSchema as any)"
         :root-schema="props.rootSchema"
         :name="props.name"
-        :modelValue="props.modelValue"
+        :modelValue="(props.modelValue as Record<string, unknown> | undefined)"
         @update:model-value="$emit('update:modelValue', $event)"
     />
     <TypeForm
@@ -45,10 +45,11 @@ import {
 } from "jtd";
 import { computed } from "vue";
 import { PropType } from "vue";
-import ElementsForm from "./ElementsForm.vue";
+import ItemsForm from "./ItemsForm.vue";
 import ObjectForm from "./ObjectForm.vue";
 import EnumForm from "./EnumForm.vue";
 import TypeForm from "./TypeForm.vue";
+import { derefSchemaRecursive } from "./generateDefaultData";
 
 const props = defineProps({
     schema: {
@@ -73,9 +74,6 @@ defineEmits({
 });
 
 const derefSchema = computed(() => {
-    if (isRefForm(props.schema)) {
-        return props.rootSchema.definitions![props.schema.ref];
-    }
-    return props.schema;
+    return derefSchemaRecursive(props.schema, props.rootSchema)
 });
 </script>

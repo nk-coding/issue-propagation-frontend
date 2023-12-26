@@ -144,6 +144,9 @@ async function updateSearch(search: string) {
         const untransformedContext = context.value != undefined ? untransformContextItem(context.value as C) : undefined;
         newItems = await props.fetch(search, 10, untransformedContext);
     }
+    if (props.mode == "model" && proxiedModel.value != undefined) {
+        newItems.push(...items.value.filter((item) => item.id == proxiedModel.value));
+    }
 
     if (contextMode.value && !contextSearchMode.value) {
         items.value = [context.value as C, ...newItems];

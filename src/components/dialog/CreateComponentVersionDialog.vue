@@ -40,6 +40,7 @@ import { toTypedSchema } from "@vee-validate/yup";
 import TemplatedNodeDialogContent from "./TemplatedNodeDialogContent.vue";
 import TemplatedFieldsInput, { Field } from "../input/schema/TemplatedFieldsInput.vue";
 import { asyncComputed } from "@vueuse/core";
+import { generateDefaultData } from "../input/schema/generateDefaultData";
 
 const createComponentVersionDialog = ref(false);
 const client = useClient();
@@ -83,7 +84,7 @@ const templateValue = asyncComputed(
         const templateNode = componentNode.template.componentVersionTemplate;
         templatedFields.value = templateNode.templateFieldSpecifications.map((spec) => ({
             name: spec.name,
-            value: null
+            value: generateDefaultData(spec.value, spec.value)
         }));
         return templateNode;
     },

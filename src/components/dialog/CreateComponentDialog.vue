@@ -42,6 +42,7 @@ import ComponentTemplateAutocomplete from "../input/ComponentTemplateAutocomplet
 import TemplatedNodeDialogContent from "./TemplatedNodeDialogContent.vue";
 import TemplatedFieldsInput, { Field } from "../input/schema/TemplatedFieldsInput.vue";
 import { asyncComputed } from "@vueuse/core";
+import { generateDefaultData } from "../input/schema/generateDefaultData";
 
 const createComponentDialog = ref(false);
 const client = useClient();
@@ -81,7 +82,7 @@ const templateValue = asyncComputed(
         const templateNode = templateRes.node as NodeReturnType<"getComponentTemplate", "ComponentTemplate">;
         templatedFields.value = templateNode.templateFieldSpecifications.map((spec) => ({
             name: spec.name,
-            value: null
+            value: generateDefaultData(spec.value, spec.value)
         }));
         return templateNode;
     },
