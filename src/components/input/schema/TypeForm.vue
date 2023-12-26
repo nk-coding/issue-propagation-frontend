@@ -7,7 +7,6 @@ import { computed, ref } from "vue";
 import { PropType } from "vue";
 import { Rule, ifPresent, requiredRule } from "./rules";
 import { watch } from "vue";
-import { parseValue } from "graphql";
 
 const props = defineProps({
     schema: {
@@ -57,16 +56,16 @@ watch(
 
 watch(cachedValue, (value) => {
     let parsedValue: null | undefined | string | number | boolean = undefined;
-    if (isNumber) {
+    if (isNumber.value) {
         const parsedFloat = Number.parseFloat(value as string);
         if (!Number.isNaN(parsedFloat) || (value as string).trim() == "NaN") {
             parsedValue = parsedFloat;
         }
-    } else if (isString) {
+    } else if (isString.value) {
         parsedValue = value as string;
-    } else if (isBoolean) {
+    } else if (isBoolean.value) {
         parsedValue = value as boolean;
-    } else if (isTimestamp) {
+    } else if (isTimestamp.value) {
         parsedValue = value as string;
     }
     if (parsedValue !== undefined) {

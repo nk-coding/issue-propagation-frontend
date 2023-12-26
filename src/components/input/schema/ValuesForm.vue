@@ -1,13 +1,14 @@
 <template>
-    TODO:elements
+    TODO
 </template>
 <script setup lang="ts">
-import { Schema, SchemaFormElements } from 'jtd';
+import { Schema, SchemaFormValues } from 'jtd';
 import { PropType } from 'vue';
+import { generateDefaultData } from './generateDefaultData';
 
-defineProps({
+const props = defineProps({
     schema: {
-        type: Object as PropType<SchemaFormElements>,
+        type: Object as PropType<SchemaFormValues>,
         required: true
     },
     rootSchema: {
@@ -19,6 +20,7 @@ defineProps({
         required: false
     },
     modelValue: {
+        type: Object as PropType<Record<string, unknown>>,
         required: false
     }
 })

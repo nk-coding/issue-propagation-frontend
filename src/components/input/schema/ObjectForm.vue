@@ -6,7 +6,7 @@
     >
         <div class="full-width">
             <div v-if="isDiscriminatorForm(schema) || availableOptionalProperties.length > 0 || schema.nullable">
-                <div class="d-flex align-center mb-2">
+                <div class="d-flex align-center mb-3">
                     <v-autocomplete
                         v-if="isDiscriminatorForm(schema)"
                         class="mr-3"
@@ -15,6 +15,7 @@
                         :model-value="(modelValue![schema.discriminator] as string | undefined)"
                         hide-details
                         @update:model-value="updateDiscriminator"
+                        :rules="[requiredRule]"
                     />
                     <v-btn v-if="availableOptionalProperties.length > 0" variant="tonal">
                         Add property
@@ -36,7 +37,7 @@
                         <v-tooltip activator="parent" location="bottom"> Set to null </v-tooltip>
                     </IconButton>
                 </div>
-                <v-divider v-if="currentSchema != undefined" class="mb-2" />
+                <v-divider v-if="currentSchema != undefined" class="mb-3" />
             </div>
             <template v-if="currentSchema != undefined">
                 <MetaForm
@@ -55,7 +56,7 @@
                         :name="property[0]"
                         v-model="modelValue![property[0]]"
                     />
-                    <IconButton class="ml-2" @click="removeOptionalProperty(property[0])">
+                    <IconButton class="ml-2 mt-1" @click="removeOptionalProperty(property[0])">
                         <v-icon icon="mdi-close" />
                         <v-tooltip activator="parent" location="bottom"> Remove optional property </v-tooltip>
                     </IconButton>
@@ -70,6 +71,7 @@ import { PropType, computed } from "vue";
 import BaseObjectForm from "./BaseObjectForm.vue";
 import { derefSchemaRecursive, generateDefaultData } from "./generateDefaultData";
 import MetaForm from "./MetaForm.vue";
+import { requiredRule } from "./rules";
 
 const props = defineProps({
     schema: {

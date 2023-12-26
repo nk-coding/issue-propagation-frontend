@@ -1,7 +1,7 @@
 <template>
-    <v-field variant="outlined" class="px-3 pt-3 wrapper-field" :label="name" :active="false">
+    <v-field variant="outlined" class="px-3 pt-4 mb-3 wrapper-field" :label="name" :active="false">
         <slot v-if="!isNull" />
-        <DefaultButton class="mb-3 mx-auto" variant="tonal" v-else @click="$emit('addValue')">Add value</DefaultButton>
+        <DefaultButton class="mb-4 mx-auto" variant="tonal" v-else @click="$emit('addValue')">Add value</DefaultButton>
     </v-field>
 </template>
 <script setup lang="ts">

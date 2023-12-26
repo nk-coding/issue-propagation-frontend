@@ -3,7 +3,7 @@ import { defineStore } from "pinia";
 import axios from "axios";
 import { useLocalStorage } from "@vueuse/core";
 import { jwtDecode } from "jwt-decode";
-import { withErrorMessage } from "@/util/withErrorMessage";
+import { pushErrorMessage, withErrorMessage } from "@/util/withErrorMessage";
 import { useRouter } from "vue-router";
 import { OAuthRespose, TokenScope } from "@/views/auth/model";
 import { ClientReturnType, useClient } from "@/graphql/client";
@@ -63,19 +63,21 @@ export const useAppStore = defineStore("app", {
             }
         },
         async forceTokenRefresh(): Promise<void> {
-            const tokenResponse: OAuthRespose = await withErrorMessage(
-                async () =>
-                    (
-                        await axios.post("/api/login/authenticate/oauth/this-does-not-matter/token", {
-                            grant_type: "refresh_token",
-                            refresh_token: this.refreshToken,
-                            client_id: await this.getClientId()
-                        })
-                    ).data,
-                "Could not refresh access token."
-            );
-            this.accessToken = tokenResponse.access_token;
-            this.refreshToken = tokenResponse.refresh_token;
+            try {
+                const tokenResponse = (
+                    await axios.post("/api/login/authenticate/oauth/this-does-not-matter/token", {
+                        grant_type: "refresh_token",
+                        refresh_token: this.refreshToken,
+                        client_id: await this.getClientId()
+                    })
+                ).data;
+                this.accessToken = tokenResponse.access_token;
+                this.refreshToken = tokenResponse.refresh_token;
+            } catch {
+                this.accessToken = "";
+                this.refreshToken = "";
+                pushErrorMessage("Could not refresh access token.");
+            }
         },
         async getAccessToken(): Promise<string | undefined> {
             if (!this.refreshToken || !this.accessToken) {

@@ -1,10 +1,18 @@
 <template>
-    <ItemsForm
-        v-if="isElementsForm(derefSchema) || isValuesForm(derefSchema)"
+    <ElementsForm
+        v-if="isElementsForm(derefSchema)"
         :schema="(derefSchema as any)"
         :root-schema="props.rootSchema"
         :name="props.name"
-        :modelValue="props.modelValue"
+        :modelValue="(props.modelValue as any[] | undefined)"
+        @update:model-value="$emit('update:modelValue', $event)"
+    />
+    <ValuesForm
+        v-else-if="isValuesForm(derefSchema)"
+        :schema="(derefSchema as any)"
+        :root-schema="props.rootSchema"
+        :name="props.name"
+        :modelValue="(props.modelValue as Record<string, unknown> | undefined)"
         @update:model-value="$emit('update:modelValue', $event)"
     />
     <ObjectForm
@@ -36,7 +44,6 @@
 import {
     Schema,
     isElementsForm,
-    isRefForm,
     isPropertiesForm,
     isDiscriminatorForm,
     isValuesForm,
@@ -45,7 +52,8 @@ import {
 } from "jtd";
 import { computed } from "vue";
 import { PropType } from "vue";
-import ItemsForm from "./ItemsForm.vue";
+import ElementsForm from "./ElementsForm.vue";
+import ValuesForm from "./ValuesForm.vue";
 import ObjectForm from "./ObjectForm.vue";
 import EnumForm from "./EnumForm.vue";
 import TypeForm from "./TypeForm.vue";
