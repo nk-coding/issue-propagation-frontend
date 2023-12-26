@@ -43,6 +43,7 @@ import TemplatedNodeDialogContent from "./TemplatedNodeDialogContent.vue";
 import TemplatedFieldsInput, { Field } from "../input/schema/TemplatedFieldsInput.vue";
 import { asyncComputed } from "@vueuse/core";
 import { generateDefaultData } from "../input/schema/generateDefaultData";
+import { watch } from "vue";
 
 const createComponentDialog = ref(false);
 const client = useClient();
@@ -80,15 +81,19 @@ const templateValue = asyncComputed(
             return client.getComponentTemplate({ id: template.value.modelValue });
         }, "Error loading template");
         const templateNode = templateRes.node as NodeReturnType<"getComponentTemplate", "ComponentTemplate">;
-        templatedFields.value = templateNode.templateFieldSpecifications.map((spec) => ({
-            name: spec.name,
-            value: generateDefaultData(spec.value, spec.value)
-        }));
         return templateNode;
     },
     null,
     { shallow: false }
 );
+watch(templateValue, (newValue, oldValue) => {
+    if (newValue != null && newValue.id != oldValue?.id) {
+        templatedFields.value = newValue.templateFieldSpecifications.map((spec) => ({
+            name: spec.name,
+            value: generateDefaultData(spec.value, spec.value)
+        }));
+    }
+});
 
 onEvent("create-component", () => {
     resetForm();

@@ -145,7 +145,12 @@ async function updateSearch(search: string) {
         newItems = await props.fetch(search, 10, untransformedContext);
     }
     if (props.mode == "model" && proxiedModel.value != undefined) {
-        newItems.push(...items.value.filter((item) => item.id == proxiedModel.value));
+        if (!newItems.some((item) => item.id == proxiedModel.value)) {
+            const currentModelItem = items.value.find((item) => item.id == proxiedModel.value);
+            if (currentModelItem != undefined) {
+                newItems.push(currentModelItem);
+            }
+        }
     }
 
     if (contextMode.value && !contextSearchMode.value) {

@@ -92,19 +92,27 @@ export const useAppStore = defineStore("app", {
             return this.accessToken!;
         },
         async isLoggedIn(): Promise<boolean> {
-            return (await this.getValidTokenScopes()).includes(TokenScope.BACKEND);
+            try {
+                return (await this.getValidTokenScopes()).includes(TokenScope.BACKEND);
+            } catch {
+                return false;
+            }
         },
         async getValidTokenScopes(): Promise<TokenScope[]> {
-            const token = await this.getAccessToken();
-            if (token == undefined) {
+            try {
+                const token = await this.getAccessToken();
+                if (token == undefined) {
+                    return [];
+                }
+                const payload = jwtDecode(token);
+                const audience = payload.aud;
+                if (typeof audience == "string") {
+                    return [audience as TokenScope];
+                }
+                return audience as TokenScope[];
+            } catch {
                 return [];
             }
-            const payload = jwtDecode(token);
-            const audience = payload.aud;
-            if (typeof audience == "string") {
-                return [audience as TokenScope];
-            }
-            return audience as TokenScope[];
         },
         pushError(error: string) {
             this.errors = [...this.errors, error];

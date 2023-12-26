@@ -146,15 +146,19 @@ const templateValue = asyncComputed(
             return client.getIssueTemplate({ id: template.value.modelValue });
         }, "Error loading template");
         const templateNode = templateRes.node as NodeReturnType<"getIssueTemplate", "IssueTemplate">;
-        templatedFields.value = templateNode.templateFieldSpecifications.map((spec) => ({
-            name: spec.name,
-            value: generateDefaultData(spec.value, spec.value)
-        }));
         return templateNode;
     },
     null,
     { shallow: false }
 );
+watch(templateValue, (newValue, oldValue) => {
+    if (newValue != null && newValue.id != oldValue?.id) {
+        templatedFields.value = newValue.templateFieldSpecifications.map((spec) => ({
+            name: spec.name,
+            value: generateDefaultData(spec.value, spec.value)
+        }));
+    }
+});
 
 onEvent("create-issue", () => {
     resetForm();

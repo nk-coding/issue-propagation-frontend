@@ -29,7 +29,7 @@
     </v-dialog>
 </template>
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import { onEvent } from "@/util/eventBus";
 import * as yup from "yup";
 import { useForm } from "vee-validate";
@@ -82,15 +82,19 @@ const templateValue = asyncComputed(
         }, "Error loading template");
         const componentNode = templateRes.node as NodeReturnType<"getComponentVersionTemplate", "Component">;
         const templateNode = componentNode.template.componentVersionTemplate;
-        templatedFields.value = templateNode.templateFieldSpecifications.map((spec) => ({
-            name: spec.name,
-            value: generateDefaultData(spec.value, spec.value)
-        }));
         return templateNode;
     },
     null,
     { shallow: false }
 );
+watch(templateValue, (newValue, oldValue) => {
+    if (newValue != null && newValue.id != oldValue?.id) {
+        templatedFields.value = newValue.templateFieldSpecifications.map((spec) => ({
+            name: spec.name,
+            value: generateDefaultData(spec.value, spec.value)
+        }));
+    }
+});
 
 onEvent("create-component-version", () => {
     resetForm();
