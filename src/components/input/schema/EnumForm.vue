@@ -6,6 +6,7 @@
         @update:model-value="$emit('update:modelValue', $event)"
         :clearable="schema.nullable"
         :rules="rules"
+        :readonly="readonly"
     />
 </template>
 <script setup lang="ts">
@@ -30,6 +31,10 @@ const props = defineProps({
     modelValue: {
         type: String,
         required: false
+    },
+    readonly: {
+        type: Boolean,
+        required: true,
     }
 })
 

@@ -5,7 +5,7 @@
         @add-value="$emit('update:modelValue', [])"
     >
         <div class="full-width">
-            <div class="d-flex align-center mb-3">
+            <div v-if="!readonly" class="d-flex align-center mb-3">
                 <v-btn variant="tonal" @click="addElement">
                     Add element
                 </v-btn>
@@ -15,15 +15,16 @@
                     <v-tooltip activator="parent" location="bottom"> Set to null </v-tooltip>
                 </IconButton>
             </div>
-            <v-divider v-if="modelValue?.length" class="mb-3" />
+            <v-divider v-if="modelValue?.length && !readonly" class="mb-3" />
             <div v-for="(element, index) in (modelValue ?? [])" class="d-flex">
                 <MetaForm
                     :key="index"
                     :schema="schema.elements"
                     :root-schema="rootSchema"
                     v-model="modelValue![index]"
+                    :readonly="readonly"
                 />
-                <IconButton class="ml-2 mt-1" @click="removeElement(index)">
+                <IconButton v-if="!readonly" class="ml-2 mt-1" @click="removeElement(index)">
                     <v-icon icon="mdi-close" />
                     <v-tooltip activator="parent" location="bottom"> Remove element </v-tooltip>
                 </IconButton>
@@ -54,6 +55,10 @@ const props = defineProps({
     modelValue: {
         type: Array,
         required: false
+    },
+    readonly: {
+        type: Boolean,
+        required: true,
     }
 })
 

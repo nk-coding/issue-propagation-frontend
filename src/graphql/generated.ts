@@ -7790,6 +7790,8 @@ export type InterfaceSpecificationDerivationConditionFilterInput = {
 
 /** Input to create a InterfaceSpecificationDerivationCondition */
 export type InterfaceSpecificationDerivationConditionInput = {
+    /** The ids of the InterfaceSpecifications this can derive */
+    derivableInterfaceSpecifications: Array<Scalars["ID"]["input"]>;
     /** If true, invisible derived InterfaceSpecifications are derived */
     derivesInvisibleDerived: Scalars["Boolean"]["input"];
     /** If true, invisible self-defined InterfaceSpecifications are derived */
@@ -7798,32 +7800,10 @@ export type InterfaceSpecificationDerivationConditionInput = {
     derivesVisibleDerived: Scalars["Boolean"]["input"];
     /** If true, visible self-defined InterfaceSpecifications are derived */
     derivesVisibleSelfDefined: Scalars["Boolean"]["input"];
-    /** The description of the NamedNode */
-    description: Scalars["String"]["input"];
-    /** IDs of Templates the created template extends. Must be templates of the same type. */
-    extends?: InputMaybe<Array<Scalars["ID"]["input"]>>;
-    /** The initial value of the extension fields */
-    extensionFields?: InputMaybe<Array<JsonFieldInput>>;
-    /** Style of the fill */
-    fill?: InputMaybe<FillStyleInput>;
     /** If true InterfaceSpecifications are invisible derived */
     isInvisibleDerived: Scalars["Boolean"]["input"];
     /** If true InterfaceSpecifications are visible derived */
     isVisibleDerived: Scalars["Boolean"]["input"];
-    /** The name of the NamedNode, must not be blank */
-    name: Scalars["String"]["input"];
-    /** The corner radius of the shape, ignored for circle/ellipse */
-    shapeRadius?: InputMaybe<Scalars["Float"]["input"]>;
-    /** The type of the shape */
-    shapeType: ShapeType;
-    /** Style of the stroke */
-    stroke?: InputMaybe<StrokeStyleInput>;
-    /**
-     * Additional initial templateFieldSpecifications, should be a JSON schema JSON.
-     *         Must be disjoint with templateFieldSpecifications of templates this template extends.
-     *
-     */
-    templateFieldSpecifications?: InputMaybe<Array<JsonFieldInput>>;
 };
 
 /** Used to filter by a connection-based property. Fields are joined by AND */
@@ -20481,6 +20461,7 @@ export type GetIssueQuery = {
                   description: string;
                   value: number;
               } | null;
+              templatedFields: Array<{ __typename?: "JSONField"; name: string; value?: any | null }>;
               template: {
                   __typename?: "IssueTemplate";
                   id: string;
@@ -20654,6 +20635,28 @@ export type ChangeIssueTitleMutation = {
             __typename: "TitleChangedEvent";
             oldTitle: string;
             newTitle: string;
+            id: string;
+            createdAt: any;
+            createdBy:
+                | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+                | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+        } | null;
+    } | null;
+};
+
+export type ChangeIssueTemplatedFieldMutationVariables = Exact<{
+    input: ChangeIssueTemplatedFieldInput;
+}>;
+
+export type ChangeIssueTemplatedFieldMutation = {
+    __typename?: "Mutation";
+    changeIssueTemplatedField?: {
+        __typename?: "ChangeIssueTemplatedFieldPayload";
+        templatedFieldChangedEvent?: {
+            __typename: "TemplatedFieldChangedEvent";
+            fieldName: string;
+            oldValue?: any | null;
+            newValue?: any | null;
             id: string;
             createdAt: any;
             createdBy:
@@ -24901,6 +24904,10 @@ export const GetIssueDocument = gql`
                 priority {
                     ...DefaultIssuePriorityInfo
                 }
+                templatedFields {
+                    name
+                    value
+                }
                 template {
                     ...DefaultIssueTemplateInfo
                 }
@@ -24985,6 +24992,16 @@ export const ChangeIssueTitleDocument = gql`
         }
     }
     ${TitleChangedEventTimelineInfoFragmentDoc}
+`;
+export const ChangeIssueTemplatedFieldDocument = gql`
+    mutation changeIssueTemplatedField($input: ChangeIssueTemplatedFieldInput!) {
+        changeIssueTemplatedField(input: $input) {
+            templatedFieldChangedEvent {
+                ...TemplatedFieldChangedEventTimelineInfo
+            }
+        }
+    }
+    ${TemplatedFieldChangedEventTimelineInfoFragmentDoc}
 `;
 export const SearchIssuesDocument = gql`
     query searchIssues($query: String!, $count: Int!, $trackable: ID!) {
@@ -25779,6 +25796,20 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "changeIssueTitle",
+                "mutation"
+            );
+        },
+        changeIssueTemplatedField(
+            variables: ChangeIssueTemplatedFieldMutationVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<ChangeIssueTemplatedFieldMutation> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<ChangeIssueTemplatedFieldMutation>(ChangeIssueTemplatedFieldDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "changeIssueTemplatedField",
                 "mutation"
             );
         },

@@ -5,7 +5,7 @@
         @add-value="$emit('update:modelValue', generateDefaultData(schema, rootSchema, true))"
     >
         <div class="full-width">
-            <div v-if="isDiscriminatorForm(schema) || availableOptionalProperties.length > 0 || schema.nullable">
+            <div v-if="(isDiscriminatorForm(schema) || availableOptionalProperties.length > 0 || schema.nullable) && !readonly">
                 <div class="d-flex align-center mb-3">
                     <v-autocomplete
                         v-if="isDiscriminatorForm(schema)"
@@ -47,6 +47,7 @@
                     :root-schema="rootSchema"
                     :name="property[0]"
                     v-model="modelValue![property[0]]"
+                    :readonly="readonly"
                 />
                 <div v-for="property in addedOptionalProperties" class="d-flex">
                     <MetaForm
@@ -55,8 +56,9 @@
                         :root-schema="rootSchema"
                         :name="property[0]"
                         v-model="modelValue![property[0]]"
+                        :readonly="readonly"
                     />
-                    <IconButton class="ml-2 mt-1" @click="removeOptionalProperty(property[0])">
+                    <IconButton v-if="!readonly" class="ml-2 mt-1" @click="removeOptionalProperty(property[0])">
                         <v-icon icon="mdi-close" />
                         <v-tooltip activator="parent" location="bottom"> Remove optional property </v-tooltip>
                     </IconButton>
@@ -89,6 +91,10 @@ const props = defineProps({
     modelValue: {
         type: Object as PropType<Record<string, unknown>>,
         required: false
+    },
+    readonly: {
+        type: Boolean,
+        required: true,
     }
 });
 

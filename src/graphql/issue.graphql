@@ -90,6 +90,10 @@ query getIssue($id: ID!) {
             priority {
                 ...DefaultIssuePriorityInfo
             }
+            templatedFields {
+                name
+                value
+            }
             template {
                 ...DefaultIssueTemplateInfo
             }
@@ -148,6 +152,14 @@ mutation changeIssueTitle($id: ID!, $title: String!) {
     changeIssueTitle(input: { issue: $id, title: $title }) {
         titleChangedEvent {
             ...TitleChangedEventTimelineInfo
+        }
+    }
+}
+
+mutation changeIssueTemplatedField($input: ChangeIssueTemplatedFieldInput!) {
+    changeIssueTemplatedField(input: $input) {
+        templatedFieldChangedEvent {
+            ...TemplatedFieldChangedEventTimelineInfo
         }
     }
 }

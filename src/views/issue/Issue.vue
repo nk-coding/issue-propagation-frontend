@@ -301,6 +301,15 @@
                         />
                     </template>
                 </EditableCompartment>
+                <TemplatedFieldEditableCompartment
+                    v-for="field in templatedFields"
+                    :key="field.name"
+                    :name="field.name"
+                    :schema="field.schema"
+                    :model-value="field.value"
+                    :editable="!!issue.manageIssues"
+                    @save="updateTemplatedField(field.name, $event)"
+                />
             </v-sheet>
         </div>
     </div>
@@ -349,6 +358,7 @@ import { inject } from "vue";
 import AffectedByIssueAutocomplete from "@/components/input/AffectedByIssueAutocomplete.vue";
 import LabelAutocomplete from "@/components/input/LabelAutocomplete.vue";
 import AffectedByIssue from "@/components/info/AffectedByIssue.vue";
+import TemplatedFieldEditableCompartment from "@/components/TemplatedFieldEditableCompartment.vue";
 
 export type Issue = NodeReturnType<"getIssue", "Issue">;
 
@@ -659,6 +669,37 @@ async function removeAffectedEntity(affectedEntityId: string) {
         affectedEntities.value.splice(index, 1);
     }
 }
+
+const templatedFields = computed(() => {
+    if (issue.value == undefined) {
+        return [];
+    }
+    const templatedFieldsValues = new Map<string, any>();
+    for (const field of issue.value.templatedFields) {
+        templatedFieldsValues.set(field.name, field.value);
+    }
+    return issue.value.template.templateFieldSpecifications.map((field) => ({
+        name: field.name,
+        schema: field.value,
+        value: templatedFieldsValues.get(field.name)
+    }));
+});
+
+async function updateTemplatedField(name: string, value: any) {
+    const event = await withErrorMessage(async () => {
+        const res = await client.changeIssueTemplatedField({ input: { issue: issueId.value, name, value }});
+        return res.changeIssueTemplatedField?.templatedFieldChangedEvent;
+    }, "Error updating templated field");
+    if (event == undefined) {
+        return;
+    }
+    timeline.value.push(event);
+    const index = templatedFields.value.findIndex((field) => field.name == name);
+    if (index != -1) {
+        templatedFields.value[index].value = event.newValue;
+    }
+}
+
 </script>
 <style scoped lang="scss">
 @use "@/styles/settings.scss";

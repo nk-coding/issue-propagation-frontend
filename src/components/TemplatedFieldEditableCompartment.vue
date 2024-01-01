@@ -1,0 +1,82 @@
+<template>
+    <v-divider/>
+    <EditableCompartment
+        :name="name"
+        save-button
+        :editable="editable"
+        :has-unsaved-changes="hasUnsavedChanges"
+        @save="$emit('save', valueCopy)"
+        @close="updateValueCopy"
+    >
+        <template #display>
+            <MetaForm
+                class="pointer-events-none"
+                :schema="schema"
+                :root-schema="schema"
+                :model-value="modelValue"
+                readonly
+            />
+        </template>
+        <template #edit>
+            <MetaForm
+                :schema="schema"
+                :root-schema="schema"
+                v-model="valueCopy"
+                @update:model-value="hasUnsavedChanges = true"
+            />
+        </template>
+    </EditableCompartment>
+</template>
+<script setup lang="ts">
+import { PropType, ref, toRaw, watch } from 'vue';
+import EditableCompartment from './EditableCompartment.vue';
+import MetaForm from './input/schema/MetaForm.vue';
+import { Schema } from 'jtd';
+
+const props = defineProps({
+    name: {
+        type: String,
+        required: true
+    },
+    modelValue: {
+        required: false
+    },
+    schema: {
+        type: Object as PropType<Schema>,
+        required: true
+    },
+    editable: {
+        type: Boolean,
+        required: true
+    }
+})
+
+defineEmits<{
+    (event: "save", value: any): void;
+}>();
+
+const hasUnsavedChanges = ref(false);
+
+const valueCopy = ref(copyModelValue());
+
+watch(
+    () => props.modelValue,
+    () => {
+        updateValueCopy();
+    }
+)
+
+function updateValueCopy() {
+    valueCopy.value = copyModelValue();
+    hasUnsavedChanges.value = false;
+}
+
+function copyModelValue(): any {
+    return structuredClone(toRaw(props.modelValue))
+}
+</script>
+<style scoped>
+.pointer-events-none {
+    pointer-events: none;
+}
+</style>

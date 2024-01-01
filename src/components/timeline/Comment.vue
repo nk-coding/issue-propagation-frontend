@@ -41,7 +41,7 @@
                             </div>
                             <v-spacer />
                             <v-fade-transition>
-                                <div v-show="issue?.comment && (isHovering || menuOpen)">
+                                <div v-show="issue?.comment && (isHovering || menuOpen)" class="flex-shrink-0">
                                     <IconButton :disabled="isDeleted || !issue?.comment" @click="reply">
                                         <v-icon icon="mdi-reply" />
                                         <v-tooltip activator="parent" location="top"> Reply </v-tooltip>

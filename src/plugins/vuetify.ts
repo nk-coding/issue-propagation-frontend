@@ -53,6 +53,10 @@ export default createVuetify({
             variant: "outlined",
             density: "comfortable"
         },
+        VCheckbox: {
+            density: "comfortable",
+            color: "primary"
+        },
         VTooltip: {
             openDelay: 250
         },

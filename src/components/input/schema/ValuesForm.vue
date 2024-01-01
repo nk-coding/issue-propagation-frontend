@@ -1,7 +1,7 @@
 <template>
     <BaseObjectForm :name="name" :is-null="modelValue == undefined" @add-value="$emit('update:modelValue', {})">
         <div class="full-width">
-            <div class="d-flex align-center mb-3">
+            <div v-if="!readonly" class="d-flex align-center mb-3">
                 <v-text-field
                     v-model="addName"
                     label="Add value"
@@ -21,7 +21,7 @@
                     <v-tooltip activator="parent" location="bottom"> Set to null </v-tooltip>
                 </IconButton>
             </div>
-            <v-divider v-if="Object.keys(modelValue ?? {}).length > 0" class="mb-3" />
+            <v-divider v-if="Object.keys(modelValue ?? {}).length > 0 && !readonly" class="mb-3" />
             <div v-for="property in Object.keys(modelValue ?? {})" class="d-flex">
                 <MetaForm
                     :key="property"
@@ -29,8 +29,9 @@
                     :root-schema="rootSchema"
                     :name="property"
                     v-model="modelValue![property]"
+                    :readonly="readonly"
                 />
-                <IconButton class="ml-2 mt-1" @click="removeElement(property)">
+                <IconButton v-if="!readonly" class="ml-2 mt-1" @click="removeElement(property)">
                     <v-icon icon="mdi-close" />
                     <v-tooltip activator="parent" location="bottom"> Remove element </v-tooltip>
                 </IconButton>
@@ -61,6 +62,10 @@ const props = defineProps({
     modelValue: {
         type: Object as PropType<Record<string, any>>,
         required: false
+    },
+    readonly: {
+        type: Boolean,
+        required: true,
     }
 });
 

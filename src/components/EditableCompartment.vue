@@ -20,6 +20,9 @@
             <IconButton v-if="editable && !editMode" @click="editMode = true">
                 <v-icon icon="mdi-pencil" />
             </IconButton>
+            <IconButton v-if="editable && editMode && saveButton" @click="$emit('save')">
+                <v-icon icon="mdi-content-save" />
+            </IconButton>
         </div>
         <div v-if="editMode" @click.stop="">
             <slot name="edit"></slot>
@@ -81,6 +84,7 @@ const props = defineProps({
 
 const emit = defineEmits<{
     (event: "close"): void;
+    (event: "save"): void;
 }>();
 
 const editMode = ref(false);

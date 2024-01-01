@@ -1,5 +1,6 @@
 <template>
-    <v-text-field v-if="isString || isNumber" v-model="cachedValue" :rules="rules" :label="name" />
+    <v-text-field v-if="isString || isNumber" v-model="cachedValue" :rules="rules" :label="name"  :readonly="readonly" />
+    <v-checkbox v-else-if="isBoolean" v-model="cachedValue" :rules="rules" :label="name" :readonly="readonly" />
 </template>
 <script setup lang="ts">
 import { Schema, SchemaFormType } from "jtd";
@@ -23,6 +24,10 @@ const props = defineProps({
     },
     modelValue: {
         required: false
+    },
+    readonly: {
+        type: Boolean,
+        required: true,
     }
 });
 
@@ -35,7 +40,7 @@ const cachedValue = ref(props.modelValue);
 watch(
     () => props.modelValue,
     (value) => {
-        if (isNumber) {
+        if (isNumber.value) {
             const asFloat = Number.parseFloat(cachedValue.value as string);
             if (value == undefined) {
                 if (cachedValue.value) {

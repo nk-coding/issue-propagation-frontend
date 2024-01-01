@@ -2,42 +2,47 @@
     <ElementsForm
         v-if="isElementsForm(derefSchema)"
         :schema="(derefSchema as any)"
-        :root-schema="props.rootSchema"
-        :name="props.name"
+        :root-schema="rootSchema"
+        :name="name"
         :modelValue="(props.modelValue as any[] | undefined)"
         @update:model-value="$emit('update:modelValue', $event)"
+        :readonly="readonly"
     />
     <ValuesForm
         v-else-if="isValuesForm(derefSchema)"
         :schema="(derefSchema as any)"
-        :root-schema="props.rootSchema"
-        :name="props.name"
+        :root-schema="rootSchema"
+        :name="name"
         :modelValue="(props.modelValue as Record<string, unknown> | undefined)"
         @update:model-value="$emit('update:modelValue', $event)"
+        :readonly="readonly"
     />
     <ObjectForm
         v-else-if="isPropertiesForm(schema) || isDiscriminatorForm(schema)"
         :schema="(derefSchema as any)"
-        :root-schema="props.rootSchema"
-        :name="props.name"
+        :root-schema="rootSchema"
+        :name="name"
         :modelValue="(props.modelValue as Record<string, unknown> | undefined)"
         @update:model-value="$emit('update:modelValue', $event)"
+        :readonly="readonly"
     />
     <TypeForm
         v-else-if="isTypeForm(schema)"
         :schema="(derefSchema as any)"
-        :root-schema="props.rootSchema"
-        :name="props.name"
-        :modelValue="props.modelValue"
+        :root-schema="rootSchema"
+        :name="name"
+        :modelValue="modelValue"
         @update:model-value="$emit('update:modelValue', $event)"
+        :readonly="readonly"
     />
     <EnumForm
         v-else-if="isEnumForm(schema)"
         :schema="(derefSchema as any)"
-        :root-schema="props.rootSchema"
-        :name="props.name"
+        :root-schema="rootSchema"
+        :name="name"
         :modelValue="(props.modelValue as string | undefined)"
         @update:model-value="$emit('update:modelValue', $event)"
+        :readonly="readonly"
     />
 </template>
 <script setup lang="ts">
@@ -74,6 +79,11 @@ const props = defineProps({
     },
     modelValue: {
         required: false
+    },
+    readonly: {
+        type: Boolean,
+        required: false,
+        default: false
     }
 });
 
