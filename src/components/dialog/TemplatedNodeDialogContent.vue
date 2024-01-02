@@ -1,5 +1,5 @@
 <template>
-    <v-card-title class="pl-4">Create component</v-card-title>
+    <v-card-title class="pl-4">Create {{ itemName }}</v-card-title>
     <v-stepper class="stepper d-flex flex-column" v-model="step" :items="['General', 'Templated fields']" hide-actions :bg-color="color" flat>
         <template v-slot:item.1>
             <v-form v-model="form1Valid" validate-on="blur">

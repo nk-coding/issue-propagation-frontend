@@ -183,6 +183,9 @@ function selectedElement(value: any) {
     const item = items.value.find((item) => item.id == id);
     if (props.mode == "model") {
         emit("update:modelValue", id);
+        if (item != undefined) {
+            emit("selected-item", item as T);
+        }
     } else if (props.mode == "add") {
         if (item != undefined) {
             emit("selected-item", item as T);

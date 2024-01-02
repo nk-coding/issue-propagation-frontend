@@ -16,8 +16,8 @@
                             v-if="icon"
                             variant="outlined"
                             rounded="default"
-                            height="52px"
-                            width="52px"
+                            height="48px"
+                            width="48px"
                             class="mr-2 icon-container"
                         >
                             <IssueIcon :issue="icon" class="issue-icon" />
@@ -31,14 +31,14 @@
                             :template="template.modelValue"
                             :disabled="!template.modelValue"
                             class="wrap-input mx-2 mb-1 flex-1-1-0"
-                            @selected-items="onSelectedTypes"
+                            @selected-item="onSelectedType"
                         />
                         <IssueStateAutocomplete
                             v-bind="state"
                             :template="template.modelValue"
                             :disabled="!template.modelValue"
                             class="wrap-input mx-2 mb-1 flex-1-1-0"
-                            @selected-items="onSelectedStates"
+                            @selected-item="onSelectedState"
                         />
                     </div>
                     <SimpleField v-bind="body" variant="outlined" label="Body" color="primary" class="markdown-field">
@@ -192,20 +192,12 @@ function cancelCreateIssue() {
     createIssueDialog.value = false;
 }
 
-function onSelectedTypes(types: { iconPath: string }[]) {
-    if (types.length > 0) {
-        typePath.value = types[0].iconPath;
-    } else {
-        typePath.value = undefined;
-    }
+function onSelectedType(type: { iconPath: string }) {
+    typePath.value = type.iconPath;
 }
 
-function onSelectedStates(states: { isOpen: boolean }[]) {
-    if (states.length > 0) {
-        isOpen.value = states[0].isOpen;
-    } else {
-        isOpen.value = undefined;
-    }
+function onSelectedState(state: { isOpen: boolean }) {
+    isOpen.value = state.isOpen;
 }
 </script>
 <style scoped lang="scss">
@@ -219,9 +211,8 @@ function onSelectedStates(states: { isOpen: boolean }[]) {
 }
 
 .issue-icon {
-    height: 50px;
-    width: 50px;
-    margin: 1px;
+    height: 48px;
+    width: 48px;
 }
 
 .icon-container {
