@@ -1,10 +1,6 @@
 <template>
     <v-sheet
         ref="compartmentSheet"
-        v-click-outside="{
-            handler: onClickOutside,
-            closeConditional: () => !closeHierarchy
-        }"
         class="ma-2 compartment-sheet"
         :class="{
             'px-4 py-2': editMode,
@@ -31,7 +27,6 @@
             <slot name="display"></slot>
         </div>
         <v-overlay
-            v-if="closeHierarchy"
             :model-value="editMode"
             contained
             persistent
@@ -55,7 +50,7 @@
     </v-sheet>
 </template>
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import ConfirmationDialog from "./dialog/ConfirmationDialog.vue";
 import { VSheet } from "vuetify/lib/components/index.mjs";
 
@@ -76,9 +71,12 @@ const props = defineProps({
         type: Boolean,
         default: false
     },
-    closeHierarchy: {
+    closeOnValueChange: {
         type: Boolean,
-        default: true
+        default: false
+    },
+    modelValue: {
+        required: false
     }
 });
 
@@ -90,6 +88,15 @@ const emit = defineEmits<{
 const editMode = ref(false);
 const confirmationDialog = ref<InstanceType<typeof ConfirmationDialog>>();
 const compartmentSheet = ref<VSheet>();
+
+watch(
+    () => props.modelValue,
+    (value) => {
+        if (editMode.value && props.closeOnValueChange) {
+            closeEditMode();
+        }
+    }
+)
 
 function onClickOutside(e: MouseEvent) {
     if (editMode.value) {

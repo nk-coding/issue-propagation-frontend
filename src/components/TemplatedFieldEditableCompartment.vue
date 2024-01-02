@@ -5,7 +5,9 @@
         save-button
         :editable="editable"
         :has-unsaved-changes="hasUnsavedChanges"
-        @save="$emit('save', valueCopy)"
+        close-on-value-change
+        :model-value="modelValue"
+        @save="save"
         @close="updateValueCopy"
     >
         <template #display>
@@ -18,12 +20,14 @@
             />
         </template>
         <template #edit>
-            <MetaForm
-                :schema="schema"
-                :root-schema="schema"
-                v-model="valueCopy"
-                @update:model-value="hasUnsavedChanges = true"
-            />
+            <v-form ref="editForm" v-model="formValid">
+                <MetaForm
+                    :schema="schema"
+                    :root-schema="schema"
+                    v-model="valueCopy"
+                    @update:model-value="hasUnsavedChanges = true"
+                />
+            </v-form>
         </template>
     </EditableCompartment>
 </template>
@@ -51,11 +55,13 @@ const props = defineProps({
     }
 })
 
-defineEmits<{
+const emit = defineEmits<{
     (event: "save", value: any): void;
 }>();
 
 const hasUnsavedChanges = ref(false);
+const formValid = ref(false);
+const editForm = ref<any>(null);
 
 const valueCopy = ref(copyModelValue());
 
@@ -73,6 +79,15 @@ function updateValueCopy() {
 
 function copyModelValue(): any {
     return structuredClone(toRaw(props.modelValue))
+}
+
+function save() {
+    if (formValid.value) {
+        emit('save', valueCopy.value);
+        hasUnsavedChanges.value = false;
+    } else {
+        editForm.value.validate();
+    }
 }
 </script>
 <style scoped>

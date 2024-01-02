@@ -2,7 +2,7 @@
     <v-card-title class="pl-4">Create component</v-card-title>
     <v-stepper class="stepper d-flex flex-column" v-model="step" :items="['General', 'Templated fields']" hide-actions :bg-color="color" flat>
         <template v-slot:item.1>
-            <v-form ref="form1" v-model="form1Valid" validate-on="blur">
+            <v-form v-model="form1Valid" validate-on="blur">
                 <slot name="general" />
             </v-form>
         </template>
@@ -31,7 +31,7 @@
     </v-card-actions>
 </template>
 <script setup lang="ts">
-import { PropType, ref } from 'vue';
+import { ref } from 'vue';
 import ConfirmationDialog from './ConfirmationDialog.vue';
 import { computed } from 'vue';
 

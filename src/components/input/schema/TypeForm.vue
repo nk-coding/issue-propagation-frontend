@@ -35,7 +35,7 @@ const emit = defineEmits({
     "update:modelValue": (value: any) => true
 });
 
-const cachedValue = ref(props.modelValue);
+const cachedValue = ref(convertValue(props.modelValue));
 
 watch(
     () => props.modelValue,
@@ -169,5 +169,13 @@ function validateNumber(min: number, max: number): Rule {
         }
         return true;
     });
+}
+
+function convertValue(value: unknown): unknown {
+    if (typeof value === "number") {
+        return value.toString();
+    } else {
+        return value;
+    }
 }
 </script>

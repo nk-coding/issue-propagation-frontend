@@ -52,7 +52,8 @@
                 <EditableCompartment
                     name="Type"
                     :editable="!!issue.manageIssues"
-                    :close-hierarchy="false"
+                    close-on-value-change
+                    :model-value="issue.type"
                 >
                     <template #display>
                         <IssueType :type="issue.type" />
@@ -74,7 +75,8 @@
                 <EditableCompartment
                     name="State"
                     :editable="!!issue.manageIssues"
-                    :close-hierarchy="false"
+                    close-on-value-change
+                    :model-value="issue.state"
                 >
                     <template #display>
                         <IssueState :state="issue.state" />
@@ -176,7 +178,8 @@
                 <EditableCompartment
                     name="Priority"
                     :editable="!!issue.manageIssues"
-                    :close-hierarchy="false"
+                    close-on-value-change
+                    :model-value="issue.priority"
                 >
                     <template #display>
                         <IssuePriority v-if="issue.priority != undefined" :priority="issue.priority" />
@@ -694,9 +697,12 @@ async function updateTemplatedField(name: string, value: any) {
         return;
     }
     timeline.value.push(event);
-    const index = templatedFields.value.findIndex((field) => field.name == name);
-    if (index != -1) {
-        templatedFields.value[index].value = event.newValue;
+    const fields = issue.value!.templatedFields;
+    for (const field of fields) {
+        if (field.name == name) {
+            field.value = event.newValue;
+            break;
+        }
     }
 }
 
