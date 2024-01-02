@@ -20,6 +20,7 @@
                 :item="(item as ListItem<T>)"
             ></slot>
             <slot v-else-if="contextSearchMode" name="context-item" :props="props" :item="(item as ListItem<C>)"></slot>
+            <div v-else class="placeholder-item"/>
         </template>
     </v-autocomplete>
 </template>
@@ -239,3 +240,9 @@ onMounted(async () => {
     await updateSearch("");
 });
 </script>
+<style scoped>
+.placeholder-item {
+    height: 1px;
+    pointer-events: none;
+}
+</style>
