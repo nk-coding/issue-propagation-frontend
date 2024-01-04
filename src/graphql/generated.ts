@@ -24665,7 +24665,7 @@ export const CreateComponentDocument = gql`
 `;
 export const SearchComponentTemplatesDocument = gql`
     query searchComponentTemplates($query: String!, $count: Int!) {
-        searchComponentTemplates(query: $query, first: $count) {
+        searchComponentTemplates(query: $query, first: $count, filter: { isDeprecated: { eq: false } }) {
             ...DefaultComponentTemplateInfo
         }
     }
@@ -24673,7 +24673,7 @@ export const SearchComponentTemplatesDocument = gql`
 `;
 export const FirstComponentTemplatesDocument = gql`
     query firstComponentTemplates($count: Int!) {
-        componentTemplates(first: $count, orderBy: { field: NAME }) {
+        componentTemplates(first: $count, orderBy: { field: NAME }, filter: { isDeprecated: { eq: false } }) {
             nodes {
                 ...DefaultComponentTemplateInfo
             }
@@ -25129,7 +25129,7 @@ export const ChangeIssueStateDocument = gql`
 `;
 export const SearchIssueTemplatesDocument = gql`
     query searchIssueTemplates($query: String!, $count: Int!) {
-        searchIssueTemplates(query: $query, first: $count) {
+        searchIssueTemplates(query: $query, first: $count, filter: { isDeprecated: { eq: false } }) {
             ...DefaultIssueTemplateInfo
         }
     }
@@ -25137,7 +25137,7 @@ export const SearchIssueTemplatesDocument = gql`
 `;
 export const FirstIssueTemplatesDocument = gql`
     query firstIssueTemplates($count: Int!) {
-        issueTemplates(first: $count, orderBy: { field: NAME }) {
+        issueTemplates(first: $count, orderBy: { field: NAME }, filter: { isDeprecated: { eq: false } }) {
             nodes {
                 ...DefaultIssueTemplateInfo
             }

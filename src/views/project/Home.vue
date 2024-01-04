@@ -133,6 +133,7 @@ const relationTemplateFilter = computed<RelationTemplateFilterInput | undefined>
     }
     const context = createRelationContext.value;
     return {
+        isDeprecated: { eq: false },
         relationConditions: {
             any: {
                 from: {

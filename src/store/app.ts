@@ -1,12 +1,11 @@
-// Utilities
 import { defineStore } from "pinia";
 import axios from "axios";
 import { useLocalStorage } from "@vueuse/core";
 import { jwtDecode } from "jwt-decode";
-import { pushErrorMessage, withErrorMessage } from "@/util/withErrorMessage";
-import { useRouter } from "vue-router";
-import { OAuthRespose, TokenScope } from "@/views/auth/model";
+import { pushErrorMessage } from "@/util/withErrorMessage";
+import { TokenScope } from "@/views/auth/model";
 import { ClientReturnType, useClient } from "@/graphql/client";
+import { ClientError } from "graphql-request";
 
 interface GlobalUserPermissions {
     canCreateProjects: boolean;
@@ -48,17 +47,25 @@ export const useAppStore = defineStore("app", {
                 this.user = undefined;
             } else {
                 const client = useClient();
-                const userRes = await client.getCurrentUser();
-                if (userRes.currentUser != undefined) {
-                    this.user = {
-                        ...userRes.currentUser,
-                        canCreateProjects: userRes.canCreateProjects,
-                        canCreateComponents: userRes.canCreateComponents,
-                        canCreateIMSs: userRes.canCreateIMSs,
-                        canCreateTemplates: userRes.canCreateTemplates
-                    };
-                } else {
-                    this.user = undefined;
+                try {
+                    const userRes = await client.getCurrentUser();
+                    if (userRes.currentUser != undefined) {
+                        this.user = {
+                            ...userRes.currentUser,
+                            canCreateProjects: userRes.canCreateProjects,
+                            canCreateComponents: userRes.canCreateComponents,
+                            canCreateIMSs: userRes.canCreateIMSs,
+                            canCreateTemplates: userRes.canCreateTemplates
+                        };
+                    } else {
+                        this.user = undefined;
+                    }
+                } catch (err) {
+                    if ((err as ClientError).response?.status >= 400) {
+                        pushErrorMessage("Invalid access token.");
+                        this.accessToken = "";
+                        this.refreshToken = "";
+                    }
                 }
             }
         },

@@ -19,13 +19,13 @@ fragment DefaultComponentVersionTemplateInfo on ComponentVersionTemplate {
 }
 
 query searchComponentTemplates($query: String!, $count: Int!) {
-    searchComponentTemplates(query: $query, first: $count) {
+    searchComponentTemplates(query: $query, first: $count, filter: { isDeprecated: { eq: false } }) {
         ...DefaultComponentTemplateInfo
     }
 }
 
 query firstComponentTemplates($count: Int!) {
-    componentTemplates(first: $count, orderBy: { field: NAME }) {
+    componentTemplates(first: $count, orderBy: { field: NAME }, filter: { isDeprecated: { eq: false } }) {
         nodes {
             ...DefaultComponentTemplateInfo
         }
