@@ -32,7 +32,7 @@
                     <v-icon :icon="lightMode ? 'mdi-weather-sunny' : 'mdi-weather-night'" size="large" />
                     <v-tooltip activator="parent" location="bottom"> Toggle light/dark mode </v-tooltip>
                 </v-btn>
-                <v-btn v-if="store.user != undefined" icon size="small" variant="text" class="ml-3">
+                <v-btn v-if="store.user != undefined" icon size="small" variant="text" class="ml-3 avatar-button">
                     <img :src="store.user.avatar" class="avatar rounded-circle" />
                     <v-menu activator="parent">
                         <v-card
@@ -173,6 +173,7 @@ updateColorMode();
     overflow: hidden;
 }
 
+.avatar-button :deep(.v-btn__content),
 .avatar {
     width: 100%;
     height: 100%;
