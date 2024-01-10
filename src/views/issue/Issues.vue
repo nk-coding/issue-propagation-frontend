@@ -3,6 +3,7 @@
         :item-manager="itemManager"
         :sort-fields="Object.keys(sortFields)"
         :to="(issue: Issue) => issueRoute(issue)"
+        :sort-ascending-initially="false"
     >
         <template #item="{ item }">
             <ListItem :title="item.title" :subtitle="item.title">
@@ -74,9 +75,9 @@ const route = useRoute();
 const trackableId = computed(() => route.params.trackable as string);
 
 const sortFields = {
+    Updated: IssueOrderField.LastUpdatedAt,
     Created: IssueOrderField.CreatedAt,
     Title: IssueOrderField.Title,
-    Updated: IssueOrderField.LastUpdatedAt
 };
 
 const itemManager: ItemManager<Issue, keyof typeof sortFields> = {

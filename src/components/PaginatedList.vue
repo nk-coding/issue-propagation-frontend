@@ -56,6 +56,10 @@ const props = defineProps({
         type: Array as PropType<S[]>,
         required: true
     },
+    sortAscendingInitially: {
+        type: Boolean,
+        default: true,
+    },
     itemManager: {
         type: Object as PropType<ItemManager<T, S>>,
         required: true
@@ -73,7 +77,7 @@ const props = defineProps({
 
 const searchString = ref("");
 const currentSortField = ref(props.sortFields[0]) as Ref<S>;
-const sortAscending = ref(true);
+const sortAscending = ref(props.sortAscendingInitially);
 
 const pageCount = ref(0);
 const currentPage = ref(1);
