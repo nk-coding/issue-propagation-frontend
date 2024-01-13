@@ -1,1 +1,1 @@
-<template>TODO</template>
+<template><router-view /></template>

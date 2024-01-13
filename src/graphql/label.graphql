@@ -1,3 +1,16 @@
+query getLabelList($filter: String!, $orderBy: LabelOrder!, $count: Int!, $skip: Int!, $trackable: ID!) {
+    node(id: $trackable) {
+        ... on Trackable {
+            labels(filter: { name: { contains: $filter } }, orderBy: $orderBy, first: $count, skip: $skip) {
+                nodes {
+                    ...DefaultLabelInfo
+                }
+                totalCount
+            }
+        }
+    }
+}
+
 fragment DefaultLabelInfo on Label {
     id
     name
@@ -44,5 +57,27 @@ mutation removeLabelFromIssue($issue: ID!, $label: ID!) {
         removedLabelEvent {
             ...RemovedLabelEventTimelineInfo
         }
+    }
+}
+
+mutation createLabel($input: CreateLabelInput!) {
+    createLabel(input: $input) {
+        label {
+            id
+        }
+    }
+}
+
+mutation updateLabel($input: UpdateLabelInput!) {
+    updateLabel(input: $input) {
+        label {
+            id
+        }
+    }
+}
+
+mutation removeLabelFromTrackable($trackable: ID!, $label: ID!) {
+    removeLabelFromTrackable(input: { label: $label, trackable: $trackable }) {
+        __typename
     }
 }

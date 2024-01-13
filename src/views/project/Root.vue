@@ -69,6 +69,12 @@ const leftSidebarItems = computed(() => {
                     name: "General",
                     color: "secondary",
                     to: projectPath("project-details-general")
+                },
+                {
+                    icon: "mdi-label",
+                    name: "Labels",
+                    color: "secondary",
+                    to: projectPath("project-details-labels")
                 }
             ]
         ];
@@ -110,6 +116,20 @@ const rightSidebarItems = computed(() => {
                     color: "secondary",
                     onClick: () => {
                         eventBus?.emit("layout-component-graph", undefined);
+                    }
+                }
+            ]
+        ];
+    } else if (route.name == "project-details-labels") {
+        return [
+            [
+                {
+                    icon: "mdi-plus",
+                    description: `Create label`,
+                    color: "secondary",
+                    disabled: !(project?.value?.manageLabels ?? false),
+                    onClick: () => {
+                        eventBus?.emit("create-label", undefined);
                     }
                 }
             ]

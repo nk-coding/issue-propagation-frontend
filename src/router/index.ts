@@ -55,7 +55,7 @@ const routes: RouteRecordRaw[] = [
                     {
                         path: "labels",
                         name: "component-details-labels",
-                        component: () => import("../views/component/details/Labels.vue")
+                        component: () => import("../views/label/Labels.vue")
                     }
                 ]
             },
@@ -110,6 +110,11 @@ const routes: RouteRecordRaw[] = [
                         path: "",
                         name: "project-details-general",
                         component: () => import("../views/component/details/General.vue")
+                    },
+                    {
+                        path: "labels",
+                        name: "project-details-labels",
+                        component: () => import("../views/label/Labels.vue")
                     }
                 ]
             },

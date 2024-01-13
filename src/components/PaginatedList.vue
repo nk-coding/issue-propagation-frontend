@@ -58,7 +58,7 @@ const props = defineProps({
     },
     sortAscendingInitially: {
         type: Boolean,
-        default: true,
+        default: true
     },
     itemManager: {
         type: Object as PropType<ItemManager<T, S>>,
@@ -70,8 +70,13 @@ const props = defineProps({
         default: 25
     },
     to: {
-        type: Function as PropType<(item: T) => RouteLocationRaw>,
+        type: Function as PropType<(item: T) => RouteLocationRaw | undefined>,
         required: true
+    },
+    dependencies: {
+        type: Array as PropType<any[]>,
+        required: false,
+        default: () => []
     }
 });
 
@@ -98,6 +103,14 @@ watch([searchString, currentSortField, sortAscending], async () => {
 watch(currentPage, async () => {
     await updateItems(false);
 });
+
+watch(
+    () => props.dependencies,
+    async () => {
+        await updateItems(false);
+    },
+    { deep: true }
+);
 
 async function updateItems(resetPage: boolean) {
     if (resetPage) {

@@ -123,6 +123,20 @@ const rightSidebarItems = computed(() => {
                 }
             ]
         ];
+    } else if (route.name == "component-details-labels") {
+        return [
+            [
+                {
+                    icon: "mdi-plus",
+                    description: `Create label`,
+                    color: "secondary",
+                    disabled: !(component?.value?.manageLabels ?? false),
+                    onClick: () => {
+                        eventBus?.emit("create-label", undefined);
+                    }
+                }
+            ]
+        ];
     } else {
         return [];
     }
