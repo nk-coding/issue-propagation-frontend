@@ -17835,6 +17835,222 @@ export type GetComponentQuery = {
         | null;
 };
 
+export type GetComponentDetailsQueryVariables = Exact<{
+    id: Scalars["ID"]["input"];
+}>;
+
+export type GetComponentDetailsQuery = {
+    __typename?: "Query";
+    node?:
+        | { __typename?: "AddedAffectedEntityEvent"; id: string }
+        | { __typename?: "AddedArtefactEvent"; id: string }
+        | { __typename?: "AddedLabelEvent"; id: string }
+        | { __typename?: "AddedToPinnedIssuesEvent"; id: string }
+        | { __typename?: "AddedToTrackableEvent"; id: string }
+        | { __typename?: "AggregatedIssue"; id: string }
+        | { __typename?: "AggregatedIssueRelation"; id: string }
+        | { __typename?: "Artefact"; id: string }
+        | { __typename?: "ArtefactTemplate"; id: string }
+        | { __typename?: "Assignment"; id: string }
+        | { __typename?: "AssignmentType"; id: string }
+        | { __typename?: "AssignmentTypeChangedEvent"; id: string }
+        | { __typename?: "Body"; id: string }
+        | {
+              __typename?: "Component";
+              name: string;
+              description: string;
+              id: string;
+              issues: {
+                  __typename?: "IssueConnection";
+                  nodes: Array<{
+                      __typename?: "Issue";
+                      id: string;
+                      title: string;
+                      createdAt: any;
+                      createdBy:
+                          | {
+                                __typename?: "GropiusUser";
+                                id: string;
+                                username: string;
+                                displayName: string;
+                                avatar: any;
+                            }
+                          | {
+                                __typename?: "IMSUser";
+                                id: string;
+                                username?: string | null;
+                                displayName: string;
+                                avatar: any;
+                            };
+                      issueComments: { __typename?: "IssueCommentConnection"; totalCount: number };
+                      labels: {
+                          __typename?: "LabelConnection";
+                          nodes: Array<{
+                              __typename?: "Label";
+                              id: string;
+                              name: string;
+                              description: string;
+                              color: string;
+                          }>;
+                      };
+                      assignments: {
+                          __typename?: "AssignmentConnection";
+                          nodes: Array<{
+                              __typename?: "Assignment";
+                              user:
+                                  | {
+                                        __typename?: "GropiusUser";
+                                        id: string;
+                                        username: string;
+                                        displayName: string;
+                                        avatar: any;
+                                    }
+                                  | {
+                                        __typename?: "IMSUser";
+                                        id: string;
+                                        username?: string | null;
+                                        displayName: string;
+                                        avatar: any;
+                                    };
+                          }>;
+                      };
+                      incomingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
+                      outgoingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
+                      state: { __typename?: "IssueState"; isOpen: boolean };
+                      type: { __typename?: "IssueType"; iconPath: string };
+                  }>;
+              };
+              pinnedIssues: {
+                  __typename?: "IssueConnection";
+                  nodes: Array<{
+                      __typename?: "Issue";
+                      id: string;
+                      title: string;
+                      createdAt: any;
+                      createdBy:
+                          | {
+                                __typename?: "GropiusUser";
+                                id: string;
+                                username: string;
+                                displayName: string;
+                                avatar: any;
+                            }
+                          | {
+                                __typename?: "IMSUser";
+                                id: string;
+                                username?: string | null;
+                                displayName: string;
+                                avatar: any;
+                            };
+                      issueComments: { __typename?: "IssueCommentConnection"; totalCount: number };
+                      labels: {
+                          __typename?: "LabelConnection";
+                          nodes: Array<{
+                              __typename?: "Label";
+                              id: string;
+                              name: string;
+                              description: string;
+                              color: string;
+                          }>;
+                      };
+                      assignments: {
+                          __typename?: "AssignmentConnection";
+                          nodes: Array<{
+                              __typename?: "Assignment";
+                              user:
+                                  | {
+                                        __typename?: "GropiusUser";
+                                        id: string;
+                                        username: string;
+                                        displayName: string;
+                                        avatar: any;
+                                    }
+                                  | {
+                                        __typename?: "IMSUser";
+                                        id: string;
+                                        username?: string | null;
+                                        displayName: string;
+                                        avatar: any;
+                                    };
+                          }>;
+                      };
+                      incomingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
+                      outgoingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
+                      state: { __typename?: "IssueState"; isOpen: boolean };
+                      type: { __typename?: "IssueType"; iconPath: string };
+                  }>;
+              };
+          }
+        | { __typename?: "ComponentPermission"; id: string }
+        | { __typename?: "ComponentTemplate"; id: string }
+        | { __typename?: "ComponentVersion"; id: string }
+        | { __typename?: "ComponentVersionTemplate"; id: string }
+        | { __typename?: "DueDateChangedEvent"; id: string }
+        | { __typename?: "EstimatedTimeChangedEvent"; id: string }
+        | { __typename?: "FillStyle"; id: string }
+        | { __typename?: "GlobalPermission"; id: string }
+        | { __typename?: "GropiusUser"; id: string }
+        | { __typename?: "IMS"; id: string }
+        | { __typename?: "IMSIssue"; id: string }
+        | { __typename?: "IMSIssueTemplate"; id: string }
+        | { __typename?: "IMSPermission"; id: string }
+        | { __typename?: "IMSProject"; id: string }
+        | { __typename?: "IMSProjectTemplate"; id: string }
+        | { __typename?: "IMSTemplate"; id: string }
+        | { __typename?: "IMSUser"; id: string }
+        | { __typename?: "IMSUserTemplate"; id: string }
+        | { __typename?: "IncomingRelationTypeChangedEvent"; id: string }
+        | { __typename?: "Interface"; id: string }
+        | { __typename?: "InterfaceDefinition"; id: string }
+        | { __typename?: "InterfaceDefinitionTemplate"; id: string }
+        | { __typename?: "InterfacePart"; id: string }
+        | { __typename?: "InterfacePartTemplate"; id: string }
+        | { __typename?: "InterfaceSpecification"; id: string }
+        | { __typename?: "InterfaceSpecificationDerivationCondition"; id: string }
+        | { __typename?: "InterfaceSpecificationTemplate"; id: string }
+        | { __typename?: "InterfaceSpecificationVersion"; id: string }
+        | { __typename?: "InterfaceSpecificationVersionTemplate"; id: string }
+        | { __typename?: "InterfaceTemplate"; id: string }
+        | { __typename?: "IntraComponentDependencyParticipant"; id: string }
+        | { __typename?: "IntraComponentDependencySpecification"; id: string }
+        | { __typename?: "Issue"; id: string }
+        | { __typename?: "IssueComment"; id: string }
+        | { __typename?: "IssuePriority"; id: string }
+        | { __typename?: "IssueRelation"; id: string }
+        | { __typename?: "IssueRelationType"; id: string }
+        | { __typename?: "IssueState"; id: string }
+        | { __typename?: "IssueTemplate"; id: string }
+        | { __typename?: "IssueType"; id: string }
+        | { __typename?: "Label"; id: string }
+        | { __typename?: "MetaAggregatedIssueRelation"; id: string }
+        | { __typename?: "OutgoingRelationTypeChangedEvent"; id: string }
+        | { __typename?: "PriorityChangedEvent"; id: string }
+        | { __typename?: "Project"; id: string }
+        | { __typename?: "ProjectPermission"; id: string }
+        | { __typename?: "RelatedByIssueEvent"; id: string }
+        | { __typename?: "Relation"; id: string }
+        | { __typename?: "RelationCondition"; id: string }
+        | { __typename?: "RelationTemplate"; id: string }
+        | { __typename?: "RemovedAffectedEntityEvent"; id: string }
+        | { __typename?: "RemovedArtefactEvent"; id: string }
+        | { __typename?: "RemovedAssignmentEvent"; id: string }
+        | { __typename?: "RemovedFromPinnedIssuesEvent"; id: string }
+        | { __typename?: "RemovedFromTrackableEvent"; id: string }
+        | { __typename?: "RemovedIncomingRelationEvent"; id: string }
+        | { __typename?: "RemovedLabelEvent"; id: string }
+        | { __typename?: "RemovedOutgoingRelationEvent"; id: string }
+        | { __typename?: "RemovedTemplatedFieldEvent"; id: string }
+        | { __typename?: "SpentTimeChangedEvent"; id: string }
+        | { __typename?: "StartDateChangedEvent"; id: string }
+        | { __typename?: "StateChangedEvent"; id: string }
+        | { __typename?: "StrokeStyle"; id: string }
+        | { __typename?: "TemplateChangedEvent"; id: string }
+        | { __typename?: "TemplatedFieldChangedEvent"; id: string }
+        | { __typename?: "TitleChangedEvent"; id: string }
+        | { __typename?: "TypeChangedEvent"; id: string }
+        | null;
+};
+
 export type SearchComponentsQueryVariables = Exact<{
     query: Scalars["String"]["input"];
     count: Scalars["Int"]["input"];
@@ -20773,6 +20989,34 @@ export type DefaultIssueInfoFragment = {
             | { __typename: "Component"; id: string; name: string; description: string }
             | { __typename: "Project"; id: string; name: string; description: string }
         >;
+    };
+    incomingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
+    outgoingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
+    state: { __typename?: "IssueState"; isOpen: boolean };
+    type: { __typename?: "IssueType"; iconPath: string };
+};
+
+export type IssueListItemInfoFragment = {
+    __typename?: "Issue";
+    id: string;
+    title: string;
+    createdAt: any;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+    issueComments: { __typename?: "IssueCommentConnection"; totalCount: number };
+    labels: {
+        __typename?: "LabelConnection";
+        nodes: Array<{ __typename?: "Label"; id: string; name: string; description: string; color: string }>;
+    };
+    assignments: {
+        __typename?: "AssignmentConnection";
+        nodes: Array<{
+            __typename?: "Assignment";
+            user:
+                | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+                | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+        }>;
     };
     incomingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
     outgoingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
@@ -24043,6 +24287,67 @@ export const GraphInfoFragmentDoc = gql`
     }
     ${GraphComponentVersionInfoFragmentDoc}
 `;
+export const DefaultUserInfoFragmentDoc = gql`
+    fragment DefaultUserInfo on User {
+        id
+        username
+        displayName
+        avatar
+    }
+`;
+export const DefaultIssueIconInfoFragmentDoc = gql`
+    fragment DefaultIssueIconInfo on Issue {
+        incomingRelations {
+            totalCount
+        }
+        outgoingRelations {
+            totalCount
+        }
+        state {
+            isOpen
+        }
+        type {
+            iconPath
+        }
+    }
+`;
+export const DefaultLabelInfoFragmentDoc = gql`
+    fragment DefaultLabelInfo on Label {
+        id
+        name
+        description
+        color
+    }
+`;
+export const IssueListItemInfoFragmentDoc = gql`
+    fragment IssueListItemInfo on Issue {
+        id
+        title
+        createdAt
+        createdBy {
+            ...DefaultUserInfo
+        }
+        ...DefaultIssueIconInfo
+        issueComments {
+            totalCount
+        }
+        labels {
+            nodes {
+                ...DefaultLabelInfo
+            }
+        }
+        assignments {
+            nodes {
+                user {
+                    ...DefaultUserInfo
+                }
+            }
+        }
+    }
+    ${DefaultUserInfoFragmentDoc}
+    ${DefaultIssueIconInfoFragmentDoc}
+    ${DefaultLabelInfoFragmentDoc}
+`;
 export const DefaultIssueRelationTypeInfoFragmentDoc = gql`
     fragment DefaultIssueRelationTypeInfo on IssueRelationType {
         id
@@ -24066,14 +24371,6 @@ export const DefaultRelationTemplateInfoFragmentDoc = gql`
         id
         name
         description
-    }
-`;
-export const DefaultUserInfoFragmentDoc = gql`
-    fragment DefaultUserInfo on User {
-        id
-        username
-        displayName
-        avatar
     }
 `;
 export const UserTimelineInfoFragmentDoc = gql`
@@ -24132,14 +24429,6 @@ export const AddedArtefactEventTimelineInfoFragmentDoc = gql`
     }
     ${TimelineItemInfoFragmentDoc}
     ${ArtefactTimelineInfoFragmentDoc}
-`;
-export const DefaultLabelInfoFragmentDoc = gql`
-    fragment DefaultLabelInfo on Label {
-        id
-        name
-        description
-        color
-    }
 `;
 export const LabelTimelineInfoFragmentDoc = gql`
     fragment LabelTimelineInfo on Label {
@@ -24303,22 +24592,6 @@ export const IssueRelationTimelineInfoBaseFragmentDoc = gql`
         }
     }
     ${IssueRelationTypeTimelineInfoFragmentDoc}
-`;
-export const DefaultIssueIconInfoFragmentDoc = gql`
-    fragment DefaultIssueIconInfo on Issue {
-        incomingRelations {
-            totalCount
-        }
-        outgoingRelations {
-            totalCount
-        }
-        state {
-            isOpen
-        }
-        type {
-            iconPath
-        }
-    }
 `;
 export const DefaultIssueInfoFragmentDoc = gql`
     fragment DefaultIssueInfo on Issue {
@@ -24882,6 +25155,28 @@ export const GetComponentDocument = gql`
     }
     ${OpenIssueCountFragmentDoc}
 `;
+export const GetComponentDetailsDocument = gql`
+    query getComponentDetails($id: ID!) {
+        node(id: $id) {
+            id
+            ... on Component {
+                name
+                description
+                issues(orderBy: { field: LAST_UPDATED_AT, direction: DESC }, first: 20) {
+                    nodes {
+                        ...IssueListItemInfo
+                    }
+                }
+                pinnedIssues {
+                    nodes {
+                        ...IssueListItemInfo
+                    }
+                }
+            }
+        }
+    }
+    ${IssueListItemInfoFragmentDoc}
+`;
 export const SearchComponentsDocument = gql`
     query searchComponents($query: String!, $count: Int!, $filter: ComponentFilterInput) {
         searchComponents(query: $query, first: $count, filter: $filter) {
@@ -25049,37 +25344,14 @@ export const GetIssueListDocument = gql`
             ... on Trackable {
                 issues(filter: { title: { contains: $filter } }, orderBy: $orderBy, first: $count, skip: $skip) {
                     nodes {
-                        id
-                        title
-                        createdAt
-                        createdBy {
-                            ...DefaultUserInfo
-                        }
-                        ...DefaultIssueIconInfo
-                        issueComments {
-                            totalCount
-                        }
-                        labels {
-                            nodes {
-                                ...DefaultLabelInfo
-                            }
-                        }
-                        assignments {
-                            nodes {
-                                user {
-                                    ...DefaultUserInfo
-                                }
-                            }
-                        }
+                        ...IssueListItemInfo
                     }
                     totalCount
                 }
             }
         }
     }
-    ${DefaultUserInfoFragmentDoc}
-    ${DefaultIssueIconInfoFragmentDoc}
-    ${DefaultLabelInfoFragmentDoc}
+    ${IssueListItemInfoFragmentDoc}
 `;
 export const GetIssueDocument = gql`
     query getIssue($id: ID!) {
@@ -25749,6 +26021,20 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "getComponent",
+                "query"
+            );
+        },
+        getComponentDetails(
+            variables: GetComponentDetailsQueryVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<GetComponentDetailsQuery> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<GetComponentDetailsQuery>(GetComponentDetailsDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "getComponentDetails",
                 "query"
             );
         },

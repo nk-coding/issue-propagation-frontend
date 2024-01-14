@@ -68,6 +68,10 @@ html,
     width: 100%;
 }
 
+.full-height {
+    height: 100%;
+}
+
 .flex-1-1-0 {
     flex: 1 1 0 !important;
 }

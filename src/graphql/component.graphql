@@ -13,7 +13,7 @@ query getComponentList($filter: String!, $orderBy: ComponentOrder!, $count: Int!
 query getComponent($id: ID!) {
     node(id: $id) {
         id
-        ... on Component {
+        ...on Component {
             __typename
             name
             description
@@ -21,6 +21,26 @@ query getComponent($id: ID!) {
             createIssues: hasPermission(permission: CREATE_ISSUES)
             manageLabels: hasPermission(permission: MANAGE_LABELS)
             admin: hasPermission(permission: ADMIN)
+        }
+    }
+}
+
+query getComponentDetails($id: ID!) {
+    node(id: $id) {
+        id
+        ...on Component {
+            name
+            description
+            issues(orderBy: { field: LAST_UPDATED_AT, direction: DESC }, first: 20) {
+                nodes {
+                    ...IssueListItemInfo
+                }
+            }
+            pinnedIssues {
+                nodes {
+                    ...IssueListItemInfo
+                }
+            }
         }
     }
 }

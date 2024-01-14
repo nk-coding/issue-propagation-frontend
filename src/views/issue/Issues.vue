@@ -6,64 +6,19 @@
         :sort-ascending-initially="false"
     >
         <template #item="{ item }">
-            <ListItem :title="item.title" :subtitle="item.title">
-                <template #prepend>
-                    <IssueIcon :issue="item" height="40px" class="mr-2 flex-0-0" />
-                </template>
-                <template #append>
-                    <div class="mr-7 user-stack-container">
-                        <UserStack
-                            :users="item.assignments.nodes.map((assignment) => assignment.user)"
-                            size="small"
-                            class="pa-3"
-                        />
-                    </div>
-                    <div class="text-medium-emphasis icon-container d-flex align-center">
-                        <v-icon color="issue-incoming" class="triangle-right mr-1" size="x-small" icon="mdi-triangle" />
-                        {{ item.incomingRelations.totalCount }}
-                    </div>
-                    <div class="text-medium-emphasis icon-container d-flex align-center">
-                        {{ item.outgoingRelations.totalCount }}
-                        <v-icon color="issue-outgoing" class="triangle-right ml-1" size="x-small" icon="mdi-triangle" />
-                    </div>
-                    <div class="text-medium-emphasis icon-container">
-                        <v-icon icon="mdi-comment-outline" />
-                        {{ item.issueComments.totalCount }}
-                    </div>
-                </template>
-                <template #subtitle>
-                    <div class="text-medium-emphasis text-body-2">
-                        was created <RelativeTime :time="item.createdAt" /> by
-                        <User :user="item.createdBy" size="small" />
-                    </div>
-                </template>
-                <template #title-append>
-                    <Label
-                        v-for="(label, idx) in item.labels.nodes"
-                        :key="idx"
-                        :label="label"
-                        class="ml-2"
-                        size="small"
-                    />
-                </template>
-            </ListItem>
+            <IssueListItem :item="item"/>
         </template>
         <CreateIssueDialog :trackable="trackableId" @created-issue="(issue) => selectIssue(issue)" />
     </PaginatedList>
 </template>
 <script lang="ts" setup>
 import { NodeReturnType, useClient } from "@/graphql/client";
-import { computed, ref } from "vue";
+import { computed } from "vue";
 import { RouteLocationRaw, useRoute, useRouter } from "vue-router";
 import PaginatedList, { ItemManager } from "@/components/PaginatedList.vue";
-import ListItem from "@/components/ListItem.vue";
 import { IssueOrderField, OrderDirection } from "@/graphql/generated";
-import RelativeTime from "@/components/RelativeTime.vue";
-import User from "@/components/info/User.vue";
-import IssueIcon from "@/components/IssueIcon.vue";
-import Label from "@/components/info/Label.vue";
-import UserStack from "@/components/UserStack.vue";
 import CreateIssueDialog from "@/components/dialog/CreateIssueDialog.vue";
+import IssueListItem from "@/components/IssueListItem.vue";
 
 type Trackable = NodeReturnType<"getIssueList", "Component">;
 type Issue = Trackable["issues"]["nodes"][0];
@@ -117,15 +72,3 @@ function issueRoute(issue: { id: string }): RouteLocationRaw {
     };
 }
 </script>
-<style scoped lang="scss">
-@use "@/styles/settings.scss";
-.icon-container {
-    min-width: settings.$icon-with-number-width;
-}
-.triangle-right {
-    rotate: 90deg;
-}
-.user-stack-container {
-    background: transparent;
-}
-</style>

@@ -3,28 +3,7 @@ query getIssueList($filter: String!, $orderBy: IssueOrder!, $count: Int!, $skip:
         ... on Trackable {
             issues(filter: { title: { contains: $filter } }, orderBy: $orderBy, first: $count, skip: $skip) {
                 nodes {
-                    id
-                    title
-                    createdAt
-                    createdBy {
-                        ...DefaultUserInfo
-                    }
-                    ...DefaultIssueIconInfo
-                    issueComments {
-                        totalCount
-                    }
-                    labels {
-                        nodes {
-                            ...DefaultLabelInfo
-                        }
-                    }
-                    assignments {
-                        nodes {
-                            user {
-                                ...DefaultUserInfo
-                            }
-                        }
-                    }
+                    ...IssueListItemInfo
                 }
                 totalCount
             }
@@ -171,6 +150,31 @@ fragment DefaultIssueInfo on Issue {
     trackables {
         nodes {
             ...DefaultTrackableInfo
+        }
+    }
+}
+
+fragment IssueListItemInfo on Issue {
+    id
+    title
+    createdAt
+    createdBy {
+        ...DefaultUserInfo
+    }
+    ...DefaultIssueIconInfo
+    issueComments {
+        totalCount
+    }
+    labels {
+        nodes {
+            ...DefaultLabelInfo
+        }
+    }
+    assignments {
+        nodes {
+            user {
+                ...DefaultUserInfo
+            }
         }
     }
 }

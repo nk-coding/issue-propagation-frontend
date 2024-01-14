@@ -21,12 +21,11 @@
             </v-btn>
         </div>
         <div class="list-container flex-grow-1 px-3">
-            <div v-for="(item, index) in currentItems">
-                <v-divider v-if="index != 0" />
-                <v-card variant="text" rounded="0" class="px-3" :to="to(item)">
+            <CustomList :items="currentItems" :to="to">
+                <template #item="{ item }">
                     <slot name="item" :item="item" />
-                </v-card>
-            </div>
+                </template>
+            </CustomList>
             <div v-if="pageCount > 1" class="d-flex justify-center">
                 <v-pagination v-model="currentPage" :length="pageCount" class="pagination"></v-pagination>
             </div>
@@ -39,6 +38,7 @@ import { watch } from "vue";
 import { Ref, onMounted } from "vue";
 import { PropType, ref } from "vue";
 import { RouteLocationRaw } from "vue-router";
+import CustomList from "./CustomList.vue";
 
 export interface ItemManager<I, J> {
     filterLocal(item: I, filter: string): boolean;
