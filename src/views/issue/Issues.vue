@@ -4,16 +4,33 @@
         :sort-fields="Object.keys(sortFields)"
         :to="(issue: Issue) => issueRoute(issue)"
         :sort-ascending-initially="false"
+        :dependencies="[stateFilterInput]"
     >
         <template #item="{ item }">
-            <IssueListItem :item="item"/>
+            <IssueListItem :item="item" />
+        </template>
+        <template #search-append>
+            <v-btn-toggle class="issue-state-toggle" multiple mandatory v-model="issueStateIndices">
+                <v-btn
+                    class="issue-open issue-state-button"
+                    :prepend-icon="issueStateIndices.includes(0) ? 'mdi-check' : '$issue'"
+                >
+                    Open
+                </v-btn>
+                <v-btn
+                    class="issue-closed issue-state-button"
+                    :prepend-icon="issueStateIndices.includes(1) ? 'mdi-check' : '$issue'"
+                >
+                    Closed
+                </v-btn>
+            </v-btn-toggle>
         </template>
         <CreateIssueDialog :trackable="trackableId" @created-issue="(issue) => selectIssue(issue)" />
     </PaginatedList>
 </template>
 <script lang="ts" setup>
 import { NodeReturnType, useClient } from "@/graphql/client";
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import { RouteLocationRaw, useRoute, useRouter } from "vue-router";
 import PaginatedList, { ItemManager } from "@/components/PaginatedList.vue";
 import { IssueOrderField, OrderDirection } from "@/graphql/generated";
@@ -26,6 +43,16 @@ type Issue = Trackable["issues"]["nodes"][0];
 const client = useClient();
 const router = useRouter();
 const route = useRoute();
+
+const issueStateIndices = ref([0]);
+
+const stateFilterInput = computed(() => {
+    if (issueStateIndices.value.length != 1) {
+        return undefined;
+    }
+    const state = issueStateIndices.value[0] == 0;
+    return { isOpen: { eq: state }};
+});
 
 const trackableId = computed(() => route.params.trackable as string);
 
@@ -54,7 +81,8 @@ const itemManager: ItemManager<Issue, keyof typeof sortFields> = {
             },
             count,
             skip: page * count,
-            trackable: trackableId.value
+            trackable: trackableId.value,
+            stateFilter: stateFilterInput.value
         });
         const issues = (res.node as Trackable).issues;
         return [issues.nodes, issues.totalCount];
@@ -72,3 +100,21 @@ function issueRoute(issue: { id: string }): RouteLocationRaw {
     };
 }
 </script>
+<style scoped>
+.issue-state-toggle,
+.issue-state-toggle :deep(.v-btn.v-btn--variant-outlined) {
+    --v-border-opacity: 0.38;
+}
+
+.issue-open :deep(.v-icon:not(.mdi-check)) {
+    color: rgb(var(--v-theme-issue-open));
+}
+
+.issue-closed :deep(.v-icon:not(.mdi-check)) {
+    color: rgb(var(--v-theme-issue-closed));
+}
+
+.issue-state-button {
+    flex: 1;
+}
+</style>

@@ -8,6 +8,7 @@
                 prepend-inner-icon="mdi-magnify"
             >
             </v-text-field>
+            <slot name="search-append" />
             <v-select
                 v-model="currentSortField"
                 label="Sort by"

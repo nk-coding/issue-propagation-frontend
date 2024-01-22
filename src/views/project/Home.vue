@@ -7,8 +7,8 @@
         @create-relation="beginCreateRelation"
         @delete-relation="deleteRelation"
     >
-        <FilterChip v-model="showOpenIssues" label="Open Issues" icon="mdi-bug" class="mr-2 open-issue-chip" />
-        <FilterChip v-model="showClosedIssues" label="Closed Issues" icon="mdi-bug" class="mr-2 closed-issue-chip" />
+        <FilterChip v-model="showOpenIssues" label="Open Issues" icon="$issue" class="mr-2 open-issue-chip" />
+        <FilterChip v-model="showClosedIssues" label="Closed Issues" icon="$issue" class="mr-2 closed-issue-chip" />
         <FilterChip v-model="showIssueRelations" label="Issue Relations" />
     </GraphEditor>
     <v-dialog v-model="showAddComponentVersionDialog" :scrim="false" width="auto" class="autocomplete-dialog">
@@ -431,10 +431,10 @@ async function deleteRelation(relation: string) {
     }
 }
 
-.open-issue-chip :deep(.v-icon.mdi-bug) {
+.open-issue-chip :deep(.v-icon:not(.mdi-check)) {
     color: rgb(var(--v-theme-issue-open));
 }
-.closed-issue-chip :deep(.v-icon.mdi-bug) {
+.closed-issue-chip :deep(.v-icon:not(.mdi-check)) {
     color: rgb(var(--v-theme-issue-closed));
 }
 </style>

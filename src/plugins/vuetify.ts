@@ -3,7 +3,9 @@ import "vuetify/styles";
 import { createVuetify } from "vuetify";
 import { md3 } from "vuetify/blueprints";
 import { generateThemeColors } from "./theme";
-import { VBtn, VContainer } from "vuetify/lib/components/index.mjs";
+import { VBtn, VContainer, VSvgIcon } from "vuetify/lib/components/index.mjs";
+import { aliases, mdi } from "vuetify/iconsets/mdi";
+import { gropiusIcons } from "./gropiusIcons";
 
 const themeIndependentVariables = {
     "hover-opacity": 0.08
@@ -85,9 +87,25 @@ export default createVuetify({
         },
         VChip: {
             rounded: "pill"
+        },
+        VBtnToggle: {
+            variant: "outlined",
+            color: "primary",
+            divided: true,
+            border: 5
         }
     },
     components: {
         VContainer
+    },
+    icons: {
+        defaultSet: "mdi",
+        aliases: {
+            ...aliases,
+            ...gropiusIcons
+        },
+        sets: {
+            mdi
+        }
     }
 });

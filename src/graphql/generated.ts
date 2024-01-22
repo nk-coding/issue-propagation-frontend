@@ -19269,6 +19269,7 @@ export type GetIssueListQueryVariables = Exact<{
     count: Scalars["Int"]["input"];
     skip: Scalars["Int"]["input"];
     trackable: Scalars["ID"]["input"];
+    stateFilter?: InputMaybe<IssueStateFilterInput>;
 }>;
 
 export type GetIssueListQuery = {
@@ -25339,10 +25340,22 @@ export const DeleteRelationDocument = gql`
     }
 `;
 export const GetIssueListDocument = gql`
-    query getIssueList($filter: String!, $orderBy: IssueOrder!, $count: Int!, $skip: Int!, $trackable: ID!) {
+    query getIssueList(
+        $filter: String!
+        $orderBy: IssueOrder!
+        $count: Int!
+        $skip: Int!
+        $trackable: ID!
+        $stateFilter: IssueStateFilterInput
+    ) {
         node(id: $trackable) {
             ... on Trackable {
-                issues(filter: { title: { contains: $filter } }, orderBy: $orderBy, first: $count, skip: $skip) {
+                issues(
+                    filter: { title: { contains: $filter }, state: $stateFilter }
+                    orderBy: $orderBy
+                    first: $count
+                    skip: $skip
+                ) {
                     nodes {
                         ...IssueListItemInfo
                     }
