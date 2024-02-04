@@ -10,7 +10,7 @@
             <IssueListItem :item="item" />
         </template>
         <template #search-append>
-            <v-btn-toggle class="issue-state-toggle" multiple mandatory v-model="issueStateIndices">
+            <v-btn-toggle class="issue-state-toggle flex-0-0" multiple mandatory v-model="issueStateIndices">
                 <v-btn
                     class="issue-open issue-state-button"
                     :prepend-icon="issueStateIndices.includes(0) ? 'mdi-check' : '$issue'"
