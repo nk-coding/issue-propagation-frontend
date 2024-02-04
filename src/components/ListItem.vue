@@ -1,7 +1,7 @@
 <template>
     <div class="d-flex align-center my-2">
         <slot name="prepend" />
-        <div class="flex-1-1">
+        <div class="flex-1-1 min-width-0">
             <div class="mb-1 d-flex align-center">
                 <slot name="title">
                     <v-list-item-title>{{ title }}</v-list-item-title>
@@ -29,3 +29,8 @@ defineProps({
     }
 });
 </script>
+<style scoped>
+.min-width-0 {
+    min-width: 0;
+}
+</style>
