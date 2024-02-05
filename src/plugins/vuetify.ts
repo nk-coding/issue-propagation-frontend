@@ -3,7 +3,7 @@ import "vuetify/styles";
 import { createVuetify } from "vuetify";
 import { md3 } from "vuetify/blueprints";
 import { generateThemeColors } from "./theme";
-import { VBtn, VContainer, VSvgIcon } from "vuetify/lib/components/index.mjs";
+import { VBtn, VContainer, VListItemTitle } from "vuetify/lib/components/index.mjs";
 import { aliases, mdi } from "vuetify/iconsets/mdi";
 import { gropiusIcons } from "./gropiusIcons";
 
@@ -96,7 +96,8 @@ export default createVuetify({
         }
     },
     components: {
-        VContainer
+        VContainer,
+        VListItemTitle
     },
     icons: {
         defaultSet: "mdi",

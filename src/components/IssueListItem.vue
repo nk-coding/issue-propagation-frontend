@@ -31,7 +31,7 @@
             </div>
         </template>
         <template #title-append>
-            <Label v-for="(label, idx) in item.labels.nodes" :key="idx" :label="label" class="ml-2" size="small" />
+            <Label v-for="(label, idx) in item.labels.nodes" :key="idx" :label="label" class="ml-2 flex-shrink-0" size="small" />
         </template>
     </ListItem>
 </template>
