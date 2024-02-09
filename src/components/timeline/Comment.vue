@@ -182,7 +182,6 @@ import ConfirmationDialog from "@/components/dialog/ConfirmationDialog.vue";
 import { markdownToText } from "@/util/markdownToText";
 import { useRouter } from "vue-router";
 import { issueKey } from "@/util/keys";
-import { useAppStore } from "@/store/app";
 
 export type Comment = (Omit<TimelineItemType<"IssueComment">, "createdBy"> | Omit<TimelineItemType<"Body">, "createdBy">) &
     Partial<Pick<TimelineItemType<"IssueComment">, "createdBy">>;
@@ -215,7 +214,6 @@ const itemBody = ref(props.item.body);
 const hasChanged = ref(false);
 const client = useClient();
 const router = useRouter();
-const store = useAppStore();
 
 const deletedText = "This comment has been deleted";
 
@@ -249,13 +247,13 @@ function activateEditMode() {
 async function saveComment() {
     if (props.item.__typename === "Body") {
         const newBody = await withErrorMessage(
-            () => client.updateBody({ id: props.item.id, body: props.item.body }),
+            () => client.updateBody({ id: props.item.id, body: itemBody.value }),
             "Error updating body"
         );
         emit("updateItem", newBody.updateBody?.body!);
     } else {
         const newComment = await withErrorMessage(
-            () => client.updateIssueComment({ id: props.item.id, body: props.item.body }),
+            () => client.updateIssueComment({ id: props.item.id, body: itemBody.value }),
             "Error updating comment"
         );
         emit("updateItem", newComment.updateIssueComment?.issueComment!);
