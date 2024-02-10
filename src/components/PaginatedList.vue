@@ -6,6 +6,7 @@
                 label="Search"
                 class="mr-2 search-field"
                 prepend-inner-icon="mdi-magnify"
+                clearable
             >
             </v-text-field>
             <slot name="search-append" />
@@ -13,6 +14,7 @@
                 v-model="currentSortField"
                 label="Sort by"
                 class="mx-2 sort-select"
+                :class="{ 'hidden' : transformedSearchQuery != undefined }"
                 variant="outlined"
                 :items="sortFields"
             ></v-select>
@@ -27,7 +29,7 @@
                     <slot name="item" :item="item" />
                 </template>
             </CustomList>
-            <div v-if="pageCount > 1" class="d-flex justify-center">
+            <div v-if="pageCount > 1 && transformedSearchQuery == undefined" class="d-flex justify-center">
                 <v-pagination v-model="currentPage" :length="pageCount" class="pagination"></v-pagination>
             </div>
         </div>
@@ -40,11 +42,12 @@ import { Ref, onMounted } from "vue";
 import { PropType, ref } from "vue";
 import { RouteLocationRaw } from "vue-router";
 import CustomList from "./CustomList.vue";
+import { computed } from "vue";
+import { transformSearchQuery } from "@/util/searchQueryTransformer";
 
 export interface ItemManager<I, J> {
-    filterLocal(item: I, filter: string): boolean;
     fetchItems(
-        filter: string,
+        filter: string | undefined,
         sortField: J,
         sortAscending: boolean,
         count: number,
@@ -82,6 +85,7 @@ const props = defineProps({
 });
 
 const searchString = ref("");
+const transformedSearchQuery = computed(() => transformSearchQuery(searchString.value));
 const currentSortField = ref(props.sortFields[0]) as Ref<S>;
 const sortAscending = ref(props.sortAscendingInitially);
 
@@ -97,7 +101,7 @@ onMounted(async () => {
     await updateItems(false);
 });
 
-watch([searchString, currentSortField, sortAscending], async () => {
+watch([transformedSearchQuery, currentSortField, sortAscending], async () => {
     await updateItems(true);
 });
 
@@ -118,7 +122,7 @@ async function updateItems(resetPage: boolean) {
         currentPage.value = 1;
     }
     const [items, count] = await props.itemManager.fetchItems(
-        searchString.value,
+        transformedSearchQuery.value,
         currentSortField.value,
         sortAscending.value,
         props.itemCount,
@@ -130,7 +134,14 @@ async function updateItems(resetPage: boolean) {
 </script>
 <style scoped>
 .sort-select {
-    flex: 0 1 250px;
+    flex: 1 1 0;
+    overflow-x: clip;
+    max-width: 250px;
+    transition: flex-grow .7s ease-in-out;
+}
+
+.sort-select.hidden {
+    flex-grow: 0;
 }
 
 .search-field {

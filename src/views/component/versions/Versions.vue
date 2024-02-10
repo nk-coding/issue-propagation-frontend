@@ -27,8 +27,7 @@ import { NodeReturnType, useClient } from "@/graphql/client";
 import { ComponentVersionOrderField, OrderDirection } from "@/graphql/generated";
 import { RouteLocationRaw, useRoute, useRouter } from "vue-router";
 import ListItem from "@/components/ListItem.vue";
-import CreateComponentDialog from "@/components/dialog/CreateComponentDialog.vue";
-import { computed, inject } from "vue";
+import { computed } from "vue";
 import CreateComponentVersionDialog from "@/components/dialog/CreateComponentVersionDialog.vue";
 
 type ComponentVersion = NodeReturnType<"getComponentVersionList", "Component">["versions"]["nodes"][0];
@@ -44,29 +43,34 @@ const sortFields = {
 };
 
 const itemManager: ItemManager<ComponentVersion, keyof typeof sortFields> = {
-    filterLocal: function (item: ComponentVersion, filter: string): boolean {
-        return item.name.includes(filter);
-    },
     fetchItems: async function (
-        filter: string,
+        filter: string | undefined,
         sortField: keyof typeof sortFields,
         sortAscending: boolean,
         count: number,
         page: number
     ): Promise<[ComponentVersion[], number]> {
-        const res = (
-            await client.getComponentVersionList({
-                filter,
-                orderBy: {
-                    field: sortFields[sortField],
-                    direction: sortAscending ? OrderDirection.Asc : OrderDirection.Desc
-                },
+        if (filter == undefined) {
+            const res = (
+                await client.getComponentVersionList({
+                    orderBy: {
+                        field: sortFields[sortField],
+                        direction: sortAscending ? OrderDirection.Asc : OrderDirection.Desc
+                    },
+                    count,
+                    skip: page * count,
+                    component: trackableId.value
+                })
+            ).node as NodeReturnType<"getComponentVersionList", "Component">;
+            return [res.versions.nodes!, res.versions.totalCount];
+        } else {
+            const res = await client.getFilteredComponentVersionList({
+                query: filter,
                 count,
-                skip: page * count,
                 component: trackableId.value
-            })
-        ).node as NodeReturnType<"getComponentVersionList", "Component">;
-        return [res.versions.nodes!, res.versions.totalCount];
+            });
+            return [res.searchComponentVersions, res.searchComponentVersions.length];
+        }
     }
 };
 

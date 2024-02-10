@@ -11,16 +11,10 @@
         </template>
         <template #search-append>
             <v-btn-toggle class="segmented-button" multiple mandatory v-model="issueStateIndices">
-                <v-btn
-                    class="issue-open"
-                    :prepend-icon="issueStateIndices.includes(0) ? 'mdi-check' : '$issue'"
-                >
+                <v-btn class="issue-open" :prepend-icon="issueStateIndices.includes(0) ? 'mdi-check' : '$issue'">
                     Open
                 </v-btn>
-                <v-btn
-                    class="issue-closed"
-                    :prepend-icon="issueStateIndices.includes(1) ? 'mdi-check' : '$issue'"
-                >
+                <v-btn class="issue-closed" :prepend-icon="issueStateIndices.includes(1) ? 'mdi-check' : '$issue'">
                     Closed
                 </v-btn>
             </v-btn-toggle>
@@ -51,7 +45,7 @@ const stateFilterInput = computed(() => {
         return undefined;
     }
     const state = issueStateIndices.value[0] == 0;
-    return { isOpen: { eq: state }};
+    return { isOpen: { eq: state } };
 });
 
 const trackableId = computed(() => route.params.trackable as string);
@@ -59,33 +53,39 @@ const trackableId = computed(() => route.params.trackable as string);
 const sortFields = {
     Updated: IssueOrderField.LastUpdatedAt,
     Created: IssueOrderField.CreatedAt,
-    Title: IssueOrderField.Title,
+    Title: IssueOrderField.Title
 };
 
 const itemManager: ItemManager<Issue, keyof typeof sortFields> = {
-    filterLocal: function (item: Issue, filter: string): boolean {
-        return item.title.includes(filter);
-    },
     fetchItems: async function (
-        filter: string,
+        filter: string | undefined,
         sortField: keyof typeof sortFields,
         sortAscending: boolean,
         count: number,
         page: number
     ): Promise<[Issue[], number]> {
-        const res = await client.getIssueList({
-            filter,
-            orderBy: {
-                field: sortFields[sortField],
-                direction: sortAscending ? OrderDirection.Asc : OrderDirection.Desc
-            },
-            count,
-            skip: page * count,
-            trackable: trackableId.value,
-            stateFilter: stateFilterInput.value
-        });
-        const issues = (res.node as Trackable).issues;
-        return [issues.nodes, issues.totalCount];
+        if (filter == undefined) {
+            const res = await client.getIssueList({
+                orderBy: {
+                    field: sortFields[sortField],
+                    direction: sortAscending ? OrderDirection.Asc : OrderDirection.Desc
+                },
+                count,
+                skip: page * count,
+                trackable: trackableId.value,
+                stateFilter: stateFilterInput.value
+            });
+            const issues = (res.node as Trackable).issues;
+            return [issues.nodes, issues.totalCount];
+        } else {
+            const res = await client.getFilteredIssueList({
+                query: filter,
+                count,
+                trackable: trackableId.value,
+                stateFilter: stateFilterInput.value
+            });
+            return [res.searchIssues, res.searchIssues.length];
+        }
     }
 };
 

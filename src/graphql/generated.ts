@@ -13312,6 +13312,8 @@ export type Query = {
     searchIssues: Array<Issue>;
     /** Search for nodes of type Label */
     searchLabels: Array<Label>;
+    /** Search for nodes of type Project */
+    searchProjects: Array<Project>;
     /** Search for nodes of type RelationTemplate */
     searchRelationTemplates: Array<RelationTemplate>;
     /** Search for nodes of type Trackable */
@@ -13504,6 +13506,13 @@ export type QuerySearchIssuesArgs = {
 
 export type QuerySearchLabelsArgs = {
     filter?: InputMaybe<LabelFilterInput>;
+    first: Scalars["Int"]["input"];
+    query: Scalars["String"]["input"];
+    skip?: InputMaybe<Scalars["Int"]["input"]>;
+};
+
+export type QuerySearchProjectsArgs = {
+    filter?: InputMaybe<ProjectFilterInput>;
     first: Scalars["Int"]["input"];
     query: Scalars["String"]["input"];
     skip?: InputMaybe<Scalars["Int"]["input"]>;
@@ -17714,7 +17723,6 @@ export type ChangeAssignmentTypeMutation = {
 };
 
 export type GetComponentListQueryVariables = Exact<{
-    filter: Scalars["String"]["input"];
     orderBy: ComponentOrder;
     count: Scalars["Int"]["input"];
     skip: Scalars["Int"]["input"];
@@ -17733,6 +17741,22 @@ export type GetComponentListQuery = {
             openIssues: { __typename?: "IssueConnection"; totalCount: number };
         }>;
     };
+};
+
+export type GetFilteredComponentListQueryVariables = Exact<{
+    query: Scalars["String"]["input"];
+    count: Scalars["Int"]["input"];
+}>;
+
+export type GetFilteredComponentListQuery = {
+    __typename?: "Query";
+    searchComponents: Array<{
+        __typename?: "Component";
+        id: string;
+        name: string;
+        description: string;
+        openIssues: { __typename?: "IssueConnection"; totalCount: number };
+    }>;
 };
 
 export type GetComponentQueryVariables = Exact<{
@@ -18428,7 +18452,6 @@ export type GetComponentVersionsQuery = {
 };
 
 export type GetComponentVersionListQueryVariables = Exact<{
-    filter: Scalars["String"]["input"];
     orderBy: ComponentVersionOrder;
     count: Scalars["Int"]["input"];
     skip: Scalars["Int"]["input"];
@@ -18534,6 +18557,24 @@ export type GetComponentVersionListQuery = {
         | { __typename?: "TitleChangedEvent" }
         | { __typename?: "TypeChangedEvent" }
         | null;
+};
+
+export type GetFilteredComponentVersionListQueryVariables = Exact<{
+    query: Scalars["String"]["input"];
+    count: Scalars["Int"]["input"];
+    component: Scalars["ID"]["input"];
+}>;
+
+export type GetFilteredComponentVersionListQuery = {
+    __typename?: "Query";
+    searchComponentVersions: Array<{
+        __typename?: "ComponentVersion";
+        id: string;
+        name: string;
+        description: string;
+        version: string;
+        interfaceDefinitions: { __typename?: "InterfaceDefinitionConnection"; totalCount: number };
+    }>;
 };
 
 export type DefaultComponentVersionInfoFragment = {
@@ -19264,7 +19305,6 @@ export type GraphRelationTemplateInfoFragment = {
 };
 
 export type GetIssueListQueryVariables = Exact<{
-    filter: Scalars["String"]["input"];
     orderBy: IssueOrder;
     count: Scalars["Int"]["input"];
     skip: Scalars["Int"]["input"];
@@ -19483,6 +19523,50 @@ export type GetIssueListQuery = {
         | { __typename?: "TitleChangedEvent" }
         | { __typename?: "TypeChangedEvent" }
         | null;
+};
+
+export type GetFilteredIssueListQueryVariables = Exact<{
+    query: Scalars["String"]["input"];
+    count: Scalars["Int"]["input"];
+    trackable: Scalars["ID"]["input"];
+    stateFilter?: InputMaybe<IssueStateFilterInput>;
+}>;
+
+export type GetFilteredIssueListQuery = {
+    __typename?: "Query";
+    searchIssues: Array<{
+        __typename?: "Issue";
+        id: string;
+        title: string;
+        createdAt: any;
+        createdBy:
+            | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+            | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+        issueComments: { __typename?: "IssueCommentConnection"; totalCount: number };
+        labels: {
+            __typename?: "LabelConnection";
+            nodes: Array<{ __typename?: "Label"; id: string; name: string; description: string; color: string }>;
+        };
+        assignments: {
+            __typename?: "AssignmentConnection";
+            nodes: Array<{
+                __typename?: "Assignment";
+                user:
+                    | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+                    | {
+                          __typename?: "IMSUser";
+                          id: string;
+                          username?: string | null;
+                          displayName: string;
+                          avatar: any;
+                      };
+            }>;
+        };
+        incomingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
+        outgoingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
+        state: { __typename?: "IssueState"; isOpen: boolean };
+        type: { __typename?: "IssueType"; iconPath: string };
+    }>;
 };
 
 export type GetIssueQueryVariables = Exact<{
@@ -22244,7 +22328,6 @@ export type RemoveLabelFromTrackableMutation = {
 };
 
 export type GetProjectListQueryVariables = Exact<{
-    filter: Scalars["String"]["input"];
     orderBy: ProjectOrder;
     count: Scalars["Int"]["input"];
     skip: Scalars["Int"]["input"];
@@ -22263,6 +22346,22 @@ export type GetProjectListQuery = {
             openIssues: { __typename?: "IssueConnection"; totalCount: number };
         }>;
     };
+};
+
+export type GetFilteredProjectListQueryVariables = Exact<{
+    query: Scalars["String"]["input"];
+    count: Scalars["Int"]["input"];
+}>;
+
+export type GetFilteredProjectListQuery = {
+    __typename?: "Query";
+    searchProjects: Array<{
+        __typename?: "Project";
+        id: string;
+        name: string;
+        description: string;
+        openIssues: { __typename?: "IssueConnection"; totalCount: number };
+    }>;
 };
 
 export type GetProjectQueryVariables = Exact<{
@@ -25126,8 +25225,8 @@ export const ChangeAssignmentTypeDocument = gql`
     ${AssignmentTypeChangedEventTimelineInfoFragmentDoc}
 `;
 export const GetComponentListDocument = gql`
-    query getComponentList($filter: String!, $orderBy: ComponentOrder!, $count: Int!, $skip: Int!) {
-        components(filter: { name: { contains: $filter } }, orderBy: $orderBy, first: $count, skip: $skip) {
+    query getComponentList($orderBy: ComponentOrder!, $count: Int!, $skip: Int!) {
+        components(orderBy: $orderBy, first: $count, skip: $skip) {
             nodes {
                 id
                 name
@@ -25135,6 +25234,17 @@ export const GetComponentListDocument = gql`
                 ...OpenIssueCount
             }
             totalCount
+        }
+    }
+    ${OpenIssueCountFragmentDoc}
+`;
+export const GetFilteredComponentListDocument = gql`
+    query getFilteredComponentList($query: String!, $count: Int!) {
+        searchComponents(query: $query, first: $count) {
+            id
+            name
+            description
+            ...OpenIssueCount
         }
     }
     ${OpenIssueCountFragmentDoc}
@@ -25253,16 +25363,10 @@ export const GetComponentVersionsDocument = gql`
     ${DefaultComponentVersionInfoFragmentDoc}
 `;
 export const GetComponentVersionListDocument = gql`
-    query getComponentVersionList(
-        $filter: String!
-        $orderBy: ComponentVersionOrder!
-        $count: Int!
-        $skip: Int!
-        $component: ID!
-    ) {
+    query getComponentVersionList($orderBy: ComponentVersionOrder!, $count: Int!, $skip: Int!, $component: ID!) {
         node(id: $component) {
             ... on Component {
-                versions(filter: { name: { contains: $filter } }, orderBy: $orderBy, first: $count, skip: $skip) {
+                versions(orderBy: $orderBy, first: $count, skip: $skip) {
                     nodes {
                         id
                         name
@@ -25274,6 +25378,19 @@ export const GetComponentVersionListDocument = gql`
                     }
                     totalCount
                 }
+            }
+        }
+    }
+`;
+export const GetFilteredComponentVersionListDocument = gql`
+    query getFilteredComponentVersionList($query: String!, $count: Int!, $component: ID!) {
+        searchComponentVersions(query: $query, first: $count, filter: { component: { id: { eq: $component } } }) {
+            id
+            name
+            description
+            version
+            interfaceDefinitions(filter: { visibleInterface: {} }) {
+                totalCount
             }
         }
     }
@@ -25341,7 +25458,6 @@ export const DeleteRelationDocument = gql`
 `;
 export const GetIssueListDocument = gql`
     query getIssueList(
-        $filter: String!
         $orderBy: IssueOrder!
         $count: Int!
         $skip: Int!
@@ -25350,18 +25466,25 @@ export const GetIssueListDocument = gql`
     ) {
         node(id: $trackable) {
             ... on Trackable {
-                issues(
-                    filter: { title: { contains: $filter }, state: $stateFilter }
-                    orderBy: $orderBy
-                    first: $count
-                    skip: $skip
-                ) {
+                issues(filter: { state: $stateFilter }, orderBy: $orderBy, first: $count, skip: $skip) {
                     nodes {
                         ...IssueListItemInfo
                     }
                     totalCount
                 }
             }
+        }
+    }
+    ${IssueListItemInfoFragmentDoc}
+`;
+export const GetFilteredIssueListDocument = gql`
+    query getFilteredIssueList($query: String!, $count: Int!, $trackable: ID!, $stateFilter: IssueStateFilterInput) {
+        searchIssues(
+            query: $query
+            first: $count
+            filter: { trackables: { any: { id: { eq: $trackable } } }, state: $stateFilter }
+        ) {
+            ...IssueListItemInfo
         }
     }
     ${IssueListItemInfoFragmentDoc}
@@ -25799,8 +25922,8 @@ export const RemoveLabelFromTrackableDocument = gql`
     }
 `;
 export const GetProjectListDocument = gql`
-    query getProjectList($filter: String!, $orderBy: ProjectOrder!, $count: Int!, $skip: Int!) {
-        projects(filter: { name: { contains: $filter } }, orderBy: $orderBy, first: $count, skip: $skip) {
+    query getProjectList($orderBy: ProjectOrder!, $count: Int!, $skip: Int!) {
+        projects(orderBy: $orderBy, first: $count, skip: $skip) {
             nodes {
                 id
                 name
@@ -25808,6 +25931,17 @@ export const GetProjectListDocument = gql`
                 ...OpenIssueCount
             }
             totalCount
+        }
+    }
+    ${OpenIssueCountFragmentDoc}
+`;
+export const GetFilteredProjectListDocument = gql`
+    query getFilteredProjectList($query: String!, $count: Int!) {
+        searchProjects(query: $query, first: $count) {
+            id
+            name
+            description
+            ...OpenIssueCount
         }
     }
     ${OpenIssueCountFragmentDoc}
@@ -26023,6 +26157,20 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                 "query"
             );
         },
+        getFilteredComponentList(
+            variables: GetFilteredComponentListQueryVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<GetFilteredComponentListQuery> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<GetFilteredComponentListQuery>(GetFilteredComponentListDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "getFilteredComponentList",
+                "query"
+            );
+        },
         getComponent(
             variables: GetComponentQueryVariables,
             requestHeaders?: GraphQLClientRequestHeaders
@@ -26163,6 +26311,21 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                 "query"
             );
         },
+        getFilteredComponentVersionList(
+            variables: GetFilteredComponentVersionListQueryVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<GetFilteredComponentVersionListQuery> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<GetFilteredComponentVersionListQuery>(
+                        GetFilteredComponentVersionListDocument,
+                        variables,
+                        { ...requestHeaders, ...wrappedRequestHeaders }
+                    ),
+                "getFilteredComponentVersionList",
+                "query"
+            );
+        },
         searchComponentVersions(
             variables: SearchComponentVersionsQueryVariables,
             requestHeaders?: GraphQLClientRequestHeaders
@@ -26274,6 +26437,20 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "getIssueList",
+                "query"
+            );
+        },
+        getFilteredIssueList(
+            variables: GetFilteredIssueListQueryVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<GetFilteredIssueListQuery> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<GetFilteredIssueListQuery>(GetFilteredIssueListDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "getFilteredIssueList",
                 "query"
             );
         },
@@ -26764,6 +26941,20 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "getProjectList",
+                "query"
+            );
+        },
+        getFilteredProjectList(
+            variables: GetFilteredProjectListQueryVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<GetFilteredProjectListQuery> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<GetFilteredProjectListQuery>(GetFilteredProjectListDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "getFilteredProjectList",
                 "query"
             );
         },

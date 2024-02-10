@@ -1,13 +1,29 @@
-query getIssueList($filter: String!, $orderBy: IssueOrder!, $count: Int!, $skip: Int!, $trackable: ID!, $stateFilter: IssueStateFilterInput) {
+query getIssueList(
+    $orderBy: IssueOrder!
+    $count: Int!
+    $skip: Int!
+    $trackable: ID!
+    $stateFilter: IssueStateFilterInput
+) {
     node(id: $trackable) {
         ... on Trackable {
-            issues(filter: { title: { contains: $filter }, state: $stateFilter}, orderBy: $orderBy, first: $count, skip: $skip) {
+            issues(filter: { state: $stateFilter }, orderBy: $orderBy, first: $count, skip: $skip) {
                 nodes {
                     ...IssueListItemInfo
                 }
                 totalCount
             }
         }
+    }
+}
+
+query getFilteredIssueList($query: String!, $count: Int!, $trackable: ID!, $stateFilter: IssueStateFilterInput) {
+    searchIssues(
+        query: $query
+        first: $count
+        filter: { trackables: { any: { id: { eq: $trackable } } }, state: $stateFilter }
+    ) {
+        ...IssueListItemInfo
     }
 }
 
@@ -195,7 +211,7 @@ fragment DefaultIssueIconInfo on Issue {
 }
 
 query searchIssues($query: String!, $count: Int!, $trackable: ID!) {
-    searchIssues(query: $query, first: $count, filter: { trackables: { any: { id: { eq: $trackable } } }}) {
+    searchIssues(query: $query, first: $count, filter: { trackables: { any: { id: { eq: $trackable } } } }) {
         ...DefaultIssueInfo
     }
 }

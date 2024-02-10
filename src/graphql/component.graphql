@@ -1,5 +1,5 @@
-query getComponentList($filter: String!, $orderBy: ComponentOrder!, $count: Int!, $skip: Int!) {
-    components(filter: { name: { contains: $filter } }, orderBy: $orderBy, first: $count, skip: $skip) {
+query getComponentList($orderBy: ComponentOrder!, $count: Int!, $skip: Int!) {
+    components(orderBy: $orderBy, first: $count, skip: $skip) {
         nodes {
             id
             name
@@ -7,6 +7,15 @@ query getComponentList($filter: String!, $orderBy: ComponentOrder!, $count: Int!
             ...OpenIssueCount
         }
         totalCount
+    }
+}
+
+query getFilteredComponentList($query: String!, $count: Int!) {
+    searchComponents(query: $query, first: $count) {
+        id
+        name
+        description
+        ...OpenIssueCount
     }
 }
 

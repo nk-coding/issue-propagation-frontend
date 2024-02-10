@@ -14,7 +14,7 @@
                 </template>
             </ListItem>
         </template>
-        <CreateComponentDialog @created-component="(component) => selectComponent(component)"/>
+        <CreateComponentDialog @created-component="(component) => selectComponent(component)" />
     </PaginatedList>
 </template>
 <script lang="ts" setup>
@@ -31,14 +31,11 @@ const client = useClient();
 const router = useRouter();
 
 const sortFields = {
-    "[Default]": ComponentOrderField.Id,
-    Name: ComponentOrderField.Name
+    Name: ComponentOrderField.Name,
+    "[Default]": ComponentOrderField.Id
 };
 
 const itemManager: ItemManager<Component, keyof typeof sortFields> = {
-    filterLocal: function (item: Component, filter: string): boolean {
-        return item.name.includes(filter);
-    },
     fetchItems: async function (
         filter: string,
         sortField: keyof typeof sortFields,
@@ -46,21 +43,28 @@ const itemManager: ItemManager<Component, keyof typeof sortFields> = {
         count: number,
         page: number
     ): Promise<[Component[], number]> {
-        const res = await client.getComponentList({
-            filter,
-            orderBy: {
-                field: sortFields[sortField],
-                direction: sortAscending ? OrderDirection.Asc : OrderDirection.Desc
-            },
-            count,
-            skip: page * count
-        });
-        return [res.components.nodes, res.components.totalCount];
+        if (filter == undefined) {
+            const res = await client.getComponentList({
+                orderBy: {
+                    field: sortFields[sortField],
+                    direction: sortAscending ? OrderDirection.Asc : OrderDirection.Desc
+                },
+                count,
+                skip: page * count
+            });
+            return [res.components.nodes, res.components.totalCount];
+        } else {
+            const res = await client.getFilteredComponentList({
+                query: filter,
+                count,
+            });
+            return [res.searchComponents, res.searchComponents.length];
+        }
     }
 };
 
 function selectComponent(component: { id: string }) {
-    router.push(componentRoute(component))
+    router.push(componentRoute(component));
 }
 
 function componentRoute(component: { id: string }): RouteLocationRaw {
@@ -69,9 +73,8 @@ function componentRoute(component: { id: string }): RouteLocationRaw {
         params: {
             trackable: component.id
         }
-    }
+    };
 }
-
 </script>
 <style scoped lang="scss">
 @use "@/styles/settings";

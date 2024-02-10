@@ -31,31 +31,35 @@ const client = useClient();
 const router = useRouter();
 
 const sortFields = {
-    "[Default]": ProjectOrderField.Id,
-    Name: ProjectOrderField.Name
+    Name: ProjectOrderField.Name,
+    "[Default]": ProjectOrderField.Id
 };
 
 const itemManager: ItemManager<Project, keyof typeof sortFields> = {
-    filterLocal: function (item: Project, filter: string): boolean {
-        return item.name.includes(filter);
-    },
     fetchItems: async function (
-        filter: string,
+        filter: string | undefined,
         sortField: keyof typeof sortFields,
         sortAscending: boolean,
         count: number,
         page: number
     ): Promise<[Project[], number]> {
-        const res = await client.getProjectList({
-            filter,
-            orderBy: {
-                field: sortFields[sortField],
-                direction: sortAscending ? OrderDirection.Asc : OrderDirection.Desc
-            },
-            count,
-            skip: page * count
-        });
-        return [res.projects.nodes, res.projects.totalCount];
+            if (filter == undefined) {
+                const res = await client.getProjectList({
+                orderBy: {
+                    field: sortFields[sortField],
+                    direction: sortAscending ? OrderDirection.Asc : OrderDirection.Desc
+                },
+                count,
+                skip: page * count
+            });
+            return [res.projects.nodes, res.projects.totalCount];
+        } else {
+            const res = await client.getFilteredProjectList({
+                query: filter,
+                count,
+            });
+            return [res.searchProjects, res.searchProjects.length];
+        }
     }
 };
 
