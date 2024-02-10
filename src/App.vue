@@ -81,5 +81,17 @@ html,
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+
+.v-btn-group.segmented-button {
+    display: grid;
+    grid-auto-columns: minmax(0, 1fr);
+    grid-auto-flow: column;
+    flex-shrink: 0;
+}
+
+.v-btn-group.segmented-button,
+.v-btn-group.segmented-button .v-btn.v-btn--variant-outlined {
+    --v-border-opacity: 0.38;
+}
 </style>
 ./util/eventBus
