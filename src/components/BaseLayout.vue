@@ -49,7 +49,9 @@
                             <p v-if="store.user.email" class="text-medium-emphasis text-ellipses">
                                 {{ store.user.email }}
                             </p>
-                            <DefaultButton variant="tonal" class="mt-3 full-width text-ellipses" @click="logout">Logout</DefaultButton>
+                            <DefaultButton variant="tonal" class="mt-3 full-width text-ellipses" @click="logout"
+                                >Logout</DefaultButton
+                            >
                         </v-card>
                     </v-menu>
                 </v-btn>

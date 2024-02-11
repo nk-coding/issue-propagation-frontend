@@ -1,5 +1,5 @@
 <template>
-    <v-divider/>
+    <v-divider />
     <EditableCompartment
         :name="name"
         save-button
@@ -32,10 +32,10 @@
     </EditableCompartment>
 </template>
 <script setup lang="ts">
-import { PropType, ref, toRaw, watch } from 'vue';
-import EditableCompartment from './EditableCompartment.vue';
-import MetaForm from './input/schema/MetaForm.vue';
-import { Schema } from 'jtd';
+import { PropType, ref, toRaw, watch } from "vue";
+import EditableCompartment from "./EditableCompartment.vue";
+import MetaForm from "./input/schema/MetaForm.vue";
+import { Schema } from "jtd";
 
 const props = defineProps({
     name: {
@@ -53,7 +53,7 @@ const props = defineProps({
         type: Boolean,
         required: true
     }
-})
+});
 
 const emit = defineEmits<{
     (event: "save", value: any): void;
@@ -70,7 +70,7 @@ watch(
     () => {
         updateValueCopy();
     }
-)
+);
 
 function updateValueCopy() {
     valueCopy.value = copyModelValue();
@@ -78,12 +78,12 @@ function updateValueCopy() {
 }
 
 function copyModelValue(): any {
-    return structuredClone(toRaw(props.modelValue))
+    return structuredClone(toRaw(props.modelValue));
 }
 
 function save() {
     if (formValid.value) {
-        emit('save', valueCopy.value);
+        emit("save", valueCopy.value);
         hasUnsavedChanges.value = false;
     } else {
         editForm.value.validate();

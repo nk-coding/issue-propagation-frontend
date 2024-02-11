@@ -47,12 +47,9 @@ function handleChange(text: string) {
     model.value = text;
 }
 
-watch(
-    model,
-    (value) => {
-        valueWrapper.value = value;
-    }
-);
+watch(model, (value) => {
+    valueWrapper.value = value;
+});
 const plugins = [gfm()];
 </script>
 <style lang="scss">

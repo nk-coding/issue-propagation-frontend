@@ -135,7 +135,6 @@ async function updateItems(resetPage: boolean) {
 }
 </script>
 <style scoped>
-
 .sort-container {
     flex: 1 0 0;
     max-width: 300px;

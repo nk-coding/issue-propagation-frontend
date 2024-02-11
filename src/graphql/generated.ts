@@ -22151,7 +22151,6 @@ export type ChangeIssueTypeMutation = {
 };
 
 export type GetLabelListQueryVariables = Exact<{
-    filter: Scalars["String"]["input"];
     orderBy: LabelOrder;
     count: Scalars["Int"]["input"];
     skip: Scalars["Int"]["input"];
@@ -22257,6 +22256,17 @@ export type GetLabelListQuery = {
         | { __typename?: "TitleChangedEvent" }
         | { __typename?: "TypeChangedEvent" }
         | null;
+};
+
+export type GetFilteredLabelListQueryVariables = Exact<{
+    query: Scalars["String"]["input"];
+    count: Scalars["Int"]["input"];
+    trackable: Scalars["ID"]["input"];
+}>;
+
+export type GetFilteredLabelListQuery = {
+    __typename?: "Query";
+    searchLabels: Array<{ __typename?: "Label"; id: string; name: string; description: string; color: string }>;
 };
 
 export type DefaultLabelInfoFragment = {
@@ -26017,16 +26027,24 @@ export const ChangeIssueTypeDocument = gql`
     ${TypeChangedEventTimelineInfoFragmentDoc}
 `;
 export const GetLabelListDocument = gql`
-    query getLabelList($filter: String!, $orderBy: LabelOrder!, $count: Int!, $skip: Int!, $trackable: ID!) {
+    query getLabelList($orderBy: LabelOrder!, $count: Int!, $skip: Int!, $trackable: ID!) {
         node(id: $trackable) {
             ... on Trackable {
-                labels(filter: { name: { contains: $filter } }, orderBy: $orderBy, first: $count, skip: $skip) {
+                labels(orderBy: $orderBy, first: $count, skip: $skip) {
                     nodes {
                         ...DefaultLabelInfo
                     }
                     totalCount
                 }
             }
+        }
+    }
+    ${DefaultLabelInfoFragmentDoc}
+`;
+export const GetFilteredLabelListDocument = gql`
+    query getFilteredLabelList($query: String!, $count: Int!, $trackable: ID!) {
+        searchLabels(query: $query, first: $count, filter: { trackables: { any: { id: { eq: $trackable } } } }) {
+            ...DefaultLabelInfo
         }
     }
     ${DefaultLabelInfoFragmentDoc}
@@ -27043,6 +27061,20 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "getLabelList",
+                "query"
+            );
+        },
+        getFilteredLabelList(
+            variables: GetFilteredLabelListQueryVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<GetFilteredLabelListQuery> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<GetFilteredLabelListQuery>(GetFilteredLabelListDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "getFilteredLabelList",
                 "query"
             );
         },

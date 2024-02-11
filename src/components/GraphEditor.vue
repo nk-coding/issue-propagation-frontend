@@ -1,9 +1,15 @@
 <template>
     <div class="sprotty-wrapper">
         <div :id="editorId" class="sprotty" />
-        <Teleport v-if="selecteds.length == 1" :key="selected.id" :to="`#${selected.contextMenuContainerId}>.context-menu`">
+        <Teleport
+            v-if="selecteds.length == 1"
+            :key="selected.id"
+            :to="`#${selected.contextMenuContainerId}>.context-menu`"
+        >
             <div class="context-menu ml-2" @mousedown.stop.prevent>
-                <template v-if="selected.contextMenuData.type == 'component' || selected.contextMenuData.type == 'interface'">
+                <template
+                    v-if="selected.contextMenuData.type == 'component' || selected.contextMenuData.type == 'interface'"
+                >
                     <SmallFAB
                         class="d-block"
                         icon
@@ -48,7 +54,14 @@
 </template>
 <script setup lang="ts">
 import "reflect-metadata";
-import { Graph, GraphLayout, GraphModelSource, SelectedElement, createContainer, CreateRelationContext } from "@gropius/graph-editor";
+import {
+    Graph,
+    GraphLayout,
+    GraphModelSource,
+    SelectedElement,
+    createContainer,
+    CreateRelationContext
+} from "@gropius/graph-editor";
 import { TYPES } from "sprotty";
 import { PropType, onMounted, shallowRef, watch, ref, computed } from "vue";
 import { v4 as uuidv4 } from "uuid";
@@ -87,7 +100,7 @@ const props = defineProps({
 const emit = defineEmits<{
     (event: "update:layout", value: GraphLayout): void;
     (event: "removeComponent", value: string): void;
-    (event: "createRelation", value: CreateRelationContext ): void;
+    (event: "createRelation", value: CreateRelationContext): void;
     (event: "deleteRelation", value: string): void;
 }>();
 

@@ -17,7 +17,7 @@
         </template>
         <CreateComponentVersionDialog
             :component="trackableId"
-            @created-component-version="(componentVersion) => selectComponentVersion(componentVersion)"
+            @created-component-version="(componentVersion: IdObject) => selectComponentVersion(componentVersion)"
         />
     </PaginatedList>
 </template>
@@ -31,6 +31,7 @@ import { computed } from "vue";
 import CreateComponentVersionDialog from "@/components/dialog/CreateComponentVersionDialog.vue";
 
 type ComponentVersion = NodeReturnType<"getComponentVersionList", "Component">["versions"]["nodes"][0];
+type IdObject = { id: string };
 
 const client = useClient();
 const router = useRouter();
@@ -74,11 +75,11 @@ const itemManager: ItemManager<ComponentVersion, keyof typeof sortFields> = {
     }
 };
 
-function selectComponentVersion(componentVersion: { id: string }) {
+function selectComponentVersion(componentVersion: IdObject) {
     router.push(componentVersionRoute(componentVersion));
 }
 
-function componentVersionRoute(componentVersion: { id: string }): RouteLocationRaw {
+function componentVersionRoute(componentVersion: IdObject): RouteLocationRaw {
     return {
         name: "component-version",
         params: {

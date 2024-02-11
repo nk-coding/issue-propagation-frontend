@@ -47,7 +47,11 @@ function generateSubtitle(issue: DefaultIssueInfoFragment): string {
     return issue.trackables.nodes.map((trackable) => trackable.name).join(", ");
 }
 
-async function searchIssues(filter: string, count: number, context?: DefaultTrackableInfoFragment): Promise<DefaultIssueInfoFragment[]> {
+async function searchIssues(
+    filter: string,
+    count: number,
+    context?: DefaultTrackableInfoFragment
+): Promise<DefaultIssueInfoFragment[]> {
     return await withErrorMessage(async () => {
         const query = transformSearchQuery(filter);
         if (query != undefined) {

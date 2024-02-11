@@ -14,7 +14,7 @@
                 </template>
             </ListItem>
         </template>
-        <CreateProjectDialog @created-project="(project) => selectProject(project)"/>
+        <CreateProjectDialog @created-project="(project: IdObject) => selectProject(project)" />
     </PaginatedList>
 </template>
 <script lang="ts" setup>
@@ -26,6 +26,7 @@ import ListItem from "@/components/ListItem.vue";
 import CreateProjectDialog from "@/components/dialog/CreateProjectDialog.vue";
 
 type Project = ClientReturnType<"getProjectList">["projects"]["nodes"][0];
+type IdObject = { id: string };
 
 const client = useClient();
 const router = useRouter();
@@ -43,8 +44,8 @@ const itemManager: ItemManager<Project, keyof typeof sortFields> = {
         count: number,
         page: number
     ): Promise<[Project[], number]> {
-            if (filter == undefined) {
-                const res = await client.getProjectList({
+        if (filter == undefined) {
+            const res = await client.getProjectList({
                 orderBy: {
                     field: sortFields[sortField],
                     direction: sortAscending ? OrderDirection.Asc : OrderDirection.Desc
@@ -56,24 +57,24 @@ const itemManager: ItemManager<Project, keyof typeof sortFields> = {
         } else {
             const res = await client.getFilteredProjectList({
                 query: filter,
-                count,
+                count
             });
             return [res.searchProjects, res.searchProjects.length];
         }
     }
 };
 
-function selectProject(project: { id: string}) {
-    router.push(projectRoute(project))
+function selectProject(project: IdObject) {
+    router.push(projectRoute(project));
 }
 
-function projectRoute(project: { id: string}): RouteLocationRaw {
+function projectRoute(project: IdObject): RouteLocationRaw {
     return {
         name: "project",
         params: {
             trackable: project.id
         }
-    }
+    };
 }
 </script>
 <style scoped lang="scss">

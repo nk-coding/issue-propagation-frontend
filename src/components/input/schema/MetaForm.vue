@@ -1,42 +1,42 @@
 <template>
     <ElementsForm
         v-if="isElementsForm(derefSchema)"
-        :schema="(derefSchema as any)"
+        :schema="derefSchema as any"
         :root-schema="rootSchema"
         :name="name"
-        v-model = "model"
+        v-model="model"
         :readonly="readonly"
     />
     <ValuesForm
         v-else-if="isValuesForm(derefSchema)"
-        :schema="(derefSchema as any)"
+        :schema="derefSchema as any"
         :root-schema="rootSchema"
         :name="name"
-        v-model = "model"
+        v-model="model"
         :readonly="readonly"
     />
     <ObjectForm
         v-else-if="isPropertiesForm(schema) || isDiscriminatorForm(schema)"
-        :schema="(derefSchema as any)"
+        :schema="derefSchema as any"
         :root-schema="rootSchema"
         :name="name"
-        v-model = "model"
+        v-model="model"
         :readonly="readonly"
     />
     <TypeForm
         v-else-if="isTypeForm(schema)"
-        :schema="(derefSchema as any)"
+        :schema="derefSchema as any"
         :root-schema="rootSchema"
         :name="name"
-        v-model = "model"
+        v-model="model"
         :readonly="readonly"
     />
     <EnumForm
         v-else-if="isEnumForm(schema)"
-        :schema="(derefSchema as any)"
+        :schema="derefSchema as any"
         :root-schema="rootSchema"
         :name="name"
-        v-model = "model"
+        v-model="model"
         :readonly="readonly"
     />
 </template>
@@ -84,6 +84,6 @@ const model = defineModel({
 });
 
 const derefSchema = computed(() => {
-    return derefSchemaRecursive(props.schema, props.rootSchema)
+    return derefSchemaRecursive(props.schema, props.rootSchema);
 });
 </script>

@@ -1,37 +1,37 @@
 <template>
-        <v-card color="surface-elevated-3" rounded="lger" class="pa-3 create-component-dialog" elevation="0">
-            <v-form @submit.prevent="submitChanges">
-                <v-card-title class="pl-4">{{ title }}</v-card-title>
-                <div class="pa-4">
-                    <div class="d-flex flex-wrap mx-n2">
-                        <v-text-field v-bind="name" label="Name" class="wrap-input mx-2 mb-1 flex-1-1-0" />
-                        <v-text-field v-bind="color" label="Color" class="wrap-input mx-2 mb-1 flex-1-1-0">
-                            <template #append-inner v-if="isFieldValid('color')">
-                                <v-icon :color="color.modelValue" icon="mdi-circle" class="full-opacity" />
-                            </template>
-                            <v-menu activator="parent" :close-on-content-click="false">
-                                <v-color-picker class="mt-1" rounded="lger" v-model="pickerColor" :modes="['rgb']"/>
-                            </v-menu>
-                        </v-text-field>
-                    </div>
-                    <v-textarea v-bind="description" label="Description" class="mb-1" />
+    <v-card color="surface-elevated-3" rounded="lger" class="pa-3 create-component-dialog" elevation="0">
+        <v-form @submit.prevent="submitChanges">
+            <v-card-title class="pl-4">{{ title }}</v-card-title>
+            <div class="pa-4">
+                <div class="d-flex flex-wrap mx-n2">
+                    <v-text-field v-bind="name" label="Name" class="wrap-input mx-2 mb-1 flex-1-1-0" />
+                    <v-text-field v-bind="color" label="Color" class="wrap-input mx-2 mb-1 flex-1-1-0">
+                        <template #append-inner v-if="isFieldValid('color')">
+                            <v-icon :color="color.modelValue" icon="mdi-circle" class="full-opacity" />
+                        </template>
+                        <v-menu activator="parent" :close-on-content-click="false">
+                            <v-color-picker class="mt-1" rounded="lger" v-model="pickerColor" :modes="['rgb']" />
+                        </v-menu>
+                    </v-text-field>
                 </div>
-                <v-card-actions>
-                    <v-spacer />
-                    <DefaultButton variant="text" color="" @click="!meta.dirty && $emit('cancel')">
-                        Cancel
-                        <ConfirmationDialog
-                            v-if="meta.dirty"
-                            :title="discardTitle"
-                            :message="discardMessage"
-                            confirm-text="Discard"
-                            @confirm="$emit('cancel')"
-                        />
-                    </DefaultButton>
-                    <DefaultButton variant="text" color="primary" type="submit">{{ submitAction }}</DefaultButton>
-                </v-card-actions>
-            </v-form>
-        </v-card>
+                <v-textarea v-bind="description" label="Description" class="mb-1" />
+            </div>
+            <v-card-actions>
+                <v-spacer />
+                <DefaultButton variant="text" color="" @click="!meta.dirty && $emit('cancel')">
+                    Cancel
+                    <ConfirmationDialog
+                        v-if="meta.dirty"
+                        :title="discardTitle"
+                        :message="discardMessage"
+                        confirm-text="Discard"
+                        @confirm="$emit('cancel')"
+                    />
+                </DefaultButton>
+                <DefaultButton variant="text" color="primary" type="submit">{{ submitAction }}</DefaultButton>
+            </v-card-actions>
+        </v-form>
+    </v-card>
 </template>
 <script lang="ts" setup>
 import * as yup from "yup";
@@ -81,17 +81,24 @@ const props = defineProps({
     }
 });
 
-watch(() => props.initialValue, (value) => {
-    resetForm({
-        values: value
-    });
-});
+watch(
+    () => props.initialValue,
+    (value) => {
+        resetForm({
+            values: value
+        });
+    }
+);
 
 const schema = toTypedSchema(
     yup.object().shape({
         name: yup.string().required().label("Name"),
         description: yup.string().notRequired().label("Description"),
-        color: yup.string().required().label("Color").matches(/^#[0-9a-f]{6}$/i, "Is not a valid hex color code #RRGGBB"),
+        color: yup
+            .string()
+            .required()
+            .label("Color")
+            .matches(/^#[0-9a-f]{6}$/i, "Is not a valid hex color code #RRGGBB")
     })
 );
 
@@ -117,7 +124,7 @@ const pickerColor = computed({
 const submitChanges = handleSubmit(async (state) => {
     emit("submit", {
         ...state,
-        description: state.description ?? "",
+        description: state.description ?? ""
     });
 });
 </script>

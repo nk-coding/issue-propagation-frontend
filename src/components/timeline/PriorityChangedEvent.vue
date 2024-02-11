@@ -1,6 +1,7 @@
 <template>
     <DefaultIconTimelineItem icon="mdi-pencil" :item="item">
-        changed the priority from <IssuePriority :priority="item.oldPriority ?? undefined" /> to <IssuePriority :priority="item.newPriority ?? undefined" />
+        changed the priority from <IssuePriority :priority="item.oldPriority ?? undefined" /> to
+        <IssuePriority :priority="item.newPriority ?? undefined" />
     </DefaultIconTimelineItem>
 </template>
 <script setup lang="ts">

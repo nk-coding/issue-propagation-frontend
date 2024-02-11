@@ -9,7 +9,11 @@
         :initial-context="initialContext"
     >
         <template #item="{ props, item }">
-            <v-list-item v-bind="props" :title="`${item.raw.name} [${item.raw.__typename}]`" :subtitle="item.raw.description">
+            <v-list-item
+                v-bind="props"
+                :title="`${item.raw.name} [${item.raw.__typename}]`"
+                :subtitle="item.raw.description"
+            >
             </v-list-item>
         </template>
         <template #context-item="{ props, item }">
@@ -19,10 +23,7 @@
 </template>
 <script setup lang="ts">
 import { NodeReturnType, useClient } from "@/graphql/client";
-import {
-    DefaultAffectedByIssueInfoFragment,
-    DefaultTrackableInfoFragment
-} from "@/graphql/generated";
+import { DefaultAffectedByIssueInfoFragment, DefaultTrackableInfoFragment } from "@/graphql/generated";
 import { withErrorMessage } from "@/util/withErrorMessage";
 import FetchingAutocomplete from "./FetchingAutocomplete.vue";
 import { transformSearchQuery } from "@/util/searchQueryTransformer";
@@ -47,7 +48,7 @@ async function searchAffected(
     count: number,
     context?: DefaultTrackableInfoFragment
 ): Promise<DefaultAffectedByIssueInfoFragment[]> {
-    const searchRes =  await withErrorMessage(async () => {
+    const searchRes = await withErrorMessage(async () => {
         const query = transformSearchQuery(filter);
         if (query != undefined) {
             const res = await client.searchAffectedByIssues({ query, count, trackable: context!.id });

@@ -10,10 +10,10 @@
     />
 </template>
 <script setup lang="ts">
-import { Schema, SchemaFormEnum } from 'jtd';
-import { computed } from 'vue';
-import { PropType } from 'vue';
-import { Rule, requiredRule } from './rules';
+import { Schema, SchemaFormEnum } from "jtd";
+import { computed } from "vue";
+import { PropType } from "vue";
+import { Rule, requiredRule } from "./rules";
 
 const props = defineProps({
     schema: {
@@ -30,20 +30,20 @@ const props = defineProps({
     },
     readonly: {
         type: Boolean,
-        required: true,
+        required: true
     }
-})
+});
 
 const model = defineModel({
     type: String,
     required: false
-})
+});
 
 const rules = computed(() => {
     const rules: Rule[] = [];
     if (!props.schema.nullable) {
-        rules.push(requiredRule)
+        rules.push(requiredRule);
     }
     return rules;
-})
+});
 </script>

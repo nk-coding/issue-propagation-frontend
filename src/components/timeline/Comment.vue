@@ -183,7 +183,10 @@ import { markdownToText } from "@/util/markdownToText";
 import { useRouter } from "vue-router";
 import { issueKey } from "@/util/keys";
 
-export type Comment = (Omit<TimelineItemType<"IssueComment">, "createdBy"> | Omit<TimelineItemType<"Body">, "createdBy">) &
+export type Comment = (
+    | Omit<TimelineItemType<"IssueComment">, "createdBy">
+    | Omit<TimelineItemType<"Body">, "createdBy">
+) &
     Partial<Pick<TimelineItemType<"IssueComment">, "createdBy">>;
 
 const props = defineProps({

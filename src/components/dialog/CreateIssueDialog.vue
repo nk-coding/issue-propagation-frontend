@@ -136,7 +136,7 @@ const icon = computed<DefaultIssueIconInfoFragment | undefined>(() => {
     return undefined;
 });
 
-const templatedFields = ref<Field[]>([])
+const templatedFields = ref<Field[]>([]);
 const templateValue = asyncComputed(
     async () => {
         if (template.value.modelValue == null) {

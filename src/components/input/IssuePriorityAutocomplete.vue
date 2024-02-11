@@ -7,8 +7,7 @@
         item-title="name"
     >
         <template #item="{ props, item }">
-            <v-list-item :title="item.raw.name" :subtitle="item.raw.description" v-bind="props">
-            </v-list-item>
+            <v-list-item :title="item.raw.name" :subtitle="item.raw.description" v-bind="props"> </v-list-item>
         </template>
     </FetchingAutocomplete>
 </template>

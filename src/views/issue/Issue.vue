@@ -7,15 +7,14 @@
                     <div class="d-flex align-center">
                         <v-text-field v-if="editTitle" v-model="editTitleText" hide-details autofocus class="mr-3" />
                         <div v-else class="text-h4 mr-3">{{ issue.title }}</div>
-                        <IconButton
-                            v-if="!!issue.manageIssues && !editTitle"
-                            @click="startEditTitle"
-                        >
+                        <IconButton v-if="!!issue.manageIssues && !editTitle" @click="startEditTitle">
                             <v-icon icon="mdi-pencil" />
                             <v-tooltip activator="parent"> Edit title </v-tooltip>
                         </IconButton>
                         <template v-if="editTitle">
-                            <DefaultButton variant="outlined" color="error" @click="cancelEditTitle"> Cancel </DefaultButton>
+                            <DefaultButton variant="outlined" color="error" @click="cancelEditTitle">
+                                Cancel
+                            </DefaultButton>
                             <DefaultButton color="primary" class="mx-3" @click="saveTitle">Save</DefaultButton>
                         </template>
                     </div>
@@ -540,7 +539,7 @@ async function removeAssignmentType(assignment: AssignmentTimelineInfoFragment) 
 }
 
 const assignmentUserFilter = computed(
-    () => ({ hasNodePermission: { node: issueId.value, permission: "MANAGE_ISSUES" } } as GropiusUserFilterInput)
+    () => ({ hasNodePermission: { node: issueId.value, permission: "MANAGE_ISSUES" } }) as GropiusUserFilterInput
 );
 
 async function assignUser(user: DefaultUserInfoFragment) {
@@ -690,7 +689,7 @@ const templatedFields = computed(() => {
 
 async function updateTemplatedField(name: string, value: any) {
     const event = await withErrorMessage(async () => {
-        const res = await client.changeIssueTemplatedField({ input: { issue: issueId.value, name, value }});
+        const res = await client.changeIssueTemplatedField({ input: { issue: issueId.value, name, value } });
         return res.changeIssueTemplatedField?.templatedFieldChangedEvent;
     }, "Error updating templated field");
     if (event == undefined) {
@@ -705,7 +704,6 @@ async function updateTemplatedField(name: string, value: any) {
         }
     }
 }
-
 </script>
 <style scoped lang="scss">
 @use "@/styles/settings.scss";

@@ -2,7 +2,7 @@
     <v-autocomplete
         v-model:search="search"
         v-model:menu="menu"
-        v-model="(proxiedModel as any)"
+        v-model="proxiedModel as any"
         :items="items"
         :multiple="contextMode"
         :chips="contextMode"
@@ -17,10 +17,10 @@
                 v-if="!contextSearchMode && item.value != context?.id"
                 name="item"
                 :props="props"
-                :item="(item as ListItem<T>)"
+                :item="item as ListItem<T>"
             ></slot>
-            <slot v-else-if="contextSearchMode" name="context-item" :props="props" :item="(item as ListItem<C>)"></slot>
-            <div v-else class="placeholder-item"/>
+            <slot v-else-if="contextSearchMode" name="context-item" :props="props" :item="item as ListItem<C>"></slot>
+            <div v-else class="placeholder-item" />
         </template>
     </v-autocomplete>
 </template>
@@ -80,7 +80,9 @@ const emit = defineEmits<{
     (event: "selected-item", value: T): void;
 }>();
 
-const context = ref(props.initialContext ? transformToContextItem(props.initialContext as C) : undefined) as Ref<C | undefined>;
+const context = ref(props.initialContext ? transformToContextItem(props.initialContext as C) : undefined) as Ref<
+    C | undefined
+>;
 const contextMode = computed(() => props.mode == "add-context");
 const contextSearchMode = computed(() => {
     return contextMode.value && context.value == undefined;
@@ -103,12 +105,9 @@ const menu = ref<boolean>(!!props.menuMode && !props.menuDelay);
 const updatedModelValue = ref(false);
 
 const proxiedModel = ref(contextMode.value ? initialContextModel.value.map((it) => it.id) : model.value);
-watch(
-    model,
-    (model) => {
-        proxiedModel.value = model;
-    }
-);
+watch(model, (model) => {
+    proxiedModel.value = model;
+});
 watch(
     () => proxiedModel.value,
     (newModel) => {
@@ -142,7 +141,8 @@ async function updateSearch(search: string) {
     if (contextSearchMode.value) {
         newItems = (await props.contextFetch!(search, 10)).map((item) => transformToContextItem(item));
     } else {
-        const untransformedContext = context.value != undefined ? untransformContextItem(context.value as C) : undefined;
+        const untransformedContext =
+            context.value != undefined ? untransformContextItem(context.value as C) : undefined;
         newItems = await props.fetch(search, 10, untransformedContext);
     }
     if (props.mode == "model" && proxiedModel.value != undefined) {
@@ -229,7 +229,7 @@ function untransformContextItem(item: C): C {
         ...item,
         id: item.id.replace("context-", "")
     };
-}   
+}
 
 onMounted(async () => {
     if (!!props.menuMode && props.menuDelay > 0) {

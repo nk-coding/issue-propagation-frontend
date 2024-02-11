@@ -9,9 +9,7 @@
             :schema="field.schema.value"
             :root-schema="field.schema.value"
         />
-        <div v-if="mergedFields.length == 0">
-            No templated fields available
-        </div>
+        <div v-if="mergedFields.length == 0">No templated fields available</div>
     </div>
 </template>
 <script setup lang="ts">

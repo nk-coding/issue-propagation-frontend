@@ -5,7 +5,7 @@
                 <v-card-title class="pl-4">Create project</v-card-title>
                 <div class="pa-4">
                     <v-text-field v-bind="name" label="Name" class="mb-1" />
-                    <v-textarea v-bind="description" label="Description" class="mb-1"/>
+                    <v-textarea v-bind="description" label="Description" class="mb-1" />
                     <v-text-field v-bind="repositoryURL" label="Repository URL" class="mb-1" />
                 </div>
                 <v-card-actions>

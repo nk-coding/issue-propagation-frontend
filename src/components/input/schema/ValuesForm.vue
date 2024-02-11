@@ -61,14 +61,14 @@ const props = defineProps({
     },
     readonly: {
         type: Boolean,
-        required: true,
+        required: true
     }
 });
 
 const model = defineModel({
     type: Object as PropType<Record<string, any> | null>,
     required: false
-})
+});
 
 const addName = ref("");
 

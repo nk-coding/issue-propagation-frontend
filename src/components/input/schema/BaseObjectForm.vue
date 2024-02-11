@@ -5,8 +5,6 @@
     </v-field>
 </template>
 <script setup lang="ts">
-
-
 defineProps({
     name: {
         type: String,
@@ -16,12 +14,11 @@ defineProps({
         type: Boolean,
         required: true
     }
-})
+});
 
 defineEmits<{
-    (event: 'addValue'): true
-}>()
-
+    (event: "addValue"): true;
+}>();
 </script>
 <style scoped>
 .wrapper-field :deep(> .v-field__outline > .v-field__outline__notch::before) {

@@ -1,13 +1,19 @@
-query getLabelList($filter: String!, $orderBy: LabelOrder!, $count: Int!, $skip: Int!, $trackable: ID!) {
+query getLabelList($orderBy: LabelOrder!, $count: Int!, $skip: Int!, $trackable: ID!) {
     node(id: $trackable) {
         ... on Trackable {
-            labels(filter: { name: { contains: $filter } }, orderBy: $orderBy, first: $count, skip: $skip) {
+            labels(orderBy: $orderBy, first: $count, skip: $skip) {
                 nodes {
                     ...DefaultLabelInfo
                 }
                 totalCount
             }
         }
+    }
+}
+
+query getFilteredLabelList($query: String!, $count: Int!, $trackable: ID!) {
+    searchLabels(query: $query, first: $count, filter: { trackables: { any: { id: { eq: $trackable } } } }) {
+        ...DefaultLabelInfo
     }
 }
 

@@ -14,7 +14,7 @@
                 </template>
             </ListItem>
         </template>
-        <CreateComponentDialog @created-component="(component) => selectComponent(component)" />
+        <CreateComponentDialog @created-component="(component: IdObject) => selectComponent(component)" />
     </PaginatedList>
 </template>
 <script lang="ts" setup>
@@ -26,6 +26,7 @@ import ListItem from "@/components/ListItem.vue";
 import CreateComponentDialog from "@/components/dialog/CreateComponentDialog.vue";
 
 type Component = ClientReturnType<"getComponentList">["components"]["nodes"][0];
+type IdObject = { id: string };
 
 const client = useClient();
 const router = useRouter();
@@ -56,18 +57,18 @@ const itemManager: ItemManager<Component, keyof typeof sortFields> = {
         } else {
             const res = await client.getFilteredComponentList({
                 query: filter,
-                count,
+                count
             });
             return [res.searchComponents, res.searchComponents.length];
         }
     }
 };
 
-function selectComponent(component: { id: string }) {
+function selectComponent(component: IdObject) {
     router.push(componentRoute(component));
 }
 
-function componentRoute(component: { id: string }): RouteLocationRaw {
+function componentRoute(component: IdObject): RouteLocationRaw {
     return {
         name: "component",
         params: {

@@ -1,5 +1,11 @@
 <template>
-    <custom-router-link v-if="isLinkable" :to="location" :text="title" :tooltip="affectedEntity.description" class="text-high-emphasis" />
+    <custom-router-link
+        v-if="isLinkable"
+        :to="location"
+        :text="title"
+        :tooltip="affectedEntity.description"
+        class="text-high-emphasis"
+    />
     <span v-else class="text-high-emphasis">{{ title }}</span>
 </template>
 <script setup lang="ts">
@@ -23,7 +29,7 @@ const isLinkable = computed(() => {
 
 const title = computed(() => {
     return `${props.affectedEntity.name} [${props.affectedEntity.__typename}]`;
-})
+});
 
 const location = computed<RouteLocationRaw>(() => {
     const type = props.affectedEntity.__typename;

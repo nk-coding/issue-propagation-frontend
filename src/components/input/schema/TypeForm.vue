@@ -1,5 +1,5 @@
 <template>
-    <v-text-field v-if="isString || isNumber" v-model="cachedValue" :rules="rules" :label="name"  :readonly="readonly" />
+    <v-text-field v-if="isString || isNumber" v-model="cachedValue" :rules="rules" :label="name" :readonly="readonly" />
     <v-checkbox v-else-if="isBoolean" v-model="cachedValue" :rules="rules" :label="name" :readonly="readonly" />
 </template>
 <script setup lang="ts">
@@ -24,7 +24,7 @@ const props = defineProps({
     },
     readonly: {
         type: Boolean,
-        required: true,
+        required: true
     }
 });
 
@@ -73,7 +73,7 @@ watch(cachedValue, (value) => {
     if (parsedValue !== undefined) {
         model.value = parsedValue;
     }
-})
+});
 
 const isNumber = computed(() => {
     const type = props.schema.type;

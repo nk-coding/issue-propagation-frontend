@@ -74,7 +74,7 @@ const name = defineBinds("name");
 const version = defineBinds("version");
 const description = defineBinds("description");
 
-const templatedFields = ref<Field[]>([])
+const templatedFields = ref<Field[]>([]);
 const templateValue = asyncComputed(
     async () => {
         const templateRes = await withErrorMessage(async () => {

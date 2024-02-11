@@ -5,14 +5,19 @@
         @add-value="model = generateDefaultData(schema, rootSchema, true)"
     >
         <div class="full-width">
-            <div v-if="(isDiscriminatorForm(schema) || availableOptionalProperties.length > 0 || schema.nullable) && !readonly">
+            <div
+                v-if="
+                    (isDiscriminatorForm(schema) || availableOptionalProperties.length > 0 || schema.nullable) &&
+                    !readonly
+                "
+            >
                 <div class="d-flex align-center mb-3">
                     <v-autocomplete
                         v-if="isDiscriminatorForm(schema)"
                         class="mr-3"
                         :items="Object.keys(schema.mapping)"
                         :label="schema.discriminator"
-                        :model-value="(model![schema.discriminator] as string | undefined)"
+                        :model-value="model![schema.discriminator] as string | undefined"
                         hide-details
                         @update:model-value="updateDiscriminator"
                         :rules="[requiredRule]"
@@ -90,7 +95,7 @@ const props = defineProps({
     },
     readonly: {
         type: Boolean,
-        required: true,
+        required: true
     }
 });
 
@@ -127,12 +132,12 @@ const optionalProperties = computed(() => {
 const addedOptionalProperties = computed(() => {
     const modelValue = model.value;
     return optionalProperties.value.filter((property) => modelValue?.[property[0]] !== undefined);
-})
+});
 
 const availableOptionalProperties = computed(() => {
     const modelValue = model.value;
     return optionalProperties.value.filter((property) => modelValue?.[property[0]] === undefined);
-})
+});
 
 function addOptionalProprty(property: [string, Schema]) {
     model.value![property[0]] = generateDefaultData(property[1], props.rootSchema);
@@ -151,5 +156,4 @@ function updateDiscriminator(discriminator: string) {
     };
     model.value = newModelValue;
 }
-
 </script>

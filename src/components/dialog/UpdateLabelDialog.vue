@@ -7,7 +7,7 @@
             discard-message="Are you sure you want to discard the changes?"
             submit-action="Update label"
             :trackable="trackable"
-            :initial-value="(model as Label)"
+            :initial-value="model as Label"
             @submit="updateLabel"
             @cancel="updateLabelDialog = false"
         />
@@ -24,7 +24,7 @@ const updateLabelDialog = computed({
     get: () => model != null,
     set: (value) => {
         if (!value) {
-            model.value = null
+            model.value = null;
         }
     }
 });

@@ -12,7 +12,7 @@
         <template #search-append>
             <IssueStateSegmentedButton v-model="issueStateIndices" />
         </template>
-        <CreateIssueDialog :trackable="trackableId" @created-issue="(issue) => selectIssue(issue)" />
+        <CreateIssueDialog :trackable="trackableId" @created-issue="(issue: IdObject) => selectIssue(issue)" />
     </PaginatedList>
 </template>
 <script lang="ts" setup>
@@ -27,6 +27,7 @@ import IssueStateSegmentedButton from "@/components/input/IssueStateSegmentedBut
 
 type Trackable = NodeReturnType<"getIssueList", "Component">;
 type Issue = IssueListItemInfoFragment;
+type IdObject = { id: string };
 
 const client = useClient();
 const router = useRouter();
@@ -83,11 +84,11 @@ const itemManager: ItemManager<Issue, keyof typeof sortFields> = {
     }
 };
 
-function selectIssue(issue: { id: string }) {
+function selectIssue(issue: IdObject) {
     router.push(issueRoute(issue));
 }
 
-function issueRoute(issue: { id: string }): RouteLocationRaw {
+function issueRoute(issue: IdObject): RouteLocationRaw {
     return {
         name: (route.name as string).slice(0, -1),
         params: { issue: issue.id, trackable: trackableId.value }

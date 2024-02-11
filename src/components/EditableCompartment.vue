@@ -96,7 +96,7 @@ watch(
             closeEditMode();
         }
     }
-)
+);
 
 function onClickOutside(e: MouseEvent) {
     if (editMode.value) {

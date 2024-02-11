@@ -1,6 +1,13 @@
 <template>
     <v-card-title class="pl-4">Create {{ itemName }}</v-card-title>
-    <v-stepper class="stepper d-flex flex-column" v-model="step" :items="['General', 'Templated fields']" hide-actions :bg-color="color" flat>
+    <v-stepper
+        class="stepper d-flex flex-column"
+        v-model="step"
+        :items="['General', 'Templated fields']"
+        hide-actions
+        :bg-color="color"
+        flat
+    >
         <template v-slot:item.1>
             <v-form v-model="form1Valid" validate-on="blur">
                 <slot name="general" />
@@ -8,7 +15,7 @@
         </template>
         <template v-slot:item.2>
             <v-form ref="form2" v-model="form2Valid">
-                <slot name="templatedFields"/>
+                <slot name="templatedFields" />
             </v-form>
         </template>
     </v-stepper>
@@ -26,14 +33,14 @@
             />
         </DefaultButton>
         <DefaultButton variant="text" color="primary" @click="next">
-            {{ step == 1 ? 'Next' : confirmationMessage }}
+            {{ step == 1 ? "Next" : confirmationMessage }}
         </DefaultButton>
     </v-card-actions>
 </template>
 <script setup lang="ts">
-import { ref } from 'vue';
-import ConfirmationDialog from './ConfirmationDialog.vue';
-import { computed } from 'vue';
+import { ref } from "vue";
+import ConfirmationDialog from "./ConfirmationDialog.vue";
+import { computed } from "vue";
 
 const props = defineProps({
     itemName: {
@@ -63,28 +70,28 @@ const emit = defineEmits<{
     (event: "confirm"): void;
 }>();
 
-const step = ref(1)
-const form1Valid = ref(false)
-const form2Valid = ref(true)
+const step = ref(1);
+const form1Valid = ref(false);
+const form2Valid = ref(true);
 
 const isDirty = computed(() => {
     return step.value > 1 || props.formMeta.dirty;
-})
+});
 
-const form2 = ref<any>(null)
+const form2 = ref<any>(null);
 
 function next() {
     if (step.value == 1) {
         if (props.formMeta.valid) {
             step.value = step.value + 1;
         } else {
-            props.formValidate()
+            props.formValidate();
         }
     } else {
         if (form2Valid.value) {
-            emit('confirm');
+            emit("confirm");
         } else {
-            form2.value.validate()
+            form2.value.validate();
         }
     }
 }

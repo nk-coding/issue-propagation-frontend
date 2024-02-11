@@ -8,7 +8,7 @@
         "preview": "vite preview",
         "lint": "eslint . --fix --ignore-path .gitignore",
         "codegen": "graphql-codegen --config codegen.yaml",
-        "format": "prettier --write \"**/*.{ts,json,js,tsx,jsx}\""
+        "format": "prettier --write \"**/*.{ts,json,js,tsx,jsx,vue}\""
     },
     "dependencies": {
         "@bytemd/plugin-gfm": "^1.21.0",

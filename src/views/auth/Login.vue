@@ -263,17 +263,17 @@ async function submitFormRegister(
 
 async function redirectLogin(strategyInstance: RedirectStrategyInstance) {
     // TODO: add oauth state
-    window.location.href = `/api/login/authenticate/oauth/${strategyInstance.id}/authorize/login?client_id=${
-        await store.getClientId()
-    }`;
+    window.location.href = `/api/login/authenticate/oauth/${
+        strategyInstance.id
+    }/authorize/login?client_id=${await store.getClientId()}`;
 }
 
 async function redirectRegister(strategyInstance: RedirectStrategyInstance, sync: boolean) {
     // TODO: add oauth state
     const mode = sync ? "register-sync" : "register";
-    window.location.href = `/api/login/authenticate/oauth/${strategyInstance.id}/authorize/${mode}?client_id=${
-        await store.getClientId()
-    }`;
+    window.location.href = `/api/login/authenticate/oauth/${
+        strategyInstance.id
+    }/authorize/${mode}?client_id=${await store.getClientId()}`;
 }
 </script>
 <style scoped>

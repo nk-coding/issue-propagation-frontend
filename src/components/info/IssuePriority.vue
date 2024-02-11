@@ -19,7 +19,6 @@ defineProps({
 });
 </script>
 <style scoped>
-
 .priority-wrapper {
     display: inline-block;
 }

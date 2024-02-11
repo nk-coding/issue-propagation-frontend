@@ -8,14 +8,14 @@
             :trackable="trackable"
             :initial-value="initialValue"
             @submit="createLabel"
-            @cancel="createLabelDialog = false;"
+            @cancel="createLabelDialog = false"
         />
     </v-dialog>
 </template>
 <script lang="ts" setup>
 import { onEvent } from "@/util/eventBus";
-import { useClient } from '@/graphql/client';
-import { ref } from 'vue';
+import { useClient } from "@/graphql/client";
+import { ref } from "vue";
 import { withErrorMessage } from "@/util/withErrorMessage";
 import LabelDialogContent, { Label } from "./LabelDialogContent.vue";
 
@@ -55,5 +55,5 @@ async function createLabel(state: Label) {
     }, "Error creating label");
     createLabelDialog.value = false;
     emit("created-label", label);
-};
+}
 </script>

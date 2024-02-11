@@ -14,7 +14,10 @@ import { transformSearchQuery } from "@/util/searchQueryTransformer";
 
 const client = useClient();
 
-async function searchComponentTemplates(filter: string, count: number): Promise<DefaultComponentTemplateInfoFragment[]> {
+async function searchComponentTemplates(
+    filter: string,
+    count: number
+): Promise<DefaultComponentTemplateInfoFragment[]> {
     return await withErrorMessage(async () => {
         const query = transformSearchQuery(filter);
         if (query != undefined) {
