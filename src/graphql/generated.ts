@@ -116,7 +116,7 @@ export type AddInterfaceSpecificationVersionToComponentVersionInput = {
 export type AddInterfaceSpecificationVersionToComponentVersionPayload = {
     __typename?: "AddInterfaceSpecificationVersionToComponentVersionPayload";
     /** The updated ComponentVersion */
-    componentVersion?: Maybe<ComponentVersion>;
+    componentVersion: ComponentVersion;
 };
 
 /** Input for the addIssueToPinnedIssues mutation */
@@ -172,7 +172,7 @@ export type AddLabelToTrackableInput = {
 export type AddLabelToTrackablePayload = {
     __typename?: "AddLabelToTrackablePayload";
     /** The Trackable to which the Label was added */
-    trackable?: Maybe<Trackable>;
+    trackable: Trackable;
 };
 
 /**
@@ -3900,7 +3900,7 @@ export type CreateArtefactInput = {
 export type CreateArtefactPayload = {
     __typename?: "CreateArtefactPayload";
     /** The created Artefact */
-    artefact?: Maybe<Artefact>;
+    artefact: Artefact;
 };
 
 /** Input for the createArtefactTemplate mutation */
@@ -3924,7 +3924,7 @@ export type CreateArtefactTemplateInput = {
 export type CreateArtefactTemplatePayload = {
     __typename?: "CreateArtefactTemplatePayload";
     /** The created ArtefactTemplate */
-    artefactTemplate?: Maybe<ArtefactTemplate>;
+    artefactTemplate: ArtefactTemplate;
 };
 
 /** Input for the createAssignment mutation */
@@ -3942,7 +3942,7 @@ export type CreateAssignmentInput = {
 export type CreateAssignmentPayload = {
     __typename?: "CreateAssignmentPayload";
     /** The created Assignment */
-    assignment?: Maybe<Assignment>;
+    assignment: Assignment;
 };
 
 /** Input for the createComponent mutation */
@@ -3968,7 +3968,7 @@ export type CreateComponentInput = {
 export type CreateComponentPayload = {
     __typename?: "CreateComponentPayload";
     /** The created Component */
-    component?: Maybe<Component>;
+    component: Component;
 };
 
 /** Input for the createComponentPermission mutation */
@@ -3990,7 +3990,7 @@ export type CreateComponentPermissionInput = {
 export type CreateComponentPermissionPayload = {
     __typename?: "CreateComponentPermissionPayload";
     /** The created ComponentPermission */
-    componentPermission?: Maybe<ComponentPermission>;
+    componentPermission: ComponentPermission;
 };
 
 /** Input for the createComponentTemplate mutation */
@@ -4024,7 +4024,7 @@ export type CreateComponentTemplateInput = {
 export type CreateComponentTemplatePayload = {
     __typename?: "CreateComponentTemplatePayload";
     /** The created ComponentTemplate */
-    componentTemplate?: Maybe<ComponentTemplate>;
+    componentTemplate: ComponentTemplate;
 };
 
 /** Input for the createComponentVersion mutation */
@@ -4046,7 +4046,7 @@ export type CreateComponentVersionInput = {
 export type CreateComponentVersionPayload = {
     __typename?: "CreateComponentVersionPayload";
     /** The created ComponentVersion */
-    componentVersion?: Maybe<ComponentVersion>;
+    componentVersion: ComponentVersion;
 };
 
 /** Input for the createGlobalPermission mutation */
@@ -4066,7 +4066,7 @@ export type CreateGlobalPermissionInput = {
 export type CreateGlobalPermissionPayload = {
     __typename?: "CreateGlobalPermissionPayload";
     /** The created GlobalPermission */
-    globalPermission?: Maybe<GlobalPermission>;
+    globalPermission: GlobalPermission;
 };
 
 /** Input for the createIMS mutation */
@@ -4086,7 +4086,7 @@ export type CreateImsInput = {
 export type CreateImsPayload = {
     __typename?: "CreateIMSPayload";
     /** The created IMS */
-    ims?: Maybe<Ims>;
+    ims: Ims;
 };
 
 /** Input for the createIMSPermission mutation */
@@ -4108,7 +4108,7 @@ export type CreateImsPermissionInput = {
 export type CreateImsPermissionPayload = {
     __typename?: "CreateIMSPermissionPayload";
     /** The created IMSPermission */
-    imsPermission?: Maybe<ImsPermission>;
+    imsPermission: ImsPermission;
 };
 
 /** Input for the createIMSProject mutation */
@@ -4126,7 +4126,7 @@ export type CreateImsProjectInput = {
 export type CreateImsProjectPayload = {
     __typename?: "CreateIMSProjectPayload";
     /** The created IMSProject */
-    imsProject?: Maybe<ImsProject>;
+    imsProject: ImsProject;
 };
 
 /** Input for the createInterfacePart mutation */
@@ -4146,7 +4146,7 @@ export type CreateInterfacePartInput = {
 export type CreateInterfacePartPayload = {
     __typename?: "CreateInterfacePartPayload";
     /** The created InterfacePart */
-    interfacePart?: Maybe<InterfacePart>;
+    interfacePart: InterfacePart;
 };
 
 /** Input for the createInterfaceSpecification mutation */
@@ -4170,7 +4170,7 @@ export type CreateInterfaceSpecificationInput = {
 export type CreateInterfaceSpecificationPayload = {
     __typename?: "CreateInterfaceSpecificationPayload";
     /** The created InterfaceSpecification */
-    interfaceSpecification?: Maybe<InterfaceSpecification>;
+    interfaceSpecification: InterfaceSpecification;
 };
 
 /** Input for the createInterfaceSpecificationTemplate mutation */
@@ -4214,7 +4214,7 @@ export type CreateInterfaceSpecificationTemplateInput = {
 export type CreateInterfaceSpecificationTemplatePayload = {
     __typename?: "CreateInterfaceSpecificationTemplatePayload";
     /** The created InterfaceTemplate */
-    interfaceSpecificationTemplate?: Maybe<InterfaceSpecificationTemplate>;
+    interfaceSpecificationTemplate: InterfaceSpecificationTemplate;
 };
 
 /** Input for the createInterfaceSpecificationVersion mutation */
@@ -4238,7 +4238,7 @@ export type CreateInterfaceSpecificationVersionInput = {
 export type CreateInterfaceSpecificationVersionPayload = {
     __typename?: "CreateInterfaceSpecificationVersionPayload";
     /** The created InterfaceSpecificationVersion */
-    interfaceSpecificationVersion?: Maybe<InterfaceSpecificationVersion>;
+    interfaceSpecificationVersion: InterfaceSpecificationVersion;
 };
 
 /** Input for the createIntraComponentDependencySpecification mutation */
@@ -4260,7 +4260,7 @@ export type CreateIntraComponentDependencySpecificationInput = {
 export type CreateIntraComponentDependencySpecificationPayload = {
     __typename?: "CreateIntraComponentDependencySpecificationPayload";
     /** The created IntraComponentDependencySpecification */
-    intraComponentDependencySpecification?: Maybe<IntraComponentDependencySpecification>;
+    intraComponentDependencySpecification: IntraComponentDependencySpecification;
 };
 
 /** Input for the createIssueComment mutation */
@@ -4280,7 +4280,7 @@ export type CreateIssueCommentInput = {
 export type CreateIssueCommentPayload = {
     __typename?: "CreateIssueCommentPayload";
     /** The created IssueComment */
-    issueComment?: Maybe<IssueComment>;
+    issueComment: IssueComment;
 };
 
 /** Input for the createIssue mutation */
@@ -4306,7 +4306,7 @@ export type CreateIssueInput = {
 export type CreateIssuePayload = {
     __typename?: "CreateIssuePayload";
     /** The created Issue */
-    issue?: Maybe<Issue>;
+    issue: Issue;
 };
 
 /** Input for the createIssueRelation mutation */
@@ -4324,7 +4324,7 @@ export type CreateIssueRelationInput = {
 export type CreateIssueRelationPayload = {
     __typename?: "CreateIssueRelationPayload";
     /** The created IssueRelation */
-    issueRelation?: Maybe<IssueRelation>;
+    issueRelation: IssueRelation;
 };
 
 /** Input for the createIssueTemplate mutation. */
@@ -4358,7 +4358,7 @@ export type CreateIssueTemplateInput = {
 export type CreateIssueTemplatePayload = {
     __typename?: "CreateIssueTemplatePayload";
     /** The created IssueTemplate */
-    issueTemplate?: Maybe<IssueTemplate>;
+    issueTemplate: IssueTemplate;
 };
 
 /** Input for the createLabel mutation */
@@ -4378,7 +4378,7 @@ export type CreateLabelInput = {
 export type CreateLabelPayload = {
     __typename?: "CreateLabelPayload";
     /** The created Label */
-    label?: Maybe<Label>;
+    label: Label;
 };
 
 /** Input for the createProject mutation */
@@ -4396,7 +4396,7 @@ export type CreateProjectInput = {
 export type CreateProjectPayload = {
     __typename?: "CreateProjectPayload";
     /** The created Project */
-    project?: Maybe<Project>;
+    project: Project;
 };
 
 /** Input for the createProjectPermission mutation */
@@ -4418,7 +4418,7 @@ export type CreateProjectPermissionInput = {
 export type CreateProjectPermissionPayload = {
     __typename?: "CreateProjectPermissionPayload";
     /** The created ProjectPermission */
-    projectPermission?: Maybe<ProjectPermission>;
+    projectPermission: ProjectPermission;
 };
 
 /** Input for the createRelation mutation */
@@ -4442,7 +4442,7 @@ export type CreateRelationInput = {
 export type CreateRelationPayload = {
     __typename?: "CreateRelationPayload";
     /** The created Relation */
-    relation?: Maybe<Relation>;
+    relation: Relation;
 };
 
 /** Input for the createRelationTemplate mutation */
@@ -4472,7 +4472,7 @@ export type CreateRelationTemplateInput = {
 export type CreateRelationTemplatePayload = {
     __typename?: "CreateRelationTemplatePayload";
     /** The created RelationTemplate */
-    relationTemplate?: Maybe<RelationTemplate>;
+    relationTemplate: RelationTemplate;
 };
 
 /** Filter which can be used to filter for Nodes with a specific DateTime field */
@@ -4494,7 +4494,7 @@ export type DateTimeFilterInput = {
 export type DeleteIssueCommentPayload = {
     __typename?: "DeleteIssueCommentPayload";
     /** The updated IssueComment */
-    issueComment?: Maybe<IssueComment>;
+    issueComment: IssueComment;
 };
 
 /** Input for all delete mutations. Deletes the node with the specified id */
@@ -14711,7 +14711,7 @@ export type RemoveComponentVersionFromProjectInput = {
 export type RemoveComponentVersionFromProjectPayload = {
     __typename?: "RemoveComponentVersionFromProjectPayload";
     /** The updated Project */
-    project?: Maybe<Project>;
+    project: Project;
 };
 
 /** Input for the removeInterfaceSpecificationVersionfromComponentVersion mutation */
@@ -14729,7 +14729,7 @@ export type RemoveInterfaceSpecificationVersionFromComponentVersionInput = {
 export type RemoveInterfaceSpecificationVersionFromComponentVersionPayload = {
     __typename?: "RemoveInterfaceSpecificationVersionFromComponentVersionPayload";
     /** The updated ComponentVersion */
-    componentVersion?: Maybe<ComponentVersion>;
+    componentVersion: ComponentVersion;
 };
 
 /** Input for the removeIssueFromPinnedIssues mutation */
@@ -14797,7 +14797,7 @@ export type RemoveLabelFromTrackableInput = {
 export type RemoveLabelFromTrackablePayload = {
     __typename?: "RemoveLabelFromTrackablePayload";
     /** The Trackable from which the Label was removed */
-    trackable?: Maybe<Trackable>;
+    trackable: Trackable;
 };
 
 /**
@@ -16604,7 +16604,7 @@ export type UpdateArtefactInput = {
 export type UpdateArtefactPayload = {
     __typename?: "UpdateArtefactPayload";
     /** The updated Artefact */
-    artefact?: Maybe<Artefact>;
+    artefact: Artefact;
 };
 
 /** Input for the updateBody mutation */
@@ -16620,7 +16620,7 @@ export type UpdateBodyInput = {
 export type UpdateBodyPayload = {
     __typename?: "UpdateBodyPayload";
     /** The updated Body */
-    body?: Maybe<Body>;
+    body: Body;
 };
 
 /** Input for the updateComponent mutation */
@@ -16665,7 +16665,7 @@ export type UpdateComponentInput = {
 export type UpdateComponentPayload = {
     __typename?: "UpdateComponentPayload";
     /** The updated Component */
-    component?: Maybe<Component>;
+    component: Component;
 };
 
 /** Input for the updateComponentPermission mutation */
@@ -16691,7 +16691,7 @@ export type UpdateComponentPermissionInput = {
 export type UpdateComponentPermissionPayload = {
     __typename?: "UpdateComponentPermissionPayload";
     /** The updated ComponentPermission */
-    componentPermission?: Maybe<ComponentPermission>;
+    componentPermission: ComponentPermission;
 };
 
 /** Input for the updateComponentVersion mutation */
@@ -16713,7 +16713,7 @@ export type UpdateComponentVersionInput = {
 export type UpdateComponentVersionPayload = {
     __typename?: "UpdateComponentVersionPayload";
     /** The updated ComponentVersion */
-    componentVersion?: Maybe<ComponentVersion>;
+    componentVersion: ComponentVersion;
 };
 
 /** Input for the updateExtensionFields mutation */
@@ -16727,7 +16727,7 @@ export type UpdateExtensionFieldsInput = {
 export type UpdateExtensionFieldsPayload = {
     __typename?: "UpdateExtensionFieldsPayload";
     /** The updated ExtensibleNode */
-    extensibleNode?: Maybe<ExtensibleNode>;
+    extensibleNode: ExtensibleNode;
 };
 
 /** Input for the updateGlobalPermission mutation */
@@ -16753,7 +16753,7 @@ export type UpdateGlobalPermissionInput = {
 export type UpdateGlobalPermissionPayload = {
     __typename?: "UpdateGlobalPermissionPayload";
     /** The updated GlobalPermission */
-    globalPermission?: Maybe<GlobalPermission>;
+    globalPermission: GlobalPermission;
 };
 
 /** Input for the updateGropiusUserMutation */
@@ -16775,7 +16775,7 @@ export type UpdateGropiusUserInput = {
 export type UpdateGropiusUserPayload = {
     __typename?: "UpdateGropiusUserPayload";
     /** The updated GropiusUser */
-    gropiusUser?: Maybe<GropiusUser>;
+    gropiusUser: GropiusUser;
 };
 
 /** Input for the updateIMS mutation */
@@ -16803,7 +16803,7 @@ export type UpdateImsInput = {
 export type UpdateImsPayload = {
     __typename?: "UpdateIMSPayload";
     /** The updated IMS */
-    ims?: Maybe<Ims>;
+    ims: Ims;
 };
 
 /** Input for the updateImsPermission mutation */
@@ -16829,7 +16829,7 @@ export type UpdateImsPermissionInput = {
 export type UpdateImsPermissionPayload = {
     __typename?: "UpdateIMSPermissionPayload";
     /** The updated IMSPermission */
-    imsPermission?: Maybe<ImsPermission>;
+    imsPermission: ImsPermission;
 };
 
 /** Input for the updateIMSProject mutation */
@@ -16845,7 +16845,7 @@ export type UpdateImsProjectInput = {
 export type UpdateImsProjectPayload = {
     __typename?: "UpdateIMSProjectPayload";
     /** The updated IMSProject */
-    imsProject?: Maybe<ImsProject>;
+    imsProject: ImsProject;
 };
 
 /** Input for the updateInterfaceDefinition mutation */
@@ -16861,7 +16861,7 @@ export type UpdateInterfaceDefinitionInput = {
 export type UpdateInterfaceDefinitionPayload = {
     __typename?: "UpdateInterfaceDefinitionPayload";
     /** The updated InterfaceDefinition  */
-    interfaceDefinition?: Maybe<InterfaceDefinition>;
+    interfaceDefinition: InterfaceDefinition;
 };
 
 /** Input for the updateInterface mutation */
@@ -16895,13 +16895,13 @@ export type UpdateInterfacePartInput = {
 export type UpdateInterfacePartPayload = {
     __typename?: "UpdateInterfacePartPayload";
     /** The updated InterfacePart */
-    interfacePart?: Maybe<InterfacePart>;
+    interfacePart: InterfacePart;
 };
 
 export type UpdateInterfacePayload = {
     __typename?: "UpdateInterfacePayload";
     /** The updated Interface  */
-    interface?: Maybe<Interface>;
+    interface: Interface;
 };
 
 /** Input for the updateInterfaceSpecification mutation */
@@ -16956,7 +16956,7 @@ export type UpdateInterfaceSpecificationInput = {
 export type UpdateInterfaceSpecificationPayload = {
     __typename?: "UpdateInterfaceSpecificationPayload";
     /** The updated InterfaceSpecification */
-    interfaceSpecification?: Maybe<InterfaceSpecification>;
+    interfaceSpecification: InterfaceSpecification;
 };
 
 /** Input for the updateInterfaceSpecificationVersion mutation */
@@ -16978,7 +16978,7 @@ export type UpdateInterfaceSpecificationVersionInput = {
 export type UpdateInterfaceSpecificationVersionPayload = {
     __typename?: "UpdateInterfaceSpecificationVersionPayload";
     /** The updated InterfaceSpecificationVersion */
-    interfaceSpecificationVersion?: Maybe<InterfaceSpecificationVersion>;
+    interfaceSpecificationVersion: InterfaceSpecificationVersion;
 };
 
 /** Input for the updateIntraComponentDependencySpecification mutation */
@@ -17004,7 +17004,7 @@ export type UpdateIntraComponentDependencySpecificationInput = {
 export type UpdateIntraComponentDependencySpecificationPayload = {
     __typename?: "UpdateIntraComponentDependencySpecificationPayload";
     /** The updated IntraComponentDependencySpecification */
-    intraComponentDependencySpecification?: Maybe<IntraComponentDependencySpecification>;
+    intraComponentDependencySpecification: IntraComponentDependencySpecification;
 };
 
 /** Input for the updateIssueComment mutation */
@@ -17024,7 +17024,7 @@ export type UpdateIssueCommentInput = {
 export type UpdateIssueCommentPayload = {
     __typename?: "UpdateIssueCommentPayload";
     /** The updated IssueComment */
-    issueComment?: Maybe<IssueComment>;
+    issueComment: IssueComment;
 };
 
 /** Input for the updateLabel mutation */
@@ -17044,7 +17044,7 @@ export type UpdateLabelInput = {
 export type UpdateLabelPayload = {
     __typename?: "UpdateLabelPayload";
     /** The updated Label */
-    label?: Maybe<Label>;
+    label: Label;
 };
 
 /** Input for the updateProject mutation */
@@ -17072,7 +17072,7 @@ export type UpdateProjectInput = {
 export type UpdateProjectPayload = {
     __typename?: "UpdateProjectPayload";
     /** The updated Project */
-    project?: Maybe<Project>;
+    project: Project;
 };
 
 /** Input for the updateProjectPermission mutation */
@@ -17098,7 +17098,7 @@ export type UpdateProjectPermissionInput = {
 export type UpdateProjectPermissionPayload = {
     __typename?: "UpdateProjectPermissionPayload";
     /** The updated ProjectPermission */
-    projectPermission?: Maybe<ProjectPermission>;
+    projectPermission: ProjectPermission;
 };
 
 /** Input for the updateRelation mutation */
@@ -17130,7 +17130,7 @@ export type UpdateRelationInput = {
 export type UpdateRelationPayload = {
     __typename?: "UpdateRelationPayload";
     /** The updated Relation */
-    relation?: Maybe<Relation>;
+    relation: Relation;
 };
 
 /** Input for the updateTemplateDeprecationStatus mutation */
@@ -17144,7 +17144,7 @@ export type UpdateTemplateDeprecationStatusInput = {
 export type UpdateTemplateDeprecationStatusPayload = {
     __typename?: "UpdateTemplateDeprecationStatusPayload";
     /** The updated Template */
-    template?: Maybe<Template>;
+    template: Template;
 };
 
 /**
@@ -17552,7 +17552,7 @@ export type CreateAssignmentMutation = {
     __typename?: "Mutation";
     createAssignment: {
         __typename?: "CreateAssignmentPayload";
-        assignment?: {
+        assignment: {
             __typename: "Assignment";
             id: string;
             createdAt: any;
@@ -17563,7 +17563,7 @@ export type CreateAssignmentMutation = {
                 | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
                 | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
             type?: { __typename?: "AssignmentType"; id: string; name: string; description: string } | null;
-        } | null;
+        };
     };
 };
 
@@ -18092,10 +18092,7 @@ export type CreateComponentMutationVariables = Exact<{
 
 export type CreateComponentMutation = {
     __typename?: "Mutation";
-    createComponent: {
-        __typename?: "CreateComponentPayload";
-        component?: { __typename?: "Component"; id: string } | null;
-    };
+    createComponent: { __typename?: "CreateComponentPayload"; component: { __typename?: "Component"; id: string } };
 };
 
 export type DefaultComponentTemplateInfoFragment = {
@@ -18603,7 +18600,7 @@ export type CreateComponentVersionMutation = {
     __typename?: "Mutation";
     createComponentVersion: {
         __typename?: "CreateComponentVersionPayload";
-        componentVersion?: { __typename?: "ComponentVersion"; id: string } | null;
+        componentVersion: { __typename?: "ComponentVersion"; id: string };
     };
 };
 
@@ -18872,7 +18869,7 @@ export type RemoveComponentVersionFromProjectMutation = {
     __typename?: "Mutation";
     removeComponentVersionFromProject: {
         __typename?: "RemoveComponentVersionFromProjectPayload";
-        project?: { __typename?: "Project"; id: string } | null;
+        project: { __typename?: "Project"; id: string };
     };
 };
 
@@ -18884,7 +18881,7 @@ export type CreateRelationMutationVariables = Exact<{
 
 export type CreateRelationMutation = {
     __typename?: "Mutation";
-    createRelation: { __typename?: "CreateRelationPayload"; relation?: { __typename?: "Relation"; id: string } | null };
+    createRelation: { __typename?: "CreateRelationPayload"; relation: { __typename?: "Relation"; id: string } };
 };
 
 export type DeleteRelationMutationVariables = Exact<{
@@ -21031,7 +21028,7 @@ export type UpdateBodyMutation = {
     __typename?: "Mutation";
     updateBody: {
         __typename?: "UpdateBodyPayload";
-        body?: {
+        body: {
             __typename: "Body";
             id: string;
             createdAt: any;
@@ -21043,7 +21040,7 @@ export type UpdateBodyMutation = {
             bodyLastEditedBy:
                 | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
                 | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
-        } | null;
+        };
     };
 };
 
@@ -21056,7 +21053,7 @@ export type UpdateIssueCommentMutation = {
     __typename?: "Mutation";
     updateIssueComment: {
         __typename?: "UpdateIssueCommentPayload";
-        issueComment?: {
+        issueComment: {
             __typename: "IssueComment";
             isDeleted: boolean;
             id: string;
@@ -21070,7 +21067,7 @@ export type UpdateIssueCommentMutation = {
             bodyLastEditedBy:
                 | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
                 | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
-        } | null;
+        };
     };
 };
 
@@ -21084,7 +21081,7 @@ export type CreateIssueCommentMutation = {
     __typename?: "Mutation";
     createIssueComment: {
         __typename?: "CreateIssueCommentPayload";
-        issueComment?: {
+        issueComment: {
             __typename: "IssueComment";
             isDeleted: boolean;
             id: string;
@@ -21098,7 +21095,7 @@ export type CreateIssueCommentMutation = {
             bodyLastEditedBy:
                 | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
                 | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
-        } | null;
+        };
     };
 };
 
@@ -21110,7 +21107,7 @@ export type DeleteIssueCommentMutation = {
     __typename?: "Mutation";
     deleteIssueComment: {
         __typename?: "DeleteIssueCommentPayload";
-        issueComment?: {
+        issueComment: {
             __typename: "IssueComment";
             isDeleted: boolean;
             id: string;
@@ -21124,7 +21121,7 @@ export type DeleteIssueCommentMutation = {
             bodyLastEditedBy:
                 | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
                 | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
-        } | null;
+        };
     };
 };
 
@@ -21134,7 +21131,7 @@ export type CreateIssueMutationVariables = Exact<{
 
 export type CreateIssueMutation = {
     __typename?: "Mutation";
-    createIssue: { __typename?: "CreateIssuePayload"; issue?: { __typename?: "Issue"; id: string } | null };
+    createIssue: { __typename?: "CreateIssuePayload"; issue: { __typename?: "Issue"; id: string } };
 };
 
 export type ChangeIssueTitleMutationVariables = Exact<{
@@ -21504,7 +21501,7 @@ export type CreateIssueRelationMutation = {
     __typename?: "Mutation";
     createIssueRelation: {
         __typename?: "CreateIssueRelationPayload";
-        issueRelation?: {
+        issueRelation: {
             __typename: "IssueRelation";
             id: string;
             createdAt: any;
@@ -21528,7 +21525,7 @@ export type CreateIssueRelationMutation = {
                 type: { __typename?: "IssueType"; iconPath: string };
             } | null;
             type?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
-        } | null;
+        };
     };
 };
 
@@ -22464,7 +22461,7 @@ export type CreateLabelMutationVariables = Exact<{
 
 export type CreateLabelMutation = {
     __typename?: "Mutation";
-    createLabel: { __typename?: "CreateLabelPayload"; label?: { __typename?: "Label"; id: string } | null };
+    createLabel: { __typename?: "CreateLabelPayload"; label: { __typename?: "Label"; id: string } };
 };
 
 export type UpdateLabelMutationVariables = Exact<{
@@ -22473,7 +22470,7 @@ export type UpdateLabelMutationVariables = Exact<{
 
 export type UpdateLabelMutation = {
     __typename?: "Mutation";
-    updateLabel: { __typename?: "UpdateLabelPayload"; label?: { __typename?: "Label"; id: string } | null };
+    updateLabel: { __typename?: "UpdateLabelPayload"; label: { __typename?: "Label"; id: string } };
 };
 
 export type RemoveLabelFromTrackableMutationVariables = Exact<{
@@ -22629,7 +22626,7 @@ export type CreateProjectMutationVariables = Exact<{
 
 export type CreateProjectMutation = {
     __typename?: "Mutation";
-    createProject: { __typename?: "CreateProjectPayload"; project?: { __typename?: "Project"; id: string } | null };
+    createProject: { __typename?: "CreateProjectPayload"; project: { __typename?: "Project"; id: string } };
 };
 
 export type GetRelationTemplatesQueryVariables = Exact<{

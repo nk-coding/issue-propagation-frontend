@@ -51,7 +51,7 @@ async function createLabel(state: Label) {
                 trackables: [props.trackable]
             }
         });
-        return res.createLabel.label!;
+        return res.createLabel.label;
     }, "Error creating label");
     createLabelDialog.value = false;
     emit("created-label", label);

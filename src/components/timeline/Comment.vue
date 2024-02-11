@@ -259,7 +259,7 @@ async function saveComment() {
             () => client.updateIssueComment({ id: props.item.id, body: itemBody.value }),
             "Error updating comment"
         );
-        emit("updateItem", newComment.updateIssueComment.issueComment!);
+        emit("updateItem", newComment.updateIssueComment.issueComment);
     }
     editMode.value = false;
 }
@@ -299,7 +299,7 @@ async function deleteComment() {
         () => client.deleteIssueComment({ id: props.item.id }),
         "Error deleting comment"
     );
-    emit("updateItem", newItem.deleteIssueComment.issueComment!);
+    emit("updateItem", newItem.deleteIssueComment.issueComment);
 }
 </script>
 <style scoped>

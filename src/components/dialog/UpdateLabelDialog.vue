@@ -54,7 +54,7 @@ async function updateLabel(state: Label) {
                 id: model.value!.id
             }
         });
-        return res.updateLabel.label!;
+        return res.updateLabel.label;
     }, "Error updating label");
     updateLabelDialog.value = false;
     emit("updated-label", label);
