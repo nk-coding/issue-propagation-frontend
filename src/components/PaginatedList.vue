@@ -1,5 +1,5 @@
 <template>
-    <div class="d-flex fill-height flex-column">
+    <div class="d-flex full-height flex-column">
         <div class="d-flex align-center my-3 ml-3 top-bar">
             <v-text-field
                 v-model="searchString"
@@ -10,18 +10,20 @@
             >
             </v-text-field>
             <slot name="search-append" />
-            <v-select
-                v-model="currentSortField"
-                label="Sort by"
-                class="mx-2 sort-select"
-                :class="{ 'hidden' : transformedSearchQuery != undefined }"
-                variant="outlined"
-                :items="sortFields"
-            ></v-select>
-            <v-btn icon class="mx-2" variant="outlined" @click="toggleSortDirection()">
-                <v-icon :icon="sortAscending ? 'mdi-sort-ascending' : 'mdi-sort-descending'" />
-                <v-tooltip activator="parent" location="bottom"> Toggle sort sort </v-tooltip>
-            </v-btn>
+            <div class="sort-container d-flex mr-3" :class="{ hidden: transformedSearchQuery != undefined }">
+                <v-select
+                    v-model="currentSortField"
+                    label="Sort by"
+                    class="mx-2"
+                    :class="{ hidden: transformedSearchQuery != undefined }"
+                    variant="outlined"
+                    :items="sortFields"
+                ></v-select>
+                <v-btn icon variant="outlined" @click="toggleSortDirection()">
+                    <v-icon :icon="sortAscending ? 'mdi-sort-ascending' : 'mdi-sort-descending'" />
+                    <v-tooltip activator="parent" location="bottom"> Toggle sort sort </v-tooltip>
+                </v-btn>
+            </div>
         </div>
         <div class="list-container flex-grow-1 px-3">
             <CustomList :items="currentItems" :to="to">
@@ -133,14 +135,15 @@ async function updateItems(resetPage: boolean) {
 }
 </script>
 <style scoped>
-.sort-select {
-    flex: 1 1 0;
+
+.sort-container {
+    flex: 1 0 0;
+    max-width: 300px;
     overflow-x: clip;
-    max-width: 250px;
-    transition: flex-grow .7s ease-in-out;
+    transition: flex-grow 0.6s ease-in-out;
 }
 
-.sort-select.hidden {
+.sort-container.hidden {
     flex-grow: 0;
 }
 
@@ -155,10 +158,6 @@ async function updateItems(resetPage: boolean) {
 .list-container {
     overflow-y: auto;
     height: 0px;
-}
-
-.fill-height {
-    height: 100%;
 }
 
 .pagination {

@@ -10,14 +10,7 @@
             <IssueListItem :item="item" />
         </template>
         <template #search-append>
-            <v-btn-toggle class="segmented-button" multiple mandatory v-model="issueStateIndices">
-                <v-btn class="issue-open" :prepend-icon="issueStateIndices.includes(0) ? 'mdi-check' : '$issue'">
-                    Open
-                </v-btn>
-                <v-btn class="issue-closed" :prepend-icon="issueStateIndices.includes(1) ? 'mdi-check' : '$issue'">
-                    Closed
-                </v-btn>
-            </v-btn-toggle>
+            <IssueStateSegmentedButton v-model="issueStateIndices" />
         </template>
         <CreateIssueDialog :trackable="trackableId" @created-issue="(issue) => selectIssue(issue)" />
     </PaginatedList>
@@ -27,12 +20,13 @@ import { NodeReturnType, useClient } from "@/graphql/client";
 import { computed, ref } from "vue";
 import { RouteLocationRaw, useRoute, useRouter } from "vue-router";
 import PaginatedList, { ItemManager } from "@/components/PaginatedList.vue";
-import { IssueOrderField, OrderDirection } from "@/graphql/generated";
+import { IssueListItemInfoFragment, IssueOrderField, OrderDirection } from "@/graphql/generated";
 import CreateIssueDialog from "@/components/dialog/CreateIssueDialog.vue";
 import IssueListItem from "@/components/IssueListItem.vue";
+import IssueStateSegmentedButton from "@/components/input/IssueStateSegmentedButton.vue";
 
 type Trackable = NodeReturnType<"getIssueList", "Component">;
-type Issue = Trackable["issues"]["nodes"][0];
+type Issue = IssueListItemInfoFragment;
 
 const client = useClient();
 const router = useRouter();
@@ -100,12 +94,3 @@ function issueRoute(issue: { id: string }): RouteLocationRaw {
     };
 }
 </script>
-<style scoped>
-.issue-open :deep(.v-icon:not(.mdi-check)) {
-    color: rgb(var(--v-theme-issue-open));
-}
-
-.issue-closed :deep(.v-icon:not(.mdi-check)) {
-    color: rgb(var(--v-theme-issue-closed));
-}
-</style>

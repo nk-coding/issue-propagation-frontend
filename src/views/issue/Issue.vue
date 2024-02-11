@@ -1,5 +1,5 @@
 <template>
-    <div v-if="issue" class="pl-3 pt-3 fill-height d-flex flex-column">
+    <div v-if="issue" class="pl-3 pt-3 full-height d-flex flex-column">
         <div class="mb-5">
             <div class="d-flex">
                 <IssueIcon :issue="issue" height="50px" class="mr-3"></IssueIcon>
@@ -714,10 +714,6 @@ async function updateTemplatedField(name: string, value: any) {
 .type-icon {
     width: map.get(settings.$avatar-sizes, "large");
     height: map.get(settings.$avatar-sizes, "large");
-}
-
-.fill-height {
-    height: 100%;
 }
 
 .content {

@@ -27,6 +27,23 @@ query getFilteredIssueList($query: String!, $count: Int!, $trackable: ID!, $stat
     }
 }
 
+query getParticipatingIssueList($orderBy: IssueOrder!, $count: Int!, $skip: Int!, $filter: IssueFilterInput) {
+    currentUser {
+        participatedIssues(filter: $filter, orderBy: $orderBy, first: $count, skip: $skip) {
+            nodes {
+                ...ParticipatingIssueListItemInfo
+            }
+            totalCount
+        }
+    }
+}
+
+query getParticipatingFilteredIssueList($query: String!, $count: Int!, $filter: IssueFilterInput) {
+    searchIssues(query: $query, first: $count, filter: $filter) {
+        ...ParticipatingIssueListItemInfo
+    }
+}
+
 query getIssue($id: ID!) {
     node(id: $id) {
         ... on Issue {
@@ -191,6 +208,16 @@ fragment IssueListItemInfo on Issue {
             user {
                 ...DefaultUserInfo
             }
+        }
+    }
+}
+
+fragment ParticipatingIssueListItemInfo on Issue {
+    ...IssueListItemInfo
+    trackables(first: 1) {
+        nodes {
+            __typename
+            id
         }
     }
 }

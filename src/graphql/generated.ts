@@ -19569,6 +19569,126 @@ export type GetFilteredIssueListQuery = {
     }>;
 };
 
+export type GetParticipatingIssueListQueryVariables = Exact<{
+    orderBy: IssueOrder;
+    count: Scalars["Int"]["input"];
+    skip: Scalars["Int"]["input"];
+    filter?: InputMaybe<IssueFilterInput>;
+}>;
+
+export type GetParticipatingIssueListQuery = {
+    __typename?: "Query";
+    currentUser?: {
+        __typename?: "GropiusUser";
+        participatedIssues: {
+            __typename?: "IssueConnection";
+            totalCount: number;
+            nodes: Array<{
+                __typename?: "Issue";
+                id: string;
+                title: string;
+                createdAt: any;
+                trackables: {
+                    __typename?: "TrackableConnection";
+                    nodes: Array<{ __typename: "Component"; id: string } | { __typename: "Project"; id: string }>;
+                };
+                createdBy:
+                    | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+                    | {
+                          __typename?: "IMSUser";
+                          id: string;
+                          username?: string | null;
+                          displayName: string;
+                          avatar: any;
+                      };
+                issueComments: { __typename?: "IssueCommentConnection"; totalCount: number };
+                labels: {
+                    __typename?: "LabelConnection";
+                    nodes: Array<{
+                        __typename?: "Label";
+                        id: string;
+                        name: string;
+                        description: string;
+                        color: string;
+                    }>;
+                };
+                assignments: {
+                    __typename?: "AssignmentConnection";
+                    nodes: Array<{
+                        __typename?: "Assignment";
+                        user:
+                            | {
+                                  __typename?: "GropiusUser";
+                                  id: string;
+                                  username: string;
+                                  displayName: string;
+                                  avatar: any;
+                              }
+                            | {
+                                  __typename?: "IMSUser";
+                                  id: string;
+                                  username?: string | null;
+                                  displayName: string;
+                                  avatar: any;
+                              };
+                    }>;
+                };
+                incomingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
+                outgoingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
+                state: { __typename?: "IssueState"; isOpen: boolean };
+                type: { __typename?: "IssueType"; iconPath: string };
+            }>;
+        };
+    } | null;
+};
+
+export type GetParticipatingFilteredIssueListQueryVariables = Exact<{
+    query: Scalars["String"]["input"];
+    count: Scalars["Int"]["input"];
+    filter?: InputMaybe<IssueFilterInput>;
+}>;
+
+export type GetParticipatingFilteredIssueListQuery = {
+    __typename?: "Query";
+    searchIssues: Array<{
+        __typename?: "Issue";
+        id: string;
+        title: string;
+        createdAt: any;
+        trackables: {
+            __typename?: "TrackableConnection";
+            nodes: Array<{ __typename: "Component"; id: string } | { __typename: "Project"; id: string }>;
+        };
+        createdBy:
+            | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+            | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+        issueComments: { __typename?: "IssueCommentConnection"; totalCount: number };
+        labels: {
+            __typename?: "LabelConnection";
+            nodes: Array<{ __typename?: "Label"; id: string; name: string; description: string; color: string }>;
+        };
+        assignments: {
+            __typename?: "AssignmentConnection";
+            nodes: Array<{
+                __typename?: "Assignment";
+                user:
+                    | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+                    | {
+                          __typename?: "IMSUser";
+                          id: string;
+                          username?: string | null;
+                          displayName: string;
+                          avatar: any;
+                      };
+            }>;
+        };
+        incomingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
+        outgoingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
+        state: { __typename?: "IssueState"; isOpen: boolean };
+        type: { __typename?: "IssueType"; iconPath: string };
+    }>;
+};
+
 export type GetIssueQueryVariables = Exact<{
     id: Scalars["ID"]["input"];
 }>;
@@ -21086,6 +21206,38 @@ export type IssueListItemInfoFragment = {
     id: string;
     title: string;
     createdAt: any;
+    createdBy:
+        | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+        | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+    issueComments: { __typename?: "IssueCommentConnection"; totalCount: number };
+    labels: {
+        __typename?: "LabelConnection";
+        nodes: Array<{ __typename?: "Label"; id: string; name: string; description: string; color: string }>;
+    };
+    assignments: {
+        __typename?: "AssignmentConnection";
+        nodes: Array<{
+            __typename?: "Assignment";
+            user:
+                | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+                | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+        }>;
+    };
+    incomingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
+    outgoingRelations: { __typename?: "IssueRelationConnection"; totalCount: number };
+    state: { __typename?: "IssueState"; isOpen: boolean };
+    type: { __typename?: "IssueType"; iconPath: string };
+};
+
+export type ParticipatingIssueListItemInfoFragment = {
+    __typename?: "Issue";
+    id: string;
+    title: string;
+    createdAt: any;
+    trackables: {
+        __typename?: "TrackableConnection";
+        nodes: Array<{ __typename: "Component"; id: string } | { __typename: "Project"; id: string }>;
+    };
     createdBy:
         | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
         | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
@@ -24448,6 +24600,18 @@ export const IssueListItemInfoFragmentDoc = gql`
     ${DefaultIssueIconInfoFragmentDoc}
     ${DefaultLabelInfoFragmentDoc}
 `;
+export const ParticipatingIssueListItemInfoFragmentDoc = gql`
+    fragment ParticipatingIssueListItemInfo on Issue {
+        ...IssueListItemInfo
+        trackables(first: 1) {
+            nodes {
+                __typename
+                id
+            }
+        }
+    }
+    ${IssueListItemInfoFragmentDoc}
+`;
 export const DefaultIssueRelationTypeInfoFragmentDoc = gql`
     fragment DefaultIssueRelationTypeInfo on IssueRelationType {
         id
@@ -25489,6 +25653,27 @@ export const GetFilteredIssueListDocument = gql`
     }
     ${IssueListItemInfoFragmentDoc}
 `;
+export const GetParticipatingIssueListDocument = gql`
+    query getParticipatingIssueList($orderBy: IssueOrder!, $count: Int!, $skip: Int!, $filter: IssueFilterInput) {
+        currentUser {
+            participatedIssues(filter: $filter, orderBy: $orderBy, first: $count, skip: $skip) {
+                nodes {
+                    ...ParticipatingIssueListItemInfo
+                }
+                totalCount
+            }
+        }
+    }
+    ${ParticipatingIssueListItemInfoFragmentDoc}
+`;
+export const GetParticipatingFilteredIssueListDocument = gql`
+    query getParticipatingFilteredIssueList($query: String!, $count: Int!, $filter: IssueFilterInput) {
+        searchIssues(query: $query, first: $count, filter: $filter) {
+            ...ParticipatingIssueListItemInfo
+        }
+    }
+    ${ParticipatingIssueListItemInfoFragmentDoc}
+`;
 export const GetIssueDocument = gql`
     query getIssue($id: ID!) {
         node(id: $id) {
@@ -26451,6 +26636,35 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "getFilteredIssueList",
+                "query"
+            );
+        },
+        getParticipatingIssueList(
+            variables: GetParticipatingIssueListQueryVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<GetParticipatingIssueListQuery> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<GetParticipatingIssueListQuery>(GetParticipatingIssueListDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "getParticipatingIssueList",
+                "query"
+            );
+        },
+        getParticipatingFilteredIssueList(
+            variables: GetParticipatingFilteredIssueListQueryVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<GetParticipatingFilteredIssueListQuery> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<GetParticipatingFilteredIssueListQuery>(
+                        GetParticipatingFilteredIssueListDocument,
+                        variables,
+                        { ...requestHeaders, ...wrappedRequestHeaders }
+                    ),
+                "getParticipatingFilteredIssueList",
                 "query"
             );
         },
