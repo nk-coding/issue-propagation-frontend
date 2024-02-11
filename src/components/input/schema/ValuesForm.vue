@@ -1,5 +1,5 @@
 <template>
-    <BaseObjectForm :name="name" :is-null="modelValue == undefined" @add-value="$emit('update:modelValue', {})">
+    <BaseObjectForm :name="name" :is-null="model == undefined" @add-value="model = {}">
         <div class="full-width">
             <div v-if="!readonly" class="d-flex align-center mb-3">
                 <v-text-field
@@ -16,19 +16,19 @@
                     </template>
                 </v-text-field>
                 <v-spacer />
-                <IconButton v-if="schema.nullable" @click="$emit('update:modelValue', null)">
+                <IconButton v-if="schema.nullable" @click="model = null">
                     <v-icon icon="mdi-delete" />
                     <v-tooltip activator="parent" location="bottom"> Set to null </v-tooltip>
                 </IconButton>
             </div>
-            <v-divider v-if="Object.keys(modelValue ?? {}).length > 0 && !readonly" class="mb-3" />
-            <div v-for="property in Object.keys(modelValue ?? {})" class="d-flex">
+            <v-divider v-if="Object.keys(model ?? {}).length > 0 && !readonly" class="mb-3" />
+            <div v-for="property in Object.keys(model ?? {})" class="d-flex">
                 <MetaForm
                     :key="property"
                     :schema="schema.values"
                     :root-schema="rootSchema"
                     :name="property"
-                    v-model="modelValue![property]"
+                    v-model="model![property]"
                     :readonly="readonly"
                 />
                 <IconButton v-if="!readonly" class="ml-2 mt-1" @click="removeElement(property)">
@@ -59,19 +59,16 @@ const props = defineProps({
         type: String,
         required: false
     },
-    modelValue: {
-        type: Object as PropType<Record<string, any>>,
-        required: false
-    },
     readonly: {
         type: Boolean,
         required: true,
     }
 });
 
-defineEmits({
-    "update:modelValue": (value: any) => true
-});
+const model = defineModel({
+    type: Object as PropType<Record<string, any> | null>,
+    required: false
+})
 
 const addName = ref("");
 
@@ -79,20 +76,20 @@ const validKey = computed(() => {
     if (addName.value == "") {
         return false;
     }
-    return !(addName.value in (props.modelValue ?? {}));
+    return !(addName.value in (model.value ?? {}));
 });
 
 function addElement() {
-    if (props.modelValue != undefined && validKey.value) {
+    if (model.value != undefined && validKey.value) {
         const defaultData = generateDefaultData(props.schema.values, props.rootSchema);
-        props.modelValue[addName.value] = defaultData;
+        model.value[addName.value] = defaultData;
         addName.value = "";
     }
 }
 
 function removeElement(name: string) {
-    if (props.modelValue != undefined) {
-        delete props.modelValue[name];
+    if (model.value != undefined) {
+        delete model.value[name];
     }
 }
 </script>

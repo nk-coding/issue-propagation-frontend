@@ -2,7 +2,7 @@
     <BaseObjectForm
         :name="name"
         :is-null="modelValue == undefined"
-        @add-value="$emit('update:modelValue', generateDefaultData(schema, rootSchema, true))"
+        @add-value="model = generateDefaultData(schema, rootSchema, true)"
     >
         <div class="full-width">
             <div v-if="(isDiscriminatorForm(schema) || availableOptionalProperties.length > 0 || schema.nullable) && !readonly">
@@ -12,7 +12,7 @@
                         class="mr-3"
                         :items="Object.keys(schema.mapping)"
                         :label="schema.discriminator"
-                        :model-value="(modelValue![schema.discriminator] as string | undefined)"
+                        :model-value="(model![schema.discriminator] as string | undefined)"
                         hide-details
                         @update:model-value="updateDiscriminator"
                         :rules="[requiredRule]"
@@ -32,12 +32,12 @@
                         </v-menu>
                     </v-btn>
                     <v-spacer />
-                    <IconButton v-if="schema.nullable" @click="$emit('update:modelValue', null)">
+                    <IconButton v-if="schema.nullable" @click="model = null">
                         <v-icon icon="mdi-delete" />
                         <v-tooltip activator="parent" location="bottom"> Set to null </v-tooltip>
                     </IconButton>
                 </div>
-                <v-divider v-if="Object.keys(modelValue ?? {}).length > 0" class="mb-3" />
+                <v-divider v-if="Object.keys(model ?? {}).length > 0" class="mb-3" />
             </div>
             <template v-if="currentSchema != undefined">
                 <MetaForm
@@ -88,23 +88,20 @@ const props = defineProps({
         type: String,
         required: false
     },
-    modelValue: {
-        type: Object as PropType<Record<string, unknown>>,
-        required: false
-    },
     readonly: {
         type: Boolean,
         required: true,
     }
 });
 
-const emit = defineEmits({
-    "update:modelValue": (value: any) => true
+const model = defineModel({
+    type: Object as PropType<Record<string, unknown> | null>,
+    required: false
 });
 
 const currentSchema = computed(() => {
     if (isDiscriminatorForm(props.schema)) {
-        const discriminator = props.modelValue?.[props.schema.discriminator] as string | undefined;
+        const discriminator = model.value?.[props.schema.discriminator] as string | undefined;
         if (discriminator == undefined) {
             return undefined;
         } else {
@@ -128,21 +125,21 @@ const optionalProperties = computed(() => {
 });
 
 const addedOptionalProperties = computed(() => {
-    const modelValue = props.modelValue;
+    const modelValue = model.value;
     return optionalProperties.value.filter((property) => modelValue?.[property[0]] !== undefined);
 })
 
 const availableOptionalProperties = computed(() => {
-    const modelValue = props.modelValue;
+    const modelValue = model.value;
     return optionalProperties.value.filter((property) => modelValue?.[property[0]] === undefined);
 })
 
 function addOptionalProprty(property: [string, Schema]) {
-    props.modelValue![property[0]] = generateDefaultData(property[1], props.rootSchema);
+    model.value![property[0]] = generateDefaultData(property[1], props.rootSchema);
 }
 
 function removeOptionalProperty(name: string) {
-    delete props.modelValue![name];
+    delete model.value![name];
 }
 
 function updateDiscriminator(discriminator: string) {
@@ -152,7 +149,7 @@ function updateDiscriminator(discriminator: string) {
         [discriminatorSchema.discriminator]: discriminator,
         ...generateDefaultData(discriminatorSchemaValue, props.rootSchema)
     };
-    emit("update:modelValue", newModelValue);
+    model.value = newModelValue;
 }
 
 </script>

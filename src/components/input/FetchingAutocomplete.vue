@@ -47,10 +47,6 @@ const props = defineProps({
         required: false,
         default: 0
     },
-    modelValue: {
-        type: String,
-        required: false
-    },
     fetch: {
         type: Function as PropType<(filter: string, count: number, context?: C) => Promise<T[]>>,
         required: true
@@ -75,9 +71,13 @@ const props = defineProps({
     }
 });
 
+const model = defineModel({
+    type: String as PropType<string | undefined>,
+    required: false
+});
+
 const emit = defineEmits<{
     (event: "selected-item", value: T): void;
-    (event: "update:modelValue", value: string | undefined): void;
 }>();
 
 const context = ref(props.initialContext ? transformToContextItem(props.initialContext as C) : undefined) as Ref<C | undefined>;
@@ -102,18 +102,18 @@ const search = ref<undefined | string>("");
 const menu = ref<boolean>(!!props.menuMode && !props.menuDelay);
 const updatedModelValue = ref(false);
 
-const proxiedModel = ref(contextMode.value ? initialContextModel.value.map((it) => it.id) : props.modelValue);
+const proxiedModel = ref(contextMode.value ? initialContextModel.value.map((it) => it.id) : model.value);
 watch(
-    () => props.modelValue,
+    model,
     (model) => {
         proxiedModel.value = model;
     }
 );
 watch(
     () => proxiedModel.value,
-    (model) => {
-        if (model != props.modelValue) {
-            selectedElement(model);
+    (newModel) => {
+        if (newModel != model.value) {
+            selectedElement(newModel);
         }
     }
 );
@@ -183,7 +183,7 @@ function selectedElement(value: any) {
     }
     const item = items.value.find((item) => item.id == id);
     if (props.mode == "model") {
-        emit("update:modelValue", id);
+        model.value = id;
         if (item != undefined) {
             emit("selected-item", item as T);
         }

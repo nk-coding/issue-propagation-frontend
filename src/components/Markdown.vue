@@ -21,23 +21,20 @@ import { computed } from "vue";
 import "bytemd/dist/index.css";
 
 const props = defineProps({
-    modelValue: {
-        type: String,
-        required: false,
-        default: ""
-    },
     editMode: {
         type: Boolean,
         default: false
     }
 });
 
-const emit = defineEmits<{
-    (event: "update:modelValue", value: string): void;
-}>();
+const model = defineModel({
+    type: String,
+    required: false,
+    default: ""
+});
 
 const theme = useTheme();
-const valueWrapper = ref(props.modelValue);
+const valueWrapper = ref(model.value);
 
 const editorConfig = computed(() => {
     return {
@@ -47,11 +44,11 @@ const editorConfig = computed(() => {
 
 function handleChange(text: string) {
     valueWrapper.value = text;
-    emit("update:modelValue", text);
+    model.value = text;
 }
 
 watch(
-    () => props.modelValue,
+    model,
     (value) => {
         valueWrapper.value = value;
     }

@@ -1,11 +1,11 @@
 <template>
     <v-chip
-        :color="modelValue ? 'primary' : undefined"
-        :variant="modelValue ? 'tonal' : 'outlined'"
+        :color="model ? 'primary' : undefined"
+        :variant="model ? 'tonal' : 'outlined'"
         :prepend-icon="prependIcon"
         rounded="lg"
         class="filter-chip"
-        @click="$emit('update:modelValue', !modelValue)"
+        @click="model = !model"
         >{{ label }}</v-chip
     >
 </template>
@@ -13,10 +13,6 @@
 import { computed } from "vue";
 
 const props = defineProps({
-    modelValue: {
-        type: Boolean,
-        required: true
-    },
     label: {
         type: String,
         required: true
@@ -27,11 +23,12 @@ const props = defineProps({
     }
 });
 
-defineEmits<{
-    (event: "update:modelValue", value: boolean): void;
-}>();
+const model = defineModel({
+    type: Boolean,
+    required: true
+});
 
-const prependIcon = computed(() => (props.modelValue ? "mdi-check" : props.icon));
+const prependIcon = computed(() => (model.value ? "mdi-check" : props.icon));
 </script>
 <style scoped>
 .filter-chip {

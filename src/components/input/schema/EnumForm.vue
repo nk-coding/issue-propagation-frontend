@@ -2,8 +2,8 @@
     <v-select
         :items="schema.enum"
         :label="name"
-        :model-value="modelValue"
-        @update:model-value="$emit('update:modelValue', $event)"
+        :model-value="model"
+        @update:model-value="model = $event"
         :clearable="schema.nullable"
         :rules="rules"
         :readonly="readonly"
@@ -28,18 +28,15 @@ const props = defineProps({
         type: String,
         required: false
     },
-    modelValue: {
-        type: String,
-        required: false
-    },
     readonly: {
         type: Boolean,
         required: true,
     }
 })
 
-defineEmits({
-    'update:modelValue': (value: any) => true
+const model = defineModel({
+    type: String,
+    required: false
 })
 
 const rules = computed(() => {

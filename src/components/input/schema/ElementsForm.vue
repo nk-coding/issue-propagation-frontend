@@ -1,8 +1,8 @@
 <template>
     <BaseObjectForm
         :name="name"
-        :is-null="modelValue == undefined"
-        @add-value="$emit('update:modelValue', [])"
+        :is-null="model == undefined"
+        @add-value="model = []"
     >
         <div class="full-width">
             <div v-if="!readonly" class="d-flex align-center mb-3">
@@ -10,18 +10,18 @@
                     Add element
                 </v-btn>
                 <v-spacer />
-                <IconButton v-if="schema.nullable" @click="$emit('update:modelValue', null)">
+                <IconButton v-if="schema.nullable" @click="model = null">
                     <v-icon icon="mdi-delete" />
                     <v-tooltip activator="parent" location="bottom"> Set to null </v-tooltip>
                 </IconButton>
             </div>
-            <v-divider v-if="modelValue?.length && !readonly" class="mb-3" />
-            <div v-for="(element, index) in (modelValue ?? [])" class="d-flex">
+            <v-divider v-if="model?.length && !readonly" class="mb-3" />
+            <div v-for="(element, index) in (model ?? [])" class="d-flex">
                 <MetaForm
                     :key="index"
                     :schema="schema.elements"
                     :root-schema="rootSchema"
-                    v-model="modelValue![index]"
+                    v-model="model![index]"
                     :readonly="readonly"
                 />
                 <IconButton v-if="!readonly" class="ml-2 mt-1" @click="removeElement(index)">
@@ -52,26 +52,23 @@ const props = defineProps({
         type: String,
         required: false
     },
-    modelValue: {
-        type: Array,
-        required: false
-    },
     readonly: {
         type: Boolean,
         required: true,
     }
 })
 
-defineEmits({
-    'update:modelValue': (value: any) => true
+const model = defineModel({
+    type: Array as PropType<unknown[] | null>,
+    required: false
 })
 
 function addElement() {
     const defaultData = generateDefaultData(props.schema.elements, props.rootSchema)
-    props.modelValue!.push(defaultData)
+    model.value!.push(defaultData)
 }
 
 function removeElement(index: number) {
-    props.modelValue!.splice(index, 1)
+    model.value!.splice(index, 1)
 }
 </script>

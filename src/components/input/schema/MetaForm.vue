@@ -4,8 +4,7 @@
         :schema="(derefSchema as any)"
         :root-schema="rootSchema"
         :name="name"
-        :modelValue="(props.modelValue as any[] | undefined)"
-        @update:model-value="$emit('update:modelValue', $event)"
+        v-model = "model"
         :readonly="readonly"
     />
     <ValuesForm
@@ -13,8 +12,7 @@
         :schema="(derefSchema as any)"
         :root-schema="rootSchema"
         :name="name"
-        :modelValue="(props.modelValue as Record<string, unknown> | undefined)"
-        @update:model-value="$emit('update:modelValue', $event)"
+        v-model = "model"
         :readonly="readonly"
     />
     <ObjectForm
@@ -22,8 +20,7 @@
         :schema="(derefSchema as any)"
         :root-schema="rootSchema"
         :name="name"
-        :modelValue="(props.modelValue as Record<string, unknown> | undefined)"
-        @update:model-value="$emit('update:modelValue', $event)"
+        v-model = "model"
         :readonly="readonly"
     />
     <TypeForm
@@ -31,8 +28,7 @@
         :schema="(derefSchema as any)"
         :root-schema="rootSchema"
         :name="name"
-        :modelValue="modelValue"
-        @update:model-value="$emit('update:modelValue', $event)"
+        v-model = "model"
         :readonly="readonly"
     />
     <EnumForm
@@ -40,8 +36,7 @@
         :schema="(derefSchema as any)"
         :root-schema="rootSchema"
         :name="name"
-        :modelValue="(props.modelValue as string | undefined)"
-        @update:model-value="$emit('update:modelValue', $event)"
+        v-model = "model"
         :readonly="readonly"
     />
 </template>
@@ -77,9 +72,6 @@ const props = defineProps({
         type: String,
         required: false
     },
-    modelValue: {
-        required: false
-    },
     readonly: {
         type: Boolean,
         required: false,
@@ -87,8 +79,8 @@ const props = defineProps({
     }
 });
 
-defineEmits({
-    "update:modelValue": (value: any) => true
+const model = defineModel({
+    required: false
 });
 
 const derefSchema = computed(() => {

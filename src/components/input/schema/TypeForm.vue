@@ -22,23 +22,20 @@ const props = defineProps({
         type: String,
         required: false
     },
-    modelValue: {
-        required: false
-    },
     readonly: {
         type: Boolean,
         required: true,
     }
 });
 
-const emit = defineEmits({
-    "update:modelValue": (value: any) => true
+const model = defineModel({
+    required: false
 });
 
-const cachedValue = ref(convertValue(props.modelValue));
+const cachedValue = ref(convertValue(model.value));
 
 watch(
-    () => props.modelValue,
+    () => model.value,
     (value) => {
         if (isNumber.value) {
             const asFloat = Number.parseFloat(cachedValue.value as string);
@@ -74,7 +71,7 @@ watch(cachedValue, (value) => {
         parsedValue = value as string;
     }
     if (parsedValue !== undefined) {
-        emit("update:modelValue", parsedValue);
+        model.value = parsedValue;
     }
 })
 
