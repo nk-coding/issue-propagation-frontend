@@ -182,7 +182,7 @@ const createIssue = handleSubmit(async (state) => {
                 trackables: [props.trackable]
             }
         });
-        return res.createIssue!.issue!;
+        return res.createIssue.issue!;
     }, "Error creating issue");
     createIssueDialog.value = false;
     emit("created-issue", issue);

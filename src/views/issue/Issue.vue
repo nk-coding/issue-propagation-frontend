@@ -373,12 +373,17 @@ const trackable = inject(trackableKey);
 
 const evaluating = ref(false);
 const isReady = computed(() => !evaluating.value && issue.value != null);
+const issueReloadDependency = ref(0);
 const issue = computedAsync(
     async () => {
         if (!issueId.value) {
             return null;
         }
-        const res = await withErrorMessage(() => client.getIssue({ id: issueId.value }), "Error loading issue");
+        const dependency = issueReloadDependency.value;
+        const res = await withErrorMessage(
+            () => client.getIssue({ id: issueId.value }),
+            `Error loading issue: (${dependency})`
+        );
         return res.node as Issue;
     },
     null,
@@ -443,16 +448,30 @@ function updateItem(item: TimelineItemType<any>) {
     }
 }
 
+function addTimelineItem(item: TimelineItemType<any> | undefined | null) {
+    if (item != undefined) {
+        timeline.value.push(item);
+    }
+}
+
+function reloadIssue() {
+    issueReloadDependency.value++;
+}
+
 async function updateIssueType(type: string | null) {
     if (!type) {
         return;
     }
     const event = await withErrorMessage(async () => {
         const res = await client.changeIssueType({ issue: issueId.value, type });
-        return res.changeIssueType!.typeChangedEvent!;
+        return res.changeIssueType.typeChangedEvent;
     }, "Error updating issue type");
-    timeline.value.push(event);
-    issue.value!.type = event.newIssueType;
+    addTimelineItem(event);
+    if (event != undefined) {
+        issue.value!.type = event.newIssueType;
+    } else {
+        reloadIssue();
+    }
 }
 
 async function updateIssueState(state: string | null) {
@@ -461,10 +480,14 @@ async function updateIssueState(state: string | null) {
     }
     const event = await withErrorMessage(async () => {
         const res = await client.changeIssueState({ issue: issueId.value, state });
-        return res.changeIssueState!.stateChangedEvent!;
+        return res.changeIssueState.stateChangedEvent;
     }, "Error updating issue state");
-    timeline.value.push(event);
-    issue.value!.state = event.newState;
+    addTimelineItem(event);
+    if (event != undefined) {
+        issue.value!.state = event.newState;
+    } else {
+        reloadIssue();
+    }
 }
 
 async function updateIssuePriority(priority: string | null) {
@@ -473,28 +496,36 @@ async function updateIssuePriority(priority: string | null) {
     }
     const event = await withErrorMessage(async () => {
         const res = await client.changeIssuePriority({ issue: issueId.value, priority: priority });
-        return res.changeIssuePriority!.priorityChangedEvent!;
+        return res.changeIssuePriority.priorityChangedEvent;
     }, "Error updating issue priority");
-    timeline.value.push(event);
-    issue.value!.priority = event.newPriority;
+    addTimelineItem(event);
+    if (event != undefined) {
+        issue.value!.priority = event.newPriority;
+    } else {
+        reloadIssue();
+    }
 }
 
 async function addLabel(label: DefaultLabelInfoFragment) {
     const labelId = label.id;
     const event = await withErrorMessage(async () => {
         const res = await client.addLabelToIssue({ issue: issueId.value, label: labelId });
-        return res.addLabelToIssue!.addedLabelEvent!;
+        return res.addLabelToIssue.addedLabelEvent;
     }, "Error adding label to issue");
-    timeline.value.push(event);
-    labels.value.push(event.addedLabel!);
+    addTimelineItem(event);
+    if (event != undefined) {
+        labels.value.push(event.addedLabel!);
+    } else {
+        reloadIssue();
+    }
 }
 
 async function removeLabel(labelId: string) {
     const event = await withErrorMessage(async () => {
         const res = await client.removeLabelFromIssue({ issue: issueId.value, label: labelId });
-        return res.removeLabelFromIssue!.removedLabelEvent!;
+        return res.removeLabelFromIssue.removedLabelEvent;
     }, "Error removing label from issue");
-    timeline.value.push(event);
+    addTimelineItem(event);
     const index = labels.value.findIndex((label) => label.id == labelId);
     if (index != -1) {
         labels.value.splice(index, 1);
@@ -506,9 +537,9 @@ const editedAssignmentTypes = ref<Record<string, boolean>>({});
 async function removeAssignment(relationId: string) {
     const event = await withErrorMessage(async () => {
         const res = await client.removeAssignment({ id: relationId });
-        return res.removeAssignment!.removedAssignmentEvent!;
+        return res.removeAssignment.removedAssignmentEvent;
     }, "Error removing assignment from issue");
-    timeline.value.push(event);
+    addTimelineItem(event);
     const index = assignments.value.findIndex((relation) => relation.id == relationId);
     if (index != -1) {
         assignments.value.splice(index, 1);
@@ -521,19 +552,23 @@ async function updateAssignmentType(assignment: AssignmentTimelineInfoFragment, 
     }
     const event = await withErrorMessage(async () => {
         const res = await client.changeAssignmentType({ assignment: assignment.id, type });
-        return res.changeAssignmentType!.assignmentTypeChangedEvent!;
+        return res.changeAssignmentType.assignmentTypeChangedEvent;
     }, "Error updating assignment type");
-    timeline.value.push(event);
-    assignment.type = event.newAssignmentType;
-    editedAssignmentTypes.value[assignment.id] = false;
+    addTimelineItem(event);
+    if (event != undefined) {
+        assignment.type = event.newAssignmentType;
+        editedAssignmentTypes.value[assignment.id] = false;
+    } else {
+        reloadIssue();
+    }
 }
 
 async function removeAssignmentType(assignment: AssignmentTimelineInfoFragment) {
     const event = await withErrorMessage(async () => {
         const res = await client.changeAssignmentType({ assignment: assignment.id, type: null });
-        return res.changeAssignmentType!.assignmentTypeChangedEvent!;
+        return res.changeAssignmentType.assignmentTypeChangedEvent;
     }, "Error updating assignment type");
-    timeline.value.push(event);
+    addTimelineItem(event);
     assignment.type = undefined;
     editedAssignmentTypes.value[assignment.id] = false;
 }
@@ -545,11 +580,15 @@ const assignmentUserFilter = computed(
 async function assignUser(user: DefaultUserInfoFragment) {
     const event = await withErrorMessage(async () => {
         const res = await client.createAssignment({ issue: issueId.value, user: user.id });
-        return res.createAssignment!.assignment!;
+        return res.createAssignment.assignment;
     }, "Error creating assignment");
-    timeline.value.push(event);
-    assignments.value.push(event);
-    editedAssignmentTypes.value[event.id] = true;
+    addTimelineItem(event);
+    if (event != undefined) {
+        assignments.value.push(event);
+        editedAssignmentTypes.value[event.id] = true;
+    } else {
+        reloadIssue();
+    }
 }
 
 const editedRelationTypes = ref<Record<string, boolean>>({});
@@ -557,9 +596,9 @@ const editedRelationTypes = ref<Record<string, boolean>>({});
 async function removeOutgoingRelation(relationId: string) {
     const event = await withErrorMessage(async () => {
         const res = await client.removeIssueRelation({ id: relationId });
-        return res.removeIssueRelation!.removedOutgoingRelationEvent!;
+        return res.removeIssueRelation.removedOutgoingRelationEvent;
     }, "Error removing outgoing relation from issue");
-    timeline.value.push(event);
+    addTimelineItem(event);
     const index = outgoingRelations.value.findIndex((relation) => relation.id == relationId);
     if (index != -1) {
         outgoingRelations.value.splice(index, 1);
@@ -572,19 +611,23 @@ async function updateRelationType(relation: OutgoingRelationTimelineInfoFragment
     }
     const event = await withErrorMessage(async () => {
         const res = await client.changeIssueRelationType({ issueRelation: relation.id, type });
-        return res.changeIssueRelationType!.outgoingRelationTypeChangedEvent!;
+        return res.changeIssueRelationType.outgoingRelationTypeChangedEvent;
     }, "Error updating issue relation type");
-    timeline.value.push(event);
-    relation.type = event.newRelationType;
-    editedRelationTypes.value[relation.id] = false;
+    addTimelineItem(event);
+    if (event != undefined) {
+        relation.type = event.newRelationType;
+        editedRelationTypes.value[relation.id] = false;
+    } else {
+        reloadIssue();
+    }
 }
 
 async function removeRelationType(relation: OutgoingRelationTimelineInfoFragment) {
     const event = await withErrorMessage(async () => {
         const res = await client.changeIssueRelationType({ issueRelation: relation.id, type: null });
-        return res.changeIssueRelationType!.outgoingRelationTypeChangedEvent!;
+        return res.changeIssueRelationType.outgoingRelationTypeChangedEvent;
     }, "Error updating issue relation type");
-    timeline.value.push(event);
+    addTimelineItem(event);
     relation.type = undefined;
     editedRelationTypes.value[relation.id] = false;
 }
@@ -592,11 +635,15 @@ async function removeRelationType(relation: OutgoingRelationTimelineInfoFragment
 async function addOutgoingRelation(relatedIssue: DefaultIssueInfoFragment) {
     const event = await withErrorMessage(async () => {
         const res = await client.createIssueRelation({ issue: issueId.value, relatedIssue: relatedIssue.id });
-        return res.createIssueRelation!.issueRelation!;
+        return res.createIssueRelation.issueRelation;
     }, "Error creating issue relation");
-    timeline.value.push(event);
-    outgoingRelations.value.push(event);
-    editedRelationTypes.value[event.id] = true;
+    addTimelineItem(event);
+    if (event != undefined) {
+        outgoingRelations.value.push(event);
+        editedRelationTypes.value[event.id] = true;
+    } else {
+        reloadIssue();
+    }
 }
 
 const editTitle = ref(false);
@@ -614,11 +661,15 @@ function cancelEditTitle() {
 async function saveTitle() {
     const event = await withErrorMessage(async () => {
         const res = await client.changeIssueTitle({ id: issueId.value, title: editTitleText.value });
-        return res.changeIssueTitle!.titleChangedEvent!;
+        return res.changeIssueTitle.titleChangedEvent;
     }, "Error updating issue title");
-    timeline.value.push(event);
-    issue.value!.title = event.newTitle;
-    editTitle.value = false;
+    addTimelineItem(event);
+    if (event != undefined) {
+        issue.value!.title = event.newTitle;
+        editTitle.value = false;
+    } else {
+        reloadIssue();
+    }
 }
 
 const groupedAffectedEntities = computed(() => {
@@ -651,10 +702,14 @@ async function addAffectedEntity(affectedEntity: DefaultAffectedByIssueInfoFragm
     const affectedEntityId = affectedEntity.id;
     const event = await withErrorMessage(async () => {
         const res = await client.addAffectedEntityToIssue({ issue: issueId.value, affectedEntity: affectedEntityId });
-        return res.addAffectedEntityToIssue!.addedAffectedEntityEvent!;
+        return res.addAffectedEntityToIssue.addedAffectedEntityEvent;
     }, "Error adding affectedentity to issue");
-    timeline.value.push(event);
-    affectedEntities.value.push(event.addedAffectedEntity!);
+    addTimelineItem(event);
+    if (event != undefined) {
+        affectedEntities.value.push(event.addedAffectedEntity!);
+    } else {
+        reloadIssue();
+    }
 }
 
 async function removeAffectedEntity(affectedEntityId: string) {
@@ -663,9 +718,9 @@ async function removeAffectedEntity(affectedEntityId: string) {
             issue: issueId.value,
             affectedEntity: affectedEntityId
         });
-        return res.removeAffectedEntityFromIssue!.removedAffectedEntityEvent!;
+        return res.removeAffectedEntityFromIssue.removedAffectedEntityEvent;
     }, "Error removing affectedentity from issue");
-    timeline.value.push(event);
+    addTimelineItem(event);
     const index = affectedEntities.value.findIndex((affectedentity) => affectedentity.id == affectedEntityId);
     if (index != -1) {
         affectedEntities.value.splice(index, 1);
@@ -690,16 +745,13 @@ const templatedFields = computed(() => {
 async function updateTemplatedField(name: string, value: any) {
     const event = await withErrorMessage(async () => {
         const res = await client.changeIssueTemplatedField({ input: { issue: issueId.value, name, value } });
-        return res.changeIssueTemplatedField?.templatedFieldChangedEvent;
+        return res.changeIssueTemplatedField.templatedFieldChangedEvent;
     }, "Error updating templated field");
-    if (event == undefined) {
-        return;
-    }
-    timeline.value.push(event);
+    addTimelineItem(event);
     const fields = issue.value!.templatedFields;
     for (const field of fields) {
         if (field.name == name) {
-            field.value = event.newValue;
+            field.value = event?.newValue ?? value;
             break;
         }
     }

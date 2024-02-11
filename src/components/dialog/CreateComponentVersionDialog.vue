@@ -111,7 +111,7 @@ const createComponentVersion = handleSubmit(async (state) => {
                 component: props.component
             }
         });
-        return res.createComponentVersion!.componentVersion!;
+        return res.createComponentVersion.componentVersion!;
     }, "Error creating component");
     createComponentVersionDialog.value = false;
     emit("created-component-version", component);

@@ -1,5 +1,4 @@
-import { GraphQLClient } from "graphql-request";
-import { GraphQLClientRequestHeaders } from "graphql-request/build/cjs/types";
+import { GraphQLClient, RequestOptions } from "graphql-request";
 import gql from "graphql-tag";
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
@@ -8,6 +7,7 @@ export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: 
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
 export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = { [_ in K]?: never };
 export type Incremental<T> = T | { [P in keyof T]?: P extends " $fragmentName" | "__typename" ? T[P] : never };
+type GraphQLClientRequestHeaders = RequestOptions["requestHeaders"];
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
     ID: { input: string; output: string };
@@ -11373,14 +11373,14 @@ export type Mutation = {
      *         If the Issue already affects the AffectedByIssue, no event is created.
      *
      */
-    addAffectedEntityToIssue?: Maybe<AddAffectedEntityToIssuePayload>;
+    addAffectedEntityToIssue: AddAffectedEntityToIssuePayload;
     /**
      * Adds a Artefact to an Issue, requires MANAGE_ISSUES on any Trackable the issue is on and READ on the Artefact.
      *         Additionally, the Artefact must be part of a Trackable the Issue is on.
      *         If the Artefact is already on the Issue, no event is created.
      *
      */
-    addArtefactToIssue?: Maybe<AddArtefactToIssuePayload>;
+    addArtefactToIssue: AddArtefactToIssuePayload;
     /**
      * Adds a ComponentVersion to a Project,
      *         requires MANAGE_COMPONENTS on the Project and ADD_TO_PROJECTS on the Component associated
@@ -11393,34 +11393,34 @@ export type Mutation = {
      *         requires ADMIN on the Component of the ComponentVersion to update
      *
      */
-    addInterfaceSpecificationVersionToComponentVersion?: Maybe<AddInterfaceSpecificationVersionToComponentVersionPayload>;
+    addInterfaceSpecificationVersionToComponentVersion: AddInterfaceSpecificationVersionToComponentVersionPayload;
     /**
      * Pins an Issue on a Trackable, requires MANAGE_ISSUES on the Trackable the Issue should be pinned on.
      *         Additionally, the Issue must already be on the Trackable.
      *         If the Issue is already pinned on the Trackable, no event is created.
      *
      */
-    addIssueToPinnedIssues?: Maybe<AddIssueToPinnedIssuesPayload>;
+    addIssueToPinnedIssues: AddIssueToPinnedIssuesPayload;
     /**
      * Adds an Issue to a Trackable, requires MANAGE_ISSUES on the Trackable the Issue should be added to,
      *         and EXPORT_ISSUES on any Trackable the Issue currently is on.
      *         If the Issue is already on the Trackable, no event is created.
      *
      */
-    addIssueToTrackable?: Maybe<AddIssueToTrackablePayload>;
+    addIssueToTrackable: AddIssueToTrackablePayload;
     /**
      * Adds a Label to an Issue, requires MANAGE_ISSUES on any Trackable the issue is on and READ on the Label.
      *         Additionally, the Label must be on at least on Trackable the Issue is on.
      *         If the Label is already on the Issue, no event is created.
      *
      */
-    addLabelToIssue?: Maybe<AddLabelToIssuePayload>;
+    addLabelToIssue: AddLabelToIssuePayload;
     /**
      * Adds a Label to a Trackable, requires MANAGE_LABELS on the Trackable and EXPORT_LABEL on any Trackable
      *         the Label is on
      *
      */
-    addLabelToTrackable?: Maybe<AddLabelToTrackablePayload>;
+    addLabelToTrackable: AddLabelToTrackablePayload;
     /**
      * Changes the type of an Assignment, requires MANAGE_ISSUES on any of the Trackables the Issue the Assignment
      *         is part of is on.
@@ -11428,26 +11428,26 @@ export type Mutation = {
      *         If the current type of the Assignment is equal to the new one, no event is created.
      *
      */
-    changeAssignmentType?: Maybe<ChangeAssignmentTypePayload>;
+    changeAssignmentType: ChangeAssignmentTypePayload;
     /**
      * Changes the `dueDate` of an Issue requires MANAGE_ISSUES on any of the Trackables the Issue is on.
      *         If the `dueDate` is equal to the already existing `dueDate`, no event is created.
      *
      */
-    changeIssueDueDate?: Maybe<ChangeIssueDueDatePayload>;
+    changeIssueDueDate: ChangeIssueDueDatePayload;
     /**
      * Changes the `estimatedTime` of an Issue requires MANAGE_ISSUES on any of the Trackables the Issue is on.
      *         If the `estimatedTime` is equal to the already existing `estimatedTime`, no event is created.
      *
      */
-    changeIssueEstimatedTime?: Maybe<ChangeIssueEstimatedTimePayload>;
+    changeIssueEstimatedTime: ChangeIssueEstimatedTimePayload;
     /**
      * Changes the `priority` of an Issue requires MANAGE_ISSUES on any of the Trackables the Issue is on.
      *         Additionally, the IssuePriority must be defined by the Template of the Issue.
      *         If the `priority` is equal to the already existing `priority`, no event is created.
      *
      */
-    changeIssuePriority?: Maybe<ChangeIssuePriorityPayload>;
+    changeIssuePriority: ChangeIssuePriorityPayload;
     /**
      * Changes the type of an IssueRelation, requires MANAGE_ISSUES on any of the Trackables the Issue the
      *         IssueRelation is part of is on.
@@ -11455,26 +11455,26 @@ export type Mutation = {
      *         If the current type of the IssueRelation is equal to the new one, no event is created.
      *
      */
-    changeIssueRelationType?: Maybe<ChangeIssueRelationTypePayload>;
+    changeIssueRelationType: ChangeIssueRelationTypePayload;
     /**
      * Changes the `spentTime` of an Issue requires MANAGE_ISSUES on any of the Trackables the Issue is on.
      *         If the `spentTime` is equal to the already existing `spentTime`, no event is created.
      *
      */
-    changeIssueSpentTime?: Maybe<ChangeIssueSpentTimePayload>;
+    changeIssueSpentTime: ChangeIssueSpentTimePayload;
     /**
      * Changes the `startDate` of an Issue requires MANAGE_ISSUES on any of the Trackables the Issue is on.
      *         If the `startDate` is equal to the already existing `startDate`, no event is created.
      *
      */
-    changeIssueStartDate?: Maybe<ChangeIssueStartDatePayload>;
+    changeIssueStartDate: ChangeIssueStartDatePayload;
     /**
      * Changes the `state` of an Issue requires MANAGE_ISSUES on any of the Trackables the Issue is on.
      *         Additionally, the IssueState must be defined by the Template of the Issue.
      *         If the `state` is equal to the already existing `state`, no event is created.
      *
      */
-    changeIssueState?: Maybe<ChangeIssueStatePayload>;
+    changeIssueState: ChangeIssueStatePayload;
     /**
      * Changes the Template of an Issue. Requires MANAGE_ISSUES on any of the Trackables the Issue is on.
      *         Incompatible old values of type, state, priority, templated fields, and priorities of Assignments and outgoing
@@ -11486,7 +11486,7 @@ export type Mutation = {
      *         Events for other changes can be found in the childItems of the returned event.
      *
      */
-    changeIssueTemplate?: Maybe<ChangeIssueTemplatePayload>;
+    changeIssueTemplate: ChangeIssueTemplatePayload;
     /**
      * Changes the value of a templated field on an Issue, requires MANAGE_ISSUES on any of the Trackables
      *         the Issue is on.
@@ -11495,126 +11495,126 @@ export type Mutation = {
      *         If the new value is equal to the current value of the templated field, no event is created.
      *
      */
-    changeIssueTemplatedField?: Maybe<ChangeIssueTemplatedFieldPayload>;
+    changeIssueTemplatedField: ChangeIssueTemplatedFieldPayload;
     /**
      * Changes the `title` of an Issue requires MANAGE_ISSUES on any of the Trackables the Issue is on.
      *         If the `title` is equal to the already existing `title`, no event is created.
      *
      */
-    changeIssueTitle?: Maybe<ChangeIssueTitlePayload>;
+    changeIssueTitle: ChangeIssueTitlePayload;
     /**
      * Changes the `type` of an Issue requires MANAGE_ISSUES on any of the Trackables the Issue is on.
      *         Additionally, the IssueType must be defined by the Template of the Issue.
      *         If the `type` is equal to the already existing `type`, no event is created.
      *
      */
-    changeIssueType?: Maybe<ChangeIssueTypePayload>;
+    changeIssueType: ChangeIssueTypePayload;
     /** Creates a new Artefact on a Trackable. Requires MANAGE_ARTEFACTS on the provided Trackable. */
-    createArtefact?: Maybe<CreateArtefactPayload>;
+    createArtefact: CreateArtefactPayload;
     /** Creates a new ArtefactTemplate, requires CAN_CREATE_TEMPLATES */
-    createArtefactTemplate?: Maybe<CreateArtefactTemplatePayload>;
+    createArtefactTemplate: CreateArtefactTemplatePayload;
     /**
      * Assigns a User to an Issue by creating an Assignment, requires MANAGE_ISSUES on any of the Trackables the
      *         Issue is on.
      *         Additionally, if present, the type must be compatible with the template of the Issue.
      *
      */
-    createAssignment?: Maybe<CreateAssignmentPayload>;
+    createAssignment: CreateAssignmentPayload;
     /**
      * Creates a new Component, requires CAN_CREATE_COMPONENTS.
      *         Automatically generates a default ComponentPermission which grants the authenticated user READ and ADMIN
      *
      */
-    createComponent?: Maybe<CreateComponentPayload>;
+    createComponent: CreateComponentPayload;
     /**
      * Creates a new ComponentPermission, requires ADMIN on all Components which should be added to the created
      *         permission.
      *
      */
-    createComponentPermission?: Maybe<CreateComponentPermissionPayload>;
+    createComponentPermission: CreateComponentPermissionPayload;
     /** Creates a new ComponentTemplate, requires CAN_CREATE_TEMPLATES */
-    createComponentTemplate?: Maybe<CreateComponentTemplatePayload>;
+    createComponentTemplate: CreateComponentTemplatePayload;
     /** Creates a new ComponentVersion, requires ADMIN on the Component. */
-    createComponentVersion?: Maybe<CreateComponentVersionPayload>;
+    createComponentVersion: CreateComponentVersionPayload;
     /** Creates a new GlobalPermission, requires that the user is an admin */
-    createGlobalPermission?: Maybe<CreateGlobalPermissionPayload>;
+    createGlobalPermission: CreateGlobalPermissionPayload;
     /**
      * Creates a new IMS, requires CAN_CREATE_IMSS.
      *         Automatically generates a default IMSPermission which grants the authorized user READ and ADMIN
      *
      */
-    createIMS?: Maybe<CreateImsPayload>;
+    createIMS: CreateImsPayload;
     /**
      * Creates a new IMSPermission, requires ADMIN on all IMSs which should be added to the created
      *         permission.
      *
      */
-    createIMSPermission?: Maybe<CreateImsPermissionPayload>;
+    createIMSPermission: CreateImsPermissionPayload;
     /**
      * Creates a new IMSProject, requirse SYNC_TRACKABLES on the specified IMS
      *         AND MANAGE_IMS on the specified Trackable
      *
      */
-    createIMSProject?: Maybe<CreateImsProjectPayload>;
+    createIMSProject: CreateImsProjectPayload;
     /** Creates a new InterfacePart, requires ADMIN on the Component of the InterfaceSpecification. */
-    createInterfacePart?: Maybe<CreateInterfacePartPayload>;
+    createInterfacePart: CreateInterfacePartPayload;
     /** Creates a new InterfaceSpecification, requires ADMIN on the Component. */
-    createInterfaceSpecification?: Maybe<CreateInterfaceSpecificationPayload>;
+    createInterfaceSpecification: CreateInterfaceSpecificationPayload;
     /** Creates a new InterfaceSpecificationTemplate, requires CAN_CREATE_TEMPLATES */
-    createInterfaceSpecificationTemplate?: Maybe<CreateInterfaceSpecificationTemplatePayload>;
+    createInterfaceSpecificationTemplate: CreateInterfaceSpecificationTemplatePayload;
     /** Creates a new InterfaceSpecificationVersion, requires ADMIN on the Component of the InterfaceSpecification. */
-    createInterfaceSpecificationVersion?: Maybe<CreateInterfaceSpecificationVersionPayload>;
+    createInterfaceSpecificationVersion: CreateInterfaceSpecificationVersionPayload;
     /**
      * Creates a new IntraComponentDependencySpecification, requires ADMIN on the Component associated with the
      *         specified ComponentVersion.
      *
      */
-    createIntraComponentDependencySpecification?: Maybe<CreateIntraComponentDependencySpecificationPayload>;
+    createIntraComponentDependencySpecification: CreateIntraComponentDependencySpecificationPayload;
     /**
      * Creates a new Issue on at least one Trackable, requires CREATE_ISSUES on all Trackables it should be created on.
      *         Additionally, checks that the `type`, `state` and `templatedFields` are compatible with the `template`.
      *
      */
-    createIssue?: Maybe<CreateIssuePayload>;
+    createIssue: CreateIssuePayload;
     /**
      * Creates an IssueComment, requires COMMENT on any of the Trackables the Issue is on.
      *         Requires READ on referenced Artefacts, additionally, those must be part of a Trackable the Issue is on.
      *         If present, the Comment it answers must be on the same Issue.
      *
      */
-    createIssueComment?: Maybe<CreateIssueCommentPayload>;
+    createIssueComment: CreateIssueCommentPayload;
     /**
      * Creates an IssueRelation, requires MANAGE_ISSUES on any of the Trackables the Issue is on.
      *         Additionally, if present, the type must be compatible with the template of the Issue.
      *
      */
-    createIssueRelation?: Maybe<CreateIssueRelationPayload>;
+    createIssueRelation: CreateIssueRelationPayload;
     /** Creates a new IssueTemplate, requires CAN_CREATE_TEMPLATES */
-    createIssueTemplate?: Maybe<CreateIssueTemplatePayload>;
+    createIssueTemplate: CreateIssueTemplatePayload;
     /**
      * Creates a new Label on at least one Trackable. Requires MANAGE_LABELS on all provided Trackables.
      *
      */
-    createLabel?: Maybe<CreateLabelPayload>;
+    createLabel: CreateLabelPayload;
     /**
      * Creates a new Project, requires CAN_CREATE_PROJECTS.
      *         Automatically generates a default ProjectPermission which grants the authorized user READ and ADMIN
      *
      */
-    createProject?: Maybe<CreateProjectPayload>;
+    createProject: CreateProjectPayload;
     /**
      * Creates a new ProjectPermission, requires ADMIN on all Projects which should be added to the created
      *         permission.
      *
      */
-    createProjectPermission?: Maybe<CreateProjectPermissionPayload>;
+    createProjectPermission: CreateProjectPermissionPayload;
     /**
      * Creates a new Relation, requires RELATE_FROM_COMPONENT on the Component associated with start.
      *
      */
-    createRelation?: Maybe<CreateRelationPayload>;
+    createRelation: CreateRelationPayload;
     /** Creates a new RelationTemplate, requires CAN_CREATE_TEMPLATES */
-    createRelationTemplate?: Maybe<CreateRelationTemplatePayload>;
+    createRelationTemplate: CreateRelationTemplatePayload;
     /**
      * Deletes the Artefact, requires MANAGE_ARTEFACTS on the Trackable it is part of. Removes it from all Issues.
      *
@@ -11680,7 +11680,7 @@ export type Mutation = {
      *         It is no longer possible to update the IssueComment.
      *
      */
-    deleteIssueComment?: Maybe<DeleteIssueCommentPayload>;
+    deleteIssueComment: DeleteIssueCommentPayload;
     /**
      * Deletes the Label, requires MANAGE_LABELS on all Trackables it is on.
      *         Removes it from all Issues. Note that the Label will still be visible in the timeline of Issues.
@@ -11707,39 +11707,39 @@ export type Mutation = {
      *         If the Issue does not affect the AffectedByIssue, no event is created.
      *
      */
-    removeAffectedEntityFromIssue?: Maybe<RemoveAffectedEntityFromIssuePayload>;
+    removeAffectedEntityFromIssue: RemoveAffectedEntityFromIssuePayload;
     /**
      * Removes a Artefact from an Issue, requires MANAGE_ISSUES on any Trackable the issue is on.
      *         If the Artefact is not on the Issue, no event is created.
      *
      */
-    removeArtefactFromIssue?: Maybe<RemoveArtefactFromIssuePayload>;
+    removeArtefactFromIssue: RemoveArtefactFromIssuePayload;
     /**
      * Removes an Assignment from an Issue, require MANAGE_ISSUES on any of the Trackables the Issue the Assignment
      *         is part of is on.
      *         If the Assignment was already removed, no event is created.
      *
      */
-    removeAssignment?: Maybe<RemoveAssignmentPayload>;
+    removeAssignment: RemoveAssignmentPayload;
     /**
      * Removes a ComponentVersion from a Project,
      *         requires MANAGE_COMPONENTS on the Project
      *
      */
-    removeComponentVersionFromProject?: Maybe<RemoveComponentVersionFromProjectPayload>;
+    removeComponentVersionFromProject: RemoveComponentVersionFromProjectPayload;
     /**
      * Removes an InterfaceSpecificationVersion (in)visible from ComponentVersions,
      *         requires ADMIN on the Component of the ComponentVersion to update
      *
      */
-    removeInterfaceSpecificationVersionFromComponentVersion?: Maybe<RemoveInterfaceSpecificationVersionFromComponentVersionPayload>;
+    removeInterfaceSpecificationVersionFromComponentVersion: RemoveInterfaceSpecificationVersionFromComponentVersionPayload;
     /**
      * Unpins the Issue on a Trackable, requires MANAGE_ISSUES on the Trackable where the Issue should
      *         be unpinned.
      *         If the Issue is not pinned on the Trackable, no event is created.
      *
      */
-    removeIssueFromPinnedIssues?: Maybe<RemoveIssueFromPinnedIssuesPayload>;
+    removeIssueFromPinnedIssues: RemoveIssueFromPinnedIssuesPayload;
     /**
      * Removes an Issue from a Trackable, requires MANAGE_ISSUES on the Trackable where the Issue should
      *         be removed from.
@@ -11750,131 +11750,131 @@ export type Mutation = {
      *         The created events can be found in the childItems of the returned RemovedFromTrackableEvent.
      *
      */
-    removeIssueFromTrackable?: Maybe<RemoveIssueFromTrackablePayload>;
+    removeIssueFromTrackable: RemoveIssueFromTrackablePayload;
     /**
      * Removes an IssueRelation from an Issue, require MANAGE_ISSUES on any of the Trackables the Issue the
      *         IssueRelation starts at is on.
      *         If the IssueRelation was already removed, no event is created.
      *
      */
-    removeIssueRelation?: Maybe<RemoveIssueRelationPayload>;
+    removeIssueRelation: RemoveIssueRelationPayload;
     /**
      * Removes a Label from an Issue, requires MANAGE_ISSUES on any Trackable the issue is on.
      *         If the Label is not on the Issue, no event is created.
      *
      */
-    removeLabelFromIssue?: Maybe<RemoveLabelFromIssuePayload>;
+    removeLabelFromIssue: RemoveLabelFromIssuePayload;
     /**
      * Removes a Label from a Trackable, requires MANAGE_LABELS on the Trackable.
      *         Removes the Label from all Issues where the Label cannot be anymore, as the Trackable of the Label and the Issue
      *         are now disjoint.
      *
      */
-    removeLabelFromTrackable?: Maybe<RemoveLabelFromTrackablePayload>;
+    removeLabelFromTrackable: RemoveLabelFromTrackablePayload;
     /**
      * Updates the specified Artefact, requires MANAGE_ARTEFACTS on the Trackable the Artefact is part of
      *
      */
-    updateArtefact?: Maybe<UpdateArtefactPayload>;
+    updateArtefact: UpdateArtefactPayload;
     /**
      * Updates an IssueComment. If the user created the IssueComment, requires READ on any of the Trackables the
      *         Issue is on. Otherwise, requires MODERATOR on any of the Trackables the Issue is on.
      *
      */
-    updateBody?: Maybe<UpdateBodyPayload>;
+    updateBody: UpdateBodyPayload;
     /** Updates the specified Component, requires ADMIN on the component to update */
-    updateComponent?: Maybe<UpdateComponentPayload>;
+    updateComponent: UpdateComponentPayload;
     /**
      * Updates a ComponentPermission, requires ADMIN on all Components the permission currently affects.
      *         Ensures that after the update, all affected Components still have a permission which grants ADMIN to at least
      *         one user.
      *
      */
-    updateComponentPermission?: Maybe<UpdateComponentPermissionPayload>;
+    updateComponentPermission: UpdateComponentPermissionPayload;
     /** Updates the specified ComponentVersion, requires ADMIN on the Component of the ComponentVersion to update */
-    updateComponentVersion?: Maybe<UpdateComponentVersionPayload>;
+    updateComponentVersion: UpdateComponentVersionPayload;
     /** Updates extensionFields of the specified ExtensibleNode. Requires READ */
-    updateExtensionFields?: Maybe<UpdateExtensionFieldsPayload>;
+    updateExtensionFields: UpdateExtensionFieldsPayload;
     /** Updates a GlobalPermission, requires that the user is an admin */
-    updateGlobalPermission?: Maybe<UpdateGlobalPermissionPayload>;
+    updateGlobalPermission: UpdateGlobalPermissionPayload;
     /**
      * Updates a GropiusUser. Only the same user and admin users can update a GropiusUser.
      *         Only admin users can update isAdmin
      *
      */
-    updateGropiusUser?: Maybe<UpdateGropiusUserPayload>;
+    updateGropiusUser: UpdateGropiusUserPayload;
     /** Updates the specified IMS, requires ADMIN on the IMS. */
-    updateIMS?: Maybe<UpdateImsPayload>;
+    updateIMS: UpdateImsPayload;
     /**
      * Updates a IMSPermission, requires ADMIN on all IMSs the permission currently affects.
      *         Ensures that after the update, all affected IMSs still have a permission which grants ADMIN to at least
      *         one user.
      *
      */
-    updateIMSPermission?: Maybe<UpdateImsPermissionPayload>;
+    updateIMSPermission: UpdateImsPermissionPayload;
     /**
      * Updates the specified IMSProject, requirse SYNC_TRACKABLES on the IMS associted with the
      *         specified IMSProject AND MANAGE_IMS on the Trackable associated with the specified
      *         IMSProject.
      *
      */
-    updateIMSProject?: Maybe<UpdateImsProjectPayload>;
+    updateIMSProject: UpdateImsProjectPayload;
     /**
      * Updates the specified Interface,
      *         requires ADMIN on the Component of the ComponentVersion of the InterfaceDefinition of the Interface  to update
      *
      */
-    updateInterface?: Maybe<UpdateInterfacePayload>;
+    updateInterface: UpdateInterfacePayload;
     /**
      * Updates the specified InterfaceDefinition,
      *         requires ADMIN on the Component of the ComponentVersion of the InterfaceDefinition to update
      *
      */
-    updateInterfaceDefinition?: Maybe<UpdateInterfaceDefinitionPayload>;
+    updateInterfaceDefinition: UpdateInterfaceDefinitionPayload;
     /**
      * Updates the specified InterfacePart,
      *         requires ADMIN on the Component of the InterfaceSpecification of the InterfacePart to update
      *
      */
-    updateInterfacePart?: Maybe<UpdateInterfacePartPayload>;
+    updateInterfacePart: UpdateInterfacePartPayload;
     /** Updates the specified InterfaceSpecification, requires ADMIN on the Component of the InterfaceSpecification to update */
-    updateInterfaceSpecification?: Maybe<UpdateInterfaceSpecificationPayload>;
+    updateInterfaceSpecification: UpdateInterfaceSpecificationPayload;
     /**
      * Updates the specified InterfaceSpecificationVersion,
      *         requires ADMIN on the Component of the InterfaceSpecification of the InterfaceSpecificationVersion to update
      *
      */
-    updateInterfaceSpecificationVersion?: Maybe<UpdateInterfaceSpecificationVersionPayload>;
+    updateInterfaceSpecificationVersion: UpdateInterfaceSpecificationVersionPayload;
     /**
      * Updates the specified IntraComponentDependencySpecification, requires ADMIN on the Component associated with the
      *         IntraComponentDependencySpecification to update.
      */
-    updateIntraComponentDependencySpecification?: Maybe<UpdateIntraComponentDependencySpecificationPayload>;
+    updateIntraComponentDependencySpecification: UpdateIntraComponentDependencySpecificationPayload;
     /**
      * Updates an IssueComment. If the user created the IssueComment, requires READ on any of the Trackables the
      *         Issue is on. Otherwise, requires MODERATOR on any of the Trackables the Issue is on.
      *         Requires READ on referenced Artefacts, additionally, added ones must be part of a Trackable the Issue is on.
      *
      */
-    updateIssueComment?: Maybe<UpdateIssueCommentPayload>;
+    updateIssueComment: UpdateIssueCommentPayload;
     /** Updates the specified Label, requires MANAGE_LABELS on any Trackable the Label is on */
-    updateLabel?: Maybe<UpdateLabelPayload>;
+    updateLabel: UpdateLabelPayload;
     /** Updates the specified Project, requires ADMIN on the project to update */
-    updateProject?: Maybe<UpdateProjectPayload>;
+    updateProject: UpdateProjectPayload;
     /**
      * Updates a ProjectPermission, requires ADMIN on all Projects the permission currently affects.
      *         Ensures that after the update, all affected Projects still have a permission which grants ADMIN to at least
      *         one user.
      *
      */
-    updateProjectPermission?: Maybe<UpdateProjectPermissionPayload>;
+    updateProjectPermission: UpdateProjectPermissionPayload;
     /**
      * Updates the specified Relation, requires RELATE_FROM_COMPONENT on the Component associated with start.
      *
      */
-    updateRelation?: Maybe<UpdateRelationPayload>;
+    updateRelation: UpdateRelationPayload;
     /** Updates the deprecation state of the template, requires CAN_CREATE_TEMPLATES */
-    updateTemplateDeprecationStatus?: Maybe<UpdateTemplateDeprecationStatusPayload>;
+    updateTemplateDeprecationStatus: UpdateTemplateDeprecationStatusPayload;
 };
 
 export type MutationAddAffectedEntityToIssueArgs = {
@@ -17433,7 +17433,7 @@ export type AddAffectedEntityToIssueMutationVariables = Exact<{
 
 export type AddAffectedEntityToIssueMutation = {
     __typename?: "Mutation";
-    addAffectedEntityToIssue?: {
+    addAffectedEntityToIssue: {
         __typename?: "AddAffectedEntityToIssuePayload";
         addedAffectedEntityEvent?: {
             __typename: "AddedAffectedEntityEvent";
@@ -17452,7 +17452,7 @@ export type AddAffectedEntityToIssueMutation = {
                 | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
                 | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
         } | null;
-    } | null;
+    };
 };
 
 export type RemoveAffectedEntityFromIssueMutationVariables = Exact<{
@@ -17462,7 +17462,7 @@ export type RemoveAffectedEntityFromIssueMutationVariables = Exact<{
 
 export type RemoveAffectedEntityFromIssueMutation = {
     __typename?: "Mutation";
-    removeAffectedEntityFromIssue?: {
+    removeAffectedEntityFromIssue: {
         __typename?: "RemoveAffectedEntityFromIssuePayload";
         removedAffectedEntityEvent?: {
             __typename: "RemovedAffectedEntityEvent";
@@ -17481,7 +17481,7 @@ export type RemoveAffectedEntityFromIssueMutation = {
                 | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
                 | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
         } | null;
-    } | null;
+    };
 };
 
 export type DefaultAssignmentInfoFragment = {
@@ -17506,7 +17506,7 @@ export type RemoveAssignmentMutationVariables = Exact<{
 
 export type RemoveAssignmentMutation = {
     __typename?: "Mutation";
-    removeAssignment?: {
+    removeAssignment: {
         __typename?: "RemoveAssignmentPayload";
         removedAssignmentEvent?: {
             __typename: "RemovedAssignmentEvent";
@@ -17540,7 +17540,7 @@ export type RemoveAssignmentMutation = {
                 | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
                 | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
         } | null;
-    } | null;
+    };
 };
 
 export type CreateAssignmentMutationVariables = Exact<{
@@ -17550,7 +17550,7 @@ export type CreateAssignmentMutationVariables = Exact<{
 
 export type CreateAssignmentMutation = {
     __typename?: "Mutation";
-    createAssignment?: {
+    createAssignment: {
         __typename?: "CreateAssignmentPayload";
         assignment?: {
             __typename: "Assignment";
@@ -17564,7 +17564,7 @@ export type CreateAssignmentMutation = {
                 | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
             type?: { __typename?: "AssignmentType"; id: string; name: string; description: string } | null;
         } | null;
-    } | null;
+    };
 };
 
 export type SearchAssignmentTypesQueryVariables = Exact<{
@@ -17683,7 +17683,7 @@ export type ChangeAssignmentTypeMutationVariables = Exact<{
 
 export type ChangeAssignmentTypeMutation = {
     __typename?: "Mutation";
-    changeAssignmentType?: {
+    changeAssignmentType: {
         __typename?: "ChangeAssignmentTypePayload";
         assignmentTypeChangedEvent?: {
             __typename: "AssignmentTypeChangedEvent";
@@ -17719,7 +17719,7 @@ export type ChangeAssignmentTypeMutation = {
                 | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
                 | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
         } | null;
-    } | null;
+    };
 };
 
 export type GetComponentListQueryVariables = Exact<{
@@ -18092,10 +18092,10 @@ export type CreateComponentMutationVariables = Exact<{
 
 export type CreateComponentMutation = {
     __typename?: "Mutation";
-    createComponent?: {
+    createComponent: {
         __typename?: "CreateComponentPayload";
         component?: { __typename?: "Component"; id: string } | null;
-    } | null;
+    };
 };
 
 export type DefaultComponentTemplateInfoFragment = {
@@ -18601,10 +18601,10 @@ export type CreateComponentVersionMutationVariables = Exact<{
 
 export type CreateComponentVersionMutation = {
     __typename?: "Mutation";
-    createComponentVersion?: {
+    createComponentVersion: {
         __typename?: "CreateComponentVersionPayload";
         componentVersion?: { __typename?: "ComponentVersion"; id: string } | null;
-    } | null;
+    };
 };
 
 export type GetProjectGraphQueryVariables = Exact<{
@@ -18870,10 +18870,10 @@ export type RemoveComponentVersionFromProjectMutationVariables = Exact<{
 
 export type RemoveComponentVersionFromProjectMutation = {
     __typename?: "Mutation";
-    removeComponentVersionFromProject?: {
+    removeComponentVersionFromProject: {
         __typename?: "RemoveComponentVersionFromProjectPayload";
         project?: { __typename?: "Project"; id: string } | null;
-    } | null;
+    };
 };
 
 export type CreateRelationMutationVariables = Exact<{
@@ -18884,10 +18884,7 @@ export type CreateRelationMutationVariables = Exact<{
 
 export type CreateRelationMutation = {
     __typename?: "Mutation";
-    createRelation?: {
-        __typename?: "CreateRelationPayload";
-        relation?: { __typename?: "Relation"; id: string } | null;
-    } | null;
+    createRelation: { __typename?: "CreateRelationPayload"; relation?: { __typename?: "Relation"; id: string } | null };
 };
 
 export type DeleteRelationMutationVariables = Exact<{
@@ -21032,7 +21029,7 @@ export type UpdateBodyMutationVariables = Exact<{
 
 export type UpdateBodyMutation = {
     __typename?: "Mutation";
-    updateBody?: {
+    updateBody: {
         __typename?: "UpdateBodyPayload";
         body?: {
             __typename: "Body";
@@ -21047,7 +21044,7 @@ export type UpdateBodyMutation = {
                 | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
                 | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
         } | null;
-    } | null;
+    };
 };
 
 export type UpdateIssueCommentMutationVariables = Exact<{
@@ -21057,7 +21054,7 @@ export type UpdateIssueCommentMutationVariables = Exact<{
 
 export type UpdateIssueCommentMutation = {
     __typename?: "Mutation";
-    updateIssueComment?: {
+    updateIssueComment: {
         __typename?: "UpdateIssueCommentPayload";
         issueComment?: {
             __typename: "IssueComment";
@@ -21074,7 +21071,7 @@ export type UpdateIssueCommentMutation = {
                 | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
                 | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
         } | null;
-    } | null;
+    };
 };
 
 export type CreateIssueCommentMutationVariables = Exact<{
@@ -21085,7 +21082,7 @@ export type CreateIssueCommentMutationVariables = Exact<{
 
 export type CreateIssueCommentMutation = {
     __typename?: "Mutation";
-    createIssueComment?: {
+    createIssueComment: {
         __typename?: "CreateIssueCommentPayload";
         issueComment?: {
             __typename: "IssueComment";
@@ -21102,7 +21099,7 @@ export type CreateIssueCommentMutation = {
                 | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
                 | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
         } | null;
-    } | null;
+    };
 };
 
 export type DeleteIssueCommentMutationVariables = Exact<{
@@ -21111,7 +21108,7 @@ export type DeleteIssueCommentMutationVariables = Exact<{
 
 export type DeleteIssueCommentMutation = {
     __typename?: "Mutation";
-    deleteIssueComment?: {
+    deleteIssueComment: {
         __typename?: "DeleteIssueCommentPayload";
         issueComment?: {
             __typename: "IssueComment";
@@ -21128,7 +21125,7 @@ export type DeleteIssueCommentMutation = {
                 | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
                 | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
         } | null;
-    } | null;
+    };
 };
 
 export type CreateIssueMutationVariables = Exact<{
@@ -21137,7 +21134,7 @@ export type CreateIssueMutationVariables = Exact<{
 
 export type CreateIssueMutation = {
     __typename?: "Mutation";
-    createIssue?: { __typename?: "CreateIssuePayload"; issue?: { __typename?: "Issue"; id: string } | null } | null;
+    createIssue: { __typename?: "CreateIssuePayload"; issue?: { __typename?: "Issue"; id: string } | null };
 };
 
 export type ChangeIssueTitleMutationVariables = Exact<{
@@ -21147,7 +21144,7 @@ export type ChangeIssueTitleMutationVariables = Exact<{
 
 export type ChangeIssueTitleMutation = {
     __typename?: "Mutation";
-    changeIssueTitle?: {
+    changeIssueTitle: {
         __typename?: "ChangeIssueTitlePayload";
         titleChangedEvent?: {
             __typename: "TitleChangedEvent";
@@ -21159,7 +21156,7 @@ export type ChangeIssueTitleMutation = {
                 | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
                 | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
         } | null;
-    } | null;
+    };
 };
 
 export type ChangeIssueTemplatedFieldMutationVariables = Exact<{
@@ -21168,7 +21165,7 @@ export type ChangeIssueTemplatedFieldMutationVariables = Exact<{
 
 export type ChangeIssueTemplatedFieldMutation = {
     __typename?: "Mutation";
-    changeIssueTemplatedField?: {
+    changeIssueTemplatedField: {
         __typename?: "ChangeIssueTemplatedFieldPayload";
         templatedFieldChangedEvent?: {
             __typename: "TemplatedFieldChangedEvent";
@@ -21181,7 +21178,7 @@ export type ChangeIssueTemplatedFieldMutation = {
                 | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
                 | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
         } | null;
-    } | null;
+    };
 };
 
 export type DefaultIssueInfoFragment = {
@@ -21431,7 +21428,7 @@ export type ChangeIssuePriorityMutationVariables = Exact<{
 
 export type ChangeIssuePriorityMutation = {
     __typename?: "Mutation";
-    changeIssuePriority?: {
+    changeIssuePriority: {
         __typename?: "ChangeIssuePriorityPayload";
         priorityChangedEvent?: {
             __typename: "PriorityChangedEvent";
@@ -21455,7 +21452,7 @@ export type ChangeIssuePriorityMutation = {
                 | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
                 | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
         } | null;
-    } | null;
+    };
 };
 
 export type RemoveIssueRelationMutationVariables = Exact<{
@@ -21464,7 +21461,7 @@ export type RemoveIssueRelationMutationVariables = Exact<{
 
 export type RemoveIssueRelationMutation = {
     __typename?: "Mutation";
-    removeIssueRelation?: {
+    removeIssueRelation: {
         __typename?: "RemoveIssueRelationPayload";
         removedOutgoingRelationEvent?: {
             __typename: "RemovedOutgoingRelationEvent";
@@ -21495,7 +21492,7 @@ export type RemoveIssueRelationMutation = {
                 | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
                 | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
         } | null;
-    } | null;
+    };
 };
 
 export type CreateIssueRelationMutationVariables = Exact<{
@@ -21505,7 +21502,7 @@ export type CreateIssueRelationMutationVariables = Exact<{
 
 export type CreateIssueRelationMutation = {
     __typename?: "Mutation";
-    createIssueRelation?: {
+    createIssueRelation: {
         __typename?: "CreateIssueRelationPayload";
         issueRelation?: {
             __typename: "IssueRelation";
@@ -21532,7 +21529,7 @@ export type CreateIssueRelationMutation = {
             } | null;
             type?: { __typename?: "IssueRelationType"; id: string; name: string; description: string } | null;
         } | null;
-    } | null;
+    };
 };
 
 export type DefaultIssueRelationTypeInfoFragment = {
@@ -21663,7 +21660,7 @@ export type ChangeIssueRelationTypeMutationVariables = Exact<{
 
 export type ChangeIssueRelationTypeMutation = {
     __typename?: "Mutation";
-    changeIssueRelationType?: {
+    changeIssueRelationType: {
         __typename?: "ChangeIssueRelationTypePayload";
         outgoingRelationTypeChangedEvent?: {
             __typename: "OutgoingRelationTypeChangedEvent";
@@ -21706,7 +21703,7 @@ export type ChangeIssueRelationTypeMutation = {
                 | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
                 | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
         } | null;
-    } | null;
+    };
 };
 
 export type DefaultIssueStateInfoFragment = {
@@ -21845,7 +21842,7 @@ export type ChangeIssueStateMutationVariables = Exact<{
 
 export type ChangeIssueStateMutation = {
     __typename?: "Mutation";
-    changeIssueState?: {
+    changeIssueState: {
         __typename?: "ChangeIssueStatePayload";
         stateChangedEvent?: {
             __typename: "StateChangedEvent";
@@ -21857,7 +21854,7 @@ export type ChangeIssueStateMutation = {
                 | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
                 | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
         } | null;
-    } | null;
+    };
 };
 
 export type DefaultIssueTemplateInfoFragment = {
@@ -22135,7 +22132,7 @@ export type ChangeIssueTypeMutationVariables = Exact<{
 
 export type ChangeIssueTypeMutation = {
     __typename?: "Mutation";
-    changeIssueType?: {
+    changeIssueType: {
         __typename?: "ChangeIssueTypePayload";
         typeChangedEvent?: {
             __typename: "TypeChangedEvent";
@@ -22147,7 +22144,7 @@ export type ChangeIssueTypeMutation = {
                 | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
                 | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
         } | null;
-    } | null;
+    };
 };
 
 export type GetLabelListQueryVariables = Exact<{
@@ -22420,7 +22417,7 @@ export type AddLabelToIssueMutationVariables = Exact<{
 
 export type AddLabelToIssueMutation = {
     __typename?: "Mutation";
-    addLabelToIssue?: {
+    addLabelToIssue: {
         __typename?: "AddLabelToIssuePayload";
         addedLabelEvent?: {
             __typename: "AddedLabelEvent";
@@ -22431,7 +22428,7 @@ export type AddLabelToIssueMutation = {
                 | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
                 | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
         } | null;
-    } | null;
+    };
 };
 
 export type RemoveLabelFromIssueMutationVariables = Exact<{
@@ -22441,7 +22438,7 @@ export type RemoveLabelFromIssueMutationVariables = Exact<{
 
 export type RemoveLabelFromIssueMutation = {
     __typename?: "Mutation";
-    removeLabelFromIssue?: {
+    removeLabelFromIssue: {
         __typename?: "RemoveLabelFromIssuePayload";
         removedLabelEvent?: {
             __typename: "RemovedLabelEvent";
@@ -22458,7 +22455,7 @@ export type RemoveLabelFromIssueMutation = {
                 | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
                 | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
         } | null;
-    } | null;
+    };
 };
 
 export type CreateLabelMutationVariables = Exact<{
@@ -22467,7 +22464,7 @@ export type CreateLabelMutationVariables = Exact<{
 
 export type CreateLabelMutation = {
     __typename?: "Mutation";
-    createLabel?: { __typename?: "CreateLabelPayload"; label?: { __typename?: "Label"; id: string } | null } | null;
+    createLabel: { __typename?: "CreateLabelPayload"; label?: { __typename?: "Label"; id: string } | null };
 };
 
 export type UpdateLabelMutationVariables = Exact<{
@@ -22476,7 +22473,7 @@ export type UpdateLabelMutationVariables = Exact<{
 
 export type UpdateLabelMutation = {
     __typename?: "Mutation";
-    updateLabel?: { __typename?: "UpdateLabelPayload"; label?: { __typename?: "Label"; id: string } | null } | null;
+    updateLabel: { __typename?: "UpdateLabelPayload"; label?: { __typename?: "Label"; id: string } | null };
 };
 
 export type RemoveLabelFromTrackableMutationVariables = Exact<{
@@ -22486,7 +22483,7 @@ export type RemoveLabelFromTrackableMutationVariables = Exact<{
 
 export type RemoveLabelFromTrackableMutation = {
     __typename?: "Mutation";
-    removeLabelFromTrackable?: { __typename: "RemoveLabelFromTrackablePayload" } | null;
+    removeLabelFromTrackable: { __typename: "RemoveLabelFromTrackablePayload" };
 };
 
 export type GetProjectListQueryVariables = Exact<{
@@ -22632,10 +22629,7 @@ export type CreateProjectMutationVariables = Exact<{
 
 export type CreateProjectMutation = {
     __typename?: "Mutation";
-    createProject?: {
-        __typename?: "CreateProjectPayload";
-        project?: { __typename?: "Project"; id: string } | null;
-    } | null;
+    createProject: { __typename?: "CreateProjectPayload"; project?: { __typename?: "Project"; id: string } | null };
 };
 
 export type GetRelationTemplatesQueryVariables = Exact<{
@@ -26226,10 +26220,11 @@ export const SearchGropiusUsersDocument = gql`
 export type SdkFunctionWrapper = <T>(
     action: (requestHeaders?: Record<string, string>) => Promise<T>,
     operationName: string,
-    operationType?: string
+    operationType?: string,
+    variables?: any
 ) => Promise<T>;
 
-const defaultWrapper: SdkFunctionWrapper = (action, _operationName, _operationType) => action();
+const defaultWrapper: SdkFunctionWrapper = (action, _operationName, _operationType, _variables) => action();
 
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
     return {
@@ -26244,7 +26239,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "searchAffectedByIssues",
-                "query"
+                "query",
+                variables
             );
         },
         addAffectedEntityToIssue(
@@ -26258,7 +26254,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "addAffectedEntityToIssue",
-                "mutation"
+                "mutation",
+                variables
             );
         },
         removeAffectedEntityFromIssue(
@@ -26273,7 +26270,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         { ...requestHeaders, ...wrappedRequestHeaders }
                     ),
                 "removeAffectedEntityFromIssue",
-                "mutation"
+                "mutation",
+                variables
             );
         },
         removeAssignment(
@@ -26287,7 +26285,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "removeAssignment",
-                "mutation"
+                "mutation",
+                variables
             );
         },
         createAssignment(
@@ -26301,7 +26300,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "createAssignment",
-                "mutation"
+                "mutation",
+                variables
             );
         },
         searchAssignmentTypes(
@@ -26315,7 +26315,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "searchAssignmentTypes",
-                "query"
+                "query",
+                variables
             );
         },
         firstAssignmentTypes(
@@ -26329,7 +26330,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "firstAssignmentTypes",
-                "query"
+                "query",
+                variables
             );
         },
         changeAssignmentType(
@@ -26343,7 +26345,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "changeAssignmentType",
-                "mutation"
+                "mutation",
+                variables
             );
         },
         getComponentList(
@@ -26357,7 +26360,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "getComponentList",
-                "query"
+                "query",
+                variables
             );
         },
         getFilteredComponentList(
@@ -26371,7 +26375,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "getFilteredComponentList",
-                "query"
+                "query",
+                variables
             );
         },
         getComponent(
@@ -26385,7 +26390,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "getComponent",
-                "query"
+                "query",
+                variables
             );
         },
         getComponentDetails(
@@ -26399,7 +26405,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "getComponentDetails",
-                "query"
+                "query",
+                variables
             );
         },
         searchComponents(
@@ -26413,7 +26420,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "searchComponents",
-                "query"
+                "query",
+                variables
             );
         },
         createComponent(
@@ -26427,7 +26435,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "createComponent",
-                "mutation"
+                "mutation",
+                variables
             );
         },
         searchComponentTemplates(
@@ -26441,7 +26450,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "searchComponentTemplates",
-                "query"
+                "query",
+                variables
             );
         },
         firstComponentTemplates(
@@ -26455,7 +26465,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "firstComponentTemplates",
-                "query"
+                "query",
+                variables
             );
         },
         getComponentTemplate(
@@ -26469,7 +26480,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "getComponentTemplate",
-                "query"
+                "query",
+                variables
             );
         },
         getComponentVersionTemplate(
@@ -26483,7 +26495,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "getComponentVersionTemplate",
-                "query"
+                "query",
+                variables
             );
         },
         getComponentVersions(
@@ -26497,7 +26510,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "getComponentVersions",
-                "query"
+                "query",
+                variables
             );
         },
         getComponentVersionList(
@@ -26511,7 +26525,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "getComponentVersionList",
-                "query"
+                "query",
+                variables
             );
         },
         getFilteredComponentVersionList(
@@ -26526,7 +26541,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         { ...requestHeaders, ...wrappedRequestHeaders }
                     ),
                 "getFilteredComponentVersionList",
-                "query"
+                "query",
+                variables
             );
         },
         searchComponentVersions(
@@ -26540,7 +26556,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "searchComponentVersions",
-                "query"
+                "query",
+                variables
             );
         },
         createComponentVersion(
@@ -26554,7 +26571,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "createComponentVersion",
-                "mutation"
+                "mutation",
+                variables
             );
         },
         getProjectGraph(
@@ -26568,7 +26586,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "getProjectGraph",
-                "query"
+                "query",
+                variables
             );
         },
         addComponentVersionToProject(
@@ -26583,7 +26602,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         { ...requestHeaders, ...wrappedRequestHeaders }
                     ),
                 "addComponentVersionToProject",
-                "mutation"
+                "mutation",
+                variables
             );
         },
         removeComponentVersionFromProject(
@@ -26598,7 +26618,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         { ...requestHeaders, ...wrappedRequestHeaders }
                     ),
                 "removeComponentVersionFromProject",
-                "mutation"
+                "mutation",
+                variables
             );
         },
         createRelation(
@@ -26612,7 +26633,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "createRelation",
-                "mutation"
+                "mutation",
+                variables
             );
         },
         deleteRelation(
@@ -26626,7 +26648,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "deleteRelation",
-                "mutation"
+                "mutation",
+                variables
             );
         },
         getIssueList(
@@ -26640,7 +26663,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "getIssueList",
-                "query"
+                "query",
+                variables
             );
         },
         getFilteredIssueList(
@@ -26654,7 +26678,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "getFilteredIssueList",
-                "query"
+                "query",
+                variables
             );
         },
         getParticipatingIssueList(
@@ -26668,7 +26693,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "getParticipatingIssueList",
-                "query"
+                "query",
+                variables
             );
         },
         getParticipatingFilteredIssueList(
@@ -26683,7 +26709,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         { ...requestHeaders, ...wrappedRequestHeaders }
                     ),
                 "getParticipatingFilteredIssueList",
-                "query"
+                "query",
+                variables
             );
         },
         getIssue(
@@ -26697,7 +26724,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "getIssue",
-                "query"
+                "query",
+                variables
             );
         },
         updateBody(
@@ -26711,7 +26739,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "updateBody",
-                "mutation"
+                "mutation",
+                variables
             );
         },
         updateIssueComment(
@@ -26725,7 +26754,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "updateIssueComment",
-                "mutation"
+                "mutation",
+                variables
             );
         },
         createIssueComment(
@@ -26739,7 +26769,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "createIssueComment",
-                "mutation"
+                "mutation",
+                variables
             );
         },
         deleteIssueComment(
@@ -26753,7 +26784,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "deleteIssueComment",
-                "mutation"
+                "mutation",
+                variables
             );
         },
         createIssue(
@@ -26767,7 +26799,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "createIssue",
-                "mutation"
+                "mutation",
+                variables
             );
         },
         changeIssueTitle(
@@ -26781,7 +26814,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "changeIssueTitle",
-                "mutation"
+                "mutation",
+                variables
             );
         },
         changeIssueTemplatedField(
@@ -26795,7 +26829,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "changeIssueTemplatedField",
-                "mutation"
+                "mutation",
+                variables
             );
         },
         searchIssues(
@@ -26809,7 +26844,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "searchIssues",
-                "query"
+                "query",
+                variables
             );
         },
         searchIssuePriorities(
@@ -26823,7 +26859,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "searchIssuePriorities",
-                "query"
+                "query",
+                variables
             );
         },
         firstIssuePriorities(
@@ -26837,7 +26874,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "firstIssuePriorities",
-                "query"
+                "query",
+                variables
             );
         },
         changeIssuePriority(
@@ -26851,7 +26889,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "changeIssuePriority",
-                "mutation"
+                "mutation",
+                variables
             );
         },
         removeIssueRelation(
@@ -26865,7 +26904,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "removeIssueRelation",
-                "mutation"
+                "mutation",
+                variables
             );
         },
         createIssueRelation(
@@ -26879,7 +26919,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "createIssueRelation",
-                "mutation"
+                "mutation",
+                variables
             );
         },
         searchIssueRelationTypes(
@@ -26893,7 +26934,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "searchIssueRelationTypes",
-                "query"
+                "query",
+                variables
             );
         },
         firstIssueRelationTypes(
@@ -26907,7 +26949,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "firstIssueRelationTypes",
-                "query"
+                "query",
+                variables
             );
         },
         changeIssueRelationType(
@@ -26921,7 +26964,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "changeIssueRelationType",
-                "mutation"
+                "mutation",
+                variables
             );
         },
         searchIssueStates(
@@ -26935,7 +26979,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "searchIssueStates",
-                "query"
+                "query",
+                variables
             );
         },
         firstIssueStates(
@@ -26949,7 +26994,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "firstIssueStates",
-                "query"
+                "query",
+                variables
             );
         },
         changeIssueState(
@@ -26963,7 +27009,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "changeIssueState",
-                "mutation"
+                "mutation",
+                variables
             );
         },
         searchIssueTemplates(
@@ -26977,7 +27024,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "searchIssueTemplates",
-                "query"
+                "query",
+                variables
             );
         },
         firstIssueTemplates(
@@ -26991,7 +27039,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "firstIssueTemplates",
-                "query"
+                "query",
+                variables
             );
         },
         getIssueTemplate(
@@ -27005,7 +27054,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "getIssueTemplate",
-                "query"
+                "query",
+                variables
             );
         },
         searchIssueTypes(
@@ -27019,7 +27069,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "searchIssueTypes",
-                "query"
+                "query",
+                variables
             );
         },
         firstIssueTypes(
@@ -27033,7 +27084,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "firstIssueTypes",
-                "query"
+                "query",
+                variables
             );
         },
         changeIssueType(
@@ -27047,7 +27099,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "changeIssueType",
-                "mutation"
+                "mutation",
+                variables
             );
         },
         getLabelList(
@@ -27061,7 +27114,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "getLabelList",
-                "query"
+                "query",
+                variables
             );
         },
         getFilteredLabelList(
@@ -27075,7 +27129,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "getFilteredLabelList",
-                "query"
+                "query",
+                variables
             );
         },
         searchLabels(
@@ -27089,7 +27144,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "searchLabels",
-                "query"
+                "query",
+                variables
             );
         },
         firstLabels(
@@ -27103,7 +27159,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "firstLabels",
-                "query"
+                "query",
+                variables
             );
         },
         addLabelToIssue(
@@ -27117,7 +27174,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "addLabelToIssue",
-                "mutation"
+                "mutation",
+                variables
             );
         },
         removeLabelFromIssue(
@@ -27131,7 +27189,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "removeLabelFromIssue",
-                "mutation"
+                "mutation",
+                variables
             );
         },
         createLabel(
@@ -27145,7 +27204,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "createLabel",
-                "mutation"
+                "mutation",
+                variables
             );
         },
         updateLabel(
@@ -27159,7 +27219,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "updateLabel",
-                "mutation"
+                "mutation",
+                variables
             );
         },
         removeLabelFromTrackable(
@@ -27173,7 +27234,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "removeLabelFromTrackable",
-                "mutation"
+                "mutation",
+                variables
             );
         },
         getProjectList(
@@ -27187,7 +27249,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "getProjectList",
-                "query"
+                "query",
+                variables
             );
         },
         getFilteredProjectList(
@@ -27201,7 +27264,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "getFilteredProjectList",
-                "query"
+                "query",
+                variables
             );
         },
         getProject(
@@ -27215,7 +27279,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "getProject",
-                "query"
+                "query",
+                variables
             );
         },
         createProject(
@@ -27229,7 +27294,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "createProject",
-                "mutation"
+                "mutation",
+                variables
             );
         },
         getRelationTemplates(
@@ -27243,7 +27309,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "getRelationTemplates",
-                "query"
+                "query",
+                variables
             );
         },
         searchRelationTemplates(
@@ -27257,7 +27324,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "searchRelationTemplates",
-                "query"
+                "query",
+                variables
             );
         },
         searchTrackables(
@@ -27271,7 +27339,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "searchTrackables",
-                "query"
+                "query",
+                variables
             );
         },
         getCurrentUser(
@@ -27285,7 +27354,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "getCurrentUser",
-                "query"
+                "query",
+                variables
             );
         },
         searchGropiusUsers(
@@ -27299,7 +27369,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "searchGropiusUsers",
-                "query"
+                "query",
+                variables
             );
         }
     };

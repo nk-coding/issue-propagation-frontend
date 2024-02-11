@@ -253,13 +253,13 @@ async function saveComment() {
             () => client.updateBody({ id: props.item.id, body: itemBody.value }),
             "Error updating body"
         );
-        emit("updateItem", newBody.updateBody?.body!);
+        emit("updateItem", newBody.updateBody.body!);
     } else {
         const newComment = await withErrorMessage(
             () => client.updateIssueComment({ id: props.item.id, body: itemBody.value }),
             "Error updating comment"
         );
-        emit("updateItem", newComment.updateIssueComment?.issueComment!);
+        emit("updateItem", newComment.updateIssueComment.issueComment!);
     }
     editMode.value = false;
 }
@@ -269,7 +269,7 @@ async function createComment() {
         () => client.createIssueComment({ issue: issue?.value?.id!, body: itemBody.value, answers: answersId.value }),
         "Error creating comment"
     );
-    emit("addItem", newComment.createIssueComment?.issueComment!);
+    emit("addItem", newComment.createIssueComment.issueComment!);
     itemBody.value = "";
 }
 
@@ -299,7 +299,7 @@ async function deleteComment() {
         () => client.deleteIssueComment({ id: props.item.id }),
         "Error deleting comment"
     );
-    emit("updateItem", newItem.deleteIssueComment?.issueComment!);
+    emit("updateItem", newItem.deleteIssueComment.issueComment!);
 }
 </script>
 <style scoped>

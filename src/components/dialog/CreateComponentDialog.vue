@@ -109,7 +109,7 @@ const createComponent = handleSubmit(async (state) => {
                 templatedFields: templatedFields.value
             }
         });
-        return res.createComponent!.component!;
+        return res.createComponent.component!;
     }, "Error creating component");
     createComponentDialog.value = false;
     emit("created-component", component);

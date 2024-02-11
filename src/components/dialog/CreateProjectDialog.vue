@@ -76,7 +76,7 @@ const createProject = handleSubmit(async (state) => {
                 description: state.description ?? ""
             }
         });
-        return res.createProject!.project!;
+        return res.createProject.project!;
     }, "Error creating project");
     createProjectDialog.value = false;
     emit("created-project", project);
