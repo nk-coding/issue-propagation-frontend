@@ -7,7 +7,7 @@
             discard-message="Are you sure you want to discard the changes?"
             submit-action="Update label"
             :trackable="trackable"
-            :initial-value="model as Label"
+            :initial-value="model"
             @submit="updateLabel"
             @cancel="updateLabelDialog = false"
         />
@@ -21,7 +21,7 @@ import LabelDialogContent, { Label } from "./LabelDialogContent.vue";
 import { computed } from "vue";
 
 const updateLabelDialog = computed({
-    get: () => model != null,
+    get: () => model.value != null,
     set: (value) => {
         if (!value) {
             model.value = null;

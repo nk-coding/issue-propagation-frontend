@@ -2,7 +2,7 @@
     <v-autocomplete
         v-model:search="search"
         v-model:menu="menu"
-        v-model="proxiedModel as any"
+        v-model="<any>proxiedModel"
         :items="items"
         :multiple="contextMode"
         :chips="contextMode"
@@ -17,9 +17,9 @@
                 v-if="!contextSearchMode && item.value != context?.id"
                 name="item"
                 :props="props"
-                :item="item as ListItem<T>"
+                :item="<ListItem<T>>item"
             ></slot>
-            <slot v-else-if="contextSearchMode" name="context-item" :props="props" :item="item as ListItem<C>"></slot>
+            <slot v-else-if="contextSearchMode" name="context-item" :props="props" :item="<ListItem<C>>item"></slot>
             <div v-else class="placeholder-item" />
         </template>
     </v-autocomplete>

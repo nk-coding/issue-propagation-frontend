@@ -1,7 +1,7 @@
 <template>
     <ElementsForm
         v-if="isElementsForm(derefSchema)"
-        :schema="derefSchema as any"
+        :schema="derefSchema"
         :root-schema="rootSchema"
         :name="name"
         v-model="model"
@@ -9,7 +9,7 @@
     />
     <ValuesForm
         v-else-if="isValuesForm(derefSchema)"
-        :schema="derefSchema as any"
+        :schema="derefSchema"
         :root-schema="rootSchema"
         :name="name"
         v-model="model"
@@ -17,7 +17,7 @@
     />
     <ObjectForm
         v-else-if="isPropertiesForm(schema) || isDiscriminatorForm(schema)"
-        :schema="derefSchema as any"
+        :schema="<any>derefSchema"
         :root-schema="rootSchema"
         :name="name"
         v-model="model"
@@ -25,7 +25,7 @@
     />
     <TypeForm
         v-else-if="isTypeForm(schema)"
-        :schema="derefSchema as any"
+        :schema="<any>derefSchema"
         :root-schema="rootSchema"
         :name="name"
         v-model="model"
@@ -33,7 +33,7 @@
     />
     <EnumForm
         v-else-if="isEnumForm(schema)"
-        :schema="derefSchema as any"
+        :schema="<any>derefSchema"
         :root-schema="rootSchema"
         :name="name"
         v-model="model"

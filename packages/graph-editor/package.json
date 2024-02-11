@@ -17,6 +17,7 @@
         "web-worker": "^1.2.0"
     },
     "devDependencies": {
-        "@types/bezier-js": "^4.1.0"
+        "@types/bezier-js": "^4.1.0",
+        "typescript": "^5.3.3"
     }
 }
