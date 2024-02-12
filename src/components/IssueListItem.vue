@@ -39,11 +39,20 @@
                 size="small"
             />
         </template>
+        <template #title-prepend v-if="trackablesInfo != undefined">
+            <v-chip color="primary" size="small" class="mr-2" :prepend-icon="trackablesInfo.icon">
+                {{ trackablesInfo.trackable.name }}
+                <template v-if="trackablesInfo.totalCount > 1"> +{{ trackablesInfo.totalCount - 1 }}</template>
+                <v-tooltip v-if="trackablesInfo.trackable.description" activator="parent" location="bottom">
+                    {{ trackablesInfo.trackable.description }}
+                </v-tooltip>
+            </v-chip>
+        </template>
     </ListItem>
 </template>
 <script lang="ts" setup>
-import { IssueListItemInfoFragment } from "@/graphql/generated";
-import { PropType } from "vue";
+import { IssueListItemInfoFragment, ParticipatingIssueListItemInfoFragment } from "@/graphql/generated";
+import { PropType, computed } from "vue";
 import UserStack from "./UserStack.vue";
 import IssueIcon from "./IssueIcon.vue";
 import ListItem from "./ListItem.vue";
@@ -51,10 +60,24 @@ import RelativeTime from "./RelativeTime.vue";
 import Label from "./info/Label.vue";
 import User from "./info/User.vue";
 
-defineProps({
+const props = defineProps({
     item: {
-        type: Object as PropType<IssueListItemInfoFragment>,
+        type: Object as PropType<IssueListItemInfoFragment | ParticipatingIssueListItemInfoFragment>,
         required: true
+    }
+});
+
+const trackablesInfo = computed(() => {
+    const item = props.item;
+    if ("trackables" in item) {
+        const trackable = item.trackables.nodes[0];
+        return {
+            trackable,
+            totalCount: item.trackables.totalCount,
+            icon: trackable.__typename == "Component" ? "$component" : "$project"
+        };
+    } else {
+        return undefined;
     }
 });
 </script>

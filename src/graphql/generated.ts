@@ -19584,7 +19584,11 @@ export type GetParticipatingIssueListQuery = {
                 createdAt: any;
                 trackables: {
                     __typename?: "TrackableConnection";
-                    nodes: Array<{ __typename: "Component"; id: string } | { __typename: "Project"; id: string }>;
+                    totalCount: number;
+                    nodes: Array<
+                        | { __typename: "Component"; id: string; name: string; description: string }
+                        | { __typename: "Project"; id: string; name: string; description: string }
+                    >;
                 };
                 createdBy:
                     | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
@@ -19651,7 +19655,11 @@ export type GetParticipatingFilteredIssueListQuery = {
         createdAt: any;
         trackables: {
             __typename?: "TrackableConnection";
-            nodes: Array<{ __typename: "Component"; id: string } | { __typename: "Project"; id: string }>;
+            totalCount: number;
+            nodes: Array<
+                | { __typename: "Component"; id: string; name: string; description: string }
+                | { __typename: "Project"; id: string; name: string; description: string }
+            >;
         };
         createdBy:
             | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
@@ -21230,7 +21238,11 @@ export type ParticipatingIssueListItemInfoFragment = {
     createdAt: any;
     trackables: {
         __typename?: "TrackableConnection";
-        nodes: Array<{ __typename: "Component"; id: string } | { __typename: "Project"; id: string }>;
+        totalCount: number;
+        nodes: Array<
+            | { __typename: "Component"; id: string; name: string; description: string }
+            | { __typename: "Project"; id: string; name: string; description: string }
+        >;
     };
     createdBy:
         | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
@@ -24608,7 +24620,10 @@ export const ParticipatingIssueListItemInfoFragmentDoc = gql`
             nodes {
                 __typename
                 id
+                name
+                description
             }
+            totalCount
         }
     }
     ${IssueListItemInfoFragmentDoc}

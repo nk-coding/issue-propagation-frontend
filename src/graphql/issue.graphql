@@ -218,7 +218,10 @@ fragment ParticipatingIssueListItemInfo on Issue {
         nodes {
             __typename
             id
+            name
+            description
         }
+        totalCount
     }
 }
 

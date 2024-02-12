@@ -4,6 +4,7 @@
         <div class="flex-1-1 min-width-0">
             <div class="mb-1 d-flex align-center">
                 <slot name="title">
+                    <slot name="title-prepend" />
                     <v-list-item-title>{{ title }}</v-list-item-title>
                     <slot name="title-append" />
                 </slot>

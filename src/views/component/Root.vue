@@ -54,7 +54,7 @@ function componentPath(name: string): RouteLocationRaw {
 }
 
 const titleSegments = computed(() => [
-    { icon: "mdi-alpha-c-circle-outline", path: "/components" },
+    { icon: "$component", path: "/components" },
     { name: component.value?.name ?? "", path: componentPath("") }
 ]);
 

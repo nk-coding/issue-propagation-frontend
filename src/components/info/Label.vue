@@ -1,7 +1,7 @@
 <template>
     <v-chip :color="label.color">
         {{ label.name }}
-        <v-tooltip activator="parent" location="bottom">
+        <v-tooltip v-if="label.description" activator="parent" location="bottom">
             {{ label.description }}
         </v-tooltip>
     </v-chip>
