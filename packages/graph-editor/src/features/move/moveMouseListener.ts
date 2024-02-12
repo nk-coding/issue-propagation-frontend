@@ -7,7 +7,7 @@ import {
     isViewport,
     moveFeature
 } from "sprotty";
-import { Action, Point } from "sprotty-protocol";
+import { Action, Point, hasOwnProperty } from "sprotty-protocol";
 import { MoveHandler } from "./moveHandler";
 import { Component } from "../../model/component";
 import { Interface } from "../../model/interface";

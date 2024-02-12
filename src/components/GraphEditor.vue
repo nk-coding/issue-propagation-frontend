@@ -27,7 +27,7 @@
                         icon
                         color="primary-container"
                         :disabled="!selected.contextMenuData.remove"
-                        @click="$emit('removeComponent', selected.id)"
+                        @mouseup="$emit('removeComponent', selected.id)"
                     >
                         <v-icon icon="mdi-close" />
                         <v-tooltip activator="parent">Remove component version from project</v-tooltip>
@@ -39,7 +39,7 @@
                         icon
                         color="primary-container"
                         :disabled="!selected.contextMenuData.delete"
-                        @click="$emit('deleteRelation', selected.id)"
+                        @mouseup="$emit('deleteRelation', selected.id)"
                     >
                         <v-icon icon="mdi-close" />
                         <v-tooltip activator="parent">Delete relation</v-tooltip>

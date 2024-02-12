@@ -1,9 +1,9 @@
-import { Locateable, RenderingContext, Selectable, html, svg } from "sprotty";
+import { RenderingContext, svg } from "sprotty";
 import { VNode } from "snabbdom";
 import { ShapeStyle, StrokeStyle } from "../gropiusModel";
 import { IssueAffected } from "../model/issueAffected";
 import { SSelectable } from "./sSelectable";
-import { Point } from "sprotty-protocol";
+import { Locateable, Point, Selectable } from "sprotty-protocol";
 import { Shape } from "../shape/shape";
 import { wrapForeignElement } from "../views/util";
 import { LineEngine } from "../line/engine/lineEngine";
@@ -20,6 +20,7 @@ export abstract class SIssueAffected extends SSelectable implements IssueAffecte
     abstract shape: Shape;
     abstract issueTypesCenterTopPos: Point;
     issueTypes!: SIssueType[];
+    position!: Point;
 
     get contextMenuPos(): Point {
         const shape = this.shape;
@@ -33,6 +34,12 @@ export abstract class SIssueAffected extends SSelectable implements IssueAffecte
         super();
         this.cachedProperty<SIssueType[]>("issueTypes", () => {
             return this.children.filter((child) => child.type === IssueType.TYPE) as SIssueType[];
+        });
+        this.cachedProperty<Point>("position", () => {
+            return {
+                x: this.x,
+                y: this.y
+            };
         });
     }
 
@@ -136,10 +143,6 @@ export abstract class SIssueAffected extends SSelectable implements IssueAffecte
             );
         }
         return result;
-    }
-
-    get position(): Point {
-        return { x: this.x, y: this.y };
     }
 }
 
