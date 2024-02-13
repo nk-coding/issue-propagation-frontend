@@ -4,17 +4,27 @@
             <v-card-title class="pl-4">{{ title }}</v-card-title>
             <div class="pa-4">
                 <div class="d-flex flex-wrap mx-n2">
-                    <v-text-field v-bind="name" label="Name" class="wrap-input mx-2 mb-1 flex-1-1-0" />
-                    <v-text-field v-bind="color" label="Color" class="wrap-input mx-2 mb-1 flex-1-1-0">
+                    <v-text-field
+                        v-model="name"
+                        v-bind="nameProps"
+                        label="Name"
+                        class="wrap-input mx-2 mb-1 flex-1-1-0"
+                    />
+                    <v-text-field
+                        v-model="color"
+                        v-bind="colorProps"
+                        label="Color"
+                        class="wrap-input mx-2 mb-1 flex-1-1-0"
+                    >
                         <template #append-inner v-if="isFieldValid('color')">
-                            <v-icon :color="color.modelValue" icon="mdi-circle" class="full-opacity" />
+                            <v-icon :color="color" icon="mdi-circle" class="full-opacity" />
                         </template>
                         <v-menu activator="parent" :close-on-content-click="false">
                             <v-color-picker class="mt-1" rounded="lger" v-model="pickerColor" :modes="['rgb']" />
                         </v-menu>
                     </v-text-field>
                 </div>
-                <v-textarea v-bind="description" label="Description" class="mb-1" />
+                <v-textarea v-model="description" v-bind="descriptionProps" label="Description" class="mb-1" />
             </div>
             <v-card-actions>
                 <v-spacer />
@@ -37,7 +47,7 @@
 import * as yup from "yup";
 import { useForm } from "vee-validate";
 import { toTypedSchema } from "@vee-validate/yup";
-import { wrapBinds } from "@/util/vuetifyFormConfig";
+import { fieldConfig } from "@/util/vuetifyFormConfig";
 import ConfirmationDialog from "./ConfirmationDialog.vue";
 import { PropType, computed } from "vue";
 import { fallbackColor } from "@/util/fallbackColor";
@@ -102,22 +112,21 @@ const schema = toTypedSchema(
     })
 );
 
-const { defineComponentBinds, handleSubmit, meta, isFieldValid, setFieldValue, resetForm } = useForm({
+const { defineField, handleSubmit, meta, isFieldValid, resetForm } = useForm({
     validationSchema: schema,
     initialValues: props.initialValue
 });
-const defineBinds = wrapBinds(defineComponentBinds);
 
-const name = defineBinds("name");
-const description = defineBinds("description");
-const color = defineBinds("color");
+const [name, nameProps] = defineField("name", fieldConfig);
+const [description, descriptionProps] = defineField("description", fieldConfig);
+const [color, colorProps] = defineField("color", fieldConfig);
 
 const pickerColor = computed({
     get() {
-        return fallbackColor(color.value.modelValue);
+        return fallbackColor(color.value);
     },
     set(value: string) {
-        setFieldValue("color", value);
+        color.value = value;
     }
 });
 

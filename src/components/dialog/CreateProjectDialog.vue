@@ -4,9 +4,14 @@
             <v-form @submit.prevent="createProject">
                 <v-card-title class="pl-4">Create project</v-card-title>
                 <div class="pa-4">
-                    <v-text-field v-bind="name" label="Name" class="mb-1" />
-                    <v-textarea v-bind="description" label="Description" class="mb-1" />
-                    <v-text-field v-bind="repositoryURL" label="Repository URL" class="mb-1" />
+                    <v-text-field v-model="name" v-bind="nameProps" label="Name" class="mb-1" />
+                    <v-textarea v-model="description" v-bind="descriptionProps" label="Description" class="mb-1" />
+                    <v-text-field
+                        v-model="repositoryURL"
+                        v-bind="repositoryURLProps"
+                        label="Repository URL"
+                        class="mb-1"
+                    />
                 </div>
                 <v-card-actions>
                     <v-spacer />
@@ -31,7 +36,7 @@ import { ref } from "vue";
 import { onEvent } from "@/util/eventBus";
 import * as yup from "yup";
 import { useForm, useIsFormDirty } from "vee-validate";
-import { wrapBinds } from "@/util/vuetifyFormConfig";
+import { fieldConfig } from "@/util/vuetifyFormConfig";
 import { withErrorMessage } from "@/util/withErrorMessage";
 import { useClient } from "@/graphql/client";
 import { toTypedSchema } from "@vee-validate/yup";
@@ -52,16 +57,14 @@ const schema = toTypedSchema(
     })
 );
 
-const { defineComponentBinds, resetForm, handleSubmit, setValues } = useForm({
+const { defineField, resetForm, handleSubmit } = useForm({
     validationSchema: schema
 });
 const isDirty = useIsFormDirty();
 
-const defineBinds = wrapBinds(defineComponentBinds);
-
-const name = defineBinds("name");
-const description = defineBinds("description");
-const repositoryURL = defineBinds("repositoryURL");
+const [name, nameProps] = defineField("name", fieldConfig);
+const [description, descriptionProps] = defineField("description", fieldConfig);
+const [repositoryURL, repositoryURLProps] = defineField("repositoryURL", fieldConfig);
 
 onEvent("create-project", () => {
     resetForm();

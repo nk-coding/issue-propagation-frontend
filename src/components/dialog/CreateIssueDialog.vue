@@ -22,27 +22,40 @@
                         >
                             <IssueIcon :issue="icon" class="issue-icon" />
                         </v-card>
-                        <v-text-field v-bind="title" label="Title" class="mb-1" />
+                        <v-text-field v-model="title" v-bind="titleProps" label="Title" class="mb-1" />
                     </div>
                     <div class="d-flex flex-wrap mx-n2">
-                        <IssueTemplateAutocomplete v-bind="template" class="wrap-input mx-2 mb-1 flex-1-1-0" />
+                        <IssueTemplateAutocomplete
+                            v-model="template"
+                            v-bind="templateProps"
+                            class="wrap-input mx-2 mb-1 flex-1-1-0"
+                        />
                         <IssueTypeAutocomplete
-                            v-bind="type"
-                            :template="template.modelValue"
-                            :disabled="!template.modelValue"
+                            v-model="type"
+                            v-bind="typeProps"
+                            :template="template"
+                            :disabled="!template"
                             class="wrap-input mx-2 mb-1 flex-1-1-0"
                             @selected-item="onSelectedType"
                         />
                         <IssueStateAutocomplete
-                            v-bind="state"
-                            :template="template.modelValue"
-                            :disabled="!template.modelValue"
+                            v-model="state"
+                            v-bind="stateProps"
+                            :template="template"
+                            :disabled="!template"
                             class="wrap-input mx-2 mb-1 flex-1-1-0"
                             @selected-item="onSelectedState"
                         />
                     </div>
-                    <SimpleField v-bind="body" variant="outlined" label="Body" color="primary" class="markdown-field">
-                        <Markdown v-bind="body" edit-mode class="full-width ma-2" />
+                    <SimpleField
+                        v-model="body"
+                        v-bind="bodyProps"
+                        variant="outlined"
+                        label="Body"
+                        color="primary"
+                        class="markdown-field"
+                    >
+                        <Markdown v-model="body" v-bind="bodyProps" edit-mode class="full-width ma-2" />
                     </SimpleField>
                 </template>
                 <template #templatedFields>
@@ -66,7 +79,7 @@ import IssueTypeAutocomplete from "../input/IssueTypeAutocomplete.vue";
 import IssueStateAutocomplete from "../input/IssueStateAutocomplete.vue";
 import * as yup from "yup";
 import { useForm } from "vee-validate";
-import { wrapBinds } from "@/util/vuetifyFormConfig";
+import { fieldConfig } from "@/util/vuetifyFormConfig";
 import { withErrorMessage } from "@/util/withErrorMessage";
 import { NodeReturnType, useClient } from "@/graphql/client";
 import { toTypedSchema } from "@vee-validate/yup";
@@ -104,17 +117,15 @@ const schema = toTypedSchema(
     })
 );
 
-const { defineComponentBinds, resetForm, handleSubmit, setValues, meta, validate } = useForm({
+const { defineField, resetForm, handleSubmit, meta, validate, setValues } = useForm({
     validationSchema: schema
 });
 
-const defineBinds = wrapBinds(defineComponentBinds);
-
-const title = defineBinds("title");
-const template = defineBinds("template");
-const type = defineBinds("type");
-const state = defineBinds("state");
-const body = defineBinds("body");
+const [title, titleProps] = defineField("title", fieldConfig);
+const [template, templateProps] = defineField("template", fieldConfig);
+const [type, typeProps] = defineField("type", fieldConfig);
+const [state, stateProps] = defineField("state", fieldConfig);
+const [body, bodyProps] = defineField("body", fieldConfig);
 
 const icon = computed<DefaultIssueIconInfoFragment | undefined>(() => {
     if (typePath.value != undefined && isOpen.value != undefined) {
@@ -139,11 +150,11 @@ const icon = computed<DefaultIssueIconInfoFragment | undefined>(() => {
 const templatedFields = ref<Field[]>([]);
 const templateValue = asyncComputed(
     async () => {
-        if (template.value.modelValue == null) {
+        if (template.value == null) {
             return null;
         }
         const templateRes = await withErrorMessage(async () => {
-            return client.getIssueTemplate({ id: template.value.modelValue });
+            return client.getIssueTemplate({ id: template.value! });
         }, "Error loading template");
         const templateNode = templateRes.node as NodeReturnType<"getIssueTemplate", "IssueTemplate">;
         return templateNode;
@@ -166,7 +177,7 @@ onEvent("create-issue", () => {
 });
 
 watch(
-    () => template.value.modelValue,
+    () => template.value,
     () => {
         setValues({ type: undefined, state: undefined }, false);
     }

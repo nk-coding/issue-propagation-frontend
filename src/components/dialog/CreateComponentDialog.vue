@@ -12,11 +12,25 @@
             >
                 <template #general>
                     <div class="d-flex flex-wrap mx-n2">
-                        <v-text-field v-bind="name" label="Name" class="wrap-input mx-2 mb-1 flex-1-1-0" />
-                        <ComponentTemplateAutocomplete v-bind="template" class="wrap-input mx-2 mb-1 flex-1-1-0" />
+                        <v-text-field
+                            v-model="name"
+                            v-bind="nameProps"
+                            label="Name"
+                            class="wrap-input mx-2 mb-1 flex-1-1-0"
+                        />
+                        <ComponentTemplateAutocomplete
+                            v-model="template"
+                            v-bind="templateProps"
+                            class="wrap-input mx-2 mb-1 flex-1-1-0"
+                        />
                     </div>
-                    <v-textarea v-bind="description" label="Description" class="mb-1" />
-                    <v-text-field v-bind="repositoryURL" label="Repository URL" class="mb-1" />
+                    <v-textarea v-model="description" v-bind="descriptionProps" label="Description" class="mb-1" />
+                    <v-text-field
+                        v-model="repositoryURL"
+                        v-bind="repositoryURLProps"
+                        label="Repository URL"
+                        class="mb-1"
+                    />
                 </template>
                 <template #templatedFields>
                     <TemplatedFieldsInput
@@ -34,7 +48,7 @@ import { ref } from "vue";
 import { onEvent } from "@/util/eventBus";
 import * as yup from "yup";
 import { useForm } from "vee-validate";
-import { wrapBinds } from "@/util/vuetifyFormConfig";
+import { fieldConfig } from "@/util/vuetifyFormConfig";
 import { withErrorMessage } from "@/util/withErrorMessage";
 import { NodeReturnType, useClient } from "@/graphql/client";
 import { toTypedSchema } from "@vee-validate/yup";
@@ -61,24 +75,23 @@ const schema = toTypedSchema(
     })
 );
 
-const { defineComponentBinds, resetForm, handleSubmit, meta, validate } = useForm({
+const { defineField, resetForm, handleSubmit, meta, validate } = useForm({
     validationSchema: schema
 });
-const defineBinds = wrapBinds(defineComponentBinds);
 
-const name = defineBinds("name");
-const template = defineBinds("template");
-const description = defineBinds("description");
-const repositoryURL = defineBinds("repositoryURL");
+const [name, nameProps] = defineField("name", fieldConfig);
+const [template, templateProps] = defineField("template", fieldConfig);
+const [description, descriptionProps] = defineField("description", fieldConfig);
+const [repositoryURL, repositoryURLProps] = defineField("repositoryURL", fieldConfig);
 
 const templatedFields = ref<Field[]>([]);
 const templateValue = asyncComputed(
     async () => {
-        if (template.value.modelValue == null) {
+        if (template.value == null) {
             return null;
         }
         const templateRes = await withErrorMessage(async () => {
-            return client.getComponentTemplate({ id: template.value.modelValue });
+            return client.getComponentTemplate({ id: template.value! });
         }, "Error loading template");
         const templateNode = templateRes.node as NodeReturnType<"getComponentTemplate", "ComponentTemplate">;
         return templateNode;

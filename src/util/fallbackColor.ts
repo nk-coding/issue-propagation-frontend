@@ -1,5 +1,5 @@
-export function fallbackColor(color: string): string {
-    if (/^#[a-z0-9]{1,6}$/i.test(color)) {
+export function fallbackColor(color: string | undefined): string {
+    if (color != undefined && /^#[a-z0-9]{1,6}$/i.test(color)) {
         switch (color.length) {
             case 2:
                 return `#${color[1].repeat(6)}`;
