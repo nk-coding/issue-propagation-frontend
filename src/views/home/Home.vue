@@ -1,5 +1,5 @@
 <template>
-    <div class="full-height d-flex flex-column mt-3">
+    <div class="full-height d-flex flex-column pt-3">
         <div class="d-flex align-center mb-3 mx-3">
             <div class="text-h6">Recent issues</div>
             <v-spacer />

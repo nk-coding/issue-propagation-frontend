@@ -31,7 +31,7 @@
                     <slot name="item" :item="item" />
                 </template>
             </CustomList>
-            <div v-if="pageCount > 1 && transformedSearchQuery == undefined" class="d-flex justify-center">
+            <div v-if="pageCount > 1 && transformedSearchQuery == undefined" class="d-flex justify-center pagination-container">
                 <v-pagination v-model="currentPage" :length="pageCount" class="pagination flex-1-1"></v-pagination>
             </div>
         </div>
@@ -162,5 +162,9 @@ async function updateItems(resetPage: boolean) {
 
 .pagination {
     max-width: 600px;
+}
+
+.pagination-container {
+    flex: 1 1 300px;
 }
 </style>
