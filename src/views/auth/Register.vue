@@ -4,9 +4,9 @@
             <GropiusCard class="register-container mt-5">
                 <v-card-title class="pl-0">Register</v-card-title>
                 <v-form class="mt-2" @submit.prevent="register">
-                    <v-text-field v-bind="username" label="Username" class="mb-1" />
-                    <v-text-field v-bind="displayName" label="Display name" class="mb-1" />
-                    <v-text-field v-bind="email" label="Email" class="mb-1" />
+                    <v-text-field v-model="username" v-bind="usernameProps" label="Username" class="mb-1" />
+                    <v-text-field v-model="displayName" v-bind="displayNameProps" label="Display name" class="mb-1" />
+                    <v-text-field v-model="email" v-bind="emailProps" label="Email" class="mb-1" />
                     <v-card-actions>
                         <v-spacer />
                         <DefaultButton variant="text" color="primary" type="submit">Register</DefaultButton>
@@ -27,7 +27,7 @@ import { useRouter } from "vue-router";
 import { pushErrorMessage, withErrorMessage } from "@/util/withErrorMessage";
 import axios from "axios";
 import { useAppStore } from "@/store/app";
-import { wrapBinds } from "@/util/vuetifyFormConfig";
+import { fieldConfig } from "@/util/vuetifyFormConfig";
 import { onMounted } from "vue";
 const store = useAppStore();
 const router = useRouter();
@@ -40,15 +40,13 @@ const schema = toTypedSchema(
     })
 );
 
-const { defineComponentBinds, resetForm, handleSubmit, setValues } = useForm({
+const { defineField, handleSubmit, setValues } = useForm({
     validationSchema: schema
 });
 
-const defineBinds = wrapBinds(defineComponentBinds);
-
-const username = defineBinds("username");
-const displayName = defineBinds("displayName");
-const email = defineBinds("email");
+const [username, usernameProps] = defineField("username", fieldConfig);
+const [displayName, displayNameProps] = defineField("displayName", fieldConfig);
+const [email, emailProps] = defineField("email", fieldConfig);
 
 onMounted(async () => {
     const recommendedData: UserDataSuggestionResponse = await withErrorMessage(
