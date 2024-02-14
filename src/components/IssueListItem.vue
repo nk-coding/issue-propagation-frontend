@@ -40,7 +40,7 @@
             />
         </template>
         <template #title-prepend v-if="trackablesInfo != undefined">
-            <v-chip color="primary" size="small" class="mr-2" :prepend-icon="trackablesInfo.icon">
+            <v-chip color="primary" size="small" class="mr-2 flex-shrink-0" :prepend-icon="trackablesInfo.icon">
                 {{ trackablesInfo.trackable.name }}
                 <template v-if="trackablesInfo.totalCount > 1"> +{{ trackablesInfo.totalCount - 1 }}</template>
                 <v-tooltip v-if="trackablesInfo.trackable.description" activator="parent" location="bottom">
