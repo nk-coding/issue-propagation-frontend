@@ -1,7 +1,7 @@
 <template>
     <IconTimelineItem :icon="icon">
         <div class="text-medium-emphasis content-wrapper">
-            <User :user="item.createdBy" /> <slot /> <RelativeTime :time="item.createdAt" />
+            <User :user="item.createdBy" /> <slot /> <RelativeTimeWrapper :time="item.createdAt" />
         </div>
         <template #content>
             <slot name="content" />
@@ -13,7 +13,7 @@ import { PropType } from "vue";
 import IconTimelineItem from "./IconTimelineItem.vue";
 import User from "@/components/info/User.vue";
 import { TimelineItemType } from "./TimelineItemBase.vue";
-import RelativeTime from "../RelativeTime.vue";
+import RelativeTimeWrapper from "../RelativeTimeWrapper.vue";
 
 defineProps({
     item: {

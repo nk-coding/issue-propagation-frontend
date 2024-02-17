@@ -19,8 +19,8 @@
                         </template>
                     </div>
                     <div class="text-medium-emphasis text-subtitle-1">
-                        Opened by <User :user="issue.createdBy" /> <RelativeTime :time="issue.createdAt" /> · last
-                        updated <RelativeTime :time="issue.lastUpdatedAt" />
+                        Opened by <User :user="issue.createdBy" /> <RelativeTimeWrapper :time="issue.createdAt" /> ·
+                        last updated <RelativeTimeWrapper :time="issue.lastUpdatedAt" />
                     </div>
                 </div>
             </div>
@@ -32,6 +32,7 @@
                     :ref="(el: any) => registerItemElement(item.id, el)"
                     :item="item"
                     :selected="item.id == selectedItem"
+                    :is-moderator="issue.moderator"
                     @replyTo="replyToComment"
                     @updateItem="updateItem"
                 />
@@ -40,7 +41,8 @@
                     v-if="issue.comment"
                     ref="newComment"
                     :item="newCommentItem"
-                    :new-comment="true"
+                    new-comment
+                    is-moderator
                     class="mt-3"
                     @addItem="addComment"
                     @resetAnswers="resetAnswers"
@@ -324,7 +326,7 @@ import { computedAsync } from "@vueuse/core";
 import TimelineItem from "@/components/timeline/TimelineItem";
 import IssueIcon from "@/components/IssueIcon.vue";
 import User from "@/components/info/User.vue";
-import RelativeTime from "@/components/RelativeTime.vue";
+import RelativeTimeWrapper from "@/components/RelativeTimeWrapper.vue";
 import { provide } from "vue";
 import { withErrorMessage } from "@/util/withErrorMessage";
 import TimelineBreak from "@/components/timeline/TimelineBreak.vue";

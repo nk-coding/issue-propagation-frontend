@@ -26,7 +26,7 @@
         </template>
         <template #subtitle>
             <div class="text-medium-emphasis text-body-2">
-                was created <RelativeTime :time="item.createdAt" /> by
+                was created <RelativeTimeWrapper :time="item.createdAt" /> by
                 <User :user="item.createdBy" size="small" />
             </div>
         </template>
@@ -56,7 +56,7 @@ import { PropType, computed } from "vue";
 import UserStack from "./UserStack.vue";
 import IssueIcon from "./IssueIcon.vue";
 import ListItem from "./ListItem.vue";
-import RelativeTime from "./RelativeTime.vue";
+import RelativeTimeWrapper from "./RelativeTimeWrapper.vue";
 import Label from "./info/Label.vue";
 import User from "./info/User.vue";
 

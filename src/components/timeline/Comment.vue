@@ -37,7 +37,7 @@
                             >
                                 <User v-if="item.createdBy != undefined" :user="item.createdBy" :show-avatar="false" />
                                 commented
-                                <RelativeTime :time="item.createdAt" />
+                                <RelativeTimeWrapper :time="item.createdAt" />
                             </div>
                             <v-spacer />
                             <v-fade-transition>
@@ -55,7 +55,7 @@
                                         >
                                             <v-list>
                                                 <v-list-item
-                                                    :disabled="editMode || isDeleted"
+                                                    :disabled="!canCurrentlyModify || editMode"
                                                     @click="activateEditMode"
                                                 >
                                                     <v-list-item-title>Edit</v-list-item-title>
@@ -64,7 +64,9 @@
                                                     </template>
                                                 </v-list-item>
                                                 <v-list-item
-                                                    :disabled="editMode || item.__typename === 'Body' || isDeleted"
+                                                    :disabled="
+                                                        !canCurrentlyModify || item.__typename === 'Body' || editMode
+                                                    "
                                                     @click=""
                                                 >
                                                     <v-list-item-title>Delete</v-list-item-title>
@@ -105,7 +107,7 @@
                                         >
                                             <User v-if="answers.createdBy != undefined" :user="answers.createdBy" />
                                             commented
-                                            <RelativeTime :time="answers.createdAt" />
+                                            <RelativeTimeWrapper :time="answers.createdAt" />
                                         </div>
                                         <div v-if="!isItemDeleted(answers)" class="answer-text">
                                             {{ markdownToText(answers.body) }}
@@ -133,8 +135,9 @@
                             v-if="!isDeleted"
                             v-model="itemBody"
                             :edit-mode="editMode"
+                            :editable="canCurrentlyModify"
                             class="mt-2 ml-1"
-                            @update:model-value="hasChanged = true"
+                            @update:model-value="updatedItemBody($event)"
                         />
                         <div v-else class="mt-2 ml-1 text-medium-emphasis font-italic">{{ deletedText }}</div>
                         <div v-if="editMode" class="mx-n3">
@@ -155,7 +158,7 @@
                                             @confirm="cancelComment"
                                         />
                                     </DefaultButton>
-                                    <DefaultButton color="primary" class="mx-3" @click="saveComment"
+                                    <DefaultButton color="primary" class="mx-3" @click="saveComment(itemBody)"
                                         >Save</DefaultButton
                                     >
                                 </template>
@@ -174,7 +177,7 @@
 import { PropType, inject, ref, computed } from "vue";
 import TimelineItemBase, { TimelineItemType } from "./TimelineItemBase.vue";
 import User from "@/components/info/User.vue";
-import RelativeTime from "../RelativeTime.vue";
+import RelativeTimeWrapper from "../RelativeTimeWrapper.vue";
 import Markdown from "@/components/Markdown.vue";
 import { useClient } from "@/graphql/client";
 import { withErrorMessage } from "@/util/withErrorMessage";
@@ -182,6 +185,7 @@ import ConfirmationDialog from "@/components/dialog/ConfirmationDialog.vue";
 import { markdownToText } from "@/util/markdownToText";
 import { useRouter } from "vue-router";
 import { issueKey } from "@/util/keys";
+import { CommentTimelineInfoFragment } from "@/graphql/generated";
 
 export type Comment = (
     | Omit<TimelineItemType<"IssueComment">, "createdBy">
@@ -201,6 +205,10 @@ const props = defineProps({
     selected: {
         type: Boolean,
         default: false
+    },
+    isModerator: {
+        type: Boolean,
+        required: true
     }
 });
 const emit = defineEmits<{
@@ -227,6 +235,7 @@ const answersId = computed(() => {
     }
     return null;
 });
+
 const answers = computed(() => {
     const id = answersId.value;
     if (id != undefined) {
@@ -234,9 +243,14 @@ const answers = computed(() => {
     }
     return null;
 });
+
 const isDeleted = computed(() => {
     const item = props.item;
     return isItemDeleted(item);
+});
+
+const canCurrentlyModify = computed(() => {
+    return props.isModerator && !isDeleted.value;
 });
 
 function isItemDeleted(item: Comment) {
@@ -247,20 +261,30 @@ function activateEditMode() {
     editMode.value = true;
 }
 
-async function saveComment() {
+async function updatedItemBody(value: string) {
+    hasChanged.value = true;
+    if (canCurrentlyModify.value && !editMode.value) {
+        saveComment(value);
+    }
+}
+
+async function saveComment(newContent: string) {
+    let newItem: CommentTimelineInfoFragment;
     if (props.item.__typename === "Body") {
         const newBody = await withErrorMessage(
-            () => client.updateBody({ id: props.item.id, body: itemBody.value }),
+            () => client.updateBody({ id: props.item.id, body: newContent }),
             "Error updating body"
         );
-        emit("updateItem", newBody.updateBody.body!);
+        newItem = newBody.updateBody.body;
     } else {
         const newComment = await withErrorMessage(
-            () => client.updateIssueComment({ id: props.item.id, body: itemBody.value }),
+            () => client.updateIssueComment({ id: props.item.id, body: newContent }),
             "Error updating comment"
         );
-        emit("updateItem", newComment.updateIssueComment.issueComment);
+        newItem = newComment.updateIssueComment.issueComment!;
     }
+    props.item.bodyLastEditedAt = newItem.bodyLastEditedAt;
+    props.item.bodyLastEditedBy = newItem.bodyLastEditedBy;
     editMode.value = false;
 }
 

@@ -19,6 +19,7 @@ import PriorityChangedEvent from "./PriorityChangedEvent.vue";
 type TimelineItemProps = {
     item: any;
     selected: boolean;
+    isModerator: boolean;
 };
 
 type TimelineItemEvents = {
@@ -48,12 +49,21 @@ const timelineItems: Record<string, Component> = {
 export default function TimelineItem(props: TimelineItemProps, context: SetupContext<TimelineItemEvents>) {
     const item = props.item;
     const selected = props.selected;
-    return h(timelineItems[item.__typename] ?? "TODO", { item, selected });
+    const isModerator = props.isModerator;
+    return h(timelineItems[item.__typename] ?? "TODO", { item, selected, isModerator });
 }
 
 TimelineItem.props = {
     item: {
         type: Object,
+        required: true
+    },
+    selected: {
+        type: Boolean,
+        required: true
+    },
+    isModerator: {
+        type: Boolean,
         required: true
     }
 };

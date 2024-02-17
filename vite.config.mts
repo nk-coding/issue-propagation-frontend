@@ -10,7 +10,12 @@ import { fileURLToPath, URL } from "node:url";
 export default defineConfig({
     plugins: [
         vue({
-            template: { transformAssetUrls }
+            template: {
+                transformAssetUrls,
+                compilerOptions: {
+                    isCustomElement: (tag) => ["task-lists", "relative-time"].includes(tag)
+                }
+            }
         }),
         // https://github.com/vuetifyjs/vuetify-loader/tree/next/packages/vite-plugin
         vuetify({
@@ -45,5 +50,8 @@ export default defineConfig({
                 rewrite: (path) => path.replace(/^\/api\/login/, "")
             }
         }
+    },
+    optimizeDeps: {
+        exclude: ["vuetify", "@github/task-lists-element"],
     }
 });
