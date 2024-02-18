@@ -1,5 +1,4 @@
 <template>
-    <v-divider />
     <EditableCompartment
         :name="name"
         save-button

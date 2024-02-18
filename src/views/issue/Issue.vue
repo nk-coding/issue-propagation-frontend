@@ -49,7 +49,7 @@
                 />
                 <div class="pt-3" />
             </div>
-            <v-sheet class="sidebar ml-8 mr-3 mb-3" color="surface-container" rounded="xl">
+            <v-sheet class="sidebar ml-8 mr-3 mb-3 pa-1" color="surface-container" rounded="xl">
                 <EditableCompartment
                     name="Type"
                     :editable="!!issue.manageIssues"
@@ -72,7 +72,7 @@
                         />
                     </template>
                 </EditableCompartment>
-                <v-divider />
+                <v-divider class="mx-3" />
                 <EditableCompartment
                     name="State"
                     :editable="!!issue.manageIssues"
@@ -95,7 +95,7 @@
                         />
                     </template>
                 </EditableCompartment>
-                <v-divider />
+                <v-divider class="mx-3" />
                 <EditableCompartment name="Labels" :editable="!!issue.manageIssues">
                     <template #display>
                         <Label v-for="label in labels" :label="label" class="mr-1" />
@@ -132,7 +132,7 @@
                         />
                     </template>
                 </EditableCompartment>
-                <v-divider />
+                <v-divider class="mx-3" />
                 <TypedEditableCompartment
                     name="Assignments"
                     name-inline="assignment"
@@ -175,7 +175,7 @@
                         />
                     </template>
                 </TypedEditableCompartment>
-                <v-divider />
+                <v-divider class="mx-3" />
                 <EditableCompartment
                     name="Priority"
                     :editable="!!issue.manageIssues"
@@ -198,7 +198,7 @@
                         />
                     </template>
                 </EditableCompartment>
-                <v-divider />
+                <v-divider class="mx-3" />
                 <TypedEditableCompartment
                     name="Outgoing Relations"
                     name-inline="relation"
@@ -249,7 +249,7 @@
                         />
                     </template>
                 </TypedEditableCompartment>
-                <v-divider />
+                <v-divider class="mx-3" />
                 <TypedEditableCompartment
                     name="Incoming Relations"
                     name-inline="relation"
@@ -260,7 +260,7 @@
                         <IssueInfo v-if="item.issue != undefined" :issue="item.issue!" class="d-block my-2 ml-2" />
                     </template>
                 </TypedEditableCompartment>
-                <v-divider />
+                <v-divider class="mx-3" />
                 <EditableCompartment name="Affects" :editable="!!issue.manageIssues">
                     <template #display>
                         <div v-for="itemGroup in groupedAffectedEntities">
@@ -305,6 +305,7 @@
                         />
                     </template>
                 </EditableCompartment>
+                <v-divider class="mx-3" />
                 <TemplatedFieldEditableCompartment
                     v-for="field in templatedFields"
                     :key="field.name"
