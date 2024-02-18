@@ -1,5 +1,6 @@
 <template>
     <PaginatedList
+        name="labels"
         :item-manager="itemManager"
         :sort-fields="Object.keys(sortFields)"
         :to="() => undefined"

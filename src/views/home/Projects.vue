@@ -1,5 +1,6 @@
 <template>
     <PaginatedList
+        name="projects"
         :item-manager="itemManager"
         :sort-fields="Object.keys(sortFields)"
         :to="(project: Project) => projectRoute(project)"

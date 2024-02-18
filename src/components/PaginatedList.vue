@@ -26,6 +26,7 @@
             </div>
         </div>
         <div class="list-container flex-grow-1 px-3">
+            <div v-if="currentItems.length == 0" class="text-medium-emphasis">No {{ name }} found</div>
             <CustomList :items="currentItems" :to="to">
                 <template #item="{ item }">
                     <slot name="item" :item="item" />
@@ -86,6 +87,10 @@ const props = defineProps({
         type: Array as PropType<any[]>,
         required: false,
         default: () => []
+    },
+    name: {
+        type: String,
+        required: true
     }
 });
 

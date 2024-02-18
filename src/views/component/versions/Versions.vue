@@ -1,5 +1,6 @@
 <template>
     <PaginatedList
+        name="versions"
         :item-manager="itemManager"
         :sort-fields="Object.keys(sortFields)"
         :to="(componentVersion: ComponentVersion) => componentVersionRoute(componentVersion)"
