@@ -7,7 +7,11 @@
         :dependencies="modifiedLabels"
     >
         <template #item="{ item }">
-            <ListItem :title="item.name" :subtitle="item.description">
+            <ListItem
+                :title="item.name"
+                :subtitle="item.description || 'No description provided'"
+                :italic-subtitle="!item.description"
+            >
                 <template #prepend>
                     <v-icon :color="item.color" class="mr-2" icon="mdi-circle" />
                 </template>

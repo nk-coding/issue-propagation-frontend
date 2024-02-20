@@ -6,7 +6,11 @@
         :to="(componentVersion: ComponentVersion) => componentVersionRoute(componentVersion)"
     >
         <template #item="{ item }">
-            <ListItem :title="item.name" :subtitle="item.description">
+            <ListItem
+                :title="item.name"
+                :subtitle="item.description || 'No description provided'"
+                :italic-subtitle="!item.description"
+            >
                 <template #append>
                     <div class="text-medium-emphasis mr-2">v{{ item.version }}</div>
                     <div class="text-medium-emphasis issue-container">

@@ -6,7 +6,11 @@
         :to="(project: Project) => projectRoute(project)"
     >
         <template #item="{ item }">
-            <ListItem :title="item.name" :subtitle="item.description">
+            <ListItem
+                :title="item.name"
+                :subtitle="item.description || 'No description provided'"
+                :italic-subtitle="!item.description"
+            >
                 <template #append>
                     <div class="text-medium-emphasis issue-container">
                         <v-icon icon="mdi-alert-circle-outline" />

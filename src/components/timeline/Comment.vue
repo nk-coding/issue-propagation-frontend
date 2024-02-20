@@ -132,14 +132,16 @@
                             </div>
                         </v-expand-transition>
                         <Markdown
-                            v-if="!isDeleted"
+                            v-if="!isDeleted && !!itemBody"
                             v-model="itemBody"
                             :edit-mode="editMode"
                             :editable="canCurrentlyModify"
                             class="mt-2 ml-1"
                             @update:model-value="updatedItemBody($event)"
                         />
-                        <div v-else class="mt-2 ml-1 text-medium-emphasis font-italic">{{ deletedText }}</div>
+                        <div class="mt-2 ml-1 text-medium-emphasis font-italic">
+                            {{ isDeleted ? deletedText : noDescriptionText }}
+                        </div>
                         <div v-if="editMode" class="mx-n3">
                             <v-divider />
                             <div class="d-flex justify-end mt-2">
@@ -227,6 +229,7 @@ const client = useClient();
 const router = useRouter();
 
 const deletedText = "This comment has been deleted";
+const noDescriptionText = "No description provided";
 
 const answersId = computed(() => {
     const item = props.item;

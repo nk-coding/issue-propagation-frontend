@@ -10,7 +10,14 @@
                 </slot>
             </div>
             <slot name="subtitle">
-                <div class="text-medium-emphasis text-body-2">{{ subtitle }}</div>
+                <div
+                    class="text-medium-emphasis text-body-2"
+                    :class="{
+                        'font-italic': italicSubtitle
+                    }"
+                >
+                    {{ subtitle }}
+                </div>
             </slot>
         </div>
         <slot name="append" />
@@ -27,6 +34,11 @@ defineProps({
         type: String,
         required: false,
         default: ""
+    },
+    italicSubtitle: {
+        type: Boolean,
+        required: false,
+        default: false
     }
 });
 </script>
