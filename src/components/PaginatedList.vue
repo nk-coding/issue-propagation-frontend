@@ -26,7 +26,9 @@
             </div>
         </div>
         <div class="list-container flex-grow-1 px-3">
-            <div v-if="currentItems.length == 0" class="text-medium-emphasis">No {{ name }} found</div>
+            <div v-if="currentItems.length == 0 && loadedInitially" class="text-medium-emphasis">
+                No {{ name }} found
+            </div>
             <CustomList :items="currentItems" :to="to">
                 <template #item="{ item }">
                     <slot name="item" :item="item" />
@@ -98,6 +100,7 @@ const searchString = ref("");
 const transformedSearchQuery = computed(() => transformSearchQuery(searchString.value));
 const currentSortField = ref(props.sortFields[0]) as Ref<S>;
 const sortAscending = ref(props.sortAscendingInitially);
+const loadedInitially = ref(false);
 
 const pageCount = ref(0);
 const currentPage = ref(1);
@@ -138,6 +141,7 @@ async function updateItems(resetPage: boolean) {
         props.itemCount,
         currentPage.value - 1
     );
+    loadedInitially.value = true;
     currentItems.value = items;
     pageCount.value = Math.ceil(count / props.itemCount);
 }
