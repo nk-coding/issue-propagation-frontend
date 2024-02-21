@@ -1,19 +1,17 @@
 <template>
-    <custom-router-link
-        v-if="isLinkable"
-        :to="location"
-        :text="title"
-        :tooltip="affectedEntity.description"
-        class="text-high-emphasis"
-    />
-    <span v-else class="text-high-emphasis">{{ title }}</span>
+    <v-chip color="primary" :prepend-icon="icon" :to="location">
+        {{ affectedEntity.name }}
+        <v-tooltip v-if="affectedEntity.description" activator="parent" location="bottom">
+            {{ affectedEntity.description }}
+        </v-tooltip>
+    </v-chip>
 </template>
 <script setup lang="ts">
 import { DefaultAffectedByIssueInfoFragment } from "@/graphql/generated";
+import { mapAffectedByIssueTypeToIcon } from "@/util/mapAffectedByIssueTypeToIcon";
 import { computed } from "vue";
 import { PropType } from "vue";
 import { RouteLocationRaw } from "vue-router";
-import CustomRouterLink from "../CustomRouterLink.vue";
 
 const props = defineProps({
     affectedEntity: {
@@ -22,16 +20,11 @@ const props = defineProps({
     }
 });
 
-const isLinkable = computed(() => {
-    const type = props.affectedEntity.__typename;
-    return type === "Component" || type === "Project";
+const icon = computed(() => {
+    return mapAffectedByIssueTypeToIcon(props.affectedEntity.__typename);
 });
 
-const title = computed(() => {
-    return `${props.affectedEntity.name} [${props.affectedEntity.__typename}]`;
-});
-
-const location = computed<RouteLocationRaw>(() => {
+const location = computed<RouteLocationRaw | undefined>(() => {
     const type = props.affectedEntity.__typename;
     const id = props.affectedEntity.id;
     if (type === "Component") {
@@ -49,7 +42,7 @@ const location = computed<RouteLocationRaw>(() => {
             }
         };
     } else {
-        throw new Error(`Unknown affected entity type: ${type}`);
+        return undefined;
     }
 });
 </script>

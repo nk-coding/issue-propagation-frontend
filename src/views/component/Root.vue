@@ -76,7 +76,7 @@ const leftSidebarItems = computed(() => {
                     to: componentPath("component-details-general")
                 },
                 {
-                    icon: "mdi-source-commit-start",
+                    icon: "$interface",
                     name: "Interfaces",
                     color: "secondary",
                     to: componentPath("component-details-interfaces")

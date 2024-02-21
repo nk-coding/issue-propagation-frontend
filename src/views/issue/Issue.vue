@@ -96,6 +96,63 @@
                     </template>
                 </EditableCompartment>
                 <v-divider class="mx-2" />
+                <EditableCompartment
+                    name="Components & Projects"
+                    :editable="!!issue.manageIssues"
+                    close-on-value-change
+                    :model-value="issue.state"
+                >
+                    <template #display>
+                        <AffectedByIssue
+                            v-for="onTrackable in trackables"
+                            :affected-entity="onTrackable"
+                            class="mr-1"
+                        />
+                    </template>
+                    <template #edit>
+                        <div v-for="onTrackable in trackables">
+                            <v-list-item
+                                class="px-0 py-2"
+                                :title="onTrackable.name"
+                                :subtitle="onTrackable.description"
+                            >
+                                <template #title>
+                                    <v-list-item-title class="mb-1">{{ onTrackable.name }}</v-list-item-title>
+                                </template>
+                                <template #prepend>
+                                    <v-icon
+                                        color="primary"
+                                        class="mr-2 full-opacity"
+                                        :icon="mapAffectedByIssueTypeToIcon(onTrackable.__typename)"
+                                    />
+                                </template>
+                                <template #append>
+                                    <IconButton
+                                        @click="removeFromTrackable(onTrackable.id)"
+                                        :disabled="onTrackable.id == trackable?.id"
+                                    >
+                                        <v-icon icon="mdi-close" />
+                                        <v-tooltip activator="parent"> Remove from trackable </v-tooltip>
+                                    </IconButton>
+                                </template>
+                            </v-list-item>
+                            <v-divider />
+                        </div>
+                        <TrackableAutocomplete
+                            :ignore="trackables.map((trackable) => trackable.id)"
+                            :dependency="[trackables]"
+                            :disabled="!issue.exportIssues"
+                            :menu-mode="!!issue.exportIssues ? 'repeating' : undefined"
+                            hide-details
+                            class="mt-3 mb-2"
+                            label="Add to trackable"
+                            autofocus
+                            auto-select-first
+                            @selected-item="addToTrackable"
+                        />
+                    </template>
+                </EditableCompartment>
+                <v-divider class="mx-2" />
                 <EditableCompartment name="Labels" :editable="!!issue.manageIssues">
                     <template #display>
                         <Label v-for="label in labels" :label="label" class="mr-1" />
@@ -267,8 +324,8 @@
                             <span class="text-subtitle-2">
                                 {{ itemGroup?.type }}
                             </span>
-                            <div v-for="item in itemGroup.items">
-                                <AffectedByIssue :affected-entity="item" class="d-block my-2 ml-2" />
+                            <div>
+                                <AffectedByIssue v-for="item in itemGroup.items" :affected-entity="item" class="mr-1" />
                             </div>
                         </div>
                     </template>
@@ -276,9 +333,14 @@
                         <div v-for="affectedEntity in affectedEntities">
                             <v-list-item class="px-0 py-2" :subtitle="affectedEntity.description">
                                 <template #title>
-                                    <v-list-item-title class="mb-1">{{
-                                        `${affectedEntity.name} [${affectedEntity.__typename}]`
-                                    }}</v-list-item-title>
+                                    <v-list-item-title class="mb-1">{{ affectedEntity.name }}</v-list-item-title>
+                                </template>
+                                <template #prepend>
+                                    <v-icon
+                                        color="primary"
+                                        class="mr-2 full-opacity"
+                                        :icon="mapAffectedByIssueTypeToIcon(affectedEntity.__typename)"
+                                    />
                                 </template>
                                 <template #append>
                                     <IconButton @click="removeAffectedEntity(affectedEntity.id)">
@@ -345,6 +407,7 @@ import {
     DefaultAffectedByIssueInfoFragment,
     DefaultIssueInfoFragment,
     DefaultLabelInfoFragment,
+    DefaultTrackableInfoFragment,
     DefaultUserInfoFragment,
     GropiusUserFilterInput,
     OutgoingRelationTimelineInfoFragment
@@ -364,6 +427,8 @@ import AffectedByIssueAutocomplete from "@/components/input/AffectedByIssueAutoc
 import LabelAutocomplete from "@/components/input/LabelAutocomplete.vue";
 import AffectedByIssue from "@/components/info/AffectedByIssue.vue";
 import TemplatedFieldEditableCompartment from "@/components/TemplatedFieldEditableCompartment.vue";
+import { mapAffectedByIssueTypeToIcon } from "@/util/mapAffectedByIssueTypeToIcon";
+import TrackableAutocomplete from "@/components/input/TrackableAutocomplete.vue";
 
 export type Issue = NodeReturnType<"getIssue", "Issue">;
 
@@ -413,6 +478,7 @@ provide(issueKey, issue);
 
 const timeline = computed(() => issue.value!.timelineItems.nodes);
 const labels = computed(() => issue.value!.labels.nodes);
+const trackables = computed(() => issue.value!.trackables.nodes);
 const outgoingRelations = computed(() => issue.value!.outgoingRelations.nodes);
 const assignments = computed(() => issue.value!.assignments.nodes);
 const affectedEntities = computed(() => issue.value!.affects.nodes);
@@ -757,6 +823,32 @@ async function updateTemplatedField(name: string, value: any) {
             field.value = event?.newValue ?? value;
             break;
         }
+    }
+}
+
+async function addToTrackable(trackable: DefaultTrackableInfoFragment) {
+    const trackableId = trackable.id;
+    const event = await withErrorMessage(async () => {
+        const res = await client.addIssueToTrackable({ issue: issueId.value, trackable: trackableId });
+        return res.addIssueToTrackable.addedToTrackableEvent;
+    }, "Error adding issue to component or project");
+    addTimelineItem(event);
+    if (event != undefined) {
+        trackables.value.push(event.addedToTrackable!);
+    } else {
+        reloadIssue();
+    }
+}
+
+async function removeFromTrackable(trackableId: string) {
+    const event = await withErrorMessage(async () => {
+        const res = await client.removeIssueFromTrackable({ issue: issueId.value, trackable: trackableId });
+        return res.removeIssueFromTrackable.removedFromTrackableEvent;
+    }, "Error removing issue from component or project");
+    addTimelineItem(event);
+    const index = trackables.value.findIndex((trackable) => trackable.id == trackableId);
+    if (index != -1) {
+        trackables.value.splice(index, 1);
     }
 }
 </script>

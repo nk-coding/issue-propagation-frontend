@@ -15,6 +15,10 @@ import Assignment from "./Assignment.vue";
 import AssignmentTypeChangedEvent from "./AssignmentTypeChangedEvent.vue";
 import RemovedAssignmentEvent from "./RemovedAssignmentEvent.vue";
 import PriorityChangedEvent from "./PriorityChangedEvent.vue";
+import AddedToTrackableEvent from "./AddedToTrackableEvent.vue";
+import RemovedFromTrackableEvent from "./RemovedFromTrackableEvent.vue";
+import AddedAffectedEntityEvent from "./AddedAffectedEntityEvent.vue";
+import RemovedAffectedEntityEvent from "./RemovedAffectedEntityEvent.vue";
 
 type TimelineItemProps = {
     item: any;
@@ -43,7 +47,11 @@ const timelineItems: Record<string, Component> = {
     Assignment: Assignment,
     AssignmentTypeChangedEvent: AssignmentTypeChangedEvent,
     RemovedAssignmentEvent: RemovedAssignmentEvent,
-    PriorityChangedEvent: PriorityChangedEvent
+    PriorityChangedEvent: PriorityChangedEvent,
+    AddedToTrackableEvent: AddedToTrackableEvent,
+    RemovedFromTrackableEvent: RemovedFromTrackableEvent,
+    AddedAffectedEntityEvent: AddedAffectedEntityEvent,
+    RemovedAffectedEntityEvent: RemovedAffectedEntityEvent
 };
 
 export default function TimelineItem(props: TimelineItemProps, context: SetupContext<TimelineItemEvents>) {

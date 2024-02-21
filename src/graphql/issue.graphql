@@ -102,6 +102,11 @@ query getIssue($id: ID!) {
             priority {
                 ...DefaultIssuePriorityInfo
             }
+            trackables {
+                nodes {
+                    ...DefaultTrackableInfo
+                }
+            }
             templatedFields {
                 name
                 value
@@ -116,6 +121,7 @@ query getIssue($id: ID!) {
             manageIssues: hasPermission(permission: MANAGE_ISSUES)
             comment: hasPermission(permission: COMMENT)
             moderator: hasPermission(permission: MODERATOR)
+            exportIssues: hasPermission(permission: EXPORT_ISSUES)
         }
     }
 }

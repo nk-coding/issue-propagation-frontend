@@ -19757,6 +19757,7 @@ export type GetIssueQuery = {
               manageIssues: boolean;
               comment: boolean;
               moderator: boolean;
+              exportIssues: boolean;
               createdBy:
                   | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
                   | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
@@ -20981,6 +20982,13 @@ export type GetIssueQuery = {
                   description: string;
                   value: number;
               } | null;
+              trackables: {
+                  __typename?: "TrackableConnection";
+                  nodes: Array<
+                      | { __typename: "Component"; id: string; name: string; description: string }
+                      | { __typename: "Project"; id: string; name: string; description: string }
+                  >;
+              };
               templatedFields: Array<{ __typename?: "JSONField"; name: string; value?: any | null }>;
               template: {
                   __typename?: "IssueTemplate";
@@ -24339,6 +24347,7 @@ export type DefaultTrackableInfoFragment =
 export type SearchTrackablesQueryVariables = Exact<{
     query: Scalars["String"]["input"];
     count: Scalars["Int"]["input"];
+    filter?: InputMaybe<TrackableFilterInput>;
 }>;
 
 export type SearchTrackablesQuery = {
@@ -24347,6 +24356,54 @@ export type SearchTrackablesQuery = {
         | { __typename: "Component"; id: string; name: string; description: string }
         | { __typename: "Project"; id: string; name: string; description: string }
     >;
+};
+
+export type AddIssueToTrackableMutationVariables = Exact<{
+    issue: Scalars["ID"]["input"];
+    trackable: Scalars["ID"]["input"];
+}>;
+
+export type AddIssueToTrackableMutation = {
+    __typename?: "Mutation";
+    addIssueToTrackable: {
+        __typename?: "AddIssueToTrackablePayload";
+        addedToTrackableEvent?: {
+            __typename: "AddedToTrackableEvent";
+            id: string;
+            createdAt: any;
+            addedToTrackable?:
+                | { __typename: "Component"; id: string; name: string; description: string }
+                | { __typename: "Project"; id: string; name: string; description: string }
+                | null;
+            createdBy:
+                | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+                | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+        } | null;
+    };
+};
+
+export type RemoveIssueFromTrackableMutationVariables = Exact<{
+    issue: Scalars["ID"]["input"];
+    trackable: Scalars["ID"]["input"];
+}>;
+
+export type RemoveIssueFromTrackableMutation = {
+    __typename?: "Mutation";
+    removeIssueFromTrackable: {
+        __typename?: "RemoveIssueFromTrackablePayload";
+        removedFromTrackableEvent?: {
+            __typename: "RemovedFromTrackableEvent";
+            id: string;
+            createdAt: any;
+            removedFromTrackable?:
+                | { __typename: "Component"; id: string; name: string; description: string }
+                | { __typename: "Project"; id: string; name: string; description: string }
+                | null;
+            createdBy:
+                | { __typename?: "GropiusUser"; id: string; username: string; displayName: string; avatar: any }
+                | { __typename?: "IMSUser"; id: string; username?: string | null; displayName: string; avatar: any };
+        } | null;
+    };
 };
 
 export type GetCurrentUserQueryVariables = Exact<{ [key: string]: never }>;
@@ -25749,6 +25806,11 @@ export const GetIssueDocument = gql`
                 priority {
                     ...DefaultIssuePriorityInfo
                 }
+                trackables {
+                    nodes {
+                        ...DefaultTrackableInfo
+                    }
+                }
                 templatedFields {
                     name
                     value
@@ -25763,6 +25825,7 @@ export const GetIssueDocument = gql`
                 manageIssues: hasPermission(permission: MANAGE_ISSUES)
                 comment: hasPermission(permission: COMMENT)
                 moderator: hasPermission(permission: MODERATOR)
+                exportIssues: hasPermission(permission: EXPORT_ISSUES)
             }
         }
     }
@@ -25777,6 +25840,7 @@ export const GetIssueDocument = gql`
     ${DefaultIssueTypeInfoFragmentDoc}
     ${DefaultIssueStateInfoFragmentDoc}
     ${DefaultIssuePriorityInfoFragmentDoc}
+    ${DefaultTrackableInfoFragmentDoc}
     ${DefaultIssueTemplateInfoFragmentDoc}
 `;
 export const UpdateBodyDocument = gql`
@@ -26200,12 +26264,32 @@ export const SearchRelationTemplatesDocument = gql`
     ${DefaultRelationTemplateInfoFragmentDoc}
 `;
 export const SearchTrackablesDocument = gql`
-    query searchTrackables($query: String!, $count: Int!) {
-        searchTrackables(query: $query, first: $count) {
+    query searchTrackables($query: String!, $count: Int!, $filter: TrackableFilterInput) {
+        searchTrackables(query: $query, first: $count, filter: $filter) {
             ...DefaultTrackableInfo
         }
     }
     ${DefaultTrackableInfoFragmentDoc}
+`;
+export const AddIssueToTrackableDocument = gql`
+    mutation addIssueToTrackable($issue: ID!, $trackable: ID!) {
+        addIssueToTrackable(input: { issue: $issue, trackable: $trackable }) {
+            addedToTrackableEvent {
+                ...AddedToTrackableEventTimelineInfo
+            }
+        }
+    }
+    ${AddedToTrackableEventTimelineInfoFragmentDoc}
+`;
+export const RemoveIssueFromTrackableDocument = gql`
+    mutation removeIssueFromTrackable($issue: ID!, $trackable: ID!) {
+        removeIssueFromTrackable(input: { issue: $issue, trackable: $trackable }) {
+            removedFromTrackableEvent {
+                ...RemovedFromTrackableEventTimelineInfo
+            }
+        }
+    }
+    ${RemovedFromTrackableEventTimelineInfoFragmentDoc}
 `;
 export const GetCurrentUserDocument = gql`
     query getCurrentUser {
@@ -27352,6 +27436,36 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                     }),
                 "searchTrackables",
                 "query",
+                variables
+            );
+        },
+        addIssueToTrackable(
+            variables: AddIssueToTrackableMutationVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<AddIssueToTrackableMutation> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<AddIssueToTrackableMutation>(AddIssueToTrackableDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "addIssueToTrackable",
+                "mutation",
+                variables
+            );
+        },
+        removeIssueFromTrackable(
+            variables: RemoveIssueFromTrackableMutationVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<RemoveIssueFromTrackableMutation> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<RemoveIssueFromTrackableMutation>(RemoveIssueFromTrackableDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "removeIssueFromTrackable",
+                "mutation",
                 variables
             );
         },

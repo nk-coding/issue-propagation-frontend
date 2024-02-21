@@ -11,8 +11,24 @@ fragment DefaultTrackableInfo on Trackable {
     description
 }
 
-query searchTrackables($query: String!, $count: Int!) {
-    searchTrackables(query: $query, first: $count) {
+query searchTrackables($query: String!, $count: Int!, $filter: TrackableFilterInput) {
+    searchTrackables(query: $query, first: $count, filter: $filter) {
         ...DefaultTrackableInfo
+    }
+}
+
+mutation addIssueToTrackable($issue: ID!, $trackable: ID!) {
+    addIssueToTrackable(input: { issue: $issue, trackable: $trackable }) {
+        addedToTrackableEvent {
+            ...AddedToTrackableEventTimelineInfo
+        }
+    }
+}
+
+mutation removeIssueFromTrackable($issue: ID!, $trackable: ID!) {
+    removeIssueFromTrackable(input: { issue: $issue, trackable: $trackable }) {
+        removedFromTrackableEvent {
+            ...RemovedFromTrackableEventTimelineInfo
+        }
     }
 }
