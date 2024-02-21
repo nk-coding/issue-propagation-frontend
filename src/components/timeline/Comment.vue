@@ -132,14 +132,14 @@
                             </div>
                         </v-expand-transition>
                         <Markdown
-                            v-if="!isDeleted && !!itemBody"
+                            v-if="!isDeleted && (!!itemBody || editMode)"
                             v-model="itemBody"
                             :edit-mode="editMode"
                             :editable="canCurrentlyModify"
                             class="mt-2 ml-1"
                             @update:model-value="updatedItemBody($event)"
                         />
-                        <div class="mt-2 ml-1 text-medium-emphasis font-italic">
+                        <div v-else class="mt-2 ml-1 text-medium-emphasis font-italic">
                             {{ isDeleted ? deletedText : noDescriptionText }}
                         </div>
                         <div v-if="editMode" class="mx-n3">
