@@ -452,7 +452,11 @@ const issue = computedAsync(
             () => client.getIssue({ id: issueId.value }),
             `Error loading issue: (${dependency})`
         );
-        return res.node as Issue;
+        const issue = res.node as Issue;
+        const timeline = issue.timelineItems.nodes;
+        const body = timeline.find((item) => item.__typename == "Body")!;
+        issue.timelineItems.nodes = [body, ...timeline.filter((item) => item.__typename != "Body")];
+        return issue;
     },
     null,
     {
