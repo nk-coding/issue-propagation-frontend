@@ -6,6 +6,8 @@ import { pushErrorMessage } from "@/util/withErrorMessage";
 import { TokenScope } from "@/views/auth/model";
 import { ClientReturnType, useClient } from "@/graphql/client";
 import { ClientError } from "graphql-request";
+import { Mutex } from "async-mutex";
+import { shallowRef } from "vue";
 
 interface GlobalUserPermissions {
     canCreateProjects: boolean;
@@ -16,6 +18,8 @@ interface GlobalUserPermissions {
 
 export const useAppStore = defineStore("app", {
     state: () => ({
+        tokenRefreshLock: shallowRef(new Mutex()),
+        accessTokenLock: shallowRef(new Mutex()),
         user: undefined as undefined | (ClientReturnType<"getCurrentUser">["currentUser"] & GlobalUserPermissions),
         accessToken: useLocalStorage<string>("accessToken", ""),
         refreshToken: useLocalStorage<string>("refreshToken", ""),
@@ -70,35 +74,39 @@ export const useAppStore = defineStore("app", {
             }
         },
         async forceTokenRefresh(): Promise<void> {
-            try {
-                const tokenResponse = (
-                    await axios.post("/api/login/authenticate/oauth/this-does-not-matter/token", {
-                        grant_type: "refresh_token",
-                        refresh_token: this.refreshToken,
-                        client_id: await this.getClientId()
-                    })
-                ).data;
-                this.accessToken = tokenResponse.access_token;
-                this.refreshToken = tokenResponse.refresh_token;
-            } catch {
-                this.accessToken = "";
-                this.refreshToken = "";
-                pushErrorMessage("Could not refresh access token.");
-            }
+            await this.tokenRefreshLock.runExclusive(async () => {
+                try {
+                    const tokenResponse = (
+                        await axios.post("/api/login/authenticate/oauth/this-does-not-matter/token", {
+                            grant_type: "refresh_token",
+                            refresh_token: this.refreshToken,
+                            client_id: await this.getClientId()
+                        })
+                    ).data;
+                    this.accessToken = tokenResponse.access_token;
+                    this.refreshToken = tokenResponse.refresh_token;
+                } catch {
+                    this.accessToken = "";
+                    this.refreshToken = "";
+                    pushErrorMessage("Could not refresh access token.");
+                }
+            });
         },
         async getAccessToken(): Promise<string | undefined> {
-            if (!this.refreshToken || !this.accessToken) {
-                return undefined;
-            }
-            const decoded = jwtDecode(this.accessToken);
-            if (decoded.exp != undefined && decoded.exp * 1000 - Date.now() < 30 * 1000) {
-                try {
-                    await this.forceTokenRefresh();
-                } catch (err) {
+            return await this.accessTokenLock.runExclusive(async () => {
+                if (!this.refreshToken || !this.accessToken) {
                     return undefined;
                 }
-            }
-            return this.accessToken!;
+                const decoded = jwtDecode(this.accessToken);
+                if (decoded.exp != undefined && decoded.exp * 1000 - Date.now() < 30 * 1000) {
+                    try {
+                        await this.forceTokenRefresh();
+                    } catch (err) {
+                        return undefined;
+                    }
+                }
+                return this.accessToken!;
+            });
         },
         async isLoggedIn(): Promise<boolean> {
             try {
