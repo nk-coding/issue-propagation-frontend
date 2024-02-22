@@ -15,7 +15,7 @@ export function mapAffectedByIssueTypeToIcon(type: DefaultAffectedByIssueInfoFra
         case "InterfaceSpecificationVersion":
             return "$interface-specification-version";
         case "InterfacePart":
-            return "$interface"; //TODO
+            return "$interface-part";
         default:
             throw new Error(`Unknown affectedByIssue type: ${type}`);
     }
