@@ -14,6 +14,7 @@
             <IssueStateSegmentedButton v-model="issueStateIndices" />
         </template>
         <CreateIssueDialog :trackable="trackableId" @created-issue="(issue: IdObject) => selectIssue(issue)" />
+        <ImportIssueDialog :trackable="trackableId" @imported-issue="(issue: IdObject) => selectIssue(issue)" />
     </PaginatedList>
 </template>
 <script lang="ts" setup>
@@ -25,6 +26,7 @@ import { IssueListItemInfoFragment, IssueOrderField, OrderDirection } from "@/gr
 import CreateIssueDialog from "@/components/dialog/CreateIssueDialog.vue";
 import IssueListItem from "@/components/IssueListItem.vue";
 import IssueStateSegmentedButton from "@/components/input/IssueStateSegmentedButton.vue";
+import ImportIssueDialog from "@/components/dialog/ImportIssueDialog.vue";
 
 type Trackable = NodeReturnType<"getIssueList", "Component">;
 type Issue = IssueListItemInfoFragment;

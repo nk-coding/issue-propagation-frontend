@@ -41,6 +41,7 @@
             v-model="labelToUpdate"
             @updated-label="modifiedLabels.push($event.id)"
         />
+        <ImportLabelDialog :trackable="trackableId" @imported-label="modifiedLabels.push($event.id)" />
     </PaginatedList>
 </template>
 <script lang="ts" setup>
@@ -48,12 +49,14 @@ import ListItem from "@/components/ListItem.vue";
 import PaginatedList, { ItemManager } from "@/components/PaginatedList.vue";
 import ConfirmationDialog from "@/components/dialog/ConfirmationDialog.vue";
 import CreateLabelDialog from "@/components/dialog/CreateLabelDialog.vue";
+import ImportLabelDialog from "@/components/dialog/ImportLabelDialog.vue";
 import UpdateLabelDialog from "@/components/dialog/UpdateLabelDialog.vue";
 import { NodeReturnType, useClient } from "@/graphql/client";
 import { LabelOrderField, OrderDirection } from "@/graphql/generated";
 import { trackableKey } from "@/util/keys";
 import { withErrorMessage } from "@/util/withErrorMessage";
 import { inject } from "vue";
+import { watch } from "vue";
 import { computed, ref } from "vue";
 import { useRoute } from "vue-router";
 
@@ -67,6 +70,14 @@ const trackableId = computed(() => route.params.trackable as string);
 const trackable = inject(trackableKey);
 const modifiedLabels = ref<string[]>([]);
 const labelToUpdate = ref<Label | undefined>();
+
+watch(
+    modifiedLabels,
+    () => {
+        console.log("Modified labels", modifiedLabels.value);
+    },
+    { deep: true }
+);
 
 const sortFields = {
     Name: LabelOrderField.Name,
@@ -110,7 +121,6 @@ async function removeLabel(labelId: string) {
             label: labelId,
             trackable: trackableId.value
         });
-        modifiedLabels.value.push(labelId);
     }, "Error removing label from trackable");
     modifiedLabels.value.push(labelId);
 }

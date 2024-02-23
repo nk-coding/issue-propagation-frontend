@@ -1,41 +1,43 @@
 <template>
-    <v-card-title class="pl-4">Create {{ itemName }}</v-card-title>
-    <v-stepper
-        class="stepper d-flex flex-column"
-        v-model="step"
-        :items="['General', 'Templated fields']"
-        hide-actions
-        :bg-color="color"
-        flat
-    >
-        <template v-slot:item.1>
-            <v-form v-model="form1Valid" validate-on="blur">
-                <slot name="general" />
-            </v-form>
-        </template>
-        <template v-slot:item.2>
-            <v-form ref="form2" v-model="form2Valid">
-                <slot name="templatedFields" />
-            </v-form>
-        </template>
-    </v-stepper>
-    <v-card-actions>
-        <DefaultButton variant="text" color="" :disabled="step == 1" @click="previous">Previous</DefaultButton>
-        <v-spacer />
-        <DefaultButton variant="text" color="" @click="!isDirty && $emit('cancel')">
-            Cancel
-            <ConfirmationDialog
-                v-if="isDirty"
-                :title="`Discard ${itemName}?`"
-                :message="`Are you sure you want to discard this ${itemName}?`"
-                confirm-text="Discard"
-                @confirm="$emit('cancel')"
-            />
-        </DefaultButton>
-        <DefaultButton variant="text" color="primary" @click="next">
-            {{ step == 1 ? "Next" : confirmationMessage }}
-        </DefaultButton>
-    </v-card-actions>
+    <v-card color="surface-elevated-3" rounded="lger" class="pa-3 issue-dialog" elevation="0">
+        <v-card-title class="pl-4">Create {{ itemName }}</v-card-title>
+        <v-stepper
+            class="stepper d-flex flex-column"
+            v-model="step"
+            :items="['General', 'Templated fields']"
+            hide-actions
+            :bg-color="color"
+            flat
+        >
+            <template v-slot:item.1>
+                <v-form v-model="form1Valid" validate-on="blur">
+                    <slot name="general" />
+                </v-form>
+            </template>
+            <template v-slot:item.2>
+                <v-form ref="form2" v-model="form2Valid">
+                    <slot name="templatedFields" />
+                </v-form>
+            </template>
+        </v-stepper>
+        <v-card-actions>
+            <DefaultButton variant="text" color="" :disabled="step == 1" @click="previous">Previous</DefaultButton>
+            <v-spacer />
+            <DefaultButton variant="text" color="" @click="!isDirty && $emit('cancel')">
+                Cancel
+                <ConfirmationDialog
+                    v-if="isDirty"
+                    :title="`Discard ${itemName}?`"
+                    :message="`Are you sure you want to discard this ${itemName}?`"
+                    confirm-text="Discard"
+                    @confirm="$emit('cancel')"
+                />
+            </DefaultButton>
+            <DefaultButton variant="text" color="primary" @click="next">
+                {{ step == 1 ? "Next" : confirmationMessage }}
+            </DefaultButton>
+        </v-card-actions>
+    </v-card>
 </template>
 <script setup lang="ts">
 import { ref } from "vue";
@@ -100,7 +102,12 @@ function previous() {
     step.value = step.value - 1;
 }
 </script>
-<style scoped>
+<style scoped lang="scss">
+@use "@/styles/settings.scss";
+.issue-dialog {
+    width: min(1000px, calc(100vw - 3 * settings.$side-bar-width));
+}
+
 .stepper :deep(.v-window) {
     overflow-y: auto;
     margin: 10px;

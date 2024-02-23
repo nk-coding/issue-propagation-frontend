@@ -1,41 +1,39 @@
 <template>
     <v-dialog v-model="createComponentVersionDialog" persistent width="auto">
-        <v-card color="surface-elevated-3" rounded="lger" class="pa-3 create-component-dialog" elevation="0">
-            <TemplatedNodeDialogContent
-                item-name="component version"
-                confirmation-message="Create component version"
-                :form-meta="meta"
-                :form-validate="validate"
-                color="surface-elevated-3"
-                @cancel="cancelCreateComponentVersion"
-                @confirm="createComponentVersion"
-            >
-                <template #general>
-                    <div class="d-flex flex-wrap mx-n2">
-                        <v-text-field
-                            v-model="name"
-                            v-bind="nameProps"
-                            label="Name"
-                            class="wrap-input mx-2 mb-1 flex-1-1-0"
-                        />
-                        <v-text-field
-                            v-model="version"
-                            v-bind="versionProps"
-                            label="Version"
-                            class="wrap-input mx-2 mb-1 flex-1-1-0"
-                        />
-                    </div>
-                    <v-textarea v-model="description" v-bind="descriptionProps" label="Description" class="mb-1" />
-                </template>
-                <template #templatedFields>
-                    <TemplatedFieldsInput
-                        v-if="templateValue != undefined"
-                        :schema="templateValue.templateFieldSpecifications"
-                        :model-value="templatedFields"
+        <TemplatedNodeDialogContent
+            item-name="component version"
+            confirmation-message="Create component version"
+            :form-meta="meta"
+            :form-validate="validate"
+            color="surface-elevated-3"
+            @cancel="cancelCreateComponentVersion"
+            @confirm="createComponentVersion"
+        >
+            <template #general>
+                <div class="d-flex flex-wrap mx-n2">
+                    <v-text-field
+                        v-model="name"
+                        v-bind="nameProps"
+                        label="Name"
+                        class="wrap-input mx-2 mb-1 flex-1-1-0"
                     />
-                </template>
-            </TemplatedNodeDialogContent>
-        </v-card>
+                    <v-text-field
+                        v-model="version"
+                        v-bind="versionProps"
+                        label="Version"
+                        class="wrap-input mx-2 mb-1 flex-1-1-0"
+                    />
+                </div>
+                <v-textarea v-model="description" v-bind="descriptionProps" label="Description" class="mb-1" />
+            </template>
+            <template #templatedFields>
+                <TemplatedFieldsInput
+                    v-if="templateValue != undefined"
+                    :schema="templateValue.templateFieldSpecifications"
+                    :model-value="templatedFields"
+                />
+            </template>
+        </TemplatedNodeDialogContent>
     </v-dialog>
 </template>
 <script setup lang="ts">
@@ -129,9 +127,3 @@ function cancelCreateComponentVersion() {
     createComponentVersionDialog.value = false;
 }
 </script>
-<style scoped lang="scss">
-@use "@/styles/settings.scss";
-.create-component-dialog {
-    width: min(1000px, calc(100vw - 3 * settings.$side-bar-width));
-}
-</style>

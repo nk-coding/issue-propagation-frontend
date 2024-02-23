@@ -1,72 +1,70 @@
 <template>
     <v-dialog v-model="createIssueDialog" persistent width="auto">
-        <v-card color="surface-elevated-3" rounded="lger" class="pa-3 create-issue-dialog" elevation="0">
-            <TemplatedNodeDialogContent
-                item-name="issue"
-                confirmation-message="Create issue"
-                :form-meta="meta"
-                :form-validate="validate"
-                color="surface-elevated-3"
-                @cancel="cancelCreateIssue"
-                @confirm="createIssue"
-            >
-                <template #general>
-                    <div class="d-flex">
-                        <v-card
-                            v-if="icon"
-                            variant="outlined"
-                            rounded="default"
-                            height="48px"
-                            width="48px"
-                            class="mr-2 icon-container"
-                        >
-                            <IssueIcon :issue="icon" class="issue-icon" />
-                        </v-card>
-                        <v-text-field v-model="title" v-bind="titleProps" label="Title" class="mb-1" />
-                    </div>
-                    <div class="d-flex flex-wrap mx-n2">
-                        <IssueTemplateAutocomplete
-                            v-model="template"
-                            v-bind="templateProps"
-                            class="wrap-input mx-2 mb-1 flex-1-1-0"
-                        />
-                        <IssueTypeAutocomplete
-                            v-model="type"
-                            v-bind="typeProps"
-                            :template="template"
-                            :disabled="!template"
-                            class="wrap-input mx-2 mb-1 flex-1-1-0"
-                            @selected-item="onSelectedType"
-                        />
-                        <IssueStateAutocomplete
-                            v-model="state"
-                            v-bind="stateProps"
-                            :template="template"
-                            :disabled="!template"
-                            class="wrap-input mx-2 mb-1 flex-1-1-0"
-                            @selected-item="onSelectedState"
-                        />
-                    </div>
-                    <SimpleField
-                        v-model="body"
-                        v-bind="bodyProps"
+        <TemplatedNodeDialogContent
+            item-name="issue"
+            confirmation-message="Create issue"
+            :form-meta="meta"
+            :form-validate="validate"
+            color="surface-elevated-3"
+            @cancel="cancelCreateIssue"
+            @confirm="createIssue"
+        >
+            <template #general>
+                <div class="d-flex">
+                    <v-card
+                        v-if="icon"
                         variant="outlined"
-                        label="Body"
-                        color="primary"
-                        class="markdown-field"
+                        rounded="default"
+                        height="48px"
+                        width="48px"
+                        class="mr-2 icon-container"
                     >
-                        <Markdown v-model="body" v-bind="bodyProps" edit-mode editable class="full-width ma-2" />
-                    </SimpleField>
-                </template>
-                <template #templatedFields>
-                    <TemplatedFieldsInputVue
-                        v-if="templateValue != undefined"
-                        :schema="templateValue.templateFieldSpecifications"
-                        :model-value="templatedFields"
+                        <IssueIcon :issue="icon" class="issue-icon" />
+                    </v-card>
+                    <v-text-field v-model="title" v-bind="titleProps" label="Title" class="mb-1" />
+                </div>
+                <div class="d-flex flex-wrap mx-n2">
+                    <IssueTemplateAutocomplete
+                        v-model="template"
+                        v-bind="templateProps"
+                        class="wrap-input mx-2 mb-1 flex-1-1-0"
                     />
-                </template>
-            </TemplatedNodeDialogContent>
-        </v-card>
+                    <IssueTypeAutocomplete
+                        v-model="type"
+                        v-bind="typeProps"
+                        :template="template"
+                        :disabled="!template"
+                        class="wrap-input mx-2 mb-1 flex-1-1-0"
+                        @selected-item="onSelectedType"
+                    />
+                    <IssueStateAutocomplete
+                        v-model="state"
+                        v-bind="stateProps"
+                        :template="template"
+                        :disabled="!template"
+                        class="wrap-input mx-2 mb-1 flex-1-1-0"
+                        @selected-item="onSelectedState"
+                    />
+                </div>
+                <SimpleField
+                    v-model="body"
+                    v-bind="bodyProps"
+                    variant="outlined"
+                    label="Body"
+                    color="primary"
+                    class="markdown-field"
+                >
+                    <Markdown v-model="body" v-bind="bodyProps" edit-mode editable class="full-width ma-2" />
+                </SimpleField>
+            </template>
+            <template #templatedFields>
+                <TemplatedFieldsInputVue
+                    v-if="templateValue != undefined"
+                    :schema="templateValue.templateFieldSpecifications"
+                    :model-value="templatedFields"
+                />
+            </template>
+        </TemplatedNodeDialogContent>
     </v-dialog>
 </template>
 <script setup lang="ts">
@@ -212,11 +210,6 @@ function onSelectedState(state: { isOpen: boolean }) {
 }
 </script>
 <style scoped lang="scss">
-@use "@/styles/settings.scss";
-.create-issue-dialog {
-    width: min(1000px, calc(100vw - 3 * settings.$side-bar-width));
-}
-
 .wrap-input {
     min-width: 200px;
 }

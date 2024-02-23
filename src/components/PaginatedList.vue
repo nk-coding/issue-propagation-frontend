@@ -125,6 +125,7 @@ watch(currentPage, async () => {
 watch(
     () => props.dependencies,
     async () => {
+        console.log("Dependencies changed");
         await updateItems(false);
     },
     { deep: true }
@@ -141,6 +142,7 @@ async function updateItems(resetPage: boolean) {
         props.itemCount,
         currentPage.value - 1
     );
+    console.log(items);
     loadedInitially.value = true;
     currentItems.value = items;
     pageCount.value = Math.ceil(count / props.itemCount);

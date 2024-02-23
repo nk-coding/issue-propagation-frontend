@@ -50,6 +50,24 @@ query firstLabels($issue: ID!, $count: Int!) {
     }
 }
 
+query searchTrackableLabels($trackable: ID!, $query: String!, $count: Int!) {
+    searchLabels(query: $query, first: $count, filter: { trackables: { any: { id: { eq: $trackable } } } }) {
+        ...DefaultLabelInfo
+    }
+}
+
+query firstTrackableLabels($trackable: ID!, $count: Int!) {
+    node(id: $trackable) {
+        ... on Trackable {
+            labels(first: $count, orderBy: { field: NAME }) {
+                nodes {
+                    ...DefaultLabelInfo
+                }
+            }
+        }
+    }
+}
+
 mutation addLabelToIssue($issue: ID!, $label: ID!) {
     addLabelToIssue(input: { issue: $issue, label: $label }) {
         addedLabelEvent {
@@ -84,6 +102,12 @@ mutation updateLabel($input: UpdateLabelInput!) {
 
 mutation removeLabelFromTrackable($trackable: ID!, $label: ID!) {
     removeLabelFromTrackable(input: { label: $label, trackable: $trackable }) {
+        __typename
+    }
+}
+
+mutation addLabelToTrackable($trackable: ID!, $label: ID!) {
+    addLabelToTrackable(input: { label: $label, trackable: $trackable }) {
         __typename
     }
 }

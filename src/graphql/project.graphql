@@ -30,6 +30,7 @@ query getProject($id: ID!) {
             createIssues: hasPermission(permission: CREATE_ISSUES)
             manageLabels: hasPermission(permission: MANAGE_LABELS)
             manageComponents: hasPermission(permission: MANAGE_COMPONENTS)
+            manageIssues: hasPermission(permission: MANAGE_ISSUES)
         }
     }
 }

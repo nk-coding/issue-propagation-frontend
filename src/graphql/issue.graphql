@@ -251,3 +251,15 @@ query searchIssues($query: String!, $count: Int!, $trackable: ID!) {
         ...DefaultIssueInfo
     }
 }
+
+query firstIssues($count: Int!, $trackable: ID!) {
+    node(id: $trackable) {
+        ... on Trackable {
+            issues(orderBy: { field: LAST_UPDATED_AT, direction: DESC }, first: $count) {
+                nodes {
+                    ...DefaultIssueInfo
+                }
+            }
+        }
+    }
+}

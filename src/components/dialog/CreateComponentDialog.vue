@@ -1,46 +1,39 @@
 <template>
     <v-dialog v-model="createComponentDialog" persistent width="auto">
-        <v-card color="surface-elevated-3" rounded="lger" class="pa-3 create-component-dialog" elevation="0">
-            <TemplatedNodeDialogContent
-                item-name="component"
-                confirmation-message="Create component"
-                :form-meta="meta"
-                :form-validate="validate"
-                color="surface-elevated-3"
-                @cancel="cancelCreateComponent"
-                @confirm="createComponent"
-            >
-                <template #general>
-                    <div class="d-flex flex-wrap mx-n2">
-                        <v-text-field
-                            v-model="name"
-                            v-bind="nameProps"
-                            label="Name"
-                            class="wrap-input mx-2 mb-1 flex-1-1-0"
-                        />
-                        <ComponentTemplateAutocomplete
-                            v-model="template"
-                            v-bind="templateProps"
-                            class="wrap-input mx-2 mb-1 flex-1-1-0"
-                        />
-                    </div>
-                    <v-textarea v-model="description" v-bind="descriptionProps" label="Description" class="mb-1" />
+        <TemplatedNodeDialogContent
+            item-name="component"
+            confirmation-message="Create component"
+            :form-meta="meta"
+            :form-validate="validate"
+            color="surface-elevated-3"
+            @cancel="cancelCreateComponent"
+            @confirm="createComponent"
+        >
+            <template #general>
+                <div class="d-flex flex-wrap mx-n2">
                     <v-text-field
-                        v-model="repositoryURL"
-                        v-bind="repositoryURLProps"
-                        label="Repository URL"
-                        class="mb-1"
+                        v-model="name"
+                        v-bind="nameProps"
+                        label="Name"
+                        class="wrap-input mx-2 mb-1 flex-1-1-0"
                     />
-                </template>
-                <template #templatedFields>
-                    <TemplatedFieldsInput
-                        v-if="templateValue != undefined"
-                        :schema="templateValue.templateFieldSpecifications"
-                        :model-value="templatedFields"
+                    <ComponentTemplateAutocomplete
+                        v-model="template"
+                        v-bind="templateProps"
+                        class="wrap-input mx-2 mb-1 flex-1-1-0"
                     />
-                </template>
-            </TemplatedNodeDialogContent>
-        </v-card>
+                </div>
+                <v-textarea v-model="description" v-bind="descriptionProps" label="Description" class="mb-1" />
+                <v-text-field v-model="repositoryURL" v-bind="repositoryURLProps" label="Repository URL" class="mb-1" />
+            </template>
+            <template #templatedFields>
+                <TemplatedFieldsInput
+                    v-if="templateValue != undefined"
+                    :schema="templateValue.templateFieldSpecifications"
+                    :model-value="templatedFields"
+                />
+            </template>
+        </TemplatedNodeDialogContent>
     </v-dialog>
 </template>
 <script setup lang="ts">
@@ -132,9 +125,3 @@ function cancelCreateComponent() {
     createComponentDialog.value = false;
 }
 </script>
-<style scoped lang="scss">
-@use "@/styles/settings.scss";
-.create-component-dialog {
-    width: min(1000px, calc(100vw - 3 * settings.$side-bar-width));
-}
-</style>

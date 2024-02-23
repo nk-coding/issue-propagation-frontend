@@ -106,6 +106,15 @@ const rightSidebarItems = computed(() => {
                     onClick: () => {
                         eventBus?.emit("create-issue", undefined);
                     }
+                },
+                {
+                    icon: "mdi-import",
+                    description: "Import issue",
+                    color: "secondary",
+                    disabled: !(component?.value?.manageIssues ?? false),
+                    onClick: () => {
+                        eventBus?.emit("import-issue", undefined);
+                    }
                 }
             ]
         ];
@@ -133,6 +142,15 @@ const rightSidebarItems = computed(() => {
                     disabled: !(component?.value?.manageLabels ?? false),
                     onClick: () => {
                         eventBus?.emit("create-label", undefined);
+                    }
+                },
+                {
+                    icon: "mdi-import",
+                    description: "Import label",
+                    color: "secondary",
+                    disabled: !(component?.value?.manageLabels ?? false),
+                    onClick: () => {
+                        eventBus?.emit("import-label", undefined);
                     }
                 }
             ]

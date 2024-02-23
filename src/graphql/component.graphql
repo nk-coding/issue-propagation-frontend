@@ -29,6 +29,7 @@ query getComponent($id: ID!) {
             ...OpenIssueCount
             createIssues: hasPermission(permission: CREATE_ISSUES)
             manageLabels: hasPermission(permission: MANAGE_LABELS)
+            manageIssues: hasPermission(permission: MANAGE_ISSUES)
             admin: hasPermission(permission: ADMIN)
         }
     }

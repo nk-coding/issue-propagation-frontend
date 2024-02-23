@@ -296,11 +296,12 @@
                         />
                     </template>
                     <template #ItemAutocomplete>
-                        <IssueAutocomplete
+                        <ExternalIssueAutocomplete
                             label="Add related issue"
                             class="mb-2"
                             hide-details
                             autofocus
+                            menu-mode="repeating"
                             :initial-context="trackable ?? undefined"
                             @selected-item="addOutgoingRelation"
                         />
@@ -418,7 +419,7 @@ import IssueStateAutocomplete from "@/components/input/IssueStateAutocomplete.vu
 import IssuePriorityAutocomplete from "@/components/input/IssuePriorityAutocomplete.vue";
 import IssueInfo from "@/components/info/Issue.vue";
 import IssueRelationTypeAutocomplete from "@/components/input/IssueRelationTypeAutocomplete.vue";
-import IssueAutocomplete from "@/components/input/IssueAutocomplete.vue";
+import ExternalIssueAutocomplete from "@/components/input/ExternalIssueAutocomplete.vue";
 import TypedEditableCompartment from "@/components/TypedEditableCompartment.vue";
 import AssignmentTypeAutocomplete from "@/components/input/AssignmentTypeAutocomplete.vue";
 import GropiusUserAutocomplete from "@/components/input/GropiusUserAutocomplete.vue";
