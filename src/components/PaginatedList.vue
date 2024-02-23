@@ -148,14 +148,13 @@ async function updateItems(resetPage: boolean) {
 </script>
 <style scoped>
 .sort-container {
-    flex: 1 0 0;
-    max-width: 300px;
+    flex: 0 1 300px;
     overflow-x: clip;
-    transition: flex-grow 0.6s ease-in-out;
+    transition: flex-basis 0.6s ease-in-out;
 }
 
 .sort-container.hidden {
-    flex-grow: 0;
+    flex-basis: 0px;
 }
 
 .search-field {
