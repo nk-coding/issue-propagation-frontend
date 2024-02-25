@@ -114,13 +114,19 @@ async function addUser(id: string) {
     emit("updated-permission");
 }
 
-async function updateAllUsers(allUsers: boolean | null) {
-    await withErrorMessage(async () => {
-        return props.updatePermission({
-            id: model.value!.id,
-            allUsers: allUsers ?? false
-        });
-    }, "Failed to update all users permission setting");
+async function updateAllUsers(checked: boolean | null) {
+    const newValue = checked ?? false;
+    try {
+        await withErrorMessage(async () => {
+            return props.updatePermission({
+                id: model.value!.id,
+                allUsers: newValue
+            });
+        }, "Failed to update all users permission setting");
+    } catch (e) {
+        allUsers.value = !newValue;
+        throw e;
+    }
     emit("updated-permission");
 }
 
