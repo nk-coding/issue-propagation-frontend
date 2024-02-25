@@ -5,6 +5,7 @@
         node-name="component"
         :remove-permission="removePermission"
         :update-permission="updatePermission"
+        :create-permission="createPermission"
     >
         <template #import-dialog="{ importedPermission }">
             <ImportComponentPermissionDialog
@@ -17,8 +18,9 @@
 <script lang="ts" setup>
 import { ItemManager } from "@/components/PaginatedList.vue";
 import PermissionList, {
-    PermissionUpdateFunction,
-    PermissionUpdateFunctionInput
+    CreatePermissionFunctionInput,
+    UpdatePermissionFunction,
+    UpdatePermissionFunctionInput
 } from "@/components/PermissionList.vue";
 import ImportComponentPermissionDialog from "@/components/dialog/ImportComponentPermissionDialog.vue";
 import { NodeReturnType, useClient } from "@/graphql/client";
@@ -29,6 +31,7 @@ import {
     OrderDirection
 } from "@/graphql/generated";
 import { permissionSortFields } from "@/util/permissionSortFields";
+import { IdObject } from "@/util/types";
 import { computed } from "vue";
 import { useRoute } from "vue-router";
 
@@ -74,7 +77,14 @@ async function removePermission(id: string): Promise<void> {
     await client.removeComponentPermissionFromComponent({ component: componentId.value, componentPermission: id });
 }
 
-async function updatePermission(input: PermissionUpdateFunctionInput<ComponentPermissionEntry>): Promise<void> {
+async function updatePermission(input: UpdatePermissionFunctionInput<ComponentPermissionEntry>): Promise<void> {
     await client.updateComponentPermission({ input });
+}
+
+async function createPermission(input: CreatePermissionFunctionInput<ComponentPermissionEntry>): Promise<IdObject> {
+    const res = await client.createComponentPermission({
+        input: { nodesWithPermission: [componentId.value], ...input }
+    });
+    return res.createComponentPermission.componentPermission;
 }
 </script>

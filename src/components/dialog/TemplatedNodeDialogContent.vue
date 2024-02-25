@@ -1,5 +1,5 @@
 <template>
-    <v-card color="surface-elevated-3" rounded="lger" class="pa-3 issue-dialog" elevation="0">
+    <v-card :color="color" rounded="lger" class="pa-3 templated-node-dialog" elevation="0">
         <v-card-title class="pl-4">Create {{ itemName }}</v-card-title>
         <v-stepper
             class="d-flex flex-column"
@@ -104,7 +104,7 @@ function previous() {
 </script>
 <style scoped lang="scss">
 @use "@/styles/settings.scss";
-.issue-dialog {
+.templated-node-dialog {
     width: min(1000px, calc(100vw - 3 * settings.$side-bar-width));
 }
 </style>

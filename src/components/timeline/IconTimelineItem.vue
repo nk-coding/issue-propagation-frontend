@@ -29,14 +29,14 @@ defineProps({
 $icon-container-size: 36px;
 
 .timeline-icon-wrapper {
-    background-color: rgb(var(--v-theme-surface-container-highest));
+    background-color: rgb(var(--v-theme-outline-variant));
     width: $icon-container-size;
     height: $icon-container-size;
     position: relative;
 }
 
 .timeline-icon {
-    color: rgba(var(--v-theme-on-surface-container), 0.35);
+    color: rgb(var(--v-theme-outline));
     position: absolute;
     margin: auto;
     top: 0;

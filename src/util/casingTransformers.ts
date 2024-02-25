@@ -1,3 +1,3 @@
 export function enumToRegularCase(enumValue: string) {
-    return enumValue.replace("_", " ").replace(/(?<=.)[A-Z]/g, (char) => char.toLowerCase());
+    return enumValue.replaceAll("_", " ").replace(/(?<=.)[A-Z]/g, (char) => char.toLowerCase());
 }

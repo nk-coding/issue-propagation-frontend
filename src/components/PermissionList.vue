@@ -13,7 +13,7 @@
                 :italic-subtitle="!item.description"
             >
                 <template #append-line>
-                    <div class="d-flex flex-wrap chip-container">
+                    <div class="d-flex flex-wrap chip-container mt-1">
                         <v-chip v-for="entry in item.entries" color="primary" size="small" class="flex-shrink-0">
                             {{ enumToRegularCase(entry) }}
                         </v-chip>
@@ -55,6 +55,11 @@
                 </template>
             </ListItem>
         </template>
+        <CreatePermissionDialog
+            :create-permission="createPermission"
+            :permission-entries="permissionEntries"
+            @created-permission="permissionDependencyCounter++"
+        />
         <ManagePermissionUsersDialog
             v-model="permissionToManageUsers"
             :update-permission="updatePermission"
@@ -88,8 +93,9 @@ import { PropType } from "vue";
 import { ref } from "vue";
 import ManagePermissionUsersDialog from "./dialog/ManagePermissionUsersDialog.vue";
 import { IdObject } from "@/util/types";
+import CreatePermissionDialog from "./dialog/CreatePermissionDialog.vue";
 
-export type PermissionUpdateFunctionInput<T> = IdObject &
+export type UpdatePermissionFunctionInput<T> = IdObject &
     Partial<{
         addedEntries: T[];
         removedEntries: T[];
@@ -98,7 +104,17 @@ export type PermissionUpdateFunctionInput<T> = IdObject &
         removedUsers: string[];
     }>;
 
-export type PermissionUpdateFunction<T> = (input: PermissionUpdateFunctionInput<T>) => Promise<void>;
+export type UpdatePermissionFunction<T> = (input: UpdatePermissionFunctionInput<T>) => Promise<void>;
+
+export type CreatePermissionFunctionInput<T> = {
+    name: string;
+    description: string;
+    entries: T[];
+    allUsers: boolean;
+    users: string[];
+};
+
+export type CreatePermissionFunction<T> = (input: CreatePermissionFunctionInput<T>) => Promise<IdObject>;
 
 const props = defineProps({
     nodeName: {
@@ -110,7 +126,7 @@ const props = defineProps({
         required: true
     },
     permissionEntries: {
-        type: Array as PropType<string[]>,
+        type: Array as PropType<E[]>,
         required: true
     },
     removePermission: {
@@ -118,7 +134,11 @@ const props = defineProps({
         required: true
     },
     updatePermission: {
-        type: Function as PropType<PermissionUpdateFunction<E>>,
+        type: Function as PropType<UpdatePermissionFunction<E>>,
+        required: true
+    },
+    createPermission: {
+        type: Function as PropType<CreatePermissionFunction<E>>,
         required: true
     }
 });

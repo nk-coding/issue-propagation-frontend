@@ -69,3 +69,11 @@ mutation updateComponentPermission($input: UpdateComponentPermissionInput!) {
         __typename
     }
 }
+
+mutation createComponentPermission($input: CreateComponentPermissionInput!) {
+    createComponentPermission(input: $input) {
+        componentPermission {
+            id
+        }
+    }
+}

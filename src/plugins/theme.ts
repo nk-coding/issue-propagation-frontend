@@ -37,7 +37,9 @@ const mainColorMappings: [string, keyof Scheme][] = [
     ["tertiary-container", "tertiaryContainer"],
     ["on-tertiary-container", "onTertiaryContainer"],
     ["error-container", "errorContainer"],
-    ["on-error-container", "onErrorContainer"]
+    ["on-error-container", "onErrorContainer"],
+    ["outline", "outline"],
+    ["outline-variant", "outlineVariant"]
 ];
 
 const surfaceColorMappings: [string, number, number][] = [

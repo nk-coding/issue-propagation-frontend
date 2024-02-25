@@ -53,12 +53,12 @@ import User from "../info/User.vue";
 import ConfirmationDialog from "./ConfirmationDialog.vue";
 import GropiusUserAutocomplete from "../input/GropiusUserAutocomplete.vue";
 import { IdObject } from "@/util/types";
-import { PermissionUpdateFunction } from "../PermissionList.vue";
+import { UpdatePermissionFunction } from "../PermissionList.vue";
 import { withErrorMessage } from "@/util/withErrorMessage";
 
 const props = defineProps({
     updatePermission: {
-        type: Function as PropType<PermissionUpdateFunction<T>>,
+        type: Function as PropType<UpdatePermissionFunction<T>>,
         required: true
     }
 });

@@ -18,7 +18,7 @@ export type TimelineItemType<T extends string> = DefaultTimelineItemInfoFragment
     position: absolute;
     margin-left: calc(settings.$timeline-offset - 1px);
     border-left: 2px solid currentColor;
-    color: rgb(var(--v-theme-surface-container-highest));
+    color: rgb(var(--v-theme-outline-variant));
     top: 0;
     bottom: 0;
 }

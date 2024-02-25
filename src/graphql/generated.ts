@@ -18448,6 +18448,18 @@ export type UpdateComponentPermissionMutation = {
     updateComponentPermission: { __typename: "UpdateComponentPermissionPayload" };
 };
 
+export type CreateComponentPermissionMutationVariables = Exact<{
+    input: CreateComponentPermissionInput;
+}>;
+
+export type CreateComponentPermissionMutation = {
+    __typename?: "Mutation";
+    createComponentPermission: {
+        __typename?: "CreateComponentPermissionPayload";
+        componentPermission: { __typename?: "ComponentPermission"; id: string };
+    };
+};
+
 export type DefaultComponentTemplateInfoFragment = {
     __typename?: "ComponentTemplate";
     id: string;
@@ -26405,6 +26417,15 @@ export const UpdateComponentPermissionDocument = gql`
         }
     }
 `;
+export const CreateComponentPermissionDocument = gql`
+    mutation createComponentPermission($input: CreateComponentPermissionInput!) {
+        createComponentPermission(input: $input) {
+            componentPermission {
+                id
+            }
+        }
+    }
+`;
 export const SearchComponentTemplatesDocument = gql`
     query searchComponentTemplates($query: String!, $count: Int!) {
         searchComponentTemplates(query: $query, first: $count, filter: { isDeprecated: { eq: false } }) {
@@ -27573,6 +27594,21 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "updateComponentPermission",
+                "mutation",
+                variables
+            );
+        },
+        createComponentPermission(
+            variables: CreateComponentPermissionMutationVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<CreateComponentPermissionMutation> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<CreateComponentPermissionMutation>(CreateComponentPermissionDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "createComponentPermission",
                 "mutation",
                 variables
             );
