@@ -29,9 +29,9 @@ import { ProjectOrderField, OrderDirection } from "@/graphql/generated";
 import { RouteLocationRaw, useRouter } from "vue-router";
 import ListItem from "@/components/ListItem.vue";
 import CreateProjectDialog from "@/components/dialog/CreateProjectDialog.vue";
+import { IdObject } from "@/util/types";
 
 type Project = ClientReturnType<"getProjectList">["projects"]["nodes"][0];
-type IdObject = { id: string };
 
 const client = useClient();
 const router = useRouter();

@@ -22,15 +22,17 @@
                         class="mr-2"
                     >
                         <v-icon icon="mdi-pencil" />
+                        <v-tooltip activator="parent" location="bottom">Edit label</v-tooltip>
                     </IconButton>
                     <IconButton :disabled="!(trackable?.manageLabels ?? false)">
                         <v-icon icon="mdi-close" />
                         <ConfirmationDialog
-                            title="Remove label from trackable?"
-                            message="Are you sure you want to remove the label from this trackable?"
+                            :title="`Remove label from ${nodeName}?`"
+                            :message="`Are you sure you want to remove the label from this ${nodeName}?`"
                             confirm-text="Remove"
                             @confirm="removeLabel(item.id)"
                         />
+                        <v-tooltip activator="parent" location="bottom">Remove label from {{ nodeName }}</v-tooltip>
                     </IconButton>
                 </template>
             </ListItem>
@@ -56,7 +58,6 @@ import { LabelOrderField, OrderDirection } from "@/graphql/generated";
 import { trackableKey } from "@/util/keys";
 import { withErrorMessage } from "@/util/withErrorMessage";
 import { inject } from "vue";
-import { watch } from "vue";
 import { computed, ref } from "vue";
 import { useRoute } from "vue-router";
 
@@ -71,13 +72,13 @@ const trackable = inject(trackableKey);
 const modifiedLabels = ref<string[]>([]);
 const labelToUpdate = ref<Label | undefined>();
 
-watch(
-    modifiedLabels,
-    () => {
-        console.log("Modified labels", modifiedLabels.value);
-    },
-    { deep: true }
-);
+const nodeName = computed(() => {
+    if (route.name?.toString().startsWith("component")) {
+        return "component";
+    } else {
+        return "project";
+    }
+});
 
 const sortFields = {
     Name: LabelOrderField.Name,

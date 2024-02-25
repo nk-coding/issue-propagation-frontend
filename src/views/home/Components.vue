@@ -29,9 +29,9 @@ import { ComponentOrderField, OrderDirection } from "@/graphql/generated";
 import { RouteLocationRaw, useRouter } from "vue-router";
 import ListItem from "@/components/ListItem.vue";
 import CreateComponentDialog from "@/components/dialog/CreateComponentDialog.vue";
+import { IdObject } from "@/util/types";
 
 type Component = ClientReturnType<"getComponentList">["components"]["nodes"][0];
-type IdObject = { id: string };
 
 const client = useClient();
 const router = useRouter();

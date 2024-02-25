@@ -74,6 +74,7 @@ import ComponentVersionAutocomplete from "@/components/input/ComponentVersionAut
 import { inject } from "vue";
 import { eventBusKey } from "@/util/keys";
 import RelationTemplateAutocomplete from "@/components/input/RelationTemplateAutocomplete.vue";
+import { IdObject } from "@/util/types";
 
 type ProjectGraph = NodeReturnType<"getProjectGraph", "Project">;
 
@@ -361,7 +362,7 @@ eventBus?.on("add-component-version-to-project", () => {
     showAddComponentVersionDialog.value = true;
 });
 
-async function addComponentVersion(componentVersion: { id: string }) {
+async function addComponentVersion(componentVersion: IdObject) {
     showAddComponentVersionDialog.value = false;
     await withErrorMessage(async () => {
         await client.addComponentVersionToProject({
@@ -387,7 +388,7 @@ function beginCreateRelation(context: CreateRelationContext) {
     showSelectRelationTemplateDialog.value = true;
 }
 
-async function createRelation(relationTemplate: { id: string }) {
+async function createRelation(relationTemplate: IdObject) {
     const context = createRelationContext.value!;
     createRelationContext.value = undefined;
     showSelectRelationTemplateDialog.value = false;

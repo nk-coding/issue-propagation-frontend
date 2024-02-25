@@ -27,10 +27,10 @@ import CreateIssueDialog from "@/components/dialog/CreateIssueDialog.vue";
 import IssueListItem from "@/components/IssueListItem.vue";
 import IssueStateSegmentedButton from "@/components/input/IssueStateSegmentedButton.vue";
 import ImportIssueDialog from "@/components/dialog/ImportIssueDialog.vue";
+import { IdObject } from "@/util/types";
 
 type Trackable = NodeReturnType<"getIssueList", "Component">;
 type Issue = IssueListItemInfoFragment;
-type IdObject = { id: string };
 
 const client = useClient();
 const router = useRouter();

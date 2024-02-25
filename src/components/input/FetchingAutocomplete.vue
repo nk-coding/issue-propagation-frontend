@@ -24,7 +24,8 @@
         </template>
     </v-autocomplete>
 </template>
-<script setup lang="ts" generic="T extends { id: string }, C extends { id: string }">
+<script setup lang="ts" generic="T extends IdObject, C extends IdObject">
+import { IdObject } from "@/util/types";
 import { onMounted, Ref, watch, ref, PropType, computed, nextTick } from "vue";
 
 export interface ListItem<T> {

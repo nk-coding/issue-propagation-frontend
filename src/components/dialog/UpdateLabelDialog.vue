@@ -19,6 +19,7 @@ import { PropType } from "vue";
 import { withErrorMessage } from "@/util/withErrorMessage";
 import LabelDialogContent, { Label } from "./LabelDialogContent.vue";
 import { computed } from "vue";
+import { IdObject } from "@/util/types";
 
 const updateLabelDialog = computed({
     get: () => model.value != null,
@@ -31,7 +32,7 @@ const updateLabelDialog = computed({
 const client = useClient();
 
 const emit = defineEmits<{
-    (event: "updated-label", label: { id: string }): void;
+    (event: "updated-label", label: IdObject): void;
 }>();
 
 defineProps({
@@ -42,7 +43,7 @@ defineProps({
 });
 
 const model = defineModel({
-    type: Object as PropType<(Label & { id: string }) | null>,
+    type: Object as PropType<(Label & IdObject) | null>,
     required: false
 });
 

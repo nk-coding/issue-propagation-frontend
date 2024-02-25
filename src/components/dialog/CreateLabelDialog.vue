@@ -18,12 +18,13 @@ import { useClient } from "@/graphql/client";
 import { ref } from "vue";
 import { withErrorMessage } from "@/util/withErrorMessage";
 import LabelDialogContent, { Label } from "./LabelDialogContent.vue";
+import { IdObject } from "@/util/types";
 
 const createLabelDialog = ref(false);
 const client = useClient();
 
 const emit = defineEmits<{
-    (event: "created-label", label: { id: string }): void;
+    (event: "created-label", label: IdObject): void;
 }>();
 
 const props = defineProps({

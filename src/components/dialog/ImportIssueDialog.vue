@@ -30,14 +30,13 @@ import ExternalIssueAutocomplete from "../input/ExternalIssueAutocomplete.vue";
 import Issue from "../info/Issue.vue";
 import { DefaultIssueInfoFragment } from "@/graphql/generated";
 import { withErrorMessage } from "@/util/withErrorMessage";
-
-type IdObject = { id: string };
+import { IdObject } from "@/util/types";
 
 const importIssueDialog = ref(false);
 const client = useClient();
 
 const emit = defineEmits<{
-    (event: "imported-issue", issue: { id: string }): void;
+    (event: "imported-issue", issue: IdObject): void;
 }>();
 
 const props = defineProps({

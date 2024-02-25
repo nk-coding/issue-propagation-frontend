@@ -51,12 +51,13 @@ import TemplatedFieldsInput, { Field } from "../input/schema/TemplatedFieldsInpu
 import { asyncComputed } from "@vueuse/core";
 import { generateDefaultData } from "../input/schema/generateDefaultData";
 import { watch } from "vue";
+import { IdObject } from "@/util/types";
 
 const createComponentDialog = ref(false);
 const client = useClient();
 
 const emit = defineEmits<{
-    (event: "created-component", component: { id: string }): void;
+    (event: "created-component", component: IdObject): void;
 }>();
 
 const schema = toTypedSchema(

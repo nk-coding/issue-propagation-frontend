@@ -94,5 +94,34 @@ html,
 .v-btn-group.segmented-button .v-btn.v-btn--variant-outlined {
     --v-border-opacity: 0.38;
 }
+
+.v-switch .v-switch__track {
+    opacity: 1;
+    box-sizing: border-box;
+}
+
+.v-switch .v-selection-control:not(.v-selection-control--dirty) .v-switch__track {
+    border: solid 2px rgba(var(--v-theme-on-surface), 0.38);
+    background-color: rgb(var(--v-theme-surface-container-highest));
+}
+
+.v-switch .v-selection-control:not(.v-selection-control--dirty) .v-switch__thumb {
+    background-color: rgba(var(--v-theme-on-surface), 0.38);
+}
+
+.v-switch .v-selection-control.v-selection-control--dirty .v-switch__thumb {
+    background-color: rgb(var(--v-theme-on-primary));
+}
+
+.v-stepper .v-window {
+    overflow-y: auto;
+    margin: 10px;
+    padding: 10px;
+}
+
+.v-stepper .v-stepper-header {
+    box-shadow: none;
+    border-bottom: thin solid rgba(var(--v-border-color), var(--v-border-opacity));
+    flex-shrink: 0;
+}
 </style>
-./util/eventBus

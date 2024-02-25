@@ -22,7 +22,7 @@ const props = defineProps({
     label: {
         type: String,
         required: false,
-        default: "Issue"
+        default: "User"
     },
     filter: {
         type: Object as PropType<GropiusUserFilterInput>,

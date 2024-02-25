@@ -11,7 +11,7 @@
             </div>
             <slot name="subtitle">
                 <div
-                    class="text-medium-emphasis text-body-2"
+                    class="text-medium-emphasis text-body-2 text-ellipses"
                     :class="{
                         'font-italic': italicSubtitle
                     }"
@@ -19,6 +19,7 @@
                     {{ subtitle }}
                 </div>
             </slot>
+            <slot name="append-line" />
         </div>
         <slot name="append" />
     </div>

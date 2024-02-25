@@ -34,9 +34,9 @@ import { RouteLocationRaw, useRoute, useRouter } from "vue-router";
 import ListItem from "@/components/ListItem.vue";
 import { computed } from "vue";
 import CreateComponentVersionDialog from "@/components/dialog/CreateComponentVersionDialog.vue";
+import { IdObject } from "@/util/types";
 
 type ComponentVersion = NodeReturnType<"getComponentVersionList", "Component">["versions"]["nodes"][0];
-type IdObject = { id: string };
 
 const client = useClient();
 const router = useRouter();

@@ -49,6 +49,7 @@ import TemplatedNodeDialogContent from "./TemplatedNodeDialogContent.vue";
 import TemplatedFieldsInput, { Field } from "../input/schema/TemplatedFieldsInput.vue";
 import { asyncComputed } from "@vueuse/core";
 import { generateDefaultData } from "../input/schema/generateDefaultData";
+import { IdObject } from "@/util/types";
 
 const createComponentVersionDialog = ref(false);
 const client = useClient();
@@ -61,7 +62,7 @@ const props = defineProps({
 });
 
 const emit = defineEmits<{
-    (event: "created-component-version", componentVersion: { id: string }): void;
+    (event: "created-component-version", componentVersion: IdObject): void;
 }>();
 
 const schema = toTypedSchema(

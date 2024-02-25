@@ -114,7 +114,7 @@
                             <v-list-item
                                 class="px-0 py-2"
                                 :title="onTrackable.name"
-                                :subtitle="onTrackable.description"
+                                :subtitle="onTrackable.description || 'No description provided'"
                             >
                                 <template #title>
                                     <v-list-item-title class="mb-1">{{ onTrackable.name }}</v-list-item-title>
@@ -159,7 +159,11 @@
                     </template>
                     <template #edit>
                         <div v-for="label in labels">
-                            <v-list-item class="px-0 py-2" :title="label.name" :subtitle="label.description">
+                            <v-list-item
+                                class="px-0 py-2"
+                                :title="label.name"
+                                :subtitle="label.description || 'No description provided'"
+                            >
                                 <template #title>
                                     <v-list-item-title class="mb-1">{{ label.name }}</v-list-item-title>
                                 </template>
@@ -332,7 +336,10 @@
                     </template>
                     <template #edit>
                         <div v-for="affectedEntity in affectedEntities">
-                            <v-list-item class="px-0 py-2" :subtitle="affectedEntity.description">
+                            <v-list-item
+                                class="px-0 py-2"
+                                :subtitle="affectedEntity.description || 'No description provided'"
+                            >
                                 <template #title>
                                     <v-list-item-title class="mb-1">{{ affectedEntity.name }}</v-list-item-title>
                                 </template>

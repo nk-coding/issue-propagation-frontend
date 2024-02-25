@@ -93,6 +93,12 @@ export default createVuetify({
             color: "primary",
             divided: true,
             border: 5
+        },
+        VSwitch: {
+            color: "primary",
+            inset: true,
+            density: "comfortable",
+            hideDetails: true
         }
     },
     components: {

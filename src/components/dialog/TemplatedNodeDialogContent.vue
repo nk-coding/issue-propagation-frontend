@@ -2,7 +2,7 @@
     <v-card color="surface-elevated-3" rounded="lger" class="pa-3 issue-dialog" elevation="0">
         <v-card-title class="pl-4">Create {{ itemName }}</v-card-title>
         <v-stepper
-            class="stepper d-flex flex-column"
+            class="d-flex flex-column"
             v-model="step"
             :items="['General', 'Templated fields']"
             hide-actions
@@ -106,17 +106,5 @@ function previous() {
 @use "@/styles/settings.scss";
 .issue-dialog {
     width: min(1000px, calc(100vw - 3 * settings.$side-bar-width));
-}
-
-.stepper :deep(.v-window) {
-    overflow-y: auto;
-    margin: 10px;
-    padding: 10px;
-}
-
-.stepper :deep(.v-stepper-header) {
-    box-shadow: none;
-    border-bottom: thin solid rgba(var(--v-border-color), var(--v-border-opacity));
-    flex-shrink: 0;
 }
 </style>

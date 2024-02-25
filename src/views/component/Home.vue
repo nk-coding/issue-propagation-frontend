@@ -53,6 +53,7 @@
 import CustomList from "@/components/CustomList.vue";
 import IssueListItem from "@/components/IssueListItem.vue";
 import { NodeReturnType, useClient } from "@/graphql/client";
+import { IdObject } from "@/util/types";
 import { withErrorMessage } from "@/util/withErrorMessage";
 import { computedAsync } from "@vueuse/core";
 import { computed } from "vue";
@@ -77,7 +78,7 @@ const component = computedAsync(
     { shallow: false }
 );
 
-function issueRoute(issue: { id: string }): RouteLocationRaw {
+function issueRoute(issue: IdObject): RouteLocationRaw {
     return {
         name: "component-issue",
         params: { issue: issue.id, trackable: componentId.value }

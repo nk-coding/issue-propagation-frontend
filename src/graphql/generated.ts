@@ -2955,7 +2955,8 @@ export enum ComponentOrderField {
 }
 
 /** NodePermission to grant specific permissions to a set of Components. */
-export type ComponentPermission = Named &
+export type ComponentPermission = BasePermission &
+    Named &
     Node & {
         __typename?: "ComponentPermission";
         /** If, the permission is granted to all users. Use with caution. */
@@ -4700,7 +4701,8 @@ export type FloatFilterInput = {
  *     READ is granted if the global admin is granted.
  *
  */
-export type GlobalPermission = Named &
+export type GlobalPermission = BasePermission &
+    Named &
     Node & {
         __typename?: "GlobalPermission";
         /** If, the permission is granted to all users. Use with caution. */
@@ -4731,6 +4733,26 @@ export type GlobalPermissionUsersArgs = {
     last?: InputMaybe<Scalars["Int"]["input"]>;
     orderBy?: InputMaybe<GropiusUserOrder>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
+};
+
+/** Filter used to filter GlobalPermission */
+export type GlobalPermissionFilterInput = {
+    /** Filter by allUsers */
+    allUsers?: InputMaybe<BooleanFilterInput>;
+    /** Connects all subformulas via and */
+    and?: InputMaybe<Array<GlobalPermissionFilterInput>>;
+    /** Filter by description */
+    description?: InputMaybe<StringFilterInput>;
+    /** Filter by id */
+    id?: InputMaybe<IdFilterInput>;
+    /** Filter by name */
+    name?: InputMaybe<StringFilterInput>;
+    /** Negates the subformula */
+    not?: InputMaybe<GlobalPermissionFilterInput>;
+    /** Connects all subformulas via or */
+    or?: InputMaybe<Array<GlobalPermissionFilterInput>>;
+    /** Filter by users */
+    users?: InputMaybe<GropiusUserListFilterInput>;
 };
 
 /**
@@ -5484,7 +5506,8 @@ export enum ImsOrderField {
 }
 
 /** NodePermission to grant specific permissions to a set of IMSs. */
-export type ImsPermission = Named &
+export type ImsPermission = BasePermission &
+    Named &
     Node & {
         __typename?: "IMSPermission";
         /** If, the permission is granted to all users. Use with caution. */
@@ -13050,7 +13073,8 @@ export enum ProjectOrderField {
 }
 
 /** NodePermission to grant specific permissions to a set of Projects. */
-export type ProjectPermission = Named &
+export type ProjectPermission = BasePermission &
+    Named &
     Node & {
         __typename?: "ProjectPermission";
         /** If, the permission is granted to all users. Use with caution. */
@@ -13290,14 +13314,20 @@ export type Query = {
     searchAffectedByIssues: Array<AffectedByIssue>;
     /** Search for nodes of type AssignmentType */
     searchAssignmentTypes: Array<AssignmentType>;
+    /** Search for nodes of type ComponentPermission */
+    searchComponentPermissions: Array<ComponentPermission>;
     /** Search for nodes of type ComponentTemplate */
     searchComponentTemplates: Array<ComponentTemplate>;
     /** Search for nodes of type ComponentVersion */
     searchComponentVersions: Array<ComponentVersion>;
     /** Search for nodes of type Component */
     searchComponents: Array<Component>;
+    /** Search for nodes of type GlobalPermission */
+    searchGlobalPermissions: Array<GlobalPermission>;
     /** Search for nodes of type GropiusUser */
     searchGropiusUsers: Array<GropiusUser>;
+    /** Search for nodes of type IMSPermission */
+    searchIMSPermissions: Array<ImsPermission>;
     /** Search for nodes of type IssuePriority */
     searchIssuePriorities: Array<IssuePriority>;
     /** Search for nodes of type IssueRelationType */
@@ -13312,6 +13342,8 @@ export type Query = {
     searchIssues: Array<Issue>;
     /** Search for nodes of type Label */
     searchLabels: Array<Label>;
+    /** Search for nodes of type ProjectPermission */
+    searchProjectPermissions: Array<ProjectPermission>;
     /** Search for nodes of type Project */
     searchProjects: Array<Project>;
     /** Search for nodes of type RelationTemplate */
@@ -13434,6 +13466,13 @@ export type QuerySearchAssignmentTypesArgs = {
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
+export type QuerySearchComponentPermissionsArgs = {
+    filter?: InputMaybe<ComponentPermissionFilterInput>;
+    first: Scalars["Int"]["input"];
+    query: Scalars["String"]["input"];
+    skip?: InputMaybe<Scalars["Int"]["input"]>;
+};
+
 export type QuerySearchComponentTemplatesArgs = {
     filter?: InputMaybe<ComponentTemplateFilterInput>;
     first: Scalars["Int"]["input"];
@@ -13455,8 +13494,22 @@ export type QuerySearchComponentsArgs = {
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
+export type QuerySearchGlobalPermissionsArgs = {
+    filter?: InputMaybe<GlobalPermissionFilterInput>;
+    first: Scalars["Int"]["input"];
+    query: Scalars["String"]["input"];
+    skip?: InputMaybe<Scalars["Int"]["input"]>;
+};
+
 export type QuerySearchGropiusUsersArgs = {
     filter?: InputMaybe<GropiusUserFilterInput>;
+    first: Scalars["Int"]["input"];
+    query: Scalars["String"]["input"];
+    skip?: InputMaybe<Scalars["Int"]["input"]>;
+};
+
+export type QuerySearchImsPermissionsArgs = {
+    filter?: InputMaybe<ImsPermissionFilterInput>;
     first: Scalars["Int"]["input"];
     query: Scalars["String"]["input"];
     skip?: InputMaybe<Scalars["Int"]["input"]>;
@@ -13506,6 +13559,13 @@ export type QuerySearchIssuesArgs = {
 
 export type QuerySearchLabelsArgs = {
     filter?: InputMaybe<LabelFilterInput>;
+    first: Scalars["Int"]["input"];
+    query: Scalars["String"]["input"];
+    skip?: InputMaybe<Scalars["Int"]["input"]>;
+};
+
+export type QuerySearchProjectPermissionsArgs = {
+    filter?: InputMaybe<ProjectPermissionFilterInput>;
     first: Scalars["Int"]["input"];
     query: Scalars["String"]["input"];
     skip?: InputMaybe<Scalars["Int"]["input"]>;
@@ -18094,6 +18154,298 @@ export type CreateComponentMutationVariables = Exact<{
 export type CreateComponentMutation = {
     __typename?: "Mutation";
     createComponent: { __typename?: "CreateComponentPayload"; component: { __typename?: "Component"; id: string } };
+};
+
+export type GetComponentPermissionListQueryVariables = Exact<{
+    orderBy: ComponentPermissionOrder;
+    count: Scalars["Int"]["input"];
+    skip: Scalars["Int"]["input"];
+    component: Scalars["ID"]["input"];
+}>;
+
+export type GetComponentPermissionListQuery = {
+    __typename?: "Query";
+    node?:
+        | { __typename?: "AddedAffectedEntityEvent" }
+        | { __typename?: "AddedArtefactEvent" }
+        | { __typename?: "AddedLabelEvent" }
+        | { __typename?: "AddedToPinnedIssuesEvent" }
+        | { __typename?: "AddedToTrackableEvent" }
+        | { __typename?: "AggregatedIssue" }
+        | { __typename?: "AggregatedIssueRelation" }
+        | { __typename?: "Artefact" }
+        | { __typename?: "ArtefactTemplate" }
+        | { __typename?: "Assignment" }
+        | { __typename?: "AssignmentType" }
+        | { __typename?: "AssignmentTypeChangedEvent" }
+        | { __typename?: "Body" }
+        | {
+              __typename?: "Component";
+              permissions: {
+                  __typename?: "ComponentPermissionConnection";
+                  totalCount: number;
+                  nodes: Array<{
+                      __typename?: "ComponentPermission";
+                      id: string;
+                      name: string;
+                      description: string;
+                      entries: Array<ComponentPermissionEntry>;
+                      allUsers: boolean;
+                      users: { __typename?: "GropiusUserConnection"; totalCount: number };
+                  }>;
+              };
+          }
+        | { __typename?: "ComponentPermission" }
+        | { __typename?: "ComponentTemplate" }
+        | { __typename?: "ComponentVersion" }
+        | { __typename?: "ComponentVersionTemplate" }
+        | { __typename?: "DueDateChangedEvent" }
+        | { __typename?: "EstimatedTimeChangedEvent" }
+        | { __typename?: "FillStyle" }
+        | { __typename?: "GlobalPermission" }
+        | { __typename?: "GropiusUser" }
+        | { __typename?: "IMS" }
+        | { __typename?: "IMSIssue" }
+        | { __typename?: "IMSIssueTemplate" }
+        | { __typename?: "IMSPermission" }
+        | { __typename?: "IMSProject" }
+        | { __typename?: "IMSProjectTemplate" }
+        | { __typename?: "IMSTemplate" }
+        | { __typename?: "IMSUser" }
+        | { __typename?: "IMSUserTemplate" }
+        | { __typename?: "IncomingRelationTypeChangedEvent" }
+        | { __typename?: "Interface" }
+        | { __typename?: "InterfaceDefinition" }
+        | { __typename?: "InterfaceDefinitionTemplate" }
+        | { __typename?: "InterfacePart" }
+        | { __typename?: "InterfacePartTemplate" }
+        | { __typename?: "InterfaceSpecification" }
+        | { __typename?: "InterfaceSpecificationDerivationCondition" }
+        | { __typename?: "InterfaceSpecificationTemplate" }
+        | { __typename?: "InterfaceSpecificationVersion" }
+        | { __typename?: "InterfaceSpecificationVersionTemplate" }
+        | { __typename?: "InterfaceTemplate" }
+        | { __typename?: "IntraComponentDependencyParticipant" }
+        | { __typename?: "IntraComponentDependencySpecification" }
+        | { __typename?: "Issue" }
+        | { __typename?: "IssueComment" }
+        | { __typename?: "IssuePriority" }
+        | { __typename?: "IssueRelation" }
+        | { __typename?: "IssueRelationType" }
+        | { __typename?: "IssueState" }
+        | { __typename?: "IssueTemplate" }
+        | { __typename?: "IssueType" }
+        | { __typename?: "Label" }
+        | { __typename?: "MetaAggregatedIssueRelation" }
+        | { __typename?: "OutgoingRelationTypeChangedEvent" }
+        | { __typename?: "PriorityChangedEvent" }
+        | { __typename?: "Project" }
+        | { __typename?: "ProjectPermission" }
+        | { __typename?: "RelatedByIssueEvent" }
+        | { __typename?: "Relation" }
+        | { __typename?: "RelationCondition" }
+        | { __typename?: "RelationTemplate" }
+        | { __typename?: "RemovedAffectedEntityEvent" }
+        | { __typename?: "RemovedArtefactEvent" }
+        | { __typename?: "RemovedAssignmentEvent" }
+        | { __typename?: "RemovedFromPinnedIssuesEvent" }
+        | { __typename?: "RemovedFromTrackableEvent" }
+        | { __typename?: "RemovedIncomingRelationEvent" }
+        | { __typename?: "RemovedLabelEvent" }
+        | { __typename?: "RemovedOutgoingRelationEvent" }
+        | { __typename?: "RemovedTemplatedFieldEvent" }
+        | { __typename?: "SpentTimeChangedEvent" }
+        | { __typename?: "StartDateChangedEvent" }
+        | { __typename?: "StateChangedEvent" }
+        | { __typename?: "StrokeStyle" }
+        | { __typename?: "TemplateChangedEvent" }
+        | { __typename?: "TemplatedFieldChangedEvent" }
+        | { __typename?: "TitleChangedEvent" }
+        | { __typename?: "TypeChangedEvent" }
+        | null;
+};
+
+export type GetFilteredComponentPermissionListQueryVariables = Exact<{
+    query: Scalars["String"]["input"];
+    count: Scalars["Int"]["input"];
+    component: Scalars["ID"]["input"];
+}>;
+
+export type GetFilteredComponentPermissionListQuery = {
+    __typename?: "Query";
+    searchComponentPermissions: Array<{
+        __typename?: "ComponentPermission";
+        id: string;
+        name: string;
+        description: string;
+        entries: Array<ComponentPermissionEntry>;
+        allUsers: boolean;
+        users: { __typename?: "GropiusUserConnection"; totalCount: number };
+    }>;
+};
+
+export type DefaultComponentPermissionInfoFragment = {
+    __typename?: "ComponentPermission";
+    id: string;
+    name: string;
+    description: string;
+    entries: Array<ComponentPermissionEntry>;
+    allUsers: boolean;
+    users: { __typename?: "GropiusUserConnection"; totalCount: number };
+};
+
+export type SearchComponentPermissionsQueryVariables = Exact<{
+    component: Scalars["ID"]["input"];
+    query: Scalars["String"]["input"];
+    count: Scalars["Int"]["input"];
+}>;
+
+export type SearchComponentPermissionsQuery = {
+    __typename?: "Query";
+    searchComponentPermissions: Array<{
+        __typename?: "ComponentPermission";
+        id: string;
+        name: string;
+        description: string;
+        entries: Array<ComponentPermissionEntry>;
+        allUsers: boolean;
+        users: { __typename?: "GropiusUserConnection"; totalCount: number };
+    }>;
+};
+
+export type FirstComponentPermissionsQueryVariables = Exact<{
+    component: Scalars["ID"]["input"];
+    count: Scalars["Int"]["input"];
+}>;
+
+export type FirstComponentPermissionsQuery = {
+    __typename?: "Query";
+    node?:
+        | { __typename?: "AddedAffectedEntityEvent" }
+        | { __typename?: "AddedArtefactEvent" }
+        | { __typename?: "AddedLabelEvent" }
+        | { __typename?: "AddedToPinnedIssuesEvent" }
+        | { __typename?: "AddedToTrackableEvent" }
+        | { __typename?: "AggregatedIssue" }
+        | { __typename?: "AggregatedIssueRelation" }
+        | { __typename?: "Artefact" }
+        | { __typename?: "ArtefactTemplate" }
+        | { __typename?: "Assignment" }
+        | { __typename?: "AssignmentType" }
+        | { __typename?: "AssignmentTypeChangedEvent" }
+        | { __typename?: "Body" }
+        | {
+              __typename?: "Component";
+              permissions: {
+                  __typename?: "ComponentPermissionConnection";
+                  nodes: Array<{
+                      __typename?: "ComponentPermission";
+                      id: string;
+                      name: string;
+                      description: string;
+                      entries: Array<ComponentPermissionEntry>;
+                      allUsers: boolean;
+                      users: { __typename?: "GropiusUserConnection"; totalCount: number };
+                  }>;
+              };
+          }
+        | { __typename?: "ComponentPermission" }
+        | { __typename?: "ComponentTemplate" }
+        | { __typename?: "ComponentVersion" }
+        | { __typename?: "ComponentVersionTemplate" }
+        | { __typename?: "DueDateChangedEvent" }
+        | { __typename?: "EstimatedTimeChangedEvent" }
+        | { __typename?: "FillStyle" }
+        | { __typename?: "GlobalPermission" }
+        | { __typename?: "GropiusUser" }
+        | { __typename?: "IMS" }
+        | { __typename?: "IMSIssue" }
+        | { __typename?: "IMSIssueTemplate" }
+        | { __typename?: "IMSPermission" }
+        | { __typename?: "IMSProject" }
+        | { __typename?: "IMSProjectTemplate" }
+        | { __typename?: "IMSTemplate" }
+        | { __typename?: "IMSUser" }
+        | { __typename?: "IMSUserTemplate" }
+        | { __typename?: "IncomingRelationTypeChangedEvent" }
+        | { __typename?: "Interface" }
+        | { __typename?: "InterfaceDefinition" }
+        | { __typename?: "InterfaceDefinitionTemplate" }
+        | { __typename?: "InterfacePart" }
+        | { __typename?: "InterfacePartTemplate" }
+        | { __typename?: "InterfaceSpecification" }
+        | { __typename?: "InterfaceSpecificationDerivationCondition" }
+        | { __typename?: "InterfaceSpecificationTemplate" }
+        | { __typename?: "InterfaceSpecificationVersion" }
+        | { __typename?: "InterfaceSpecificationVersionTemplate" }
+        | { __typename?: "InterfaceTemplate" }
+        | { __typename?: "IntraComponentDependencyParticipant" }
+        | { __typename?: "IntraComponentDependencySpecification" }
+        | { __typename?: "Issue" }
+        | { __typename?: "IssueComment" }
+        | { __typename?: "IssuePriority" }
+        | { __typename?: "IssueRelation" }
+        | { __typename?: "IssueRelationType" }
+        | { __typename?: "IssueState" }
+        | { __typename?: "IssueTemplate" }
+        | { __typename?: "IssueType" }
+        | { __typename?: "Label" }
+        | { __typename?: "MetaAggregatedIssueRelation" }
+        | { __typename?: "OutgoingRelationTypeChangedEvent" }
+        | { __typename?: "PriorityChangedEvent" }
+        | { __typename?: "Project" }
+        | { __typename?: "ProjectPermission" }
+        | { __typename?: "RelatedByIssueEvent" }
+        | { __typename?: "Relation" }
+        | { __typename?: "RelationCondition" }
+        | { __typename?: "RelationTemplate" }
+        | { __typename?: "RemovedAffectedEntityEvent" }
+        | { __typename?: "RemovedArtefactEvent" }
+        | { __typename?: "RemovedAssignmentEvent" }
+        | { __typename?: "RemovedFromPinnedIssuesEvent" }
+        | { __typename?: "RemovedFromTrackableEvent" }
+        | { __typename?: "RemovedIncomingRelationEvent" }
+        | { __typename?: "RemovedLabelEvent" }
+        | { __typename?: "RemovedOutgoingRelationEvent" }
+        | { __typename?: "RemovedTemplatedFieldEvent" }
+        | { __typename?: "SpentTimeChangedEvent" }
+        | { __typename?: "StartDateChangedEvent" }
+        | { __typename?: "StateChangedEvent" }
+        | { __typename?: "StrokeStyle" }
+        | { __typename?: "TemplateChangedEvent" }
+        | { __typename?: "TemplatedFieldChangedEvent" }
+        | { __typename?: "TitleChangedEvent" }
+        | { __typename?: "TypeChangedEvent" }
+        | null;
+};
+
+export type AddComponentPermissionToComponentMutationVariables = Exact<{
+    component: Scalars["ID"]["input"];
+    componentPermission: Scalars["ID"]["input"];
+}>;
+
+export type AddComponentPermissionToComponentMutation = {
+    __typename?: "Mutation";
+    updateComponent: { __typename: "UpdateComponentPayload" };
+};
+
+export type RemoveComponentPermissionFromComponentMutationVariables = Exact<{
+    component: Scalars["ID"]["input"];
+    componentPermission: Scalars["ID"]["input"];
+}>;
+
+export type RemoveComponentPermissionFromComponentMutation = {
+    __typename?: "Mutation";
+    updateComponent: { __typename: "UpdateComponentPayload" };
+};
+
+export type UpdateComponentPermissionMutationVariables = Exact<{
+    input: UpdateComponentPermissionInput;
+}>;
+
+export type UpdateComponentPermissionMutation = {
+    __typename?: "Mutation";
+    updateComponentPermission: { __typename: "UpdateComponentPermissionPayload" };
 };
 
 export type DefaultComponentTemplateInfoFragment = {
@@ -22763,6 +23115,169 @@ export type AddLabelToTrackableMutation = {
     addLabelToTrackable: { __typename: "AddLabelToTrackablePayload" };
 };
 
+export type GetPermissionUserListQueryVariables = Exact<{
+    orderBy: GropiusUserOrder;
+    count: Scalars["Int"]["input"];
+    skip: Scalars["Int"]["input"];
+    permission: Scalars["ID"]["input"];
+}>;
+
+export type GetPermissionUserListQuery = {
+    __typename?: "Query";
+    node?:
+        | { __typename?: "AddedAffectedEntityEvent" }
+        | { __typename?: "AddedArtefactEvent" }
+        | { __typename?: "AddedLabelEvent" }
+        | { __typename?: "AddedToPinnedIssuesEvent" }
+        | { __typename?: "AddedToTrackableEvent" }
+        | { __typename?: "AggregatedIssue" }
+        | { __typename?: "AggregatedIssueRelation" }
+        | { __typename?: "Artefact" }
+        | { __typename?: "ArtefactTemplate" }
+        | { __typename?: "Assignment" }
+        | { __typename?: "AssignmentType" }
+        | { __typename?: "AssignmentTypeChangedEvent" }
+        | { __typename?: "Body" }
+        | { __typename?: "Component" }
+        | {
+              __typename?: "ComponentPermission";
+              users: {
+                  __typename?: "GropiusUserConnection";
+                  totalCount: number;
+                  nodes: Array<{
+                      __typename?: "GropiusUser";
+                      id: string;
+                      username: string;
+                      displayName: string;
+                      avatar: any;
+                  }>;
+              };
+          }
+        | { __typename?: "ComponentTemplate" }
+        | { __typename?: "ComponentVersion" }
+        | { __typename?: "ComponentVersionTemplate" }
+        | { __typename?: "DueDateChangedEvent" }
+        | { __typename?: "EstimatedTimeChangedEvent" }
+        | { __typename?: "FillStyle" }
+        | {
+              __typename?: "GlobalPermission";
+              users: {
+                  __typename?: "GropiusUserConnection";
+                  totalCount: number;
+                  nodes: Array<{
+                      __typename?: "GropiusUser";
+                      id: string;
+                      username: string;
+                      displayName: string;
+                      avatar: any;
+                  }>;
+              };
+          }
+        | { __typename?: "GropiusUser" }
+        | { __typename?: "IMS" }
+        | { __typename?: "IMSIssue" }
+        | { __typename?: "IMSIssueTemplate" }
+        | {
+              __typename?: "IMSPermission";
+              users: {
+                  __typename?: "GropiusUserConnection";
+                  totalCount: number;
+                  nodes: Array<{
+                      __typename?: "GropiusUser";
+                      id: string;
+                      username: string;
+                      displayName: string;
+                      avatar: any;
+                  }>;
+              };
+          }
+        | { __typename?: "IMSProject" }
+        | { __typename?: "IMSProjectTemplate" }
+        | { __typename?: "IMSTemplate" }
+        | { __typename?: "IMSUser" }
+        | { __typename?: "IMSUserTemplate" }
+        | { __typename?: "IncomingRelationTypeChangedEvent" }
+        | { __typename?: "Interface" }
+        | { __typename?: "InterfaceDefinition" }
+        | { __typename?: "InterfaceDefinitionTemplate" }
+        | { __typename?: "InterfacePart" }
+        | { __typename?: "InterfacePartTemplate" }
+        | { __typename?: "InterfaceSpecification" }
+        | { __typename?: "InterfaceSpecificationDerivationCondition" }
+        | { __typename?: "InterfaceSpecificationTemplate" }
+        | { __typename?: "InterfaceSpecificationVersion" }
+        | { __typename?: "InterfaceSpecificationVersionTemplate" }
+        | { __typename?: "InterfaceTemplate" }
+        | { __typename?: "IntraComponentDependencyParticipant" }
+        | { __typename?: "IntraComponentDependencySpecification" }
+        | { __typename?: "Issue" }
+        | { __typename?: "IssueComment" }
+        | { __typename?: "IssuePriority" }
+        | { __typename?: "IssueRelation" }
+        | { __typename?: "IssueRelationType" }
+        | { __typename?: "IssueState" }
+        | { __typename?: "IssueTemplate" }
+        | { __typename?: "IssueType" }
+        | { __typename?: "Label" }
+        | { __typename?: "MetaAggregatedIssueRelation" }
+        | { __typename?: "OutgoingRelationTypeChangedEvent" }
+        | { __typename?: "PriorityChangedEvent" }
+        | { __typename?: "Project" }
+        | {
+              __typename?: "ProjectPermission";
+              users: {
+                  __typename?: "GropiusUserConnection";
+                  totalCount: number;
+                  nodes: Array<{
+                      __typename?: "GropiusUser";
+                      id: string;
+                      username: string;
+                      displayName: string;
+                      avatar: any;
+                  }>;
+              };
+          }
+        | { __typename?: "RelatedByIssueEvent" }
+        | { __typename?: "Relation" }
+        | { __typename?: "RelationCondition" }
+        | { __typename?: "RelationTemplate" }
+        | { __typename?: "RemovedAffectedEntityEvent" }
+        | { __typename?: "RemovedArtefactEvent" }
+        | { __typename?: "RemovedAssignmentEvent" }
+        | { __typename?: "RemovedFromPinnedIssuesEvent" }
+        | { __typename?: "RemovedFromTrackableEvent" }
+        | { __typename?: "RemovedIncomingRelationEvent" }
+        | { __typename?: "RemovedLabelEvent" }
+        | { __typename?: "RemovedOutgoingRelationEvent" }
+        | { __typename?: "RemovedTemplatedFieldEvent" }
+        | { __typename?: "SpentTimeChangedEvent" }
+        | { __typename?: "StartDateChangedEvent" }
+        | { __typename?: "StateChangedEvent" }
+        | { __typename?: "StrokeStyle" }
+        | { __typename?: "TemplateChangedEvent" }
+        | { __typename?: "TemplatedFieldChangedEvent" }
+        | { __typename?: "TitleChangedEvent" }
+        | { __typename?: "TypeChangedEvent" }
+        | null;
+};
+
+export type GetFilteredPermissionUserListQueryVariables = Exact<{
+    query: Scalars["String"]["input"];
+    count: Scalars["Int"]["input"];
+    permission: Scalars["ID"]["input"];
+}>;
+
+export type GetFilteredPermissionUserListQuery = {
+    __typename?: "Query";
+    searchGropiusUsers: Array<{
+        __typename?: "GropiusUser";
+        id: string;
+        username: string;
+        displayName: string;
+        avatar: any;
+    }>;
+};
+
 export type GetProjectListQueryVariables = Exact<{
     orderBy: ProjectOrder;
     count: Scalars["Int"]["input"];
@@ -24720,6 +25235,18 @@ export type SearchGropiusUsersQuery = {
     }>;
 };
 
+export const DefaultComponentPermissionInfoFragmentDoc = gql`
+    fragment DefaultComponentPermissionInfo on ComponentPermission {
+        id
+        name
+        description
+        entries
+        allUsers
+        users {
+            totalCount
+        }
+    }
+`;
 export const DefaultComponentTemplateInfoFragmentDoc = gql`
     fragment DefaultComponentTemplateInfo on ComponentTemplate {
         id
@@ -25804,6 +26331,80 @@ export const CreateComponentDocument = gql`
         }
     }
 `;
+export const GetComponentPermissionListDocument = gql`
+    query getComponentPermissionList($orderBy: ComponentPermissionOrder!, $count: Int!, $skip: Int!, $component: ID!) {
+        node(id: $component) {
+            ... on Component {
+                permissions(orderBy: $orderBy, first: $count, skip: $skip) {
+                    nodes {
+                        ...DefaultComponentPermissionInfo
+                    }
+                    totalCount
+                }
+            }
+        }
+    }
+    ${DefaultComponentPermissionInfoFragmentDoc}
+`;
+export const GetFilteredComponentPermissionListDocument = gql`
+    query getFilteredComponentPermissionList($query: String!, $count: Int!, $component: ID!) {
+        searchComponentPermissions(
+            query: $query
+            first: $count
+            filter: { nodesWithPermission: { any: { id: { eq: $component } } } }
+        ) {
+            ...DefaultComponentPermissionInfo
+        }
+    }
+    ${DefaultComponentPermissionInfoFragmentDoc}
+`;
+export const SearchComponentPermissionsDocument = gql`
+    query searchComponentPermissions($component: ID!, $query: String!, $count: Int!) {
+        searchComponentPermissions(
+            query: $query
+            first: $count
+            filter: { nodesWithPermission: { any: { id: { eq: $component } } } }
+        ) {
+            ...DefaultComponentPermissionInfo
+        }
+    }
+    ${DefaultComponentPermissionInfoFragmentDoc}
+`;
+export const FirstComponentPermissionsDocument = gql`
+    query firstComponentPermissions($component: ID!, $count: Int!) {
+        node(id: $component) {
+            ... on Component {
+                permissions(first: $count, orderBy: { field: NAME }) {
+                    nodes {
+                        ...DefaultComponentPermissionInfo
+                    }
+                }
+            }
+        }
+    }
+    ${DefaultComponentPermissionInfoFragmentDoc}
+`;
+export const AddComponentPermissionToComponentDocument = gql`
+    mutation addComponentPermissionToComponent($component: ID!, $componentPermission: ID!) {
+        updateComponent(input: { id: $component, addedPermissions: [$componentPermission] }) {
+            __typename
+        }
+    }
+`;
+export const RemoveComponentPermissionFromComponentDocument = gql`
+    mutation removeComponentPermissionFromComponent($component: ID!, $componentPermission: ID!) {
+        updateComponent(input: { id: $component, removedPermissions: [$componentPermission] }) {
+            __typename
+        }
+    }
+`;
+export const UpdateComponentPermissionDocument = gql`
+    mutation updateComponentPermission($input: UpdateComponentPermissionInput!) {
+        updateComponentPermission(input: $input) {
+            __typename
+        }
+    }
+`;
 export const SearchComponentTemplatesDocument = gql`
     query searchComponentTemplates($query: String!, $count: Int!) {
         searchComponentTemplates(query: $query, first: $count, filter: { isDeprecated: { eq: false } }) {
@@ -26499,6 +27100,33 @@ export const AddLabelToTrackableDocument = gql`
         }
     }
 `;
+export const GetPermissionUserListDocument = gql`
+    query getPermissionUserList($orderBy: GropiusUserOrder!, $count: Int!, $skip: Int!, $permission: ID!) {
+        node(id: $permission) {
+            ... on BasePermission {
+                users(orderBy: $orderBy, first: $count, skip: $skip) {
+                    nodes {
+                        ...DefaultUserInfo
+                    }
+                    totalCount
+                }
+            }
+        }
+    }
+    ${DefaultUserInfoFragmentDoc}
+`;
+export const GetFilteredPermissionUserListDocument = gql`
+    query getFilteredPermissionUserList($query: String!, $count: Int!, $permission: ID!) {
+        searchGropiusUsers(
+            query: $query
+            first: $count
+            filter: { permissions: { any: { id: { eq: $permission } } } }
+        ) {
+            ...DefaultUserInfo
+        }
+    }
+    ${DefaultUserInfoFragmentDoc}
+`;
 export const GetProjectListDocument = gql`
     query getProjectList($orderBy: ProjectOrder!, $count: Int!, $skip: Int!) {
         projects(orderBy: $orderBy, first: $count, skip: $skip) {
@@ -26837,6 +27465,114 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "createComponent",
+                "mutation",
+                variables
+            );
+        },
+        getComponentPermissionList(
+            variables: GetComponentPermissionListQueryVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<GetComponentPermissionListQuery> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<GetComponentPermissionListQuery>(GetComponentPermissionListDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "getComponentPermissionList",
+                "query",
+                variables
+            );
+        },
+        getFilteredComponentPermissionList(
+            variables: GetFilteredComponentPermissionListQueryVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<GetFilteredComponentPermissionListQuery> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<GetFilteredComponentPermissionListQuery>(
+                        GetFilteredComponentPermissionListDocument,
+                        variables,
+                        { ...requestHeaders, ...wrappedRequestHeaders }
+                    ),
+                "getFilteredComponentPermissionList",
+                "query",
+                variables
+            );
+        },
+        searchComponentPermissions(
+            variables: SearchComponentPermissionsQueryVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<SearchComponentPermissionsQuery> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<SearchComponentPermissionsQuery>(SearchComponentPermissionsDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "searchComponentPermissions",
+                "query",
+                variables
+            );
+        },
+        firstComponentPermissions(
+            variables: FirstComponentPermissionsQueryVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<FirstComponentPermissionsQuery> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<FirstComponentPermissionsQuery>(FirstComponentPermissionsDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "firstComponentPermissions",
+                "query",
+                variables
+            );
+        },
+        addComponentPermissionToComponent(
+            variables: AddComponentPermissionToComponentMutationVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<AddComponentPermissionToComponentMutation> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<AddComponentPermissionToComponentMutation>(
+                        AddComponentPermissionToComponentDocument,
+                        variables,
+                        { ...requestHeaders, ...wrappedRequestHeaders }
+                    ),
+                "addComponentPermissionToComponent",
+                "mutation",
+                variables
+            );
+        },
+        removeComponentPermissionFromComponent(
+            variables: RemoveComponentPermissionFromComponentMutationVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<RemoveComponentPermissionFromComponentMutation> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<RemoveComponentPermissionFromComponentMutation>(
+                        RemoveComponentPermissionFromComponentDocument,
+                        variables,
+                        { ...requestHeaders, ...wrappedRequestHeaders }
+                    ),
+                "removeComponentPermissionFromComponent",
+                "mutation",
+                variables
+            );
+        },
+        updateComponentPermission(
+            variables: UpdateComponentPermissionMutationVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<UpdateComponentPermissionMutation> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<UpdateComponentPermissionMutation>(UpdateComponentPermissionDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "updateComponentPermission",
                 "mutation",
                 variables
             );
@@ -27697,6 +28433,37 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                     }),
                 "addLabelToTrackable",
                 "mutation",
+                variables
+            );
+        },
+        getPermissionUserList(
+            variables: GetPermissionUserListQueryVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<GetPermissionUserListQuery> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<GetPermissionUserListQuery>(GetPermissionUserListDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "getPermissionUserList",
+                "query",
+                variables
+            );
+        },
+        getFilteredPermissionUserList(
+            variables: GetFilteredPermissionUserListQueryVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<GetFilteredPermissionUserListQuery> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<GetFilteredPermissionUserListQuery>(
+                        GetFilteredPermissionUserListDocument,
+                        variables,
+                        { ...requestHeaders, ...wrappedRequestHeaders }
+                    ),
+                "getFilteredPermissionUserList",
+                "query",
                 variables
             );
         },

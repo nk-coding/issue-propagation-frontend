@@ -88,6 +88,7 @@ import TemplatedNodeDialogContent from "./TemplatedNodeDialogContent.vue";
 import TemplatedFieldsInputVue, { Field } from "../input/schema/TemplatedFieldsInput.vue";
 import { asyncComputed } from "@vueuse/core";
 import { generateDefaultData } from "../input/schema/generateDefaultData";
+import { IdObject } from "@/util/types";
 
 const createIssueDialog = ref(false);
 const client = useClient();
@@ -95,7 +96,7 @@ const typePath = ref<string | undefined>(undefined);
 const isOpen = ref<boolean | undefined>(undefined);
 
 const emit = defineEmits<{
-    (event: "created-issue", issue: { id: string }): void;
+    (event: "created-issue", issue: IdObject): void;
 }>();
 
 const props = defineProps({

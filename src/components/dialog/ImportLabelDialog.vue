@@ -30,14 +30,13 @@ import ExternalLabelAutocomplete from "../input/ExternalLabelAutocomplete.vue";
 import Label from "../info/Label.vue";
 import { DefaultLabelInfoFragment } from "@/graphql/generated";
 import { withErrorMessage } from "@/util/withErrorMessage";
-
-type IdObject = { id: string };
+import { IdObject } from "@/util/types";
 
 const importLabelDialog = ref(false);
 const client = useClient();
 
 const emit = defineEmits<{
-    (event: "imported-label", label: { id: string }): void;
+    (event: "imported-label", label: IdObject): void;
 }>();
 
 const props = defineProps({

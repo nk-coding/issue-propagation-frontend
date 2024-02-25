@@ -41,12 +41,13 @@ import { withErrorMessage } from "@/util/withErrorMessage";
 import { useClient } from "@/graphql/client";
 import { toTypedSchema } from "@vee-validate/yup";
 import ConfirmationDialog from "./ConfirmationDialog.vue";
+import { IdObject } from "@/util/types";
 
 const createProjectDialog = ref(false);
 const client = useClient();
 
 const emit = defineEmits<{
-    (event: "created-project", project: { id: string }): void;
+    (event: "created-project", project: IdObject): void;
 }>();
 
 const schema = toTypedSchema(

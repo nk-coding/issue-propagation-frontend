@@ -25,7 +25,7 @@
                 </v-btn>
             </div>
         </div>
-        <div class="list-container flex-grow-1 px-3">
+        <div class="list-container flex-1-1 px-3">
             <div v-if="currentItems.length == 0 && loadedInitially" class="text-medium-emphasis">
                 No {{ name }} found
             </div>
@@ -125,7 +125,6 @@ watch(currentPage, async () => {
 watch(
     () => props.dependencies,
     async () => {
-        console.log("Dependencies changed");
         await updateItems(false);
     },
     { deep: true }
@@ -142,7 +141,6 @@ async function updateItems(resetPage: boolean) {
         props.itemCount,
         currentPage.value - 1
     );
-    console.log(items);
     loadedInitially.value = true;
     currentItems.value = items;
     pageCount.value = Math.ceil(count / props.itemCount);
@@ -169,7 +167,6 @@ async function updateItems(resetPage: boolean) {
 
 .list-container {
     overflow-y: auto;
-    height: 0px;
 }
 
 .pagination {
