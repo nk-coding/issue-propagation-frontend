@@ -65,6 +65,12 @@
             :update-permission="updatePermission"
             @updated-permission="permissionDependencyCounter++"
         />
+        <UpdatePermissionDialog
+            v-model="permissionToEdit"
+            :permission-entries="permissionEntries"
+            :update-permission="updatePermission"
+            @updated-permission="permissionDependencyCounter++"
+        />
         <slot name="import-dialog" :imported-permission="importedPermission" />
     </PaginatedList>
 </template>
@@ -94,9 +100,12 @@ import { ref } from "vue";
 import ManagePermissionUsersDialog from "./dialog/ManagePermissionUsersDialog.vue";
 import { IdObject } from "@/util/types";
 import CreatePermissionDialog from "./dialog/CreatePermissionDialog.vue";
+import UpdatePermissionDialog from "./dialog/UpdatePermissionDialog.vue";
 
 export type UpdatePermissionFunctionInput<T> = IdObject &
     Partial<{
+        name: string;
+        description: string;
         addedEntries: T[];
         removedEntries: T[];
         allUsers: boolean;

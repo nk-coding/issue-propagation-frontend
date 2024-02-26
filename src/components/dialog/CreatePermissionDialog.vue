@@ -20,15 +20,7 @@
                                 label="Description"
                                 class="mb-1"
                             />
-                            <div class="d-grid permission-container">
-                                <v-checkbox
-                                    v-model="entries[entry]"
-                                    v-for="entry in permissionEntries"
-                                    :key="entry"
-                                    :label="enumToRegularCase(entry)"
-                                    hide-details
-                                />
-                            </div>
+                            <PermissionEntryCheckboxGrid v-model="entries" :permission-entries="permissionEntries" />
                         </div>
                     </v-form>
                 </template>
@@ -99,6 +91,7 @@ import { objectEntries } from "@vueuse/core";
 import { DefaultUserInfoFragment } from "@/graphql/generated";
 import GropiusUserAutocomplete from "../input/GropiusUserAutocomplete.vue";
 import User from "../info/User.vue";
+import PermissionEntryCheckboxGrid from "../input/PermissionEntryCheckboxGrid.vue";
 
 const props = defineProps({
     createPermission: {
@@ -164,9 +157,9 @@ function next() {
 const createPermission = handleSubmit(async (state) => {
     const permission = await withErrorMessage(async () => {
         const entriesToAdd: T[] = [];
-        for (const test in entries.value) {
-            if (entries.value[test]) {
-                entriesToAdd.push(test);
+        for (const entry in entries.value) {
+            if (entries.value[entry]) {
+                entriesToAdd.push(entry);
             }
         }
         return props.createPermission({
@@ -197,19 +190,5 @@ function reset() {
 @use "@/styles/settings.scss";
 .permission-dialog {
     width: min(1000px, calc(100vw - 3 * settings.$side-bar-width));
-}
-
-.permission-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(225px, 1fr));
-    gap: 0 10px; /* Adjust the gap between items as needed */
-}
-
-.v-checkbox :deep(.v-label) {
-    white-space: nowrap;
-}
-
-.v-checkbox {
-    box-sizing: border-box;
 }
 </style>
