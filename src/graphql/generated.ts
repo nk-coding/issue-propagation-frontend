@@ -23327,6 +23327,17 @@ export type GetFilteredProjectListQuery = {
     }>;
 };
 
+export type SearchProjectsQueryVariables = Exact<{
+    query: Scalars["String"]["input"];
+    count: Scalars["Int"]["input"];
+    filter?: InputMaybe<ProjectFilterInput>;
+}>;
+
+export type SearchProjectsQuery = {
+    __typename?: "Query";
+    searchProjects: Array<{ __typename: "Project"; id: string; name: string; description: string }>;
+};
+
 export type GetProjectQueryVariables = Exact<{
     id: Scalars["ID"]["input"];
 }>;
@@ -23401,6 +23412,7 @@ export type GetProjectQuery = {
               manageLabels: boolean;
               manageComponents: boolean;
               manageIssues: boolean;
+              admin: boolean;
               openIssues: { __typename?: "IssueConnection"; totalCount: number };
           }
         | { __typename?: "ProjectPermission"; id: string }
@@ -23435,6 +23447,310 @@ export type CreateProjectMutationVariables = Exact<{
 export type CreateProjectMutation = {
     __typename?: "Mutation";
     createProject: { __typename?: "CreateProjectPayload"; project: { __typename?: "Project"; id: string } };
+};
+
+export type GetProjectPermissionListQueryVariables = Exact<{
+    orderBy: ProjectPermissionOrder;
+    count: Scalars["Int"]["input"];
+    skip: Scalars["Int"]["input"];
+    project: Scalars["ID"]["input"];
+}>;
+
+export type GetProjectPermissionListQuery = {
+    __typename?: "Query";
+    node?:
+        | { __typename?: "AddedAffectedEntityEvent" }
+        | { __typename?: "AddedArtefactEvent" }
+        | { __typename?: "AddedLabelEvent" }
+        | { __typename?: "AddedToPinnedIssuesEvent" }
+        | { __typename?: "AddedToTrackableEvent" }
+        | { __typename?: "AggregatedIssue" }
+        | { __typename?: "AggregatedIssueRelation" }
+        | { __typename?: "Artefact" }
+        | { __typename?: "ArtefactTemplate" }
+        | { __typename?: "Assignment" }
+        | { __typename?: "AssignmentType" }
+        | { __typename?: "AssignmentTypeChangedEvent" }
+        | { __typename?: "Body" }
+        | { __typename?: "Component" }
+        | { __typename?: "ComponentPermission" }
+        | { __typename?: "ComponentTemplate" }
+        | { __typename?: "ComponentVersion" }
+        | { __typename?: "ComponentVersionTemplate" }
+        | { __typename?: "DueDateChangedEvent" }
+        | { __typename?: "EstimatedTimeChangedEvent" }
+        | { __typename?: "FillStyle" }
+        | { __typename?: "GlobalPermission" }
+        | { __typename?: "GropiusUser" }
+        | { __typename?: "IMS" }
+        | { __typename?: "IMSIssue" }
+        | { __typename?: "IMSIssueTemplate" }
+        | { __typename?: "IMSPermission" }
+        | { __typename?: "IMSProject" }
+        | { __typename?: "IMSProjectTemplate" }
+        | { __typename?: "IMSTemplate" }
+        | { __typename?: "IMSUser" }
+        | { __typename?: "IMSUserTemplate" }
+        | { __typename?: "IncomingRelationTypeChangedEvent" }
+        | { __typename?: "Interface" }
+        | { __typename?: "InterfaceDefinition" }
+        | { __typename?: "InterfaceDefinitionTemplate" }
+        | { __typename?: "InterfacePart" }
+        | { __typename?: "InterfacePartTemplate" }
+        | { __typename?: "InterfaceSpecification" }
+        | { __typename?: "InterfaceSpecificationDerivationCondition" }
+        | { __typename?: "InterfaceSpecificationTemplate" }
+        | { __typename?: "InterfaceSpecificationVersion" }
+        | { __typename?: "InterfaceSpecificationVersionTemplate" }
+        | { __typename?: "InterfaceTemplate" }
+        | { __typename?: "IntraComponentDependencyParticipant" }
+        | { __typename?: "IntraComponentDependencySpecification" }
+        | { __typename?: "Issue" }
+        | { __typename?: "IssueComment" }
+        | { __typename?: "IssuePriority" }
+        | { __typename?: "IssueRelation" }
+        | { __typename?: "IssueRelationType" }
+        | { __typename?: "IssueState" }
+        | { __typename?: "IssueTemplate" }
+        | { __typename?: "IssueType" }
+        | { __typename?: "Label" }
+        | { __typename?: "MetaAggregatedIssueRelation" }
+        | { __typename?: "OutgoingRelationTypeChangedEvent" }
+        | { __typename?: "PriorityChangedEvent" }
+        | {
+              __typename?: "Project";
+              permissions: {
+                  __typename?: "ProjectPermissionConnection";
+                  totalCount: number;
+                  nodes: Array<{
+                      __typename?: "ProjectPermission";
+                      id: string;
+                      name: string;
+                      description: string;
+                      entries: Array<ProjectPermissionEntry>;
+                      allUsers: boolean;
+                      users: { __typename?: "GropiusUserConnection"; totalCount: number };
+                  }>;
+              };
+          }
+        | { __typename?: "ProjectPermission" }
+        | { __typename?: "RelatedByIssueEvent" }
+        | { __typename?: "Relation" }
+        | { __typename?: "RelationCondition" }
+        | { __typename?: "RelationTemplate" }
+        | { __typename?: "RemovedAffectedEntityEvent" }
+        | { __typename?: "RemovedArtefactEvent" }
+        | { __typename?: "RemovedAssignmentEvent" }
+        | { __typename?: "RemovedFromPinnedIssuesEvent" }
+        | { __typename?: "RemovedFromTrackableEvent" }
+        | { __typename?: "RemovedIncomingRelationEvent" }
+        | { __typename?: "RemovedLabelEvent" }
+        | { __typename?: "RemovedOutgoingRelationEvent" }
+        | { __typename?: "RemovedTemplatedFieldEvent" }
+        | { __typename?: "SpentTimeChangedEvent" }
+        | { __typename?: "StartDateChangedEvent" }
+        | { __typename?: "StateChangedEvent" }
+        | { __typename?: "StrokeStyle" }
+        | { __typename?: "TemplateChangedEvent" }
+        | { __typename?: "TemplatedFieldChangedEvent" }
+        | { __typename?: "TitleChangedEvent" }
+        | { __typename?: "TypeChangedEvent" }
+        | null;
+};
+
+export type GetFilteredProjectPermissionListQueryVariables = Exact<{
+    query: Scalars["String"]["input"];
+    count: Scalars["Int"]["input"];
+    project: Scalars["ID"]["input"];
+}>;
+
+export type GetFilteredProjectPermissionListQuery = {
+    __typename?: "Query";
+    searchProjectPermissions: Array<{
+        __typename?: "ProjectPermission";
+        id: string;
+        name: string;
+        description: string;
+        entries: Array<ProjectPermissionEntry>;
+        allUsers: boolean;
+        users: { __typename?: "GropiusUserConnection"; totalCount: number };
+    }>;
+};
+
+export type DefaultProjectPermissionInfoFragment = {
+    __typename?: "ProjectPermission";
+    id: string;
+    name: string;
+    description: string;
+    entries: Array<ProjectPermissionEntry>;
+    allUsers: boolean;
+    users: { __typename?: "GropiusUserConnection"; totalCount: number };
+};
+
+export type SearchProjectPermissionsQueryVariables = Exact<{
+    project: Scalars["ID"]["input"];
+    query: Scalars["String"]["input"];
+    count: Scalars["Int"]["input"];
+}>;
+
+export type SearchProjectPermissionsQuery = {
+    __typename?: "Query";
+    searchProjectPermissions: Array<{
+        __typename?: "ProjectPermission";
+        id: string;
+        name: string;
+        description: string;
+        entries: Array<ProjectPermissionEntry>;
+        allUsers: boolean;
+        users: { __typename?: "GropiusUserConnection"; totalCount: number };
+    }>;
+};
+
+export type FirstProjectPermissionsQueryVariables = Exact<{
+    project: Scalars["ID"]["input"];
+    count: Scalars["Int"]["input"];
+}>;
+
+export type FirstProjectPermissionsQuery = {
+    __typename?: "Query";
+    node?:
+        | { __typename?: "AddedAffectedEntityEvent" }
+        | { __typename?: "AddedArtefactEvent" }
+        | { __typename?: "AddedLabelEvent" }
+        | { __typename?: "AddedToPinnedIssuesEvent" }
+        | { __typename?: "AddedToTrackableEvent" }
+        | { __typename?: "AggregatedIssue" }
+        | { __typename?: "AggregatedIssueRelation" }
+        | { __typename?: "Artefact" }
+        | { __typename?: "ArtefactTemplate" }
+        | { __typename?: "Assignment" }
+        | { __typename?: "AssignmentType" }
+        | { __typename?: "AssignmentTypeChangedEvent" }
+        | { __typename?: "Body" }
+        | { __typename?: "Component" }
+        | { __typename?: "ComponentPermission" }
+        | { __typename?: "ComponentTemplate" }
+        | { __typename?: "ComponentVersion" }
+        | { __typename?: "ComponentVersionTemplate" }
+        | { __typename?: "DueDateChangedEvent" }
+        | { __typename?: "EstimatedTimeChangedEvent" }
+        | { __typename?: "FillStyle" }
+        | { __typename?: "GlobalPermission" }
+        | { __typename?: "GropiusUser" }
+        | { __typename?: "IMS" }
+        | { __typename?: "IMSIssue" }
+        | { __typename?: "IMSIssueTemplate" }
+        | { __typename?: "IMSPermission" }
+        | { __typename?: "IMSProject" }
+        | { __typename?: "IMSProjectTemplate" }
+        | { __typename?: "IMSTemplate" }
+        | { __typename?: "IMSUser" }
+        | { __typename?: "IMSUserTemplate" }
+        | { __typename?: "IncomingRelationTypeChangedEvent" }
+        | { __typename?: "Interface" }
+        | { __typename?: "InterfaceDefinition" }
+        | { __typename?: "InterfaceDefinitionTemplate" }
+        | { __typename?: "InterfacePart" }
+        | { __typename?: "InterfacePartTemplate" }
+        | { __typename?: "InterfaceSpecification" }
+        | { __typename?: "InterfaceSpecificationDerivationCondition" }
+        | { __typename?: "InterfaceSpecificationTemplate" }
+        | { __typename?: "InterfaceSpecificationVersion" }
+        | { __typename?: "InterfaceSpecificationVersionTemplate" }
+        | { __typename?: "InterfaceTemplate" }
+        | { __typename?: "IntraComponentDependencyParticipant" }
+        | { __typename?: "IntraComponentDependencySpecification" }
+        | { __typename?: "Issue" }
+        | { __typename?: "IssueComment" }
+        | { __typename?: "IssuePriority" }
+        | { __typename?: "IssueRelation" }
+        | { __typename?: "IssueRelationType" }
+        | { __typename?: "IssueState" }
+        | { __typename?: "IssueTemplate" }
+        | { __typename?: "IssueType" }
+        | { __typename?: "Label" }
+        | { __typename?: "MetaAggregatedIssueRelation" }
+        | { __typename?: "OutgoingRelationTypeChangedEvent" }
+        | { __typename?: "PriorityChangedEvent" }
+        | {
+              __typename?: "Project";
+              permissions: {
+                  __typename?: "ProjectPermissionConnection";
+                  nodes: Array<{
+                      __typename?: "ProjectPermission";
+                      id: string;
+                      name: string;
+                      description: string;
+                      entries: Array<ProjectPermissionEntry>;
+                      allUsers: boolean;
+                      users: { __typename?: "GropiusUserConnection"; totalCount: number };
+                  }>;
+              };
+          }
+        | { __typename?: "ProjectPermission" }
+        | { __typename?: "RelatedByIssueEvent" }
+        | { __typename?: "Relation" }
+        | { __typename?: "RelationCondition" }
+        | { __typename?: "RelationTemplate" }
+        | { __typename?: "RemovedAffectedEntityEvent" }
+        | { __typename?: "RemovedArtefactEvent" }
+        | { __typename?: "RemovedAssignmentEvent" }
+        | { __typename?: "RemovedFromPinnedIssuesEvent" }
+        | { __typename?: "RemovedFromTrackableEvent" }
+        | { __typename?: "RemovedIncomingRelationEvent" }
+        | { __typename?: "RemovedLabelEvent" }
+        | { __typename?: "RemovedOutgoingRelationEvent" }
+        | { __typename?: "RemovedTemplatedFieldEvent" }
+        | { __typename?: "SpentTimeChangedEvent" }
+        | { __typename?: "StartDateChangedEvent" }
+        | { __typename?: "StateChangedEvent" }
+        | { __typename?: "StrokeStyle" }
+        | { __typename?: "TemplateChangedEvent" }
+        | { __typename?: "TemplatedFieldChangedEvent" }
+        | { __typename?: "TitleChangedEvent" }
+        | { __typename?: "TypeChangedEvent" }
+        | null;
+};
+
+export type AddProjectPermissionToProjectMutationVariables = Exact<{
+    project: Scalars["ID"]["input"];
+    projectPermission: Scalars["ID"]["input"];
+}>;
+
+export type AddProjectPermissionToProjectMutation = {
+    __typename?: "Mutation";
+    updateProject: { __typename: "UpdateProjectPayload" };
+};
+
+export type RemoveProjectPermissionFromProjectMutationVariables = Exact<{
+    project: Scalars["ID"]["input"];
+    projectPermission: Scalars["ID"]["input"];
+}>;
+
+export type RemoveProjectPermissionFromProjectMutation = {
+    __typename?: "Mutation";
+    updateProject: { __typename: "UpdateProjectPayload" };
+};
+
+export type UpdateProjectPermissionMutationVariables = Exact<{
+    input: UpdateProjectPermissionInput;
+}>;
+
+export type UpdateProjectPermissionMutation = {
+    __typename?: "Mutation";
+    updateProjectPermission: { __typename: "UpdateProjectPermissionPayload" };
+};
+
+export type CreateProjectPermissionMutationVariables = Exact<{
+    input: CreateProjectPermissionInput;
+}>;
+
+export type CreateProjectPermissionMutation = {
+    __typename?: "Mutation";
+    createProjectPermission: {
+        __typename?: "CreateProjectPermissionPayload";
+        projectPermission: { __typename?: "ProjectPermission"; id: string };
+    };
 };
 
 export type GetRelationTemplatesQueryVariables = Exact<{
@@ -25503,6 +25819,18 @@ export const DefaultIssueTemplateInfoFragmentDoc = gql`
         }
     }
 `;
+export const DefaultProjectPermissionInfoFragmentDoc = gql`
+    fragment DefaultProjectPermissionInfo on ProjectPermission {
+        id
+        name
+        description
+        entries
+        allUsers
+        users {
+            totalCount
+        }
+    }
+`;
 export const DefaultRelationTemplateInfoFragmentDoc = gql`
     fragment DefaultRelationTemplateInfo on RelationTemplate {
         id
@@ -27173,6 +27501,14 @@ export const GetFilteredProjectListDocument = gql`
     }
     ${OpenIssueCountFragmentDoc}
 `;
+export const SearchProjectsDocument = gql`
+    query searchProjects($query: String!, $count: Int!, $filter: ProjectFilterInput) {
+        searchProjects(query: $query, first: $count, filter: $filter) {
+            ...DefaultTrackableInfo
+        }
+    }
+    ${DefaultTrackableInfoFragmentDoc}
+`;
 export const GetProjectDocument = gql`
     query getProject($id: ID!) {
         node(id: $id) {
@@ -27186,6 +27522,7 @@ export const GetProjectDocument = gql`
                 manageLabels: hasPermission(permission: MANAGE_LABELS)
                 manageComponents: hasPermission(permission: MANAGE_COMPONENTS)
                 manageIssues: hasPermission(permission: MANAGE_ISSUES)
+                admin: hasPermission(permission: ADMIN)
             }
         }
     }
@@ -27195,6 +27532,89 @@ export const CreateProjectDocument = gql`
     mutation createProject($input: CreateProjectInput!) {
         createProject(input: $input) {
             project {
+                id
+            }
+        }
+    }
+`;
+export const GetProjectPermissionListDocument = gql`
+    query getProjectPermissionList($orderBy: ProjectPermissionOrder!, $count: Int!, $skip: Int!, $project: ID!) {
+        node(id: $project) {
+            ... on Project {
+                permissions(orderBy: $orderBy, first: $count, skip: $skip) {
+                    nodes {
+                        ...DefaultProjectPermissionInfo
+                    }
+                    totalCount
+                }
+            }
+        }
+    }
+    ${DefaultProjectPermissionInfoFragmentDoc}
+`;
+export const GetFilteredProjectPermissionListDocument = gql`
+    query getFilteredProjectPermissionList($query: String!, $count: Int!, $project: ID!) {
+        searchProjectPermissions(
+            query: $query
+            first: $count
+            filter: { nodesWithPermission: { any: { id: { eq: $project } } } }
+        ) {
+            ...DefaultProjectPermissionInfo
+        }
+    }
+    ${DefaultProjectPermissionInfoFragmentDoc}
+`;
+export const SearchProjectPermissionsDocument = gql`
+    query searchProjectPermissions($project: ID!, $query: String!, $count: Int!) {
+        searchProjectPermissions(
+            query: $query
+            first: $count
+            filter: { nodesWithPermission: { any: { id: { eq: $project } } } }
+        ) {
+            ...DefaultProjectPermissionInfo
+        }
+    }
+    ${DefaultProjectPermissionInfoFragmentDoc}
+`;
+export const FirstProjectPermissionsDocument = gql`
+    query firstProjectPermissions($project: ID!, $count: Int!) {
+        node(id: $project) {
+            ... on Project {
+                permissions(first: $count, orderBy: { field: NAME }) {
+                    nodes {
+                        ...DefaultProjectPermissionInfo
+                    }
+                }
+            }
+        }
+    }
+    ${DefaultProjectPermissionInfoFragmentDoc}
+`;
+export const AddProjectPermissionToProjectDocument = gql`
+    mutation addProjectPermissionToProject($project: ID!, $projectPermission: ID!) {
+        updateProject(input: { id: $project, addedPermissions: [$projectPermission] }) {
+            __typename
+        }
+    }
+`;
+export const RemoveProjectPermissionFromProjectDocument = gql`
+    mutation removeProjectPermissionFromProject($project: ID!, $projectPermission: ID!) {
+        updateProject(input: { id: $project, removedPermissions: [$projectPermission] }) {
+            __typename
+        }
+    }
+`;
+export const UpdateProjectPermissionDocument = gql`
+    mutation updateProjectPermission($input: UpdateProjectPermissionInput!) {
+        updateProjectPermission(input: $input) {
+            __typename
+        }
+    }
+`;
+export const CreateProjectPermissionDocument = gql`
+    mutation createProjectPermission($input: CreateProjectPermissionInput!) {
+        createProjectPermission(input: $input) {
+            projectPermission {
                 id
             }
         }
@@ -28533,6 +28953,21 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                 variables
             );
         },
+        searchProjects(
+            variables: SearchProjectsQueryVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<SearchProjectsQuery> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<SearchProjectsQuery>(SearchProjectsDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "searchProjects",
+                "query",
+                variables
+            );
+        },
         getProject(
             variables: GetProjectQueryVariables,
             requestHeaders?: GraphQLClientRequestHeaders
@@ -28559,6 +28994,129 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
                         ...wrappedRequestHeaders
                     }),
                 "createProject",
+                "mutation",
+                variables
+            );
+        },
+        getProjectPermissionList(
+            variables: GetProjectPermissionListQueryVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<GetProjectPermissionListQuery> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<GetProjectPermissionListQuery>(GetProjectPermissionListDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "getProjectPermissionList",
+                "query",
+                variables
+            );
+        },
+        getFilteredProjectPermissionList(
+            variables: GetFilteredProjectPermissionListQueryVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<GetFilteredProjectPermissionListQuery> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<GetFilteredProjectPermissionListQuery>(
+                        GetFilteredProjectPermissionListDocument,
+                        variables,
+                        { ...requestHeaders, ...wrappedRequestHeaders }
+                    ),
+                "getFilteredProjectPermissionList",
+                "query",
+                variables
+            );
+        },
+        searchProjectPermissions(
+            variables: SearchProjectPermissionsQueryVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<SearchProjectPermissionsQuery> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<SearchProjectPermissionsQuery>(SearchProjectPermissionsDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "searchProjectPermissions",
+                "query",
+                variables
+            );
+        },
+        firstProjectPermissions(
+            variables: FirstProjectPermissionsQueryVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<FirstProjectPermissionsQuery> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<FirstProjectPermissionsQuery>(FirstProjectPermissionsDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "firstProjectPermissions",
+                "query",
+                variables
+            );
+        },
+        addProjectPermissionToProject(
+            variables: AddProjectPermissionToProjectMutationVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<AddProjectPermissionToProjectMutation> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<AddProjectPermissionToProjectMutation>(
+                        AddProjectPermissionToProjectDocument,
+                        variables,
+                        { ...requestHeaders, ...wrappedRequestHeaders }
+                    ),
+                "addProjectPermissionToProject",
+                "mutation",
+                variables
+            );
+        },
+        removeProjectPermissionFromProject(
+            variables: RemoveProjectPermissionFromProjectMutationVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<RemoveProjectPermissionFromProjectMutation> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<RemoveProjectPermissionFromProjectMutation>(
+                        RemoveProjectPermissionFromProjectDocument,
+                        variables,
+                        { ...requestHeaders, ...wrappedRequestHeaders }
+                    ),
+                "removeProjectPermissionFromProject",
+                "mutation",
+                variables
+            );
+        },
+        updateProjectPermission(
+            variables: UpdateProjectPermissionMutationVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<UpdateProjectPermissionMutation> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<UpdateProjectPermissionMutation>(UpdateProjectPermissionDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "updateProjectPermission",
+                "mutation",
+                variables
+            );
+        },
+        createProjectPermission(
+            variables: CreateProjectPermissionMutationVariables,
+            requestHeaders?: GraphQLClientRequestHeaders
+        ): Promise<CreateProjectPermissionMutation> {
+            return withWrapper(
+                (wrappedRequestHeaders) =>
+                    client.request<CreateProjectPermissionMutation>(CreateProjectPermissionDocument, variables, {
+                        ...requestHeaders,
+                        ...wrappedRequestHeaders
+                    }),
+                "createProjectPermission",
                 "mutation",
                 variables
             );

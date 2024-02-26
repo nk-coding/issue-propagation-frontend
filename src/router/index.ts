@@ -114,12 +114,17 @@ const routes: RouteRecordRaw[] = [
                     {
                         path: "",
                         name: "project-details-general",
-                        component: () => import("../views/component/details/General.vue")
+                        component: () => import("../views/project/details/General.vue")
                     },
                     {
                         path: "labels",
                         name: "project-details-labels",
                         component: () => import("../views/label/Labels.vue")
+                    },
+                    {
+                        path: "permissions",
+                        name: "project-details-permissions",
+                        component: () => import("../views/project/details/Permissions.vue")
                     }
                 ]
             },

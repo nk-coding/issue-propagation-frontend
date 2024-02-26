@@ -75,6 +75,13 @@ const leftSidebarItems = computed(() => {
                     name: "Labels",
                     color: "secondary",
                     to: projectPath("project-details-labels")
+                },
+                {
+                    icon: "mdi-shield-lock",
+                    name: "Access",
+                    color: "secondary",
+                    to: projectPath("project-details-permissions"),
+                    disabled: !(project?.value?.admin ?? false)
                 }
             ]
         ];
@@ -148,6 +155,27 @@ const rightSidebarItems = computed(() => {
                     disabled: !(project?.value?.manageLabels ?? false),
                     onClick: () => {
                         eventBus?.emit("import-label", undefined);
+                    }
+                }
+            ]
+        ];
+    } else if (route.name == "project-details-permissions") {
+        return [
+            [
+                {
+                    icon: "mdi-plus",
+                    description: `Create permission`,
+                    color: "secondary",
+                    onClick: () => {
+                        eventBus?.emit("create-permission", undefined);
+                    }
+                },
+                {
+                    icon: "mdi-import",
+                    description: "Import permission",
+                    color: "secondary",
+                    onClick: () => {
+                        eventBus?.emit("import-permission", undefined);
                     }
                 }
             ]

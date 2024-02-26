@@ -19,6 +19,12 @@ query getFilteredProjectList($query: String!, $count: Int!) {
     }
 }
 
+query searchProjects($query: String!, $count: Int!, $filter: ProjectFilterInput) {
+    searchProjects(query: $query, first: $count, filter: $filter) {
+        ...DefaultTrackableInfo
+    }
+}
+
 query getProject($id: ID!) {
     node(id: $id) {
         id
@@ -31,6 +37,7 @@ query getProject($id: ID!) {
             manageLabels: hasPermission(permission: MANAGE_LABELS)
             manageComponents: hasPermission(permission: MANAGE_COMPONENTS)
             manageIssues: hasPermission(permission: MANAGE_ISSUES)
+            admin: hasPermission(permission: ADMIN)
         }
     }
 }
