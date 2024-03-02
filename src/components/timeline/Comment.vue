@@ -288,7 +288,9 @@ async function saveComment(newContent: string) {
     }
     props.item.bodyLastEditedAt = newItem.bodyLastEditedAt;
     props.item.bodyLastEditedBy = newItem.bodyLastEditedBy;
+    props.item.body = newItem.body;
     editMode.value = false;
+    hasChanged.value = false;
 }
 
 async function createComment() {

@@ -9,7 +9,7 @@
                 <v-btn :prepend-icon="issueFilterIndex == 2 ? 'mdi-check' : 'mdi-account'"> Assigned </v-btn>
             </v-btn-toggle>
         </div>
-        <div class="flex-1-1">
+        <div class="flex-1-1 paginated-list-container">
             <PaginatedList
                 name="issues"
                 :item-manager="itemManager"
@@ -129,3 +129,8 @@ function issueRoute(issue: Issue): RouteLocationRaw {
     };
 }
 </script>
+<style scoped>
+.paginated-list-container {
+    overflow-y: hidden;
+}
+</style>
