@@ -37,7 +37,7 @@ const props = defineProps({
 const initialValue = ref({
     name: "",
     description: "",
-    color: ""
+    color: "#0c94d8"
 });
 
 onEvent("create-label", () => {

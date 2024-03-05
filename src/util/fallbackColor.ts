@@ -14,8 +14,8 @@ export function fallbackColor(color: string | undefined): string {
             case 7:
                 return color;
         }
-        return "#000000";
+        return "#0c94d8";
     } else {
-        return "#000000";
+        return "#0c94d8";
     }
 }
