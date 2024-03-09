@@ -26,10 +26,6 @@ export type AbstractTypeChangedEvent = {
     createdAt: Scalars["DateTime"]["output"];
     /** The User who created this entity. */
     createdBy: User;
-    /** Value of an extension field by name of the extension field. Null if the field does not exist. */
-    extensionField?: Maybe<Scalars["JSON"]["output"]>;
-    /** All extension fields, if a `namePrefix` is provided, only those matching it */
-    extensionFields: Array<JsonField>;
     /** Checks if the current user has a specific permission on this Node */
     hasPermission: Scalars["Boolean"]["output"];
     /** The unique id of this node */
@@ -42,14 +38,6 @@ export type AbstractTypeChangedEvent = {
     lastModifiedBy: User;
     /** If existing, the parent TimelineItem */
     parentItem?: Maybe<ParentTimelineItem>;
-};
-
-export type AbstractTypeChangedEventExtensionFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-export type AbstractTypeChangedEventExtensionFieldsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 export type AbstractTypeChangedEventHasPermissionArgs = {
@@ -181,7 +169,7 @@ export type AddLabelToTrackablePayload = {
  *
  */
 export type AddedAffectedEntityEvent = AuditedNode &
-    ExtensibleNode &
+    BaseNode &
     Node &
     TimelineItem & {
         __typename?: "AddedAffectedEntityEvent";
@@ -191,10 +179,6 @@ export type AddedAffectedEntityEvent = AuditedNode &
         createdAt: Scalars["DateTime"]["output"];
         /** The User who created this entity. */
         createdBy: User;
-        /** Value of an extension field by name of the extension field. Null if the field does not exist. */
-        extensionField?: Maybe<Scalars["JSON"]["output"]>;
-        /** All extension fields, if a `namePrefix` is provided, only those matching it */
-        extensionFields: Array<JsonField>;
         /** Checks if the current user has a specific permission on this Node */
         hasPermission: Scalars["Boolean"]["output"];
         /** The unique id of this node */
@@ -208,24 +192,6 @@ export type AddedAffectedEntityEvent = AuditedNode &
         /** If existing, the parent TimelineItem */
         parentItem?: Maybe<ParentTimelineItem>;
     };
-
-/**
- * Event representing that an entity is affected by an Issue.
- *     READ is granted if READ is granted on `issue`.
- *
- */
-export type AddedAffectedEntityEventExtensionFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-/**
- * Event representing that an entity is affected by an Issue.
- *     READ is granted if READ is granted on `issue`.
- *
- */
-export type AddedAffectedEntityEventExtensionFieldsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
-};
 
 /**
  * Event representing that an entity is affected by an Issue.
@@ -242,7 +208,7 @@ export type AddedAffectedEntityEventHasPermissionArgs = {
  *
  */
 export type AddedArtefactEvent = AuditedNode &
-    ExtensibleNode &
+    BaseNode &
     Node &
     TimelineItem & {
         __typename?: "AddedArtefactEvent";
@@ -252,10 +218,6 @@ export type AddedArtefactEvent = AuditedNode &
         createdAt: Scalars["DateTime"]["output"];
         /** The User who created this entity. */
         createdBy: User;
-        /** Value of an extension field by name of the extension field. Null if the field does not exist. */
-        extensionField?: Maybe<Scalars["JSON"]["output"]>;
-        /** All extension fields, if a `namePrefix` is provided, only those matching it */
-        extensionFields: Array<JsonField>;
         /** Checks if the current user has a specific permission on this Node */
         hasPermission: Scalars["Boolean"]["output"];
         /** The unique id of this node */
@@ -269,24 +231,6 @@ export type AddedArtefactEvent = AuditedNode &
         /** If existing, the parent TimelineItem */
         parentItem?: Maybe<ParentTimelineItem>;
     };
-
-/**
- * Event representing that an Artefact was added to an Issue.
- *     READ is granted if READ is granted on `issue`.
- *
- */
-export type AddedArtefactEventExtensionFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-/**
- * Event representing that an Artefact was added to an Issue.
- *     READ is granted if READ is granted on `issue`.
- *
- */
-export type AddedArtefactEventExtensionFieldsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
-};
 
 /**
  * Event representing that an Artefact was added to an Issue.
@@ -303,7 +247,7 @@ export type AddedArtefactEventHasPermissionArgs = {
  *
  */
 export type AddedLabelEvent = AuditedNode &
-    ExtensibleNode &
+    BaseNode &
     Node &
     TimelineItem & {
         __typename?: "AddedLabelEvent";
@@ -313,10 +257,6 @@ export type AddedLabelEvent = AuditedNode &
         createdAt: Scalars["DateTime"]["output"];
         /** The User who created this entity. */
         createdBy: User;
-        /** Value of an extension field by name of the extension field. Null if the field does not exist. */
-        extensionField?: Maybe<Scalars["JSON"]["output"]>;
-        /** All extension fields, if a `namePrefix` is provided, only those matching it */
-        extensionFields: Array<JsonField>;
         /** Checks if the current user has a specific permission on this Node */
         hasPermission: Scalars["Boolean"]["output"];
         /** The unique id of this node */
@@ -336,24 +276,6 @@ export type AddedLabelEvent = AuditedNode &
  *     READ is granted if READ is granted on `issue`.
  *
  */
-export type AddedLabelEventExtensionFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-/**
- * Event representing that a Label was added to an Issue.
- *     READ is granted if READ is granted on `issue`.
- *
- */
-export type AddedLabelEventExtensionFieldsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
-};
-
-/**
- * Event representing that a Label was added to an Issue.
- *     READ is granted if READ is granted on `issue`.
- *
- */
 export type AddedLabelEventHasPermissionArgs = {
     permission?: InputMaybe<AllPermissionEntry>;
 };
@@ -364,7 +286,7 @@ export type AddedLabelEventHasPermissionArgs = {
  *
  */
 export type AddedToPinnedIssuesEvent = AuditedNode &
-    ExtensibleNode &
+    BaseNode &
     Node &
     TimelineItem & {
         __typename?: "AddedToPinnedIssuesEvent";
@@ -372,10 +294,6 @@ export type AddedToPinnedIssuesEvent = AuditedNode &
         createdAt: Scalars["DateTime"]["output"];
         /** The User who created this entity. */
         createdBy: User;
-        /** Value of an extension field by name of the extension field. Null if the field does not exist. */
-        extensionField?: Maybe<Scalars["JSON"]["output"]>;
-        /** All extension fields, if a `namePrefix` is provided, only those matching it */
-        extensionFields: Array<JsonField>;
         /** Checks if the current user has a specific permission on this Node */
         hasPermission: Scalars["Boolean"]["output"];
         /** The unique id of this node */
@@ -397,24 +315,6 @@ export type AddedToPinnedIssuesEvent = AuditedNode &
  *     READ is granted if READ is granted on `issue`.
  *
  */
-export type AddedToPinnedIssuesEventExtensionFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-/**
- * Event representing that an Issue was pinned on a Trackable.
- *     READ is granted if READ is granted on `issue`.
- *
- */
-export type AddedToPinnedIssuesEventExtensionFieldsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
-};
-
-/**
- * Event representing that an Issue was pinned on a Trackable.
- *     READ is granted if READ is granted on `issue`.
- *
- */
 export type AddedToPinnedIssuesEventHasPermissionArgs = {
     permission?: InputMaybe<AllPermissionEntry>;
 };
@@ -425,7 +325,7 @@ export type AddedToPinnedIssuesEventHasPermissionArgs = {
  *
  */
 export type AddedToTrackableEvent = AuditedNode &
-    ExtensibleNode &
+    BaseNode &
     Node &
     TimelineItem & {
         __typename?: "AddedToTrackableEvent";
@@ -435,10 +335,6 @@ export type AddedToTrackableEvent = AuditedNode &
         createdAt: Scalars["DateTime"]["output"];
         /** The User who created this entity. */
         createdBy: User;
-        /** Value of an extension field by name of the extension field. Null if the field does not exist. */
-        extensionField?: Maybe<Scalars["JSON"]["output"]>;
-        /** All extension fields, if a `namePrefix` is provided, only those matching it */
-        extensionFields: Array<JsonField>;
         /** Checks if the current user has a specific permission on this Node */
         hasPermission: Scalars["Boolean"]["output"];
         /** The unique id of this node */
@@ -452,24 +348,6 @@ export type AddedToTrackableEvent = AuditedNode &
         /** If existing, the parent TimelineItem */
         parentItem?: Maybe<ParentTimelineItem>;
     };
-
-/**
- * Event representing that the Issue was added to a Trackable.
- *     READ is granted if READ is granted on `issue`.
- *
- */
-export type AddedToTrackableEventExtensionFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-/**
- * Event representing that the Issue was added to a Trackable.
- *     READ is granted if READ is granted on `issue`.
- *
- */
-export type AddedToTrackableEventExtensionFieldsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
-};
 
 /**
  * Event representing that the Issue was added to a Trackable.
@@ -490,10 +368,6 @@ export type AffectedByIssue = {
     affectingIssues: IssueConnection;
     /** The description of this entity. */
     description: Scalars["String"]["output"];
-    /** Value of an extension field by name of the extension field. Null if the field does not exist. */
-    extensionField?: Maybe<Scalars["JSON"]["output"]>;
-    /** All extension fields, if a `namePrefix` is provided, only those matching it */
-    extensionFields: Array<JsonField>;
     /** Checks if the current user has a specific permission on this Node */
     hasPermission: Scalars["Boolean"]["output"];
     /** The unique id of this node */
@@ -515,24 +389,6 @@ export type AffectedByIssueAffectingIssuesArgs = {
     last?: InputMaybe<Scalars["Int"]["input"]>;
     orderBy?: InputMaybe<IssueOrder>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
-};
-
-/**
- * Entities that can be affected by an Issue, meaning that this entity is in some regard
- *     impacted by e.g. a bug described by an issue, or the non-present of a feature described by an issue.
- *
- */
-export type AffectedByIssueExtensionFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-/**
- * Entities that can be affected by an Issue, meaning that this entity is in some regard
- *     impacted by e.g. a bug described by an issue, or the non-present of a feature described by an issue.
- *
- */
-export type AffectedByIssueExtensionFieldsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 /**
@@ -625,24 +481,44 @@ export enum AffectedByIssueOrderField {
  *     - it affects any InterfacePart of the associated InterfaceSpecificationVersion
  *
  */
-export type AggregatedIssue = Node & {
-    __typename?: "AggregatedIssue";
-    /** The amount of Issues of this type on this location. */
-    count: Scalars["Int"]["output"];
-    /** The unique id of this node */
-    id: Scalars["ID"]["output"];
-    /** IssueRelations from this aggregated issue to other aggregated issues. */
-    incomingRelations: AggregatedIssueRelationConnection;
-    /** If aggregated issues are open or closed. */
-    isOpen: Scalars["Boolean"]["output"];
-    /** The Issues aggregated by this AggregatedIssue. */
-    issues: IssueConnection;
-    /** IssueRelations from other aggregated issues to this aggregated issue. */
-    outgoingRelations: AggregatedIssueRelationConnection;
-    /** The RelationPartner this AggregatedIssue is on. */
-    relationPartner: RelationPartner;
-    /** The IssueType of this AggregatedIssue. */
-    type: IssueType;
+export type AggregatedIssue = BaseNode &
+    Node & {
+        __typename?: "AggregatedIssue";
+        /** The amount of Issues of this type on this location. */
+        count: Scalars["Int"]["output"];
+        /** Checks if the current user has a specific permission on this Node */
+        hasPermission: Scalars["Boolean"]["output"];
+        /** The unique id of this node */
+        id: Scalars["ID"]["output"];
+        /** IssueRelations from this aggregated issue to other aggregated issues. */
+        incomingRelations: AggregatedIssueRelationConnection;
+        /** If aggregated issues are open or closed. */
+        isOpen: Scalars["Boolean"]["output"];
+        /** The Issues aggregated by this AggregatedIssue. */
+        issues: IssueConnection;
+        /** IssueRelations from other aggregated issues to this aggregated issue. */
+        outgoingRelations: AggregatedIssueRelationConnection;
+        /** The RelationPartner this AggregatedIssue is on. */
+        relationPartner: RelationPartner;
+        /** The IssueType of this AggregatedIssue. */
+        type: IssueType;
+    };
+
+/**
+ * An aggregated Issue on a RelationPartner.
+ *     READ is granted if READ is granted on `relationPartner`.
+ *     An Issue is aggregated on a ComponentVersion if
+ *     - it affects the ComponentVersion
+ *     - it affects the associated Component
+ *     - it is on the Component, and does not affect anything
+ *     An Issue is aggregated on a Interface if
+ *     - it affects the associated InterfaceSpecificationVersion
+ *     - it affects the associated InterfaceSpecification
+ *     - it affects any InterfacePart of the associated InterfaceSpecificationVersion
+ *
+ */
+export type AggregatedIssueHasPermissionArgs = {
+    permission?: InputMaybe<AllPermissionEntry>;
 };
 
 /**
@@ -793,19 +669,31 @@ export enum AggregatedIssueOrderField {
  *     IssueRelations are aggregated by both start and end Issue.
  *
  */
-export type AggregatedIssueRelation = Node & {
-    __typename?: "AggregatedIssueRelation";
-    count: Scalars["Int"]["output"];
-    /** The end of this AggregatedIssueRelation. */
-    end: AggregatedIssue;
-    /** The unique id of this node */
-    id: Scalars["ID"]["output"];
-    /** The IssueRelations aggregated by this AggregatedIssueRelation. */
-    issueRelations: IssueRelationConnection;
-    /** The start of this AggregatedIssueRelation. */
-    start: AggregatedIssue;
-    /** The IssueType of this AggregatedIssue. */
-    type?: Maybe<IssueRelationType>;
+export type AggregatedIssueRelation = BaseNode &
+    Node & {
+        __typename?: "AggregatedIssueRelation";
+        count: Scalars["Int"]["output"];
+        /** The end of this AggregatedIssueRelation. */
+        end: AggregatedIssue;
+        /** Checks if the current user has a specific permission on this Node */
+        hasPermission: Scalars["Boolean"]["output"];
+        /** The unique id of this node */
+        id: Scalars["ID"]["output"];
+        /** The IssueRelations aggregated by this AggregatedIssueRelation. */
+        issueRelations: IssueRelationConnection;
+        /** The start of this AggregatedIssueRelation. */
+        start: AggregatedIssue;
+        /** The IssueType of this AggregatedIssue. */
+        type?: Maybe<IssueRelationType>;
+    };
+
+/**
+ * An aggregated IssueRelation.
+ *     IssueRelations are aggregated by both start and end Issue.
+ *
+ */
+export type AggregatedIssueRelationHasPermissionArgs = {
+    permission?: InputMaybe<AllPermissionEntry>;
 };
 
 /**
@@ -982,7 +870,7 @@ export enum AllPermissionEntry {
  *
  */
 export type Artefact = AuditedNode &
-    ExtensibleNode &
+    BaseNode &
     MutableTemplatedNode &
     Node &
     TemplatedNode & {
@@ -991,10 +879,6 @@ export type Artefact = AuditedNode &
         createdAt: Scalars["DateTime"]["output"];
         /** The User who created this entity. */
         createdBy: User;
-        /** Value of an extension field by name of the extension field. Null if the field does not exist. */
-        extensionField?: Maybe<Scalars["JSON"]["output"]>;
-        /** All extension fields, if a `namePrefix` is provided, only those matching it */
-        extensionFields: Array<JsonField>;
         /** A URL to the file this Artefact references */
         file: Scalars["URL"]["output"];
         /** If present, the first line of the file this Artefact references, inclusive */
@@ -1029,32 +913,6 @@ export type Artefact = AuditedNode &
         /** If present, the current version of this Artefact */
         version?: Maybe<Scalars["String"]["output"]>;
     };
-
-/**
- * An Artefact referencing a file defined via a URL.
- *     Can optionally specify a line range (from - to), and a version.
- *     Is part of exactly one Trackable.
- *     Can be referenced by Comments and Issues.
- *     Artefacts are synced to all IMSProjects of the Trackable they are part of.
- *     READ is granted if READ is granted on `trackable`.
- *
- */
-export type ArtefactExtensionFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-/**
- * An Artefact referencing a file defined via a URL.
- *     Can optionally specify a line range (from - to), and a version.
- *     Is part of exactly one Trackable.
- *     Can be referenced by Comments and Issues.
- *     Artefacts are synced to all IMSProjects of the Trackable they are part of.
- *     READ is granted if READ is granted on `trackable`.
- *
- */
-export type ArtefactExtensionFieldsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
-};
 
 /**
  * An Artefact referencing a file defined via a URL.
@@ -1235,8 +1093,8 @@ export enum ArtefactOrderField {
  *     Defines templated fields with specific types (defined using JSON schema).
  *
  */
-export type ArtefactTemplate = BaseTemplate &
-    ExtensibleNode &
+export type ArtefactTemplate = BaseNode &
+    BaseTemplate &
     Named &
     NamedNode &
     Node &
@@ -1248,10 +1106,6 @@ export type ArtefactTemplate = BaseTemplate &
         extendedBy: ArtefactTemplateConnection;
         /** Template this template extends. */
         extends: ArtefactTemplateConnection;
-        /** Value of an extension field by name of the extension field. Null if the field does not exist. */
-        extensionField?: Maybe<Scalars["JSON"]["output"]>;
-        /** All extension fields, if a `namePrefix` is provided, only those matching it */
-        extensionFields: Array<JsonField>;
         /** Checks if the current user has a specific permission on this Node */
         hasPermission: Scalars["Boolean"]["output"];
         /** The unique id of this node */
@@ -1294,24 +1148,6 @@ export type ArtefactTemplateExtendsArgs = {
     last?: InputMaybe<Scalars["Int"]["input"]>;
     orderBy?: InputMaybe<ArtefactTemplateOrder>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
-};
-
-/**
- * Template for Artefacts
- *     Defines templated fields with specific types (defined using JSON schema).
- *
- */
-export type ArtefactTemplateExtensionFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-/**
- * Template for Artefacts
- *     Defines templated fields with specific types (defined using JSON schema).
- *
- */
-export type ArtefactTemplateExtensionFieldsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 /**
@@ -1424,7 +1260,7 @@ export enum ArtefactTemplateOrderField {
  *
  */
 export type Assignment = AuditedNode &
-    ExtensibleNode &
+    BaseNode &
     Node &
     TimelineItem & {
         __typename?: "Assignment";
@@ -1432,10 +1268,6 @@ export type Assignment = AuditedNode &
         createdAt: Scalars["DateTime"]["output"];
         /** The User who created this entity. */
         createdBy: User;
-        /** Value of an extension field by name of the extension field. Null if the field does not exist. */
-        extensionField?: Maybe<Scalars["JSON"]["output"]>;
-        /** All extension fields, if a `namePrefix` is provided, only those matching it */
-        extensionFields: Array<JsonField>;
         /** Checks if the current user has a specific permission on this Node */
         hasPermission: Scalars["Boolean"]["output"];
         /** The unique id of this node */
@@ -1453,26 +1285,6 @@ export type Assignment = AuditedNode &
         /** The User assigned to the Issue. */
         user: User;
     };
-
-/**
- * Event representing that a User is assigned to an Issue.
- *     An Assignment is only active if it is still in `assignments` on Issue.
- *     READ is granted if READ is granted on `issue`.
- *
- */
-export type AssignmentExtensionFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-/**
- * Event representing that a User is assigned to an Issue.
- *     An Assignment is only active if it is still in `assignments` on Issue.
- *     READ is granted if READ is granted on `issue`.
- *
- */
-export type AssignmentExtensionFieldsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
-};
 
 /**
  * Event representing that a User is assigned to an Issue.
@@ -1569,7 +1381,7 @@ export enum AssignmentOrderField {
  *     READ is always granted.
  *
  */
-export type AssignmentType = ExtensibleNode &
+export type AssignmentType = BaseNode &
     Named &
     NamedNode &
     Node & {
@@ -1578,10 +1390,6 @@ export type AssignmentType = ExtensibleNode &
         assignmentsWithType: AssignmentConnection;
         /** The description of this entity. */
         description: Scalars["String"]["output"];
-        /** Value of an extension field by name of the extension field. Null if the field does not exist. */
-        extensionField?: Maybe<Scalars["JSON"]["output"]>;
-        /** All extension fields, if a `namePrefix` is provided, only those matching it */
-        extensionFields: Array<JsonField>;
         /** Checks if the current user has a specific permission on this Node */
         hasPermission: Scalars["Boolean"]["output"];
         /** The unique id of this node */
@@ -1605,24 +1413,6 @@ export type AssignmentTypeAssignmentsWithTypeArgs = {
     last?: InputMaybe<Scalars["Int"]["input"]>;
     orderBy?: InputMaybe<AssignmentOrder>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
-};
-
-/**
- * Type for an Assignment, like REVIEWER. Part of an IssueTemplate.
- *     READ is always granted.
- *
- */
-export type AssignmentTypeExtensionFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-/**
- * Type for an Assignment, like REVIEWER. Part of an IssueTemplate.
- *     READ is always granted.
- *
- */
-export type AssignmentTypeExtensionFieldsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 /**
@@ -1655,7 +1445,7 @@ export type AssignmentTypePartOfArgs = {
  *
  */
 export type AssignmentTypeChangedEvent = AuditedNode &
-    ExtensibleNode &
+    BaseNode &
     Node &
     TimelineItem & {
         __typename?: "AssignmentTypeChangedEvent";
@@ -1665,10 +1455,6 @@ export type AssignmentTypeChangedEvent = AuditedNode &
         createdAt: Scalars["DateTime"]["output"];
         /** The User who created this entity. */
         createdBy: User;
-        /** Value of an extension field by name of the extension field. Null if the field does not exist. */
-        extensionField?: Maybe<Scalars["JSON"]["output"]>;
-        /** All extension fields, if a `namePrefix` is provided, only those matching it */
-        extensionFields: Array<JsonField>;
         /** Checks if the current user has a specific permission on this Node */
         hasPermission: Scalars["Boolean"]["output"];
         /** The unique id of this node */
@@ -1686,24 +1472,6 @@ export type AssignmentTypeChangedEvent = AuditedNode &
         /** If existing, the parent TimelineItem */
         parentItem?: Maybe<ParentTimelineItem>;
     };
-
-/**
- * Event representing that the type of an Assignment changed.
- *     READ is granted if READ is granted on `issue`.
- *
- */
-export type AssignmentTypeChangedEventExtensionFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-/**
- * Event representing that the type of an Assignment changed.
- *     READ is granted if READ is granted on `issue`.
- *
- */
-export type AssignmentTypeChangedEventExtensionFieldsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
-};
 
 /**
  * Event representing that the type of an Assignment changed.
@@ -1760,8 +1528,6 @@ export type AssignmentTypeFilterInput = {
 export type AssignmentTypeInput = {
     /** The description of the NamedNode */
     description: Scalars["String"]["input"];
-    /** The initial value of the extension fields */
-    extensionFields?: InputMaybe<Array<JsonFieldInput>>;
     /** The name of the NamedNode, must not be blank */
     name: Scalars["String"]["input"];
 };
@@ -1793,7 +1559,7 @@ export enum AssignmentTypeOrderField {
 }
 
 /**
- * ExtensibleNode which provides auditing information, which can e.g. be used for the sync.
+ * Node which provides auditing information, which can e.g. be used for the sync.
  *     When it was created and last modified, if the it is already deleted, and by who it was created and last modified.
  *     A modification is any change of a field on the node itself and a change of a relation (add or removed).
  *     A change on a related related node is not a modification.
@@ -1804,10 +1570,6 @@ export type AuditedNode = {
     createdAt: Scalars["DateTime"]["output"];
     /** The User who created this entity. */
     createdBy: User;
-    /** Value of an extension field by name of the extension field. Null if the field does not exist. */
-    extensionField?: Maybe<Scalars["JSON"]["output"]>;
-    /** All extension fields, if a `namePrefix` is provided, only those matching it */
-    extensionFields: Array<JsonField>;
     /** Checks if the current user has a specific permission on this Node */
     hasPermission: Scalars["Boolean"]["output"];
     /** The unique id of this node */
@@ -1819,29 +1581,7 @@ export type AuditedNode = {
 };
 
 /**
- * ExtensibleNode which provides auditing information, which can e.g. be used for the sync.
- *     When it was created and last modified, if the it is already deleted, and by who it was created and last modified.
- *     A modification is any change of a field on the node itself and a change of a relation (add or removed).
- *     A change on a related related node is not a modification.
- *
- */
-export type AuditedNodeExtensionFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-/**
- * ExtensibleNode which provides auditing information, which can e.g. be used for the sync.
- *     When it was created and last modified, if the it is already deleted, and by who it was created and last modified.
- *     A modification is any change of a field on the node itself and a change of a relation (add or removed).
- *     A change on a related related node is not a modification.
- *
- */
-export type AuditedNodeExtensionFieldsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
-};
-
-/**
- * ExtensibleNode which provides auditing information, which can e.g. be used for the sync.
+ * Node which provides auditing information, which can e.g. be used for the sync.
  *     When it was created and last modified, if the it is already deleted, and by who it was created and last modified.
  *     A modification is any change of a field on the node itself and a change of a relation (add or removed).
  *     A change on a related related node is not a modification.
@@ -1921,17 +1661,36 @@ export enum AuditedNodeOrderField {
     LastModifiedAt = "LAST_MODIFIED_AT"
 }
 
+/** Shared extensions to the node type. */
+export type BaseNode = {
+    /** Checks if the current user has a specific permission on this Node */
+    hasPermission: Scalars["Boolean"]["output"];
+    /** The unique id of this node */
+    id: Scalars["ID"]["output"];
+};
+
+/** Shared extensions to the node type. */
+export type BaseNodeHasPermissionArgs = {
+    permission?: InputMaybe<AllPermissionEntry>;
+};
+
 export type BasePermission = {
     /** If, the permission is granted to all users. Use with caution. */
     allUsers: Scalars["Boolean"]["output"];
     /** The description of this entity. */
     description: Scalars["String"]["output"];
+    /** Checks if the current user has a specific permission on this Node */
+    hasPermission: Scalars["Boolean"]["output"];
     /** The unique id of this node */
     id: Scalars["ID"]["output"];
     /** The name of this entity. */
     name: Scalars["String"]["output"];
     /** GropiusUsers granted this Permission */
     users: GropiusUserConnection;
+};
+
+export type BasePermissionHasPermissionArgs = {
+    permission?: InputMaybe<AllPermissionEntry>;
 };
 
 export type BasePermissionUsersArgs = {
@@ -2025,10 +1784,6 @@ export type BaseStyle = FillStyle | StrokeStyle;
 export type BaseTemplate = {
     /** The description of this entity. */
     description: Scalars["String"]["output"];
-    /** Value of an extension field by name of the extension field. Null if the field does not exist. */
-    extensionField?: Maybe<Scalars["JSON"]["output"]>;
-    /** All extension fields, if a `namePrefix` is provided, only those matching it */
-    extensionFields: Array<JsonField>;
     /** Checks if the current user has a specific permission on this Node */
     hasPermission: Scalars["Boolean"]["output"];
     /** The unique id of this node */
@@ -2037,26 +1792,6 @@ export type BaseTemplate = {
     name: Scalars["String"]["output"];
     /** All template field specifications, if a `namePrefix` is provided, only those matching it */
     templateFieldSpecifications: Array<JsonField>;
-};
-
-/**
- * Base type for both Template and SubTemplate.
- *     Defines templated fields with specific types (defined using JSON schema).
- *     READ is always granted.
- *
- */
-export type BaseTemplateExtensionFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-/**
- * Base type for both Template and SubTemplate.
- *     Defines templated fields with specific types (defined using JSON schema).
- *     READ is always granted.
- *
- */
-export type BaseTemplateExtensionFieldsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 /**
@@ -2086,8 +1821,8 @@ export type BaseTemplateTemplateFieldSpecificationsArgs = {
  *
  */
 export type Body = AuditedNode &
+    BaseNode &
     Comment &
-    ExtensibleNode &
     Node &
     TimelineItem & {
         __typename?: "Body";
@@ -2095,9 +1830,9 @@ export type Body = AuditedNode &
         answeredBy: IssueCommentConnection;
         /**
          * The text of the Comment.
-         *         Supports GFM (GitHub Flavored Markdown).
-         *         Updates to the body cause lastEditedAt and lastEditedBy to change, while updates to referencedArtefacts
-         *         do not.
+         *                 Supports GFM (GitHub Flavored Markdown).
+         *                 Updates cause lastEditedAt and lastEditedBy to change.
+         *                 Empty String if IssueComment is deleted.
          *
          */
         body: Scalars["String"]["output"];
@@ -2117,10 +1852,6 @@ export type Body = AuditedNode &
         createdAt: Scalars["DateTime"]["output"];
         /** The User who created this entity. */
         createdBy: User;
-        /** Value of an extension field by name of the extension field. Null if the field does not exist. */
-        extensionField?: Maybe<Scalars["JSON"]["output"]>;
-        /** All extension fields, if a `namePrefix` is provided, only those matching it */
-        extensionFields: Array<JsonField>;
         /** Checks if the current user has a specific permission on this Node */
         hasPermission: Scalars["Boolean"]["output"];
         /** The unique id of this node */
@@ -2157,26 +1888,6 @@ export type BodyAnsweredByArgs = {
  *     READ is granted if READ is granted on `issue`.
  *
  */
-export type BodyExtensionFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-/**
- * Main Body of an Issue.
- *     Each Issue has exactly one Body. Keeps track when it was last edited and by who, but does not keep track of the change history.
- *     READ is granted if READ is granted on `issue`.
- *
- */
-export type BodyExtensionFieldsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
-};
-
-/**
- * Main Body of an Issue.
- *     Each Issue has exactly one Body. Keeps track when it was last edited and by who, but does not keep track of the change history.
- *     READ is granted if READ is granted on `issue`.
- *
- */
 export type BodyHasPermissionArgs = {
     permission?: InputMaybe<AllPermissionEntry>;
 };
@@ -2187,8 +1898,6 @@ export type BodyFilterInput = {
     and?: InputMaybe<Array<BodyFilterInput>>;
     /** Filter by answeredBy */
     answeredBy?: InputMaybe<IssueCommentListFilterInput>;
-    /** Filter by body */
-    body?: InputMaybe<StringFilterInput>;
     /** Filter by bodyLastEditedAt */
     bodyLastEditedAt?: InputMaybe<DateTimeFilterInput>;
     /** Filters for nodes where the related node match this filter */
@@ -2417,9 +2126,9 @@ export type Comment = {
     answeredBy: IssueCommentConnection;
     /**
      * The text of the Comment.
-     *         Supports GFM (GitHub Flavored Markdown).
-     *         Updates to the body cause lastEditedAt and lastEditedBy to change, while updates to referencedArtefacts
-     *         do not.
+     *                 Supports GFM (GitHub Flavored Markdown).
+     *                 Updates cause lastEditedAt and lastEditedBy to change.
+     *                 Empty String if IssueComment is deleted.
      *
      */
     body: Scalars["String"]["output"];
@@ -2439,10 +2148,6 @@ export type Comment = {
     createdAt: Scalars["DateTime"]["output"];
     /** The User who created this entity. */
     createdBy: User;
-    /** Value of an extension field by name of the extension field. Null if the field does not exist. */
-    extensionField?: Maybe<Scalars["JSON"]["output"]>;
-    /** All extension fields, if a `namePrefix` is provided, only those matching it */
-    extensionFields: Array<JsonField>;
     /** Checks if the current user has a specific permission on this Node */
     hasPermission: Scalars["Boolean"]["output"];
     /** The unique id of this node */
@@ -2481,28 +2186,6 @@ export type CommentAnsweredByArgs = {
  *     READ is granted if READ is granted on `issue`.
  *
  */
-export type CommentExtensionFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-/**
- * Supertype for IssueComment and Body.
- *     Represents a text block in the Timeline.
- *     Keeps track when it was last edited and by who, but does not keep track of the change history.
- *     READ is granted if READ is granted on `issue`.
- *
- */
-export type CommentExtensionFieldsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
-};
-
-/**
- * Supertype for IssueComment and Body.
- *     Represents a text block in the Timeline.
- *     Keeps track when it was last edited and by who, but does not keep track of the change history.
- *     READ is granted if READ is granted on `issue`.
- *
- */
 export type CommentHasPermissionArgs = {
     permission?: InputMaybe<AllPermissionEntry>;
 };
@@ -2513,8 +2196,6 @@ export type CommentFilterInput = {
     and?: InputMaybe<Array<CommentFilterInput>>;
     /** Filter by answeredBy */
     answeredBy?: InputMaybe<IssueCommentListFilterInput>;
-    /** Filter by body */
-    body?: InputMaybe<StringFilterInput>;
     /** Filter by bodyLastEditedAt */
     bodyLastEditedAt?: InputMaybe<DateTimeFilterInput>;
     /** Filters for nodes where the related node match this filter */
@@ -2552,7 +2233,7 @@ export type CommentFilterInput = {
  *
  */
 export type Component = AffectedByIssue &
-    ExtensibleNode &
+    BaseNode &
     MutableTemplatedNode &
     Named &
     NamedNode &
@@ -2566,10 +2247,6 @@ export type Component = AffectedByIssue &
         artefacts: ArtefactConnection;
         /** The description of this entity. */
         description: Scalars["String"]["output"];
-        /** Value of an extension field by name of the extension field. Null if the field does not exist. */
-        extensionField?: Maybe<Scalars["JSON"]["output"]>;
-        /** All extension fields, if a `namePrefix` is provided, only those matching it */
-        extensionFields: Array<JsonField>;
         /** Checks if the current user has a specific permission on this Node */
         hasPermission: Scalars["Boolean"]["output"];
         /** The unique id of this node */
@@ -2651,34 +2328,6 @@ export type ComponentArtefactsArgs = {
     last?: InputMaybe<Scalars["Int"]["input"]>;
     orderBy?: InputMaybe<ArtefactOrder>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
-};
-
-/**
- * Entity which represents a software component, e.g. a library, a microservice, or a deployment platform, ....
- *     The type of software component is defined by the template.
- *     Can have issues, labels and artefacts as this is a Trackable.
- *     Defines InterfaceSpecifications, but visible/invisible InterfaceSpecificationVersions depend on the ComponentVersion.
- *     Can be affected by Issues.
- *     READ is granted via an associated ComponentPermission or if READ is granted on any Project including any
- *     ComponentVersion in `versions` of this Component.
- *
- */
-export type ComponentExtensionFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-/**
- * Entity which represents a software component, e.g. a library, a microservice, or a deployment platform, ....
- *     The type of software component is defined by the template.
- *     Can have issues, labels and artefacts as this is a Trackable.
- *     Defines InterfaceSpecifications, but visible/invisible InterfaceSpecificationVersions depend on the ComponentVersion.
- *     Can be affected by Issues.
- *     READ is granted via an associated ComponentPermission or if READ is granted on any Project including any
- *     ComponentVersion in `versions` of this Component.
- *
- */
-export type ComponentExtensionFieldsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 /**
@@ -2955,8 +2604,10 @@ export enum ComponentOrderField {
 }
 
 /** NodePermission to grant specific permissions to a set of Components. */
-export type ComponentPermission = BasePermission &
+export type ComponentPermission = BaseNode &
+    BasePermission &
     Named &
+    NamedNode &
     Node & {
         __typename?: "ComponentPermission";
         /** If, the permission is granted to all users. Use with caution. */
@@ -2965,6 +2616,8 @@ export type ComponentPermission = BasePermission &
         description: Scalars["String"]["output"];
         /** All permissions this Permission grants */
         entries: Array<ComponentPermissionEntry>;
+        /** Checks if the current user has a specific permission on this Node */
+        hasPermission: Scalars["Boolean"]["output"];
         /** The unique id of this node */
         id: Scalars["ID"]["output"];
         /** The name of this entity. */
@@ -2974,6 +2627,11 @@ export type ComponentPermission = BasePermission &
         /** GropiusUsers granted this Permission */
         users: GropiusUserConnection;
     };
+
+/** NodePermission to grant specific permissions to a set of Components. */
+export type ComponentPermissionHasPermissionArgs = {
+    permission?: InputMaybe<AllPermissionEntry>;
+};
 
 /** NodePermission to grant specific permissions to a set of Components. */
 export type ComponentPermissionNodesWithPermissionArgs = {
@@ -3154,8 +2812,8 @@ export enum ComponentPermissionOrderField {
  *     Defines SubTemplate for ComponentVersions.
  *
  */
-export type ComponentTemplate = BaseTemplate &
-    ExtensibleNode &
+export type ComponentTemplate = BaseNode &
+    BaseTemplate &
     Named &
     NamedNode &
     Node &
@@ -3170,10 +2828,6 @@ export type ComponentTemplate = BaseTemplate &
         extendedBy: ComponentTemplateConnection;
         /** Template this template extends. */
         extends: ComponentTemplateConnection;
-        /** Value of an extension field by name of the extension field. Null if the field does not exist. */
-        extensionField?: Maybe<Scalars["JSON"]["output"]>;
-        /** All extension fields, if a `namePrefix` is provided, only those matching it */
-        extensionFields: Array<JsonField>;
         /** Style of the fill */
         fill?: Maybe<FillStyle>;
         /** Checks if the current user has a specific permission on this Node */
@@ -3232,26 +2886,6 @@ export type ComponentTemplateExtendsArgs = {
     last?: InputMaybe<Scalars["Int"]["input"]>;
     orderBy?: InputMaybe<ComponentTemplateOrder>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
-};
-
-/**
- * Template for Components.
- *     Defines templated fields with specific types (defined using JSON schema).
- *     Defines SubTemplate for ComponentVersions.
- *
- */
-export type ComponentTemplateExtensionFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-/**
- * Template for Components.
- *     Defines templated fields with specific types (defined using JSON schema).
- *     Defines SubTemplate for ComponentVersions.
- *
- */
-export type ComponentTemplateExtensionFieldsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 /**
@@ -3440,7 +3074,7 @@ export enum ComponentTemplateOrderField {
  *
  */
 export type ComponentVersion = AffectedByIssue &
-    ExtensibleNode &
+    BaseNode &
     MutableTemplatedNode &
     Named &
     NamedNode &
@@ -3457,10 +3091,6 @@ export type ComponentVersion = AffectedByIssue &
         component: Component;
         /** The description of this entity. */
         description: Scalars["String"]["output"];
-        /** Value of an extension field by name of the extension field. Null if the field does not exist. */
-        extensionField?: Maybe<Scalars["JSON"]["output"]>;
-        /** All extension fields, if a `namePrefix` is provided, only those matching it */
-        extensionFields: Array<JsonField>;
         /** Checks if the current user has a specific permission on this Node */
         hasPermission: Scalars["Boolean"]["output"];
         /** The unique id of this node */
@@ -3524,28 +3154,6 @@ export type ComponentVersionAggregatedIssuesArgs = {
     last?: InputMaybe<Scalars["Int"]["input"]>;
     orderBy?: InputMaybe<AggregatedIssueOrder>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
-};
-
-/**
- * Version of a component.
- *     Can specifies visible/invisible InterfaceSpecifications.
- *     Can be used in Relations, affected by issues and included by Projects.
- *     READ is granted if READ is granted on `component`.
- *
- */
-export type ComponentVersionExtensionFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-/**
- * Version of a component.
- *     Can specifies visible/invisible InterfaceSpecifications.
- *     Can be used in Relations, affected by issues and included by Projects.
- *     READ is granted if READ is granted on `component`.
- *
- */
-export type ComponentVersionExtensionFieldsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 /**
@@ -3735,8 +3343,6 @@ export type ComponentVersionFilterInput = {
 export type ComponentVersionInput = {
     /** The description of the NamedNode */
     description: Scalars["String"]["input"];
-    /** The initial value of the extension fields */
-    extensionFields?: InputMaybe<Array<JsonFieldInput>>;
     /** The name of the NamedNode, must not be blank */
     name: Scalars["String"]["input"];
     /** Initial values for all templatedFields */
@@ -3779,8 +3385,8 @@ export enum ComponentVersionOrderField {
  *     Defines templated fields with specific types (defined using JSON schema).
  *
  */
-export type ComponentVersionTemplate = BaseTemplate &
-    ExtensibleNode &
+export type ComponentVersionTemplate = BaseNode &
+    BaseTemplate &
     Named &
     NamedNode &
     Node &
@@ -3788,10 +3394,6 @@ export type ComponentVersionTemplate = BaseTemplate &
         __typename?: "ComponentVersionTemplate";
         /** The description of this entity. */
         description: Scalars["String"]["output"];
-        /** Value of an extension field by name of the extension field. Null if the field does not exist. */
-        extensionField?: Maybe<Scalars["JSON"]["output"]>;
-        /** All extension fields, if a `namePrefix` is provided, only those matching it */
-        extensionFields: Array<JsonField>;
         /** Checks if the current user has a specific permission on this Node */
         hasPermission: Scalars["Boolean"]["output"];
         /** The unique id of this node */
@@ -3805,26 +3407,6 @@ export type ComponentVersionTemplate = BaseTemplate &
         /** Entities which use this template. */
         usedIn: ComponentVersionConnection;
     };
-
-/**
- * SubTemplate for ComponentVersion.
- *     Part of a ComponentTemplate.
- *     Defines templated fields with specific types (defined using JSON schema).
- *
- */
-export type ComponentVersionTemplateExtensionFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-/**
- * SubTemplate for ComponentVersion.
- *     Part of a ComponentTemplate.
- *     Defines templated fields with specific types (defined using JSON schema).
- *
- */
-export type ComponentVersionTemplateExtensionFieldsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
-};
 
 /**
  * SubTemplate for ComponentVersion.
@@ -3880,8 +3462,6 @@ export type ComponentVersionTemplateFilterInput = {
 
 /** Input for the createArtefact mutation */
 export type CreateArtefactInput = {
-    /** The initial value of the extension fields */
-    extensionFields?: InputMaybe<Array<JsonFieldInput>>;
     /** The initial file of the Artefact */
     file: Scalars["URL"]["input"];
     /** The initial value of the from field of the Artefact */
@@ -3910,8 +3490,6 @@ export type CreateArtefactTemplateInput = {
     description: Scalars["String"]["input"];
     /** IDs of Templates the created template extends. Must be templates of the same type. */
     extends?: InputMaybe<Array<Scalars["ID"]["input"]>>;
-    /** The initial value of the extension fields */
-    extensionFields?: InputMaybe<Array<JsonFieldInput>>;
     /** The name of the NamedNode, must not be blank */
     name: Scalars["String"]["input"];
     /**
@@ -3932,8 +3510,6 @@ export type CreateArtefactTemplatePayload = {
 export type CreateAssignmentInput = {
     /** The optional type of the Assignment, must be defined by the Template of the Issue */
     assignmentType?: InputMaybe<Scalars["ID"]["input"]>;
-    /** The initial value of the extension fields */
-    extensionFields?: InputMaybe<Array<JsonFieldInput>>;
     /** The id of the Issue to which the User should be assigned */
     issue: Scalars["ID"]["input"];
     /** The id of the User to assign to the Issue */
@@ -3950,8 +3526,6 @@ export type CreateAssignmentPayload = {
 export type CreateComponentInput = {
     /** The description of the NamedNode */
     description: Scalars["String"]["input"];
-    /** The initial value of the extension fields */
-    extensionFields?: InputMaybe<Array<JsonFieldInput>>;
     /** Initial InterfaceSpecifications */
     interfaceSpecifications?: InputMaybe<Array<InterfaceSpecificationInput>>;
     /** The name of the NamedNode, must not be blank */
@@ -4002,8 +3576,6 @@ export type CreateComponentTemplateInput = {
     description: Scalars["String"]["input"];
     /** IDs of Templates the created template extends. Must be templates of the same type. */
     extends?: InputMaybe<Array<Scalars["ID"]["input"]>>;
-    /** The initial value of the extension fields */
-    extensionFields?: InputMaybe<Array<JsonFieldInput>>;
     /** Style of the fill */
     fill?: InputMaybe<FillStyleInput>;
     /** The name of the NamedNode, must not be blank */
@@ -4034,8 +3606,6 @@ export type CreateComponentVersionInput = {
     component: Scalars["ID"]["input"];
     /** The description of the NamedNode */
     description: Scalars["String"]["input"];
-    /** The initial value of the extension fields */
-    extensionFields?: InputMaybe<Array<JsonFieldInput>>;
     /** The name of the NamedNode, must not be blank */
     name: Scalars["String"]["input"];
     /** Initial values for all templatedFields */
@@ -4074,8 +3644,6 @@ export type CreateGlobalPermissionPayload = {
 export type CreateImsInput = {
     /** The description of the NamedNode */
     description: Scalars["String"]["input"];
-    /** The initial value of the extension fields */
-    extensionFields?: InputMaybe<Array<JsonFieldInput>>;
     /** The name of the NamedNode, must not be blank */
     name: Scalars["String"]["input"];
     /** The template of the created IMS */
@@ -4114,10 +3682,12 @@ export type CreateImsPermissionPayload = {
 
 /** Input for the createIMSProject mutation */
 export type CreateImsProjectInput = {
-    /** The initial value of the extension fields */
-    extensionFields?: InputMaybe<Array<JsonFieldInput>>;
+    /** The description of the NamedNode */
+    description: Scalars["String"]["input"];
     /** The id of the IMS the created project is part of */
     ims: Scalars["ID"]["input"];
+    /** The name of the NamedNode, must not be blank */
+    name: Scalars["String"]["input"];
     /** Initial values for all templatedFields */
     templatedFields: Array<JsonFieldInput>;
     /** The id of the Trackable which is synced */
@@ -4134,8 +3704,6 @@ export type CreateImsProjectPayload = {
 export type CreateInterfacePartInput = {
     /** The description of the NamedNode */
     description: Scalars["String"]["input"];
-    /** The initial value of the extension fields */
-    extensionFields?: InputMaybe<Array<JsonFieldInput>>;
     /** The id of the InterfaceSpecificationVersion the created InterfacePart is part of */
     interfaceSpecificationVersion: Scalars["ID"]["input"];
     /** The name of the NamedNode, must not be blank */
@@ -4156,8 +3724,6 @@ export type CreateInterfaceSpecificationInput = {
     component: Scalars["ID"]["input"];
     /** The description of the NamedNode */
     description: Scalars["String"]["input"];
-    /** The initial value of the extension fields */
-    extensionFields?: InputMaybe<Array<JsonFieldInput>>;
     /** The name of the NamedNode, must not be blank */
     name: Scalars["String"]["input"];
     /** The template of the created InterfaceSpecification */
@@ -4184,8 +3750,6 @@ export type CreateInterfaceSpecificationTemplateInput = {
     description: Scalars["String"]["input"];
     /** IDs of Templates the created template extends. Must be templates of the same type. */
     extends?: InputMaybe<Array<Scalars["ID"]["input"]>>;
-    /** The initial value of the extension fields */
-    extensionFields?: InputMaybe<Array<JsonFieldInput>>;
     /** Style of the fill */
     fill?: InputMaybe<FillStyleInput>;
     /** SubTemplate for all InterfacesDefinitions of a InterfaceSpecification with the created Template */
@@ -4222,8 +3786,6 @@ export type CreateInterfaceSpecificationTemplatePayload = {
 export type CreateInterfaceSpecificationVersionInput = {
     /** The description of the NamedNode */
     description: Scalars["String"]["input"];
-    /** The initial value of the extension fields */
-    extensionFields?: InputMaybe<Array<JsonFieldInput>>;
     /** The id of the InterfaceSpecification the created InterfaceSpecificationVersion is part of */
     interfaceSpecification: Scalars["ID"]["input"];
     /** The name of the NamedNode, must not be blank */
@@ -4248,8 +3810,6 @@ export type CreateIntraComponentDependencySpecificationInput = {
     componentVersion: Scalars["ID"]["input"];
     /** The description of the NamedNode */
     description: Scalars["String"]["input"];
-    /** The initial value of the extension fields */
-    extensionFields?: InputMaybe<Array<JsonFieldInput>>;
     /** Initial incomingParticipants, must not be empty */
     incomingParticipants: Array<IntraComponentDependencyParticipantInput>;
     /** The name of the NamedNode, must not be blank */
@@ -4270,8 +3830,6 @@ export type CreateIssueCommentInput = {
     answers?: InputMaybe<Scalars["ID"]["input"]>;
     /** Initial body of the IssueComment */
     body: Scalars["String"]["input"];
-    /** The initial value of the extension fields */
-    extensionFields?: InputMaybe<Array<JsonFieldInput>>;
     /** The id of the Issue the IssueComment is created on */
     issue: Scalars["ID"]["input"];
     /** Ids of initially referenced artefacts */
@@ -4288,8 +3846,6 @@ export type CreateIssueCommentPayload = {
 export type CreateIssueInput = {
     /** The body of the created Issue */
     body: Scalars["String"]["input"];
-    /** The initial value of the extension fields */
-    extensionFields?: InputMaybe<Array<JsonFieldInput>>;
     /** The id of the state of the created Issue, must be compatible with template  */
     state: Scalars["ID"]["input"];
     /** The template of the created Issue */
@@ -4312,8 +3868,6 @@ export type CreateIssuePayload = {
 
 /** Input for the createIssueRelation mutation */
 export type CreateIssueRelationInput = {
-    /** The initial value of the extension fields */
-    extensionFields?: InputMaybe<Array<JsonFieldInput>>;
     /** The id of the Issue from which the IssueRelation starts */
     issue: Scalars["ID"]["input"];
     /** The optional type of the IssueRelation, must be defined by the Template of the Issue */
@@ -4336,8 +3890,6 @@ export type CreateIssueTemplateInput = {
     description: Scalars["String"]["input"];
     /** IDs of Templates the created template extends. Must be templates of the same type. */
     extends?: InputMaybe<Array<Scalars["ID"]["input"]>>;
-    /** The initial value of the extension fields */
-    extensionFields?: InputMaybe<Array<JsonFieldInput>>;
     /** Set of all priorities Issues with the created can have. */
     issuePriorities: Array<IssuePriorityInput>;
     /** Set of all states Issues with the created Template can have */
@@ -4368,8 +3920,6 @@ export type CreateLabelInput = {
     color: Scalars["String"]["input"];
     /** The description of the NamedNode */
     description: Scalars["String"]["input"];
-    /** The initial value of the extension fields */
-    extensionFields?: InputMaybe<Array<JsonFieldInput>>;
     /** The name of the NamedNode, must not be blank */
     name: Scalars["String"]["input"];
     /** IDs of Trackables the Label is added to, at least one required. */
@@ -4386,8 +3936,6 @@ export type CreateLabelPayload = {
 export type CreateProjectInput = {
     /** The description of the NamedNode */
     description: Scalars["String"]["input"];
-    /** The initial value of the extension fields */
-    extensionFields?: InputMaybe<Array<JsonFieldInput>>;
     /** The name of the NamedNode, must not be blank */
     name: Scalars["String"]["input"];
     /** The repositoryURL of the named node */
@@ -4428,8 +3976,6 @@ export type CreateRelationInput = {
     end: Scalars["ID"]["input"];
     /** If `end` is an Interface, the parts of the Interface the created Relation includes */
     endParts?: InputMaybe<Array<Scalars["ID"]["input"]>>;
-    /** The initial value of the extension fields */
-    extensionFields?: InputMaybe<Array<JsonFieldInput>>;
     /** The start RelationPartner of the Relation */
     start: Scalars["ID"]["input"];
     /** If `start` is an Interface, the parts of the Interface the created Relation includes */
@@ -4452,8 +3998,6 @@ export type CreateRelationTemplateInput = {
     description: Scalars["String"]["input"];
     /** IDs of Templates the created template extends. Must be templates of the same type. */
     extends?: InputMaybe<Array<Scalars["ID"]["input"]>>;
-    /** The initial value of the extension fields */
-    extensionFields?: InputMaybe<Array<JsonFieldInput>>;
     /** The type of the marker at the end of the relation. */
     markerType: MarkerType;
     /** The name of the NamedNode, must not be blank */
@@ -4517,7 +4061,7 @@ export type DeleteNodePayload = {
  *
  */
 export type DueDateChangedEvent = AuditedNode &
-    ExtensibleNode &
+    BaseNode &
     Node &
     TimelineItem & {
         __typename?: "DueDateChangedEvent";
@@ -4525,10 +4069,6 @@ export type DueDateChangedEvent = AuditedNode &
         createdAt: Scalars["DateTime"]["output"];
         /** The User who created this entity. */
         createdBy: User;
-        /** Value of an extension field by name of the extension field. Null if the field does not exist. */
-        extensionField?: Maybe<Scalars["JSON"]["output"]>;
-        /** All extension fields, if a `namePrefix` is provided, only those matching it */
-        extensionFields: Array<JsonField>;
         /** Checks if the current user has a specific permission on this Node */
         hasPermission: Scalars["Boolean"]["output"];
         /** The unique id of this node */
@@ -4552,24 +4092,6 @@ export type DueDateChangedEvent = AuditedNode &
  *     READ is granted if READ is granted on `issue`.
  *
  */
-export type DueDateChangedEventExtensionFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-/**
- * Event representing that the due date of an Issue changed.
- *     READ is granted if READ is granted on `issue`.
- *
- */
-export type DueDateChangedEventExtensionFieldsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
-};
-
-/**
- * Event representing that the due date of an Issue changed.
- *     READ is granted if READ is granted on `issue`.
- *
- */
 export type DueDateChangedEventHasPermissionArgs = {
     permission?: InputMaybe<AllPermissionEntry>;
 };
@@ -4580,7 +4102,7 @@ export type DueDateChangedEventHasPermissionArgs = {
  *
  */
 export type EstimatedTimeChangedEvent = AuditedNode &
-    ExtensibleNode &
+    BaseNode &
     Node &
     TimelineItem & {
         __typename?: "EstimatedTimeChangedEvent";
@@ -4588,10 +4110,6 @@ export type EstimatedTimeChangedEvent = AuditedNode &
         createdAt: Scalars["DateTime"]["output"];
         /** The User who created this entity. */
         createdBy: User;
-        /** Value of an extension field by name of the extension field. Null if the field does not exist. */
-        extensionField?: Maybe<Scalars["JSON"]["output"]>;
-        /** All extension fields, if a `namePrefix` is provided, only those matching it */
-        extensionFields: Array<JsonField>;
         /** Checks if the current user has a specific permission on this Node */
         hasPermission: Scalars["Boolean"]["output"];
         /** The unique id of this node */
@@ -4615,62 +4133,25 @@ export type EstimatedTimeChangedEvent = AuditedNode &
  *     READ is granted if READ is granted on `issue`.
  *
  */
-export type EstimatedTimeChangedEventExtensionFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-/**
- * Event representing that the estimated time of an Issue changed.
- *     READ is granted if READ is granted on `issue`.
- *
- */
-export type EstimatedTimeChangedEventExtensionFieldsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
-};
-
-/**
- * Event representing that the estimated time of an Issue changed.
- *     READ is granted if READ is granted on `issue`.
- *
- */
 export type EstimatedTimeChangedEventHasPermissionArgs = {
     permission?: InputMaybe<AllPermissionEntry>;
 };
 
-/** Entity which provides dynamic extension fields. */
-export type ExtensibleNode = {
-    /** Value of an extension field by name of the extension field. Null if the field does not exist. */
-    extensionField?: Maybe<Scalars["JSON"]["output"]>;
-    /** All extension fields, if a `namePrefix` is provided, only those matching it */
-    extensionFields: Array<JsonField>;
-    /** Checks if the current user has a specific permission on this Node */
-    hasPermission: Scalars["Boolean"]["output"];
-    /** The unique id of this node */
-    id: Scalars["ID"]["output"];
-};
-
-/** Entity which provides dynamic extension fields. */
-export type ExtensibleNodeExtensionFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-/** Entity which provides dynamic extension fields. */
-export type ExtensibleNodeExtensionFieldsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
-};
-
-/** Entity which provides dynamic extension fields. */
-export type ExtensibleNodeHasPermissionArgs = {
-    permission?: InputMaybe<AllPermissionEntry>;
-};
+/** Fill style of a shape */
+export type FillStyle = BaseNode &
+    Node & {
+        __typename?: "FillStyle";
+        /** The color of the fill */
+        color: Scalars["String"]["output"];
+        /** Checks if the current user has a specific permission on this Node */
+        hasPermission: Scalars["Boolean"]["output"];
+        /** The unique id of this node */
+        id: Scalars["ID"]["output"];
+    };
 
 /** Fill style of a shape */
-export type FillStyle = Node & {
-    __typename?: "FillStyle";
-    /** The color of the fill */
-    color: Scalars["String"]["output"];
-    /** The unique id of this node */
-    id: Scalars["ID"]["output"];
+export type FillStyleHasPermissionArgs = {
+    permission?: InputMaybe<AllPermissionEntry>;
 };
 
 /** Input to create a FillStyle */
@@ -4701,8 +4182,10 @@ export type FloatFilterInput = {
  *     READ is granted if the global admin is granted.
  *
  */
-export type GlobalPermission = BasePermission &
+export type GlobalPermission = BaseNode &
+    BasePermission &
     Named &
+    NamedNode &
     Node & {
         __typename?: "GlobalPermission";
         /** If, the permission is granted to all users. Use with caution. */
@@ -4711,6 +4194,8 @@ export type GlobalPermission = BasePermission &
         description: Scalars["String"]["output"];
         /** All permissions this Permission grants */
         entries: Array<PermissionEntry>;
+        /** Checks if the current user has a specific permission on this Node */
+        hasPermission: Scalars["Boolean"]["output"];
         /** The unique id of this node */
         id: Scalars["ID"]["output"];
         /** The name of this entity. */
@@ -4718,6 +4203,16 @@ export type GlobalPermission = BasePermission &
         /** GropiusUsers granted this Permission */
         users: GropiusUserConnection;
     };
+
+/**
+ * Permission associated with a set of users.
+ *     Can have NodePermissions to grant permissions on specific Nodes.
+ *     READ is granted if the global admin is granted.
+ *
+ */
+export type GlobalPermissionHasPermissionArgs = {
+    permission?: InputMaybe<AllPermissionEntry>;
+};
 
 /**
  * Permission associated with a set of users.
@@ -4765,7 +4260,7 @@ export type GlobalPermissionFilterInput = {
  *     linked IMSUsers and their Assignments etc.
  *
  */
-export type GropiusUser = ExtensibleNode &
+export type GropiusUser = BaseNode &
     Node &
     User & {
         __typename?: "GropiusUser";
@@ -4773,16 +4268,16 @@ export type GropiusUser = ExtensibleNode &
         assignments: AssignmentConnection;
         /** The avatar of the user. */
         avatar: Scalars["URL"]["output"];
+        /** The IMSSyncPermissionTarget this users allow to sync content of other users. */
+        canSyncOthers: SyncPermissionTargetConnection;
+        /** The UserSyncPermissionTarget this users allow to sync content of this user. */
+        canSyncSelf: SyncPermissionTargetConnection;
         /** AuditedNodes the user created. */
         createdNodes: AuditedNodeConnection;
         /** The name which should be displayed for the user. */
         displayName: Scalars["String"]["output"];
         /** The email address of the user. */
         email?: Maybe<Scalars["String"]["output"]>;
-        /** Value of an extension field by name of the extension field. Null if the field does not exist. */
-        extensionField?: Maybe<Scalars["JSON"]["output"]>;
-        /** All extension fields, if a `namePrefix` is provided, only those matching it */
-        extensionFields: Array<JsonField>;
         /** Checks if the current user has a specific permission on this Node */
         hasPermission: Scalars["Boolean"]["output"];
         /** The unique id of this node */
@@ -4829,13 +4324,13 @@ export type GropiusUserAssignmentsArgs = {
  *     linked IMSUsers and their Assignments etc.
  *
  */
-export type GropiusUserCreatedNodesArgs = {
+export type GropiusUserCanSyncOthersArgs = {
     after?: InputMaybe<Scalars["String"]["input"]>;
     before?: InputMaybe<Scalars["String"]["input"]>;
-    filter?: InputMaybe<AuditedNodeFilterInput>;
+    filter?: InputMaybe<SyncPermissionTargetFilterInput>;
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
-    orderBy?: InputMaybe<AuditedNodeOrder>;
+    orderBy?: InputMaybe<SyncPermissionTargetOrder>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -4849,8 +4344,14 @@ export type GropiusUserCreatedNodesArgs = {
  *     linked IMSUsers and their Assignments etc.
  *
  */
-export type GropiusUserExtensionFieldArgs = {
-    name: Scalars["String"]["input"];
+export type GropiusUserCanSyncSelfArgs = {
+    after?: InputMaybe<Scalars["String"]["input"]>;
+    before?: InputMaybe<Scalars["String"]["input"]>;
+    filter?: InputMaybe<SyncPermissionTargetFilterInput>;
+    first?: InputMaybe<Scalars["Int"]["input"]>;
+    last?: InputMaybe<Scalars["Int"]["input"]>;
+    orderBy?: InputMaybe<SyncPermissionTargetOrder>;
+    skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
 /**
@@ -4863,8 +4364,14 @@ export type GropiusUserExtensionFieldArgs = {
  *     linked IMSUsers and their Assignments etc.
  *
  */
-export type GropiusUserExtensionFieldsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
+export type GropiusUserCreatedNodesArgs = {
+    after?: InputMaybe<Scalars["String"]["input"]>;
+    before?: InputMaybe<Scalars["String"]["input"]>;
+    filter?: InputMaybe<AuditedNodeFilterInput>;
+    first?: InputMaybe<Scalars["Int"]["input"]>;
+    last?: InputMaybe<Scalars["Int"]["input"]>;
+    orderBy?: InputMaybe<AuditedNodeOrder>;
+    skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
 /**
@@ -4969,6 +4476,10 @@ export type GropiusUserFilterInput = {
     and?: InputMaybe<Array<GropiusUserFilterInput>>;
     /** Filter by assignments */
     assignments?: InputMaybe<AssignmentListFilterInput>;
+    /** Filter by canSyncOthers */
+    canSyncOthers?: InputMaybe<SyncPermissionTargetListFilterInput>;
+    /** Filter by canSyncSelf */
+    canSyncSelf?: InputMaybe<SyncPermissionTargetListFilterInput>;
     /** Filter by createdNodes */
     createdNodes?: InputMaybe<AuditedNodeListFilterInput>;
     /** Filter by displayName */
@@ -5037,19 +4548,16 @@ export type IdFilterInput = {
  *     READ is granted via an associated IMSPermission.
  *
  */
-export type Ims = ExtensibleNode &
+export type Ims = BaseNode &
     MutableTemplatedNode &
     Named &
     NamedNode &
     Node &
+    SyncPermissionTarget &
     TemplatedNode & {
         __typename?: "IMS";
         /** The description of this entity. */
         description: Scalars["String"]["output"];
-        /** Value of an extension field by name of the extension field. Null if the field does not exist. */
-        extensionField?: Maybe<Scalars["JSON"]["output"]>;
-        /** All extension fields, if a `namePrefix` is provided, only those matching it */
-        extensionFields: Array<JsonField>;
         /** Checks if the current user has a specific permission on this Node */
         hasPermission: Scalars["Boolean"]["output"];
         /** The unique id of this node */
@@ -5060,6 +4568,10 @@ export type Ims = ExtensibleNode &
         permissions: ImsPermissionConnection;
         /** Projects which are synced to this IMS. */
         projects: ImsProjectConnection;
+        /** The users which allow to sync the data of other users to this target. */
+        syncOthersAllowedBy: GropiusUserConnection;
+        /** The users which allow to sync their data to this target. */
+        syncSelfAllowedBy: GropiusUserConnection;
         /** The Template of this Component. */
         template: ImsTemplate;
         /** Value of a field defined by the template. Error if such a field is not defined. */
@@ -5074,26 +4586,6 @@ export type Ims = ExtensibleNode &
         /** Users of this IMS. */
         users: ImsUserConnection;
     };
-
-/**
- * Entity which represents an issue management system (like GitHub, Jira, Redmine, ...).
- *     Trackables can be added to this via an IMSProject, so that their issues are synced to this IMS.
- *     READ is granted via an associated IMSPermission.
- *
- */
-export type ImsExtensionFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-/**
- * Entity which represents an issue management system (like GitHub, Jira, Redmine, ...).
- *     Trackables can be added to this via an IMSProject, so that their issues are synced to this IMS.
- *     READ is granted via an associated IMSPermission.
- *
- */
-export type ImsExtensionFieldsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
-};
 
 /**
  * Entity which represents an issue management system (like GitHub, Jira, Redmine, ...).
@@ -5134,6 +4626,38 @@ export type ImsProjectsArgs = {
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
     orderBy?: InputMaybe<ImsProjectOrder>;
+    skip?: InputMaybe<Scalars["Int"]["input"]>;
+};
+
+/**
+ * Entity which represents an issue management system (like GitHub, Jira, Redmine, ...).
+ *     Trackables can be added to this via an IMSProject, so that their issues are synced to this IMS.
+ *     READ is granted via an associated IMSPermission.
+ *
+ */
+export type ImsSyncOthersAllowedByArgs = {
+    after?: InputMaybe<Scalars["String"]["input"]>;
+    before?: InputMaybe<Scalars["String"]["input"]>;
+    filter?: InputMaybe<GropiusUserFilterInput>;
+    first?: InputMaybe<Scalars["Int"]["input"]>;
+    last?: InputMaybe<Scalars["Int"]["input"]>;
+    orderBy?: InputMaybe<GropiusUserOrder>;
+    skip?: InputMaybe<Scalars["Int"]["input"]>;
+};
+
+/**
+ * Entity which represents an issue management system (like GitHub, Jira, Redmine, ...).
+ *     Trackables can be added to this via an IMSProject, so that their issues are synced to this IMS.
+ *     READ is granted via an associated IMSPermission.
+ *
+ */
+export type ImsSyncSelfAllowedByArgs = {
+    after?: InputMaybe<Scalars["String"]["input"]>;
+    before?: InputMaybe<Scalars["String"]["input"]>;
+    filter?: InputMaybe<GropiusUserFilterInput>;
+    first?: InputMaybe<Scalars["Int"]["input"]>;
+    last?: InputMaybe<Scalars["Int"]["input"]>;
+    orderBy?: InputMaybe<GropiusUserOrder>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -5214,6 +4738,10 @@ export type ImsFilterInput = {
     permissions?: InputMaybe<ImsPermissionListFilterInput>;
     /** Filter by projects */
     projects?: InputMaybe<ImsProjectListFilterInput>;
+    /** Filter by syncOthersAllowedBy */
+    syncOthersAllowedBy?: InputMaybe<GropiusUserListFilterInput>;
+    /** Filter by syncSelfAllowedBy */
+    syncSelfAllowedBy?: InputMaybe<GropiusUserListFilterInput>;
     /** Filters for nodes where the related node match this filter */
     template?: InputMaybe<ImsTemplateFilterInput>;
     /** Filter for templated fields with matching key and values. Entries are joined by AND */
@@ -5228,14 +4756,10 @@ export type ImsFilterInput = {
  *     READ is granted if read is granted on `issue`.
  *
  */
-export type ImsIssue = ExtensibleNode &
+export type ImsIssue = BaseNode &
     Node &
     TemplatedNode & {
         __typename?: "IMSIssue";
-        /** Value of an extension field by name of the extension field. Null if the field does not exist. */
-        extensionField?: Maybe<Scalars["JSON"]["output"]>;
-        /** All extension fields, if a `namePrefix` is provided, only those matching it */
-        extensionFields: Array<JsonField>;
         /** Checks if the current user has a specific permission on this Node */
         hasPermission: Scalars["Boolean"]["output"];
         /** The unique id of this node */
@@ -5256,26 +4780,6 @@ export type ImsIssue = ExtensibleNode &
          */
         templatedFields: Array<JsonField>;
     };
-
-/**
- * Issue on an IMS, represents an Issue synced to an IMS.
- *     The representation of the Issue on the IMS depends on the type of IMS.
- *     READ is granted if read is granted on `issue`.
- *
- */
-export type ImsIssueExtensionFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-/**
- * Issue on an IMS, represents an Issue synced to an IMS.
- *     The representation of the Issue on the IMS depends on the type of IMS.
- *     READ is granted if read is granted on `issue`.
- *
- */
-export type ImsIssueExtensionFieldsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
-};
 
 /**
  * Issue on an IMS, represents an Issue synced to an IMS.
@@ -5380,8 +4884,8 @@ export enum ImsIssueOrderField {
  *     Defines templated fields with specific types (defined using JSON schema).
  *
  */
-export type ImsIssueTemplate = BaseTemplate &
-    ExtensibleNode &
+export type ImsIssueTemplate = BaseNode &
+    BaseTemplate &
     Named &
     NamedNode &
     Node &
@@ -5389,10 +4893,6 @@ export type ImsIssueTemplate = BaseTemplate &
         __typename?: "IMSIssueTemplate";
         /** The description of this entity. */
         description: Scalars["String"]["output"];
-        /** Value of an extension field by name of the extension field. Null if the field does not exist. */
-        extensionField?: Maybe<Scalars["JSON"]["output"]>;
-        /** All extension fields, if a `namePrefix` is provided, only those matching it */
-        extensionFields: Array<JsonField>;
         /** Checks if the current user has a specific permission on this Node */
         hasPermission: Scalars["Boolean"]["output"];
         /** The unique id of this node */
@@ -5406,26 +4906,6 @@ export type ImsIssueTemplate = BaseTemplate &
         /** Entities which use this template. */
         usedIn: ImsIssueConnection;
     };
-
-/**
- * SubTemplate for IMSIssue.
- *     Part of a IMSTemplate.
- *     Defines templated fields with specific types (defined using JSON schema).
- *
- */
-export type ImsIssueTemplateExtensionFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-/**
- * SubTemplate for IMSIssue.
- *     Part of a IMSTemplate.
- *     Defines templated fields with specific types (defined using JSON schema).
- *
- */
-export type ImsIssueTemplateExtensionFieldsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
-};
 
 /**
  * SubTemplate for IMSIssue.
@@ -5506,8 +4986,10 @@ export enum ImsOrderField {
 }
 
 /** NodePermission to grant specific permissions to a set of IMSs. */
-export type ImsPermission = BasePermission &
+export type ImsPermission = BaseNode &
+    BasePermission &
     Named &
+    NamedNode &
     Node & {
         __typename?: "IMSPermission";
         /** If, the permission is granted to all users. Use with caution. */
@@ -5516,6 +4998,8 @@ export type ImsPermission = BasePermission &
         description: Scalars["String"]["output"];
         /** All permissions this Permission grants */
         entries: Array<ImsPermissionEntry>;
+        /** Checks if the current user has a specific permission on this Node */
+        hasPermission: Scalars["Boolean"]["output"];
         /** The unique id of this node */
         id: Scalars["ID"]["output"];
         /** The name of this entity. */
@@ -5525,6 +5009,11 @@ export type ImsPermission = BasePermission &
         /** GropiusUsers granted this Permission */
         users: GropiusUserConnection;
     };
+
+/** NodePermission to grant specific permissions to a set of IMSs. */
+export type ImsPermissionHasPermissionArgs = {
+    permission?: InputMaybe<AllPermissionEntry>;
+};
 
 /** NodePermission to grant specific permissions to a set of IMSs. */
 export type ImsPermissionNodesWithPermissionArgs = {
@@ -5639,15 +5128,16 @@ export enum ImsPermissionOrderField {
  *     READ is granted if READ is granted on `trackable` or `ims`.
  *
  */
-export type ImsProject = ExtensibleNode &
+export type ImsProject = BaseNode &
     MutableTemplatedNode &
+    Named &
+    NamedNode &
     Node &
+    SyncPermissionTarget &
     TemplatedNode & {
         __typename?: "IMSProject";
-        /** Value of an extension field by name of the extension field. Null if the field does not exist. */
-        extensionField?: Maybe<Scalars["JSON"]["output"]>;
-        /** All extension fields, if a `namePrefix` is provided, only those matching it */
-        extensionFields: Array<JsonField>;
+        /** The description of this entity. */
+        description: Scalars["String"]["output"];
         /** Checks if the current user has a specific permission on this Node */
         hasPermission: Scalars["Boolean"]["output"];
         /** The unique id of this node */
@@ -5656,6 +5146,12 @@ export type ImsProject = ExtensibleNode &
         ims?: Maybe<Ims>;
         /** The IMSIssues synced to by this project. */
         imsIssues: ImsIssueConnection;
+        /** The name of this entity. */
+        name: Scalars["String"]["output"];
+        /** The users which allow to sync the data of other users to this target. */
+        syncOthersAllowedBy: GropiusUserConnection;
+        /** The users which allow to sync their data to this target. */
+        syncSelfAllowedBy: GropiusUserConnection;
         /** The Template of this Component. */
         template: ImsProjectTemplate;
         /** Value of a field defined by the template. Error if such a field is not defined. */
@@ -5670,26 +5166,6 @@ export type ImsProject = ExtensibleNode &
         /** The trackable which is synced. */
         trackable: Trackable;
     };
-
-/**
- * Project on an IMS, represents a Trackable synced to an IMS.
- *     The representation on the IMS depends on the type of IMS, e.g. for GitHub, a project is a repository.
- *     READ is granted if READ is granted on `trackable` or `ims`.
- *
- */
-export type ImsProjectExtensionFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-/**
- * Project on an IMS, represents a Trackable synced to an IMS.
- *     The representation on the IMS depends on the type of IMS, e.g. for GitHub, a project is a repository.
- *     READ is granted if READ is granted on `trackable` or `ims`.
- *
- */
-export type ImsProjectExtensionFieldsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
-};
 
 /**
  * Project on an IMS, represents a Trackable synced to an IMS.
@@ -5714,6 +5190,38 @@ export type ImsProjectImsIssuesArgs = {
     first?: InputMaybe<Scalars["Int"]["input"]>;
     last?: InputMaybe<Scalars["Int"]["input"]>;
     orderBy?: InputMaybe<ImsIssueOrder>;
+    skip?: InputMaybe<Scalars["Int"]["input"]>;
+};
+
+/**
+ * Project on an IMS, represents a Trackable synced to an IMS.
+ *     The representation on the IMS depends on the type of IMS, e.g. for GitHub, a project is a repository.
+ *     READ is granted if READ is granted on `trackable` or `ims`.
+ *
+ */
+export type ImsProjectSyncOthersAllowedByArgs = {
+    after?: InputMaybe<Scalars["String"]["input"]>;
+    before?: InputMaybe<Scalars["String"]["input"]>;
+    filter?: InputMaybe<GropiusUserFilterInput>;
+    first?: InputMaybe<Scalars["Int"]["input"]>;
+    last?: InputMaybe<Scalars["Int"]["input"]>;
+    orderBy?: InputMaybe<GropiusUserOrder>;
+    skip?: InputMaybe<Scalars["Int"]["input"]>;
+};
+
+/**
+ * Project on an IMS, represents a Trackable synced to an IMS.
+ *     The representation on the IMS depends on the type of IMS, e.g. for GitHub, a project is a repository.
+ *     READ is granted if READ is granted on `trackable` or `ims`.
+ *
+ */
+export type ImsProjectSyncSelfAllowedByArgs = {
+    after?: InputMaybe<Scalars["String"]["input"]>;
+    before?: InputMaybe<Scalars["String"]["input"]>;
+    filter?: InputMaybe<GropiusUserFilterInput>;
+    first?: InputMaybe<Scalars["Int"]["input"]>;
+    last?: InputMaybe<Scalars["Int"]["input"]>;
+    orderBy?: InputMaybe<GropiusUserOrder>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -5764,16 +5272,24 @@ export type ImsProjectEdge = {
 export type ImsProjectFilterInput = {
     /** Connects all subformulas via and */
     and?: InputMaybe<Array<ImsProjectFilterInput>>;
+    /** Filter by description */
+    description?: InputMaybe<StringFilterInput>;
     /** Filter by id */
     id?: InputMaybe<IdFilterInput>;
     /** Filters for nodes where the related node match this filter */
     ims?: InputMaybe<ImsFilterInput>;
     /** Filter by imsIssues */
     imsIssues?: InputMaybe<ImsIssueListFilterInput>;
+    /** Filter by name */
+    name?: InputMaybe<StringFilterInput>;
     /** Negates the subformula */
     not?: InputMaybe<ImsProjectFilterInput>;
     /** Connects all subformulas via or */
     or?: InputMaybe<Array<ImsProjectFilterInput>>;
+    /** Filter by syncOthersAllowedBy */
+    syncOthersAllowedBy?: InputMaybe<GropiusUserListFilterInput>;
+    /** Filter by syncSelfAllowedBy */
+    syncSelfAllowedBy?: InputMaybe<GropiusUserListFilterInput>;
     /** Filters for nodes where the related node match this filter */
     template?: InputMaybe<ImsProjectTemplateFilterInput>;
     /** Filter for templated fields with matching key and values. Entries are joined by AND */
@@ -5803,7 +5319,9 @@ export type ImsProjectOrder = {
 /** Fields a list of IMSProject can be sorted by */
 export enum ImsProjectOrderField {
     /** Order by id */
-    Id = "ID"
+    Id = "ID",
+    /** Order by name */
+    Name = "NAME"
 }
 
 /**
@@ -5812,8 +5330,8 @@ export enum ImsProjectOrderField {
  *     Defines templated fields with specific types (defined using JSON schema).
  *
  */
-export type ImsProjectTemplate = BaseTemplate &
-    ExtensibleNode &
+export type ImsProjectTemplate = BaseNode &
+    BaseTemplate &
     Named &
     NamedNode &
     Node &
@@ -5821,10 +5339,6 @@ export type ImsProjectTemplate = BaseTemplate &
         __typename?: "IMSProjectTemplate";
         /** The description of this entity. */
         description: Scalars["String"]["output"];
-        /** Value of an extension field by name of the extension field. Null if the field does not exist. */
-        extensionField?: Maybe<Scalars["JSON"]["output"]>;
-        /** All extension fields, if a `namePrefix` is provided, only those matching it */
-        extensionFields: Array<JsonField>;
         /** Checks if the current user has a specific permission on this Node */
         hasPermission: Scalars["Boolean"]["output"];
         /** The unique id of this node */
@@ -5838,26 +5352,6 @@ export type ImsProjectTemplate = BaseTemplate &
         /** Entities which use this template. */
         usedIn: ImsProjectConnection;
     };
-
-/**
- * SubTemplate for IMSProject.
- *     Part of a IMSTemplate.
- *     Defines templated fields with specific types (defined using JSON schema).
- *
- */
-export type ImsProjectTemplateExtensionFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-/**
- * SubTemplate for IMSProject.
- *     Part of a IMSTemplate.
- *     Defines templated fields with specific types (defined using JSON schema).
- *
- */
-export type ImsProjectTemplateExtensionFieldsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
-};
 
 /**
  * SubTemplate for IMSProject.
@@ -5916,8 +5410,8 @@ export type ImsProjectTemplateFilterInput = {
  *     Defines templated fields with specific types (defined using JSON schema).
  *
  */
-export type ImsTemplate = BaseTemplate &
-    ExtensibleNode &
+export type ImsTemplate = BaseNode &
+    BaseTemplate &
     Named &
     NamedNode &
     Node &
@@ -5929,10 +5423,6 @@ export type ImsTemplate = BaseTemplate &
         extendedBy: ImsTemplateConnection;
         /** Template this template extends. */
         extends: ImsTemplateConnection;
-        /** Value of an extension field by name of the extension field. Null if the field does not exist. */
-        extensionField?: Maybe<Scalars["JSON"]["output"]>;
-        /** All extension fields, if a `namePrefix` is provided, only those matching it */
-        extensionFields: Array<JsonField>;
         /** Checks if the current user has a specific permission on this Node */
         hasPermission: Scalars["Boolean"]["output"];
         /** The unique id of this node */
@@ -5981,24 +5471,6 @@ export type ImsTemplateExtendsArgs = {
     last?: InputMaybe<Scalars["Int"]["input"]>;
     orderBy?: InputMaybe<ImsTemplateOrder>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
-};
-
-/**
- * Template for imss
- *     Defines templated fields with specific types (defined using JSON schema).
- *
- */
-export type ImsTemplateExtensionFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-/**
- * Template for imss
- *     Defines templated fields with specific types (defined using JSON schema).
- *
- */
-export type ImsTemplateExtensionFieldsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 /**
@@ -6112,7 +5584,7 @@ export enum ImsTemplateOrderField {
  *     It is possible that this user never heard of Gropius, and is only known to the system due to sync adapters.
  *
  */
-export type ImsUser = ExtensibleNode &
+export type ImsUser = BaseNode &
     Node &
     TemplatedNode &
     User & {
@@ -6127,10 +5599,6 @@ export type ImsUser = ExtensibleNode &
         displayName: Scalars["String"]["output"];
         /** The email address of the user. */
         email?: Maybe<Scalars["String"]["output"]>;
-        /** Value of an extension field by name of the extension field. Null if the field does not exist. */
-        extensionField?: Maybe<Scalars["JSON"]["output"]>;
-        /** All extension fields, if a `namePrefix` is provided, only those matching it */
-        extensionFields: Array<JsonField>;
         /** The GropiusUser this IMSUser is linked to. An IMSUser might be linked to no GropiusUser. */
         gropiusUser?: Maybe<GropiusUser>;
         /** Checks if the current user has a specific permission on this Node */
@@ -6190,30 +5658,6 @@ export type ImsUserCreatedNodesArgs = {
     last?: InputMaybe<Scalars["Int"]["input"]>;
     orderBy?: InputMaybe<AuditedNodeOrder>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
-};
-
-/**
- * A user an IMS.
- *     This user might be linked to a GropiusUser.
- *     Note that this link can change at any time.
- *     The username might not be unique.
- *     It is possible that this user never heard of Gropius, and is only known to the system due to sync adapters.
- *
- */
-export type ImsUserExtensionFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-/**
- * A user an IMS.
- *     This user might be linked to a GropiusUser.
- *     Note that this link can change at any time.
- *     The username might not be unique.
- *     It is possible that this user never heard of Gropius, and is only known to the system due to sync adapters.
- *
- */
-export type ImsUserExtensionFieldsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 /**
@@ -6361,8 +5805,8 @@ export enum ImsUserOrderField {
  *     Defines templated fields with specific types (defined using JSON schema).
  *
  */
-export type ImsUserTemplate = BaseTemplate &
-    ExtensibleNode &
+export type ImsUserTemplate = BaseNode &
+    BaseTemplate &
     Named &
     NamedNode &
     Node &
@@ -6370,10 +5814,6 @@ export type ImsUserTemplate = BaseTemplate &
         __typename?: "IMSUserTemplate";
         /** The description of this entity. */
         description: Scalars["String"]["output"];
-        /** Value of an extension field by name of the extension field. Null if the field does not exist. */
-        extensionField?: Maybe<Scalars["JSON"]["output"]>;
-        /** All extension fields, if a `namePrefix` is provided, only those matching it */
-        extensionFields: Array<JsonField>;
         /** Checks if the current user has a specific permission on this Node */
         hasPermission: Scalars["Boolean"]["output"];
         /** The unique id of this node */
@@ -6387,26 +5827,6 @@ export type ImsUserTemplate = BaseTemplate &
         /** Entities which use this template. */
         usedIn: ImsUserConnection;
     };
-
-/**
- * SubTemplate for IMSUser.
- *     Part of an IMSTemplate.
- *     Defines templated fields with specific types (defined using JSON schema).
- *
- */
-export type ImsUserTemplateExtensionFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-/**
- * SubTemplate for IMSUser.
- *     Part of an IMSTemplate.
- *     Defines templated fields with specific types (defined using JSON schema).
- *
- */
-export type ImsUserTemplateExtensionFieldsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
-};
 
 /**
  * SubTemplate for IMSUser.
@@ -6466,7 +5886,7 @@ export type ImsUserTemplateFilterInput = {
  *
  */
 export type IncomingRelationTypeChangedEvent = AuditedNode &
-    ExtensibleNode &
+    BaseNode &
     Node &
     RelationTypeChangedEvent &
     TimelineItem & {
@@ -6475,10 +5895,6 @@ export type IncomingRelationTypeChangedEvent = AuditedNode &
         createdAt: Scalars["DateTime"]["output"];
         /** The User who created this entity. */
         createdBy: User;
-        /** Value of an extension field by name of the extension field. Null if the field does not exist. */
-        extensionField?: Maybe<Scalars["JSON"]["output"]>;
-        /** All extension fields, if a `namePrefix` is provided, only those matching it */
-        extensionFields: Array<JsonField>;
         /** Checks if the current user has a specific permission on this Node */
         hasPermission: Scalars["Boolean"]["output"];
         /** The unique id of this node */
@@ -6498,24 +5914,6 @@ export type IncomingRelationTypeChangedEvent = AuditedNode &
         /** If existing, the parent TimelineItem */
         parentItem?: Maybe<ParentTimelineItem>;
     };
-
-/**
- * Event representing that the type of an incoming IssueRelation changed.
- *     READ is granted if READ is granted on `issueRelation`.
- *
- */
-export type IncomingRelationTypeChangedEventExtensionFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-/**
- * Event representing that the type of an incoming IssueRelation changed.
- *     READ is granted if READ is granted on `issueRelation`.
- *
- */
-export type IncomingRelationTypeChangedEventExtensionFieldsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
-};
 
 /**
  * Event representing that the type of an incoming IssueRelation changed.
@@ -6550,7 +5948,7 @@ export type IntFilterInput = {
  *
  */
 export type Interface = AffectedByIssue &
-    ExtensibleNode &
+    BaseNode &
     MutableTemplatedNode &
     Named &
     NamedNode &
@@ -6564,10 +5962,6 @@ export type Interface = AffectedByIssue &
         aggregatedIssues: AggregatedIssueConnection;
         /** The description of this entity. */
         description: Scalars["String"]["output"];
-        /** Value of an extension field by name of the extension field. Null if the field does not exist. */
-        extensionField?: Maybe<Scalars["JSON"]["output"]>;
-        /** All extension fields, if a `namePrefix` is provided, only those matching it */
-        extensionFields: Array<JsonField>;
         /** Checks if the current user has a specific permission on this Node */
         hasPermission: Scalars["Boolean"]["output"];
         /** The unique id of this node */
@@ -6627,28 +6021,6 @@ export type InterfaceAggregatedIssuesArgs = {
     last?: InputMaybe<Scalars["Int"]["input"]>;
     orderBy?: InputMaybe<AggregatedIssueOrder>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
-};
-
-/**
- * An interface which is part of a specific ComponentVersion.
- *     Its semantics depend on the InterfaceSpecification it is specified by, e.g. an Interface can represent a REST API.
- *     Can be used in Relations and affected by Issues.
- *     READ is granted if READ is granted on `interfaceDefinition`.
- *
- */
-export type InterfaceExtensionFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-/**
- * An interface which is part of a specific ComponentVersion.
- *     Its semantics depend on the InterfaceSpecification it is specified by, e.g. an Interface can represent a REST API.
- *     Can be used in Relations and affected by Issues.
- *     READ is granted if READ is granted on `interfaceDefinition`.
- *
- */
-export type InterfaceExtensionFieldsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 /**
@@ -6756,17 +6128,13 @@ export type InterfaceConnection = {
  *     READ is granted if READ is granted on `componentVersion`
  *
  */
-export type InterfaceDefinition = ExtensibleNode &
+export type InterfaceDefinition = BaseNode &
     MutableTemplatedNode &
     Node &
     TemplatedNode & {
         __typename?: "InterfaceDefinition";
         /** The ComponentVersion using the InterfaceSpecificationVersion */
         componentVersion: ComponentVersion;
-        /** Value of an extension field by name of the extension field. Null if the field does not exist. */
-        extensionField?: Maybe<Scalars["JSON"]["output"]>;
-        /** All extension fields, if a `namePrefix` is provided, only those matching it */
-        extensionFields: Array<JsonField>;
         /** Checks if the current user has a specific permission on this Node */
         hasPermission: Scalars["Boolean"]["output"];
         /** The unique id of this node */
@@ -6795,28 +6163,6 @@ export type InterfaceDefinition = ExtensibleNode &
         /** If true, `interfaceSpecificationVersion`is self-defined visible on the `componentVersion` */
         visibleSelfDefined: Scalars["Boolean"]["output"];
     };
-
-/**
- * InterfaceDefinition on a ComponentVersion
- *     Specifies if it is visible/invisible self-defined.
- *     Specifies if it is visible/invisible derived (and by which Relations)
- *     READ is granted if READ is granted on `componentVersion`
- *
- */
-export type InterfaceDefinitionExtensionFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-/**
- * InterfaceDefinition on a ComponentVersion
- *     Specifies if it is visible/invisible self-defined.
- *     Specifies if it is visible/invisible derived (and by which Relations)
- *     READ is granted if READ is granted on `componentVersion`
- *
- */
-export type InterfaceDefinitionExtensionFieldsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
-};
 
 /**
  * InterfaceDefinition on a ComponentVersion
@@ -6973,8 +6319,8 @@ export enum InterfaceDefinitionOrderField {
  *     All templatedFieldSpecifications must allow `null` as value.
  *
  */
-export type InterfaceDefinitionTemplate = BaseTemplate &
-    ExtensibleNode &
+export type InterfaceDefinitionTemplate = BaseNode &
+    BaseTemplate &
     Named &
     NamedNode &
     Node &
@@ -6982,10 +6328,6 @@ export type InterfaceDefinitionTemplate = BaseTemplate &
         __typename?: "InterfaceDefinitionTemplate";
         /** The description of this entity. */
         description: Scalars["String"]["output"];
-        /** Value of an extension field by name of the extension field. Null if the field does not exist. */
-        extensionField?: Maybe<Scalars["JSON"]["output"]>;
-        /** All extension fields, if a `namePrefix` is provided, only those matching it */
-        extensionFields: Array<JsonField>;
         /** Checks if the current user has a specific permission on this Node */
         hasPermission: Scalars["Boolean"]["output"];
         /** The unique id of this node */
@@ -6999,28 +6341,6 @@ export type InterfaceDefinitionTemplate = BaseTemplate &
         /** Entities which use this template. */
         usedIn: InterfaceDefinitionConnection;
     };
-
-/**
- * SubTemplate for InterfaceDefinition.
- *     Part of a InterfaceSpecificationTemplate.
- *     Defines templated fields with specific types (defined using JSON schema).
- *     All templatedFieldSpecifications must allow `null` as value.
- *
- */
-export type InterfaceDefinitionTemplateExtensionFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-/**
- * SubTemplate for InterfaceDefinition.
- *     Part of a InterfaceSpecificationTemplate.
- *     Defines templated fields with specific types (defined using JSON schema).
- *     All templatedFieldSpecifications must allow `null` as value.
- *
- */
-export type InterfaceDefinitionTemplateExtensionFieldsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
-};
 
 /**
  * SubTemplate for InterfaceDefinition.
@@ -7148,7 +6468,7 @@ export enum InterfaceOrderField {
  *
  */
 export type InterfacePart = AffectedByIssue &
-    ExtensibleNode &
+    BaseNode &
     MutableTemplatedNode &
     Named &
     NamedNode &
@@ -7159,10 +6479,6 @@ export type InterfacePart = AffectedByIssue &
         affectingIssues: IssueConnection;
         /** The description of this entity. */
         description: Scalars["String"]["output"];
-        /** Value of an extension field by name of the extension field. Null if the field does not exist. */
-        extensionField?: Maybe<Scalars["JSON"]["output"]>;
-        /** All extension fields, if a `namePrefix` is provided, only those matching it */
-        extensionFields: Array<JsonField>;
         /** Checks if the current user has a specific permission on this Node */
         hasPermission: Scalars["Boolean"]["output"];
         /** The unique id of this node */
@@ -7207,32 +6523,6 @@ export type InterfacePartAffectingIssuesArgs = {
     last?: InputMaybe<Scalars["Int"]["input"]>;
     orderBy?: InputMaybe<IssueOrder>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
-};
-
-/**
- * Part of an Interface(Specification).
- *     Its semantics depend on the InterfaceSpecification, e.g. for a REST API interface,
- *     this could represent a single endpoint of the API.
- *     Relations can specify for both start and end included InterfaceParts.
- *     Can be affected by Issues, and be used as start / end of ServiceEffectSpecifications.
- *     READ is granted if READ is granted on `definedOn`.
- *
- */
-export type InterfacePartExtensionFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-/**
- * Part of an Interface(Specification).
- *     Its semantics depend on the InterfaceSpecification, e.g. for a REST API interface,
- *     this could represent a single endpoint of the API.
- *     Relations can specify for both start and end included InterfaceParts.
- *     Can be affected by Issues, and be used as start / end of ServiceEffectSpecifications.
- *     READ is granted if READ is granted on `definedOn`.
- *
- */
-export type InterfacePartExtensionFieldsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 /**
@@ -7390,8 +6680,6 @@ export type InterfacePartFilterInput = {
 export type InterfacePartInput = {
     /** The description of the NamedNode */
     description: Scalars["String"]["input"];
-    /** The initial value of the extension fields */
-    extensionFields?: InputMaybe<Array<JsonFieldInput>>;
     /** The name of the NamedNode, must not be blank */
     name: Scalars["String"]["input"];
     /** Initial values for all templatedFields */
@@ -7430,8 +6718,8 @@ export enum InterfacePartOrderField {
  *     Defines templated fields with specific types (defined using JSON schema).
  *
  */
-export type InterfacePartTemplate = BaseTemplate &
-    ExtensibleNode &
+export type InterfacePartTemplate = BaseNode &
+    BaseTemplate &
     Named &
     NamedNode &
     Node &
@@ -7439,10 +6727,6 @@ export type InterfacePartTemplate = BaseTemplate &
         __typename?: "InterfacePartTemplate";
         /** The description of this entity. */
         description: Scalars["String"]["output"];
-        /** Value of an extension field by name of the extension field. Null if the field does not exist. */
-        extensionField?: Maybe<Scalars["JSON"]["output"]>;
-        /** All extension fields, if a `namePrefix` is provided, only those matching it */
-        extensionFields: Array<JsonField>;
         /** Checks if the current user has a specific permission on this Node */
         hasPermission: Scalars["Boolean"]["output"];
         /** The unique id of this node */
@@ -7456,26 +6740,6 @@ export type InterfacePartTemplate = BaseTemplate &
         /** Entities which use this template. */
         usedIn: InterfacePartConnection;
     };
-
-/**
- * SubTemplate for InterfacePart.
- *     Part of a InterfaceSpecificationTemplate.
- *     Defines templated fields with specific types (defined using JSON schema).
- *
- */
-export type InterfacePartTemplateExtensionFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-/**
- * SubTemplate for InterfacePart.
- *     Part of a InterfaceSpecificationTemplate.
- *     Defines templated fields with specific types (defined using JSON schema).
- *
- */
-export type InterfacePartTemplateExtensionFieldsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
-};
 
 /**
  * SubTemplate for InterfacePart.
@@ -7538,7 +6802,7 @@ export type InterfacePartTemplateFilterInput = {
  *
  */
 export type InterfaceSpecification = AffectedByIssue &
-    ExtensibleNode &
+    BaseNode &
     MutableTemplatedNode &
     Named &
     NamedNode &
@@ -7551,10 +6815,6 @@ export type InterfaceSpecification = AffectedByIssue &
         component: Component;
         /** The description of this entity. */
         description: Scalars["String"]["output"];
-        /** Value of an extension field by name of the extension field. Null if the field does not exist. */
-        extensionField?: Maybe<Scalars["JSON"]["output"]>;
-        /** All extension fields, if a `namePrefix` is provided, only those matching it */
-        extensionFields: Array<JsonField>;
         /** Checks if the current user has a specific permission on this Node */
         hasPermission: Scalars["Boolean"]["output"];
         /** The unique id of this node */
@@ -7592,30 +6852,6 @@ export type InterfaceSpecificationAffectingIssuesArgs = {
     last?: InputMaybe<Scalars["Int"]["input"]>;
     orderBy?: InputMaybe<IssueOrder>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
-};
-
-/**
- * Specification of an Interface.
- *     Defined on a Component, but can be visible and invisible on different ComponentVersions.
- *     Can be affected by Issues, and be used as start / end of ServiceEffectSpecifications.
- *     Defines InterfaceParts, but active parts depend on the InterfaceSpecificationVersion.
- *     READ is granted if READ is granted on `component`, or any InterfaceSpecificationVersion in `versions`.
- *
- */
-export type InterfaceSpecificationExtensionFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-/**
- * Specification of an Interface.
- *     Defined on a Component, but can be visible and invisible on different ComponentVersions.
- *     Can be affected by Issues, and be used as start / end of ServiceEffectSpecifications.
- *     Defines InterfaceParts, but active parts depend on the InterfaceSpecificationVersion.
- *     READ is granted if READ is granted on `component`, or any InterfaceSpecificationVersion in `versions`.
- *
- */
-export type InterfaceSpecificationExtensionFieldsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 /**
@@ -7692,7 +6928,7 @@ export type InterfaceSpecificationConnection = {
  *     READ is always granted.
  *
  */
-export type InterfaceSpecificationDerivationCondition = ExtensibleNode &
+export type InterfaceSpecificationDerivationCondition = BaseNode &
     Node & {
         __typename?: "InterfaceSpecificationDerivationCondition";
         /** Templates of InterfaceSpecifications which are derived. */
@@ -7705,10 +6941,6 @@ export type InterfaceSpecificationDerivationCondition = ExtensibleNode &
         derivesVisibleDerived: Scalars["Boolean"]["output"];
         /** If true, visible self-defined InterfaceSpecifications are derived */
         derivesVisibleSelfDefined: Scalars["Boolean"]["output"];
-        /** Value of an extension field by name of the extension field. Null if the field does not exist. */
-        extensionField?: Maybe<Scalars["JSON"]["output"]>;
-        /** All extension fields, if a `namePrefix` is provided, only those matching it */
-        extensionFields: Array<JsonField>;
         /** Checks if the current user has a specific permission on this Node */
         hasPermission: Scalars["Boolean"]["output"];
         /** The unique id of this node */
@@ -7735,26 +6967,6 @@ export type InterfaceSpecificationDerivationConditionDerivableInterfaceSpecifica
     last?: InputMaybe<Scalars["Int"]["input"]>;
     orderBy?: InputMaybe<InterfaceSpecificationTemplateOrder>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
-};
-
-/**
- * Defines which InterfaceSpecifications are derived under which conditions by a Relation.
- *     Part of a RelationCondition, which is part of RelationTemplates.
- *     READ is always granted.
- *
- */
-export type InterfaceSpecificationDerivationConditionExtensionFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-/**
- * Defines which InterfaceSpecifications are derived under which conditions by a Relation.
- *     Part of a RelationCondition, which is part of RelationTemplates.
- *     READ is always granted.
- *
- */
-export type InterfaceSpecificationDerivationConditionExtensionFieldsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 /**
@@ -7900,8 +7112,6 @@ export type InterfaceSpecificationFilterInput = {
 export type InterfaceSpecificationInput = {
     /** The description of the NamedNode */
     description: Scalars["String"]["input"];
-    /** The initial value of the extension fields */
-    extensionFields?: InputMaybe<Array<JsonFieldInput>>;
     /** The name of the NamedNode, must not be blank */
     name: Scalars["String"]["input"];
     /** The template of the created InterfaceSpecification */
@@ -7945,8 +7155,8 @@ export enum InterfaceSpecificationOrderField {
  *     Defines SubTemplates for Interfaces and InterfaceSpecificationVersions.
  *
  */
-export type InterfaceSpecificationTemplate = BaseTemplate &
-    ExtensibleNode &
+export type InterfaceSpecificationTemplate = BaseNode &
+    BaseTemplate &
     Named &
     NamedNode &
     Node &
@@ -7968,10 +7178,6 @@ export type InterfaceSpecificationTemplate = BaseTemplate &
         extendedBy: InterfaceSpecificationTemplateConnection;
         /** Template this template extends. */
         extends: InterfaceSpecificationTemplateConnection;
-        /** Value of an extension field by name of the extension field. Null if the field does not exist. */
-        extensionField?: Maybe<Scalars["JSON"]["output"]>;
-        /** All extension fields, if a `namePrefix` is provided, only those matching it */
-        extensionFields: Array<JsonField>;
         /** Style of the fill */
         fill?: Maybe<FillStyle>;
         /** Checks if the current user has a specific permission on this Node */
@@ -8099,28 +7305,6 @@ export type InterfaceSpecificationTemplateExtendsArgs = {
     last?: InputMaybe<Scalars["Int"]["input"]>;
     orderBy?: InputMaybe<InterfaceSpecificationTemplateOrder>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
-};
-
-/**
- * Template for InterfaceSpecifications.
- *     Defines templated fields with specific types (defined using JSON schema).
- *     Defines on which Components InterfaceSpecifications with this Template can be (in)visible on.
- *     Defines SubTemplates for Interfaces and InterfaceSpecificationVersions.
- *
- */
-export type InterfaceSpecificationTemplateExtensionFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-/**
- * Template for InterfaceSpecifications.
- *     Defines templated fields with specific types (defined using JSON schema).
- *     Defines on which Components InterfaceSpecifications with this Template can be (in)visible on.
- *     Defines SubTemplates for Interfaces and InterfaceSpecificationVersions.
- *
- */
-export type InterfaceSpecificationTemplateExtensionFieldsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 /**
@@ -8287,7 +7471,7 @@ export enum InterfaceSpecificationTemplateOrderField {
  *
  */
 export type InterfaceSpecificationVersion = AffectedByIssue &
-    ExtensibleNode &
+    BaseNode &
     MutableTemplatedNode &
     Named &
     NamedNode &
@@ -8299,10 +7483,6 @@ export type InterfaceSpecificationVersion = AffectedByIssue &
         affectingIssues: IssueConnection;
         /** The description of this entity. */
         description: Scalars["String"]["output"];
-        /** Value of an extension field by name of the extension field. Null if the field does not exist. */
-        extensionField?: Maybe<Scalars["JSON"]["output"]>;
-        /** All extension fields, if a `namePrefix` is provided, only those matching it */
-        extensionFields: Array<JsonField>;
         /** Checks if the current user has a specific permission on this Node */
         hasPermission: Scalars["Boolean"]["output"];
         /** The unique id of this node */
@@ -8351,34 +7531,6 @@ export type InterfaceSpecificationVersionAffectingIssuesArgs = {
     last?: InputMaybe<Scalars["Int"]["input"]>;
     orderBy?: InputMaybe<IssueOrder>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
-};
-
-/**
- * A specific version of an InterfaceSpecification.
- *     Defines which InterfaceParts are active.
- *     Can be both visible (generates an Interface) and invisible (does not generate an Interface)
- *     on different Components.
- *     Can be derived by Relations, and affected by Issues.
- *     READ is granted if READ is granted on `interfaceSpecification`,
- *     or any InterfaceDefinition in `definitions`
- *
- */
-export type InterfaceSpecificationVersionExtensionFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-/**
- * A specific version of an InterfaceSpecification.
- *     Defines which InterfaceParts are active.
- *     Can be both visible (generates an Interface) and invisible (does not generate an Interface)
- *     on different Components.
- *     Can be derived by Relations, and affected by Issues.
- *     READ is granted if READ is granted on `interfaceSpecification`,
- *     or any InterfaceDefinition in `definitions`
- *
- */
-export type InterfaceSpecificationVersionExtensionFieldsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 /**
@@ -8522,8 +7674,6 @@ export type InterfaceSpecificationVersionFilterInput = {
 export type InterfaceSpecificationVersionInput = {
     /** The description of the NamedNode */
     description: Scalars["String"]["input"];
-    /** The initial value of the extension fields */
-    extensionFields?: InputMaybe<Array<JsonFieldInput>>;
     /** The name of the NamedNode, must not be blank */
     name: Scalars["String"]["input"];
     /** Initial InterfaceParts */
@@ -8568,8 +7718,8 @@ export enum InterfaceSpecificationVersionOrderField {
  *     Defines templated fields with specific types (defined using JSON schema).
  *
  */
-export type InterfaceSpecificationVersionTemplate = BaseTemplate &
-    ExtensibleNode &
+export type InterfaceSpecificationVersionTemplate = BaseNode &
+    BaseTemplate &
     Named &
     NamedNode &
     Node &
@@ -8577,10 +7727,6 @@ export type InterfaceSpecificationVersionTemplate = BaseTemplate &
         __typename?: "InterfaceSpecificationVersionTemplate";
         /** The description of this entity. */
         description: Scalars["String"]["output"];
-        /** Value of an extension field by name of the extension field. Null if the field does not exist. */
-        extensionField?: Maybe<Scalars["JSON"]["output"]>;
-        /** All extension fields, if a `namePrefix` is provided, only those matching it */
-        extensionFields: Array<JsonField>;
         /** Checks if the current user has a specific permission on this Node */
         hasPermission: Scalars["Boolean"]["output"];
         /** The unique id of this node */
@@ -8594,26 +7740,6 @@ export type InterfaceSpecificationVersionTemplate = BaseTemplate &
         /** Entities which use this template. */
         usedIn: InterfaceSpecificationVersionConnection;
     };
-
-/**
- * SubTemplate for InterfaceSpecificationVersion.
- *     Part of a InterfaceSpecificationTemplate.
- *     Defines templated fields with specific types (defined using JSON schema).
- *
- */
-export type InterfaceSpecificationVersionTemplateExtensionFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-/**
- * SubTemplate for InterfaceSpecificationVersion.
- *     Part of a InterfaceSpecificationTemplate.
- *     Defines templated fields with specific types (defined using JSON schema).
- *
- */
-export type InterfaceSpecificationVersionTemplateExtensionFieldsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
-};
 
 /**
  * SubTemplate for InterfaceSpecificationVersion.
@@ -8674,8 +7800,8 @@ export type InterfaceSpecificationVersionTemplateFilterInput = {
  *     All templatedFieldSpecifications must allow `null` as value.
  *
  */
-export type InterfaceTemplate = BaseTemplate &
-    ExtensibleNode &
+export type InterfaceTemplate = BaseNode &
+    BaseTemplate &
     Named &
     NamedNode &
     Node &
@@ -8683,10 +7809,6 @@ export type InterfaceTemplate = BaseTemplate &
         __typename?: "InterfaceTemplate";
         /** The description of this entity. */
         description: Scalars["String"]["output"];
-        /** Value of an extension field by name of the extension field. Null if the field does not exist. */
-        extensionField?: Maybe<Scalars["JSON"]["output"]>;
-        /** All extension fields, if a `namePrefix` is provided, only those matching it */
-        extensionFields: Array<JsonField>;
         /** Checks if the current user has a specific permission on this Node */
         hasPermission: Scalars["Boolean"]["output"];
         /** The unique id of this node */
@@ -8700,28 +7822,6 @@ export type InterfaceTemplate = BaseTemplate &
         /** Entities which use this template. */
         usedIn: InterfaceConnection;
     };
-
-/**
- * SubTemplate for Interface.
- *     Part of a InterfaceSpecificationTemplate.
- *     Defines templated fields with specific types (defined using JSON schema).
- *     All templatedFieldSpecifications must allow `null` as value.
- *
- */
-export type InterfaceTemplateExtensionFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-/**
- * SubTemplate for Interface.
- *     Part of a InterfaceSpecificationTemplate.
- *     Defines templated fields with specific types (defined using JSON schema).
- *     All templatedFieldSpecifications must allow `null` as value.
- *
- */
-export type InterfaceTemplateExtensionFieldsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
-};
 
 /**
  * SubTemplate for Interface.
@@ -8784,13 +7884,9 @@ export type InterfaceTemplateFilterInput = {
  *     READ is granted if READ is granted on the associated ComponentVersion
  *
  */
-export type IntraComponentDependencyParticipant = ExtensibleNode &
+export type IntraComponentDependencyParticipant = BaseNode &
     Node & {
         __typename?: "IntraComponentDependencyParticipant";
-        /** Value of an extension field by name of the extension field. Null if the field does not exist. */
-        extensionField?: Maybe<Scalars["JSON"]["output"]>;
-        /** All extension fields, if a `namePrefix` is provided, only those matching it */
-        extensionFields: Array<JsonField>;
         /** Checks if the current user has a specific permission on this Node */
         hasPermission: Scalars["Boolean"]["output"];
         /** The unique id of this node */
@@ -8809,26 +7905,6 @@ export type IntraComponentDependencyParticipant = ExtensibleNode &
         /** If this is used as outgoing, the IntraComponentDependencySpecification where it is used */
         usedAsOutgoingAt?: Maybe<IntraComponentDependencySpecification>;
     };
-
-/**
- * Participant of a a IntraComponentDependencySpecification
- *     Consists of an Interface it refers to, and optionally a subset of its active InterfaceParts.
- *     READ is granted if READ is granted on the associated ComponentVersion
- *
- */
-export type IntraComponentDependencyParticipantExtensionFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-/**
- * Participant of a a IntraComponentDependencySpecification
- *     Consists of an Interface it refers to, and optionally a subset of its active InterfaceParts.
- *     READ is granted if READ is granted on the associated ComponentVersion
- *
- */
-export type IntraComponentDependencyParticipantExtensionFieldsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
-};
 
 /**
  * Participant of a a IntraComponentDependencySpecification
@@ -8900,8 +7976,6 @@ export type IntraComponentDependencyParticipantFilterInput = {
 
 /** Input to create a IntraComponentDependencyParticipant */
 export type IntraComponentDependencyParticipantInput = {
-    /** The initial value of the extension fields */
-    extensionFields?: InputMaybe<Array<JsonFieldInput>>;
     /** The ids of includedParts, must all be activeParts on the InterfaceSpecificationVersion associated with `interface` */
     includedParts?: InputMaybe<Array<Scalars["ID"]["input"]>>;
     /**
@@ -8945,7 +8019,7 @@ export enum IntraComponentDependencyParticipantOrderField {
  *     all locations in `out` are affected by this Issue, too.
  *
  */
-export type IntraComponentDependencySpecification = ExtensibleNode &
+export type IntraComponentDependencySpecification = BaseNode &
     Named &
     NamedNode &
     Node & {
@@ -8954,10 +8028,6 @@ export type IntraComponentDependencySpecification = ExtensibleNode &
         componentVersion: ComponentVersion;
         /** The description of this entity. */
         description: Scalars["String"]["output"];
-        /** Value of an extension field by name of the extension field. Null if the field does not exist. */
-        extensionField?: Maybe<Scalars["JSON"]["output"]>;
-        /** All extension fields, if a `namePrefix` is provided, only those matching it */
-        extensionFields: Array<JsonField>;
         /** Checks if the current user has a specific permission on this Node */
         hasPermission: Scalars["Boolean"]["output"];
         /** The unique id of this node */
@@ -8969,32 +8039,6 @@ export type IntraComponentDependencySpecification = ExtensibleNode &
         /** The outgoing Interfaces of this ServiceEffectSpecification. */
         outgoingParticipants: IntraComponentDependencyParticipantConnection;
     };
-
-/**
- * Describes a dependency between Interfaces of a Component.
- *     Both ends can optionally affected InterfaceParts.
- *     Semantically, any InterfaceSpecification(Version) in `outgoing` depends on any InterfaceSpecification(Version) in
- *     `incoming`.
- *     This can result in a propagation of Issues, if any location in `in` is in some regard affected by an Issue,
- *     all locations in `out` are affected by this Issue, too.
- *
- */
-export type IntraComponentDependencySpecificationExtensionFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-/**
- * Describes a dependency between Interfaces of a Component.
- *     Both ends can optionally affected InterfaceParts.
- *     Semantically, any InterfaceSpecification(Version) in `outgoing` depends on any InterfaceSpecification(Version) in
- *     `incoming`.
- *     This can result in a propagation of Issues, if any location in `in` is in some regard affected by an Issue,
- *     all locations in `out` are affected by this Issue, too.
- *
- */
-export type IntraComponentDependencySpecificationExtensionFieldsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
-};
 
 /**
  * Describes a dependency between Interfaces of a Component.
@@ -9129,7 +8173,7 @@ export enum IntraComponentDependencySpecificationOrderField {
  *
  */
 export type Issue = AuditedNode &
-    ExtensibleNode &
+    BaseNode &
     MutableTemplatedNode &
     Node &
     TemplatedNode & {
@@ -9152,10 +8196,6 @@ export type Issue = AuditedNode &
         dueDate?: Maybe<Scalars["DateTime"]["output"]>;
         /** Estimated amount of time necessary for this Issue. */
         estimatedTime?: Maybe<Scalars["Duration"]["output"]>;
-        /** Value of an extension field by name of the extension field. Null if the field does not exist. */
-        extensionField?: Maybe<Scalars["JSON"]["output"]>;
-        /** All extension fields, if a `namePrefix` is provided, only those matching it */
-        extensionFields: Array<JsonField>;
         /** Checks if the current user has a specific permission on this Node */
         hasPermission: Scalars["Boolean"]["output"];
         /** The unique id of this node */
@@ -9298,36 +8338,6 @@ export type IssueAssignmentsArgs = {
     last?: InputMaybe<Scalars["Int"]["input"]>;
     orderBy?: InputMaybe<AssignmentOrder>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
-};
-
-/**
- * An Issue in the Gropius system.
- *     Issues can be used to report bugs, request features, ask questions, ...
- *     Issues are synced to all IMSProjects of Trackables they are part of.
- *     All changes to the Issue are reflected by the timeline.
- *     READ is granted if READ is granted on any Trackable in `trackables`.
- *     Caution: due to confidentiality reasons, updates to `incomingRelations` do not cause updates on `lastModifiedBy`
- *     and `participants`, however, `lastModifiedAt` and `lastUpdatedAt` is still changed.
- *     The same applies to RelatedByIssueEvent, RemovedIncomingRelationEvent and IncomingRelationTypeChangedEvent.
- *
- */
-export type IssueExtensionFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-/**
- * An Issue in the Gropius system.
- *     Issues can be used to report bugs, request features, ask questions, ...
- *     Issues are synced to all IMSProjects of Trackables they are part of.
- *     All changes to the Issue are reflected by the timeline.
- *     READ is granted if READ is granted on any Trackable in `trackables`.
- *     Caution: due to confidentiality reasons, updates to `incomingRelations` do not cause updates on `lastModifiedBy`
- *     and `participants`, however, `lastModifiedAt` and `lastUpdatedAt` is still changed.
- *     The same applies to RelatedByIssueEvent, RemovedIncomingRelationEvent and IncomingRelationTypeChangedEvent.
- *
- */
-export type IssueExtensionFieldsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 /**
@@ -9574,8 +8584,8 @@ export type IssueTrackablesArgs = {
  *
  */
 export type IssueComment = AuditedNode &
+    BaseNode &
     Comment &
-    ExtensibleNode &
     Node &
     TimelineItem & {
         __typename?: "IssueComment";
@@ -9585,10 +8595,9 @@ export type IssueComment = AuditedNode &
         answers?: Maybe<Comment>;
         /**
          * The text of the Comment.
-         *         Supports GFM (GitHub Flavored Markdown).
-         *         Updates to the body cause lastEditedAt and lastEditedBy to change, while updates to referencedArtefacts
-         *         do not.
-         *         Empty String if IssueComment is deleted.
+         *                 Supports GFM (GitHub Flavored Markdown).
+         *                 Updates cause lastEditedAt and lastEditedBy to change.
+         *                 Empty String if IssueComment is deleted.
          *
          */
         body: Scalars["String"]["output"];
@@ -9608,10 +8617,6 @@ export type IssueComment = AuditedNode &
         createdAt: Scalars["DateTime"]["output"];
         /** The User who created this entity. */
         createdBy: User;
-        /** Value of an extension field by name of the extension field. Null if the field does not exist. */
-        extensionField?: Maybe<Scalars["JSON"]["output"]>;
-        /** All extension fields, if a `namePrefix` is provided, only those matching it */
-        extensionFields: Array<JsonField>;
         /** Checks if the current user has a specific permission on this Node */
         hasPermission: Scalars["Boolean"]["output"];
         /** The unique id of this node */
@@ -9646,30 +8651,6 @@ export type IssueCommentAnsweredByArgs = {
     last?: InputMaybe<Scalars["Int"]["input"]>;
     orderBy?: InputMaybe<IssueCommentOrder>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
-};
-
-/**
- * Comment on an Issue.
- *     Can reference Artefacts.
- *     Can be deleted, if deleted, the body is set to an empty String and the referencedComments are cleared.
- *     Keeps track when it was last edited and by who, but does not keep track of the change history.
- *     READ is granted if READ is granted on `issue`.
- *
- */
-export type IssueCommentExtensionFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-/**
- * Comment on an Issue.
- *     Can reference Artefacts.
- *     Can be deleted, if deleted, the body is set to an empty String and the referencedComments are cleared.
- *     Keeps track when it was last edited and by who, but does not keep track of the change history.
- *     READ is granted if READ is granted on `issue`.
- *
- */
-export type IssueCommentExtensionFieldsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 /**
@@ -9732,8 +8713,6 @@ export type IssueCommentFilterInput = {
     answeredBy?: InputMaybe<IssueCommentListFilterInput>;
     /** Filters for nodes where the related node match this filter */
     answers?: InputMaybe<CommentFilterInput>;
-    /** Filter by body */
-    body?: InputMaybe<StringFilterInput>;
     /** Filter by bodyLastEditedAt */
     bodyLastEditedAt?: InputMaybe<DateTimeFilterInput>;
     /** Filters for nodes where the related node match this filter */
@@ -9931,17 +8910,13 @@ export enum IssueOrderField {
  *     READ is always granted.
  *
  */
-export type IssuePriority = ExtensibleNode &
+export type IssuePriority = BaseNode &
     Named &
     NamedNode &
     Node & {
         __typename?: "IssuePriority";
         /** The description of this entity. */
         description: Scalars["String"]["output"];
-        /** Value of an extension field by name of the extension field. Null if the field does not exist. */
-        extensionField?: Maybe<Scalars["JSON"]["output"]>;
-        /** All extension fields, if a `namePrefix` is provided, only those matching it */
-        extensionFields: Array<JsonField>;
         /** Checks if the current user has a specific permission on this Node */
         hasPermission: Scalars["Boolean"]["output"];
         /** The unique id of this node */
@@ -9953,24 +8928,6 @@ export type IssuePriority = ExtensibleNode &
         /** The value of the IssuePriority, used to compare/order different IssuePriorities. */
         value: Scalars["Float"]["output"];
     };
-
-/**
- * Priority of an Issue like HIGH or LOW. Part of an IssueTemplate.
- *     READ is always granted.
- *
- */
-export type IssuePriorityExtensionFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-/**
- * Priority of an Issue like HIGH or LOW. Part of an IssueTemplate.
- *     READ is always granted.
- *
- */
-export type IssuePriorityExtensionFieldsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
-};
 
 /**
  * Priority of an Issue like HIGH or LOW. Part of an IssueTemplate.
@@ -10059,8 +9016,6 @@ export type IssuePriorityFilterInput = {
 export type IssuePriorityInput = {
     /** The description of the NamedNode */
     description: Scalars["String"]["input"];
-    /** The initial value of the extension fields */
-    extensionFields?: InputMaybe<Array<JsonFieldInput>>;
     /** The name of the NamedNode, must not be blank */
     name: Scalars["String"]["input"];
     /** The value of the created IssuePriority, used to compare/order different IssuePriorities */
@@ -10104,7 +9059,7 @@ export enum IssuePriorityOrderField {
  *
  */
 export type IssueRelation = AuditedNode &
-    ExtensibleNode &
+    BaseNode &
     Node &
     TimelineItem & {
         __typename?: "IssueRelation";
@@ -10114,10 +9069,6 @@ export type IssueRelation = AuditedNode &
         createdAt: Scalars["DateTime"]["output"];
         /** The User who created this entity. */
         createdBy: User;
-        /** Value of an extension field by name of the extension field. Null if the field does not exist. */
-        extensionField?: Maybe<Scalars["JSON"]["output"]>;
-        /** All extension fields, if a `namePrefix` is provided, only those matching it */
-        extensionFields: Array<JsonField>;
         /** Checks if the current user has a specific permission on this Node */
         hasPermission: Scalars["Boolean"]["output"];
         /** The unique id of this node */
@@ -10152,30 +9103,6 @@ export type IssueRelationAggregatedByArgs = {
     last?: InputMaybe<Scalars["Int"]["input"]>;
     orderBy?: InputMaybe<AggregatedIssueRelationOrder>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
-};
-
-/**
- * Event representing that a relation between two Issues has been created.
- *     An IssueRelation is only active if it is still in `outgoingRelations` on the `issue`,
- *     respectively in incomingRelations on the `relatedIssue`.
- *     Caution: This is **not** a subtype of Relation.
- *     READ is granted if READ is granted on `issue`.
- *
- */
-export type IssueRelationExtensionFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-/**
- * Event representing that a relation between two Issues has been created.
- *     An IssueRelation is only active if it is still in `outgoingRelations` on the `issue`,
- *     respectively in incomingRelations on the `relatedIssue`.
- *     Caution: This is **not** a subtype of Relation.
- *     READ is granted if READ is granted on `issue`.
- *
- */
-export type IssueRelationExtensionFieldsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 /**
@@ -10277,21 +9204,19 @@ export enum IssueRelationOrderField {
  *     READ is always granted.
  *
  */
-export type IssueRelationType = ExtensibleNode &
+export type IssueRelationType = BaseNode &
     Named &
     NamedNode &
     Node & {
         __typename?: "IssueRelationType";
         /** The description of this entity. */
         description: Scalars["String"]["output"];
-        /** Value of an extension field by name of the extension field. Null if the field does not exist. */
-        extensionField?: Maybe<Scalars["JSON"]["output"]>;
-        /** All extension fields, if a `namePrefix` is provided, only those matching it */
-        extensionFields: Array<JsonField>;
         /** Checks if the current user has a specific permission on this Node */
         hasPermission: Scalars["Boolean"]["output"];
         /** The unique id of this node */
         id: Scalars["ID"]["output"];
+        /** The name of the relation from the inverse (incoming) perspective */
+        inverseName: Scalars["String"]["output"];
         /** The name of this entity. */
         name: Scalars["String"]["output"];
         /** IssueTemplates this is part of. */
@@ -10299,24 +9224,6 @@ export type IssueRelationType = ExtensibleNode &
         /** Relations which use this type. */
         relationsWithType: IssueRelationConnection;
     };
-
-/**
- * Type for an IssueRelation, like DUPLICATES or DEPENDS_ON. Part of an IssueTemplate.
- *     READ is always granted.
- *
- */
-export type IssueRelationTypeExtensionFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-/**
- * Type for an IssueRelation, like DUPLICATES or DEPENDS_ON. Part of an IssueTemplate.
- *     READ is always granted.
- *
- */
-export type IssueRelationTypeExtensionFieldsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
-};
 
 /**
  * Type for an IssueRelation, like DUPLICATES or DEPENDS_ON. Part of an IssueTemplate.
@@ -10387,6 +9294,8 @@ export type IssueRelationTypeFilterInput = {
     description?: InputMaybe<StringFilterInput>;
     /** Filter by id */
     id?: InputMaybe<IdFilterInput>;
+    /** Filter by inverseName */
+    inverseName?: InputMaybe<StringFilterInput>;
     /** Filter by name */
     name?: InputMaybe<StringFilterInput>;
     /** Negates the subformula */
@@ -10403,8 +9312,8 @@ export type IssueRelationTypeFilterInput = {
 export type IssueRelationTypeInput = {
     /** The description of the NamedNode */
     description: Scalars["String"]["input"];
-    /** The initial value of the extension fields */
-    extensionFields?: InputMaybe<Array<JsonFieldInput>>;
+    /** The inverse name of the IssueRelationType, must not be blank */
+    inverseName: Scalars["String"]["input"];
     /** The name of the NamedNode, must not be blank */
     name: Scalars["String"]["input"];
 };
@@ -10431,6 +9340,8 @@ export type IssueRelationTypeOrder = {
 export enum IssueRelationTypeOrderField {
     /** Order by id */
     Id = "ID",
+    /** Order by inverseName */
+    InverseName = "INVERSE_NAME",
     /** Order by name */
     Name = "NAME"
 }
@@ -10440,17 +9351,13 @@ export enum IssueRelationTypeOrderField {
  *     READ is always granted.
  *
  */
-export type IssueState = ExtensibleNode &
+export type IssueState = BaseNode &
     Named &
     NamedNode &
     Node & {
         __typename?: "IssueState";
         /** The description of this entity. */
         description: Scalars["String"]["output"];
-        /** Value of an extension field by name of the extension field. Null if the field does not exist. */
-        extensionField?: Maybe<Scalars["JSON"]["output"]>;
-        /** All extension fields, if a `namePrefix` is provided, only those matching it */
-        extensionFields: Array<JsonField>;
         /** Checks if the current user has a specific permission on this Node */
         hasPermission: Scalars["Boolean"]["output"];
         /** The unique id of this node */
@@ -10464,24 +9371,6 @@ export type IssueState = ExtensibleNode &
         /** IssueTemplates this is a part of. */
         partOf: IssueTemplateConnection;
     };
-
-/**
- * State of an Issue like BUG or FEATURE_REQUEST. Part of an IssueTemplate.
- *     READ is always granted.
- *
- */
-export type IssueStateExtensionFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-/**
- * State of an Issue like BUG or FEATURE_REQUEST. Part of an IssueTemplate.
- *     READ is always granted.
- *
- */
-export type IssueStateExtensionFieldsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
-};
 
 /**
  * State of an Issue like BUG or FEATURE_REQUEST. Part of an IssueTemplate.
@@ -10570,8 +9459,6 @@ export type IssueStateFilterInput = {
 export type IssueStateInput = {
     /** The description of the NamedNode */
     description: Scalars["String"]["input"];
-    /** The initial value of the extension fields */
-    extensionFields?: InputMaybe<Array<JsonFieldInput>>;
     /** The value for the isOpen field of the created IssueState */
     isOpen: Scalars["Boolean"]["input"];
     /** The name of the NamedNode, must not be blank */
@@ -10615,8 +9502,8 @@ export enum IssueStateOrderField {
  *     All those are derived, if this Template extends another IssueTemplate.
  *
  */
-export type IssueTemplate = BaseTemplate &
-    ExtensibleNode &
+export type IssueTemplate = BaseNode &
+    BaseTemplate &
     Named &
     NamedNode &
     Node &
@@ -10630,10 +9517,6 @@ export type IssueTemplate = BaseTemplate &
         extendedBy: IssueTemplateConnection;
         /** Template this template extends. */
         extends: IssueTemplateConnection;
-        /** Value of an extension field by name of the extension field. Null if the field does not exist. */
-        extensionField?: Maybe<Scalars["JSON"]["output"]>;
-        /** All extension fields, if a `namePrefix` is provided, only those matching it */
-        extensionFields: Array<JsonField>;
         /** Checks if the current user has a specific permission on this Node */
         hasPermission: Scalars["Boolean"]["output"];
         /** The unique id of this node */
@@ -10711,32 +9594,6 @@ export type IssueTemplateExtendsArgs = {
     last?: InputMaybe<Scalars["Int"]["input"]>;
     orderBy?: InputMaybe<IssueTemplateOrder>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
-};
-
-/**
- * Template for Issues.
- *     Defines templated fields with specific types (defined using JSON schema).
- *     Defines possible IssueTypes, IssueStates and IssuePriorities for Issues with this Template,
- *     possible AssignmentTypes for Assignments to Issues with this template, and possible
- *     RelationTypes for outgoing IssueRelations for Issues with this template.
- *     All those are derived, if this Template extends another IssueTemplate.
- *
- */
-export type IssueTemplateExtensionFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-/**
- * Template for Issues.
- *     Defines templated fields with specific types (defined using JSON schema).
- *     Defines possible IssueTypes, IssueStates and IssuePriorities for Issues with this Template,
- *     possible AssignmentTypes for Assignments to Issues with this template, and possible
- *     RelationTypes for outgoing IssueRelations for Issues with this template.
- *     All those are derived, if this Template extends another IssueTemplate.
- *
- */
-export type IssueTemplateExtensionFieldsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 /**
@@ -10945,17 +9802,13 @@ export enum IssueTemplateOrderField {
  *     READ is always granted.
  *
  */
-export type IssueType = ExtensibleNode &
+export type IssueType = BaseNode &
     Named &
     NamedNode &
     Node & {
         __typename?: "IssueType";
         /** The description of this entity. */
         description: Scalars["String"]["output"];
-        /** Value of an extension field by name of the extension field. Null if the field does not exist. */
-        extensionField?: Maybe<Scalars["JSON"]["output"]>;
-        /** All extension fields, if a `namePrefix` is provided, only those matching it */
-        extensionFields: Array<JsonField>;
         /** Checks if the current user has a specific permission on this Node */
         hasPermission: Scalars["Boolean"]["output"];
         /** A path that is used as the icon for issues. Used with a 0 0 100 100 viewBox. No stroke, only fill. */
@@ -10969,24 +9822,6 @@ export type IssueType = ExtensibleNode &
         /** IssueTemplates this is a part of. */
         partOf: IssueTemplateConnection;
     };
-
-/**
- * Type of an Issue like BUG or FEATURE_REQUEST. Part of an IssueTemplate.
- *     READ is always granted.
- *
- */
-export type IssueTypeExtensionFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-/**
- * Type of an Issue like BUG or FEATURE_REQUEST. Part of an IssueTemplate.
- *     READ is always granted.
- *
- */
-export type IssueTypeExtensionFieldsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
-};
 
 /**
  * Type of an Issue like BUG or FEATURE_REQUEST. Part of an IssueTemplate.
@@ -11073,8 +9908,6 @@ export type IssueTypeFilterInput = {
 export type IssueTypeInput = {
     /** The description of the NamedNode */
     description: Scalars["String"]["input"];
-    /** The initial value of the extension fields */
-    extensionFields?: InputMaybe<Array<JsonFieldInput>>;
     /** A path that is used as the icon for issues. Used with a 0 0 100 100 viewBox. No stroke, only fill. */
     iconPath: Scalars["String"]["input"];
     /** The name of the NamedNode, must not be blank */
@@ -11132,7 +9965,7 @@ export type JsonFieldInput = {
  *
  */
 export type Label = AuditedNode &
-    ExtensibleNode &
+    BaseNode &
     Named &
     NamedAuditedNode &
     Node & {
@@ -11145,10 +9978,6 @@ export type Label = AuditedNode &
         createdBy: User;
         /** The description of this entity. */
         description: Scalars["String"]["output"];
-        /** Value of an extension field by name of the extension field. Null if the field does not exist. */
-        extensionField?: Maybe<Scalars["JSON"]["output"]>;
-        /** All extension fields, if a `namePrefix` is provided, only those matching it */
-        extensionFields: Array<JsonField>;
         /** Checks if the current user has a specific permission on this Node */
         hasPermission: Scalars["Boolean"]["output"];
         /** The unique id of this node */
@@ -11164,28 +9993,6 @@ export type Label = AuditedNode &
         /** Trackables this Label is part of. */
         trackables: TrackableConnection;
     };
-
-/**
- * Label used to mark Issues with.
- *     A Label consists of a name, a description and a color.
- *     Issues may be synced to all IMSProjects of Trackables they are part of.
- *     READ is granted if READ is granted on any Trackable in `trackables`.
- *
- */
-export type LabelExtensionFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-/**
- * Label used to mark Issues with.
- *     A Label consists of a name, a description and a color.
- *     Issues may be synced to all IMSProjects of Trackables they are part of.
- *     READ is granted if READ is granted on any Trackable in `trackables`.
- *
- */
-export type LabelExtensionFieldsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
-};
 
 /**
  * Label used to mark Issues with.
@@ -11339,14 +10146,26 @@ export enum MarkerType {
  *     IssueRelations are aggregated by both start and end Issue.
  *
  */
-export type MetaAggregatedIssueRelation = Node & {
-    __typename?: "MetaAggregatedIssueRelation";
-    count: Scalars["Int"]["output"];
-    end: Component;
-    /** The unique id of this node */
-    id: Scalars["ID"]["output"];
-    issueRelations: IssueRelationConnection;
-    start: Component;
+export type MetaAggregatedIssueRelation = BaseNode &
+    Node & {
+        __typename?: "MetaAggregatedIssueRelation";
+        count: Scalars["Int"]["output"];
+        end: Component;
+        /** Checks if the current user has a specific permission on this Node */
+        hasPermission: Scalars["Boolean"]["output"];
+        /** The unique id of this node */
+        id: Scalars["ID"]["output"];
+        issueRelations: IssueRelationConnection;
+        start: Component;
+    };
+
+/**
+ * An aggregated IssueRelation.
+ *     IssueRelations are aggregated by both start and end Issue.
+ *
+ */
+export type MetaAggregatedIssueRelationHasPermissionArgs = {
+    permission?: InputMaybe<AllPermissionEntry>;
 };
 
 /**
@@ -11816,8 +10635,6 @@ export type Mutation = {
     updateComponentPermission: UpdateComponentPermissionPayload;
     /** Updates the specified ComponentVersion, requires ADMIN on the Component of the ComponentVersion to update */
     updateComponentVersion: UpdateComponentVersionPayload;
-    /** Updates extensionFields of the specified ExtensibleNode. Requires READ */
-    updateExtensionFields: UpdateExtensionFieldsPayload;
     /** Updates a GlobalPermission, requires that the user is an admin */
     updateGlobalPermission: UpdateGlobalPermissionPayload;
     /**
@@ -11896,6 +10713,8 @@ export type Mutation = {
      *
      */
     updateRelation: UpdateRelationPayload;
+    /** Updates whether the current user allows sync self/others on the specified target */
+    updateSyncPermissions: UpdateSyncPermissionsPayload;
     /** Updates the deprecation state of the template, requires CAN_CREATE_TEMPLATES */
     updateTemplateDeprecationStatus: UpdateTemplateDeprecationStatusPayload;
 };
@@ -12212,10 +11031,6 @@ export type MutationUpdateComponentVersionArgs = {
     input: UpdateComponentVersionInput;
 };
 
-export type MutationUpdateExtensionFieldsArgs = {
-    input: UpdateExtensionFieldsInput;
-};
-
 export type MutationUpdateGlobalPermissionArgs = {
     input: UpdateGlobalPermissionInput;
 };
@@ -12280,6 +11095,10 @@ export type MutationUpdateRelationArgs = {
     input: UpdateRelationInput;
 };
 
+export type MutationUpdateSyncPermissionsArgs = {
+    input: UpdateSyncPermissionsInput;
+};
+
 export type MutationUpdateTemplateDeprecationStatusArgs = {
     input: UpdateTemplateDeprecationStatusInput;
 };
@@ -12300,10 +11119,6 @@ export type NamedAuditedNode = {
     createdBy: User;
     /** The description of this entity. */
     description: Scalars["String"]["output"];
-    /** Value of an extension field by name of the extension field. Null if the field does not exist. */
-    extensionField?: Maybe<Scalars["JSON"]["output"]>;
-    /** All extension fields, if a `namePrefix` is provided, only those matching it */
-    extensionFields: Array<JsonField>;
     /** Checks if the current user has a specific permission on this Node */
     hasPermission: Scalars["Boolean"]["output"];
     /** The unique id of this node */
@@ -12317,28 +11132,14 @@ export type NamedAuditedNode = {
 };
 
 /** AuditedNode with a name and description */
-export type NamedAuditedNodeExtensionFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-/** AuditedNode with a name and description */
-export type NamedAuditedNodeExtensionFieldsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
-};
-
-/** AuditedNode with a name and description */
 export type NamedAuditedNodeHasPermissionArgs = {
     permission?: InputMaybe<AllPermissionEntry>;
 };
 
-/** ExtensibleNode with a name and description */
+/** Node with a name and description */
 export type NamedNode = {
     /** The description of this entity. */
     description: Scalars["String"]["output"];
-    /** Value of an extension field by name of the extension field. Null if the field does not exist. */
-    extensionField?: Maybe<Scalars["JSON"]["output"]>;
-    /** All extension fields, if a `namePrefix` is provided, only those matching it */
-    extensionFields: Array<JsonField>;
     /** Checks if the current user has a specific permission on this Node */
     hasPermission: Scalars["Boolean"]["output"];
     /** The unique id of this node */
@@ -12347,17 +11148,7 @@ export type NamedNode = {
     name: Scalars["String"]["output"];
 };
 
-/** ExtensibleNode with a name and description */
-export type NamedNodeExtensionFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-/** ExtensibleNode with a name and description */
-export type NamedNodeExtensionFieldsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
-};
-
-/** ExtensibleNode with a name and description */
+/** Node with a name and description */
 export type NamedNodeHasPermissionArgs = {
     permission?: InputMaybe<AllPermissionEntry>;
 };
@@ -12374,12 +11165,18 @@ export type NodePermission = {
     /** The description of this entity. */
     description: Scalars["String"]["output"];
     entries: Array<Scalars["String"]["output"]>;
+    /** Checks if the current user has a specific permission on this Node */
+    hasPermission: Scalars["Boolean"]["output"];
     /** The unique id of this node */
     id: Scalars["ID"]["output"];
     /** The name of this entity. */
     name: Scalars["String"]["output"];
     /** GropiusUsers granted this Permission */
     users: GropiusUserConnection;
+};
+
+export type NodePermissionHasPermissionArgs = {
+    permission?: InputMaybe<AllPermissionEntry>;
 };
 
 export type NodePermissionUsersArgs = {
@@ -12483,8 +11280,6 @@ export type NullableStringFilterInput = {
 export type NullableSubTemplateInput = {
     /** The description of the NamedNode */
     description: Scalars["String"]["input"];
-    /** The initial value of the extension fields */
-    extensionFields?: InputMaybe<Array<JsonFieldInput>>;
     /** The name of the NamedNode, must not be blank */
     name: Scalars["String"]["input"];
     /**
@@ -12509,7 +11304,7 @@ export enum OrderDirection {
  *
  */
 export type OutgoingRelationTypeChangedEvent = AuditedNode &
-    ExtensibleNode &
+    BaseNode &
     Node &
     RelationTypeChangedEvent &
     TimelineItem & {
@@ -12518,10 +11313,6 @@ export type OutgoingRelationTypeChangedEvent = AuditedNode &
         createdAt: Scalars["DateTime"]["output"];
         /** The User who created this entity. */
         createdBy: User;
-        /** Value of an extension field by name of the extension field. Null if the field does not exist. */
-        extensionField?: Maybe<Scalars["JSON"]["output"]>;
-        /** All extension fields, if a `namePrefix` is provided, only those matching it */
-        extensionFields: Array<JsonField>;
         /** Checks if the current user has a specific permission on this Node */
         hasPermission: Scalars["Boolean"]["output"];
         /** The unique id of this node */
@@ -12541,24 +11332,6 @@ export type OutgoingRelationTypeChangedEvent = AuditedNode &
         /** If existing, the parent TimelineItem */
         parentItem?: Maybe<ParentTimelineItem>;
     };
-
-/**
- * Event representing that the type of an incoming IssueRelation changed.
- *     READ is granted if READ is granted on `issue`.
- *
- */
-export type OutgoingRelationTypeChangedEventExtensionFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-/**
- * Event representing that the type of an incoming IssueRelation changed.
- *     READ is granted if READ is granted on `issue`.
- *
- */
-export type OutgoingRelationTypeChangedEventExtensionFieldsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
-};
 
 /**
  * Event representing that the type of an incoming IssueRelation changed.
@@ -12594,10 +11367,6 @@ export type ParentTimelineItem = {
     createdAt: Scalars["DateTime"]["output"];
     /** The User who created this entity. */
     createdBy: User;
-    /** Value of an extension field by name of the extension field. Null if the field does not exist. */
-    extensionField?: Maybe<Scalars["JSON"]["output"]>;
-    /** All extension fields, if a `namePrefix` is provided, only those matching it */
-    extensionFields: Array<JsonField>;
     /** Checks if the current user has a specific permission on this Node */
     hasPermission: Scalars["Boolean"]["output"];
     /** The unique id of this node */
@@ -12625,24 +11394,6 @@ export type ParentTimelineItemChildItemsArgs = {
     last?: InputMaybe<Scalars["Int"]["input"]>;
     orderBy?: InputMaybe<TimelineItemOrder>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
-};
-
-/**
- * TimelineItem which can aggregate other TimelineItems.
- *     READ is granted if READ is granted on `issue`.
- *
- */
-export type ParentTimelineItemExtensionFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-/**
- * TimelineItem which can aggregate other TimelineItems.
- *     READ is granted if READ is granted on `issue`.
- *
- */
-export type ParentTimelineItemExtensionFieldsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 /**
@@ -12700,7 +11451,7 @@ export enum PermissionEntry {
  *
  */
 export type PriorityChangedEvent = AuditedNode &
-    ExtensibleNode &
+    BaseNode &
     Node &
     TimelineItem & {
         __typename?: "PriorityChangedEvent";
@@ -12708,10 +11459,6 @@ export type PriorityChangedEvent = AuditedNode &
         createdAt: Scalars["DateTime"]["output"];
         /** The User who created this entity. */
         createdBy: User;
-        /** Value of an extension field by name of the extension field. Null if the field does not exist. */
-        extensionField?: Maybe<Scalars["JSON"]["output"]>;
-        /** All extension fields, if a `namePrefix` is provided, only those matching it */
-        extensionFields: Array<JsonField>;
         /** Checks if the current user has a specific permission on this Node */
         hasPermission: Scalars["Boolean"]["output"];
         /** The unique id of this node */
@@ -12735,24 +11482,6 @@ export type PriorityChangedEvent = AuditedNode &
  *     READ is granted if READ is granted on `issue`.
  *
  */
-export type PriorityChangedEventExtensionFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-/**
- * Event representing that the priority of an Issue changed.
- *     READ is granted if READ is granted on `issue`.
- *
- */
-export type PriorityChangedEventExtensionFieldsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
-};
-
-/**
- * Event representing that the priority of an Issue changed.
- *     READ is granted if READ is granted on `issue`.
- *
- */
 export type PriorityChangedEventHasPermissionArgs = {
     permission?: InputMaybe<AllPermissionEntry>;
 };
@@ -12766,7 +11495,7 @@ export type PriorityChangedEventHasPermissionArgs = {
  *
  */
 export type Project = AffectedByIssue &
-    ExtensibleNode &
+    BaseNode &
     Named &
     NamedNode &
     Node &
@@ -12780,10 +11509,6 @@ export type Project = AffectedByIssue &
         components: ComponentVersionConnection;
         /** The description of this entity. */
         description: Scalars["String"]["output"];
-        /** Value of an extension field by name of the extension field. Null if the field does not exist. */
-        extensionField?: Maybe<Scalars["JSON"]["output"]>;
-        /** All extension fields, if a `namePrefix` is provided, only those matching it */
-        extensionFields: Array<JsonField>;
         /** Checks if the current user has a specific permission on this Node */
         hasPermission: Scalars["Boolean"]["output"];
         /** The unique id of this node */
@@ -12860,30 +11585,6 @@ export type ProjectComponentsArgs = {
     last?: InputMaybe<Scalars["Int"]["input"]>;
     orderBy?: InputMaybe<ComponentVersionOrder>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
-};
-
-/**
- * A project of the Gropius system.
- *     Consists of a set of ComponentVersions, which form a graph with the Relations between them.
- *     Can be affected by issues.
- *     Can have issues, labels and artefacts as this is a Trackable.
- *     READ is granted via an associated ProjectPermission.
- *
- */
-export type ProjectExtensionFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-/**
- * A project of the Gropius system.
- *     Consists of a set of ComponentVersions, which form a graph with the Relations between them.
- *     Can be affected by issues.
- *     Can have issues, labels and artefacts as this is a Trackable.
- *     READ is granted via an associated ProjectPermission.
- *
- */
-export type ProjectExtensionFieldsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 /**
@@ -13073,8 +11774,10 @@ export enum ProjectOrderField {
 }
 
 /** NodePermission to grant specific permissions to a set of Projects. */
-export type ProjectPermission = BasePermission &
+export type ProjectPermission = BaseNode &
+    BasePermission &
     Named &
+    NamedNode &
     Node & {
         __typename?: "ProjectPermission";
         /** If, the permission is granted to all users. Use with caution. */
@@ -13083,6 +11786,8 @@ export type ProjectPermission = BasePermission &
         description: Scalars["String"]["output"];
         /** All permissions this Permission grants */
         entries: Array<ProjectPermissionEntry>;
+        /** Checks if the current user has a specific permission on this Node */
+        hasPermission: Scalars["Boolean"]["output"];
         /** The unique id of this node */
         id: Scalars["ID"]["output"];
         /** The name of this entity. */
@@ -13092,6 +11797,11 @@ export type ProjectPermission = BasePermission &
         /** GropiusUsers granted this Permission */
         users: GropiusUserConnection;
     };
+
+/** NodePermission to grant specific permissions to a set of Projects. */
+export type ProjectPermissionHasPermissionArgs = {
+    permission?: InputMaybe<AllPermissionEntry>;
+};
 
 /** NodePermission to grant specific permissions to a set of Projects. */
 export type ProjectPermissionNodesWithPermissionArgs = {
@@ -13606,7 +12316,7 @@ export type QuerySearchUsersArgs = {
  *
  */
 export type RelatedByIssueEvent = AuditedNode &
-    ExtensibleNode &
+    BaseNode &
     Node &
     TimelineItem & {
         __typename?: "RelatedByIssueEvent";
@@ -13614,10 +12324,6 @@ export type RelatedByIssueEvent = AuditedNode &
         createdAt: Scalars["DateTime"]["output"];
         /** The User who created this entity. */
         createdBy: User;
-        /** Value of an extension field by name of the extension field. Null if the field does not exist. */
-        extensionField?: Maybe<Scalars["JSON"]["output"]>;
-        /** All extension fields, if a `namePrefix` is provided, only those matching it */
-        extensionFields: Array<JsonField>;
         /** Checks if the current user has a specific permission on this Node */
         hasPermission: Scalars["Boolean"]["output"];
         /** The unique id of this node */
@@ -13640,26 +12346,6 @@ export type RelatedByIssueEvent = AuditedNode &
  *     READ is granted if READ is granted on `relation`.
  *
  */
-export type RelatedByIssueEventExtensionFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-/**
- * Event representing that the Issue was used in an IssueRelation as related issue.
- *     The IssueRelation may not be active any more.
- *     READ is granted if READ is granted on `relation`.
- *
- */
-export type RelatedByIssueEventExtensionFieldsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
-};
-
-/**
- * Event representing that the Issue was used in an IssueRelation as related issue.
- *     The IssueRelation may not be active any more.
- *     READ is granted if READ is granted on `relation`.
- *
- */
 export type RelatedByIssueEventHasPermissionArgs = {
     permission?: InputMaybe<AllPermissionEntry>;
 };
@@ -13675,7 +12361,7 @@ export type RelatedByIssueEventHasPermissionArgs = {
  *     READ is granted if READ is granted on `start`.
  *
  */
-export type Relation = ExtensibleNode &
+export type Relation = BaseNode &
     MutableTemplatedNode &
     Node &
     TemplatedNode & {
@@ -13688,10 +12374,6 @@ export type Relation = ExtensibleNode &
         end?: Maybe<RelationPartner>;
         /** If the end is an Interface, the parts of that Interface this Relation includes. */
         endParts: InterfacePartConnection;
-        /** Value of an extension field by name of the extension field. Null if the field does not exist. */
-        extensionField?: Maybe<Scalars["JSON"]["output"]>;
-        /** All extension fields, if a `namePrefix` is provided, only those matching it */
-        extensionFields: Array<JsonField>;
         /** Checks if the current user has a specific permission on this Node */
         hasPermission: Scalars["Boolean"]["output"];
         /** The unique id of this node */
@@ -13787,36 +12469,6 @@ export type RelationEndPartsArgs = {
  *     READ is granted if READ is granted on `start`.
  *
  */
-export type RelationExtensionFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-/**
- * A relation between RelationPartners (ComponentVersions and Interfaces).
- *     Relations are always directional.
- *     Relations can derive Interfaces from `end` to `start` if both `start` and `end` are ComponentVersions
- *     and the template of this Relation allows it.
- *     The template defines which RelationPartners are possible as `start` / `end`.
- *     For both start and end, if it is an Interface, it is possible to define the InterfaceParts this includes.
- *     Caution: This is **not** a supertype of IssueRelation.
- *     READ is granted if READ is granted on `start`.
- *
- */
-export type RelationExtensionFieldsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
-};
-
-/**
- * A relation between RelationPartners (ComponentVersions and Interfaces).
- *     Relations are always directional.
- *     Relations can derive Interfaces from `end` to `start` if both `start` and `end` are ComponentVersions
- *     and the template of this Relation allows it.
- *     The template defines which RelationPartners are possible as `start` / `end`.
- *     For both start and end, if it is an Interface, it is possible to define the InterfaceParts this includes.
- *     Caution: This is **not** a supertype of IssueRelation.
- *     READ is granted if READ is granted on `start`.
- *
- */
 export type RelationHasPermissionArgs = {
     permission?: InputMaybe<AllPermissionEntry>;
 };
@@ -13882,13 +12534,9 @@ export type RelationTemplatedFieldsArgs = {
  *     READ is always granted.
  *
  */
-export type RelationCondition = ExtensibleNode &
+export type RelationCondition = BaseNode &
     Node & {
         __typename?: "RelationCondition";
-        /** Value of an extension field by name of the extension field. Null if the field does not exist. */
-        extensionField?: Maybe<Scalars["JSON"]["output"]>;
-        /** All extension fields, if a `namePrefix` is provided, only those matching it */
-        extensionFields: Array<JsonField>;
         /** Templates of allowed start RelationPartners */
         from: RelationPartnerTemplateConnection;
         /** Checks if the current user has a specific permission on this Node */
@@ -13902,32 +12550,6 @@ export type RelationCondition = ExtensibleNode &
         /** Templates of allowed end RelationPartners */
         to: RelationPartnerTemplateConnection;
     };
-
-/**
- * Condition which defines if a Relation can use a RelationTemplate.
- *     A relation can only use the Template, if the start of the Relation has a template in from,
- *     and the end of the Relation has a template in to.
- *     Also defines which InterfaceSpecifications are derived via the Relation.
- *     Part of a RelationTemplate.
- *     READ is always granted.
- *
- */
-export type RelationConditionExtensionFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-/**
- * Condition which defines if a Relation can use a RelationTemplate.
- *     A relation can only use the Template, if the start of the Relation has a template in from,
- *     and the end of the Relation has a template in to.
- *     Also defines which InterfaceSpecifications are derived via the Relation.
- *     Part of a RelationTemplate.
- *     READ is always granted.
- *
- */
-export type RelationConditionExtensionFieldsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
-};
 
 /**
  * Condition which defines if a Relation can use a RelationTemplate.
@@ -14062,8 +12684,6 @@ export type RelationConditionFilterInput = {
 
 /** Input to create a RelationCondition */
 export type RelationConditionInput = {
-    /** The initial value of the extension fields */
-    extensionFields?: InputMaybe<Array<JsonFieldInput>>;
     /** IDs of Templates of allowed start RelationPartners */
     from: Array<Scalars["ID"]["input"]>;
     /** Defines which InterfaceSpecifications are derived via the relation */
@@ -14178,10 +12798,6 @@ export type RelationPartner = {
     aggregatedIssues: AggregatedIssueConnection;
     /** The description of this entity. */
     description: Scalars["String"]["output"];
-    /** Value of an extension field by name of the extension field. Null if the field does not exist. */
-    extensionField?: Maybe<Scalars["JSON"]["output"]>;
-    /** All extension fields, if a `namePrefix` is provided, only those matching it */
-    extensionFields: Array<JsonField>;
     /** Checks if the current user has a specific permission on this Node */
     hasPermission: Scalars["Boolean"]["output"];
     /** The unique id of this node */
@@ -14223,16 +12839,6 @@ export type RelationPartnerAggregatedIssuesArgs = {
     last?: InputMaybe<Scalars["Int"]["input"]>;
     orderBy?: InputMaybe<AggregatedIssueOrder>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
-};
-
-/** Entity which can be used as start / end of Relations. Can be affected by Issues. */
-export type RelationPartnerExtensionFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-/** Entity which can be used as start / end of Relations. Can be affected by Issues. */
-export type RelationPartnerExtensionFieldsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 /** Entity which can be used as start / end of Relations. Can be affected by Issues. */
@@ -14307,10 +12913,6 @@ export type RelationPartnerFilterInput = {
 export type RelationPartnerTemplate = {
     /** The description of this entity. */
     description: Scalars["String"]["output"];
-    /** Value of an extension field by name of the extension field. Null if the field does not exist. */
-    extensionField?: Maybe<Scalars["JSON"]["output"]>;
-    /** All extension fields, if a `namePrefix` is provided, only those matching it */
-    extensionFields: Array<JsonField>;
     /** Style of the fill */
     fill?: Maybe<FillStyle>;
     /** Checks if the current user has a specific permission on this Node */
@@ -14333,16 +12935,6 @@ export type RelationPartnerTemplate = {
     stroke?: Maybe<StrokeStyle>;
     /** All template field specifications, if a `namePrefix` is provided, only those matching it */
     templateFieldSpecifications: Array<JsonField>;
-};
-
-/** Template for RelationPartners. */
-export type RelationPartnerTemplateExtensionFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-/** Template for RelationPartners. */
-export type RelationPartnerTemplateExtensionFieldsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 /** Template for RelationPartners. */
@@ -14454,8 +13046,8 @@ export enum RelationPartnerTemplateOrderField {
  *     At least one RelationCondition has to match.
  *
  */
-export type RelationTemplate = BaseTemplate &
-    ExtensibleNode &
+export type RelationTemplate = BaseNode &
+    BaseTemplate &
     Named &
     NamedNode &
     Node &
@@ -14467,10 +13059,6 @@ export type RelationTemplate = BaseTemplate &
         extendedBy: RelationTemplateConnection;
         /** Template this template extends. */
         extends: RelationTemplateConnection;
-        /** Value of an extension field by name of the extension field. Null if the field does not exist. */
-        extensionField?: Maybe<Scalars["JSON"]["output"]>;
-        /** All extension fields, if a `namePrefix` is provided, only those matching it */
-        extensionFields: Array<JsonField>;
         /** Checks if the current user has a specific permission on this Node */
         hasPermission: Scalars["Boolean"]["output"];
         /** The unique id of this node */
@@ -14523,28 +13111,6 @@ export type RelationTemplateExtendsArgs = {
     last?: InputMaybe<Scalars["Int"]["input"]>;
     orderBy?: InputMaybe<RelationTemplateOrder>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
-};
-
-/**
- * Template for Relations.
- *     Defines templated fields with specific types (defined using JSON schema).
- *     Defines which Relations can use this Template.
- *     At least one RelationCondition has to match.
- *
- */
-export type RelationTemplateExtensionFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-/**
- * Template for Relations.
- *     Defines templated fields with specific types (defined using JSON schema).
- *     Defines which Relations can use this Template.
- *     At least one RelationCondition has to match.
- *
- */
-export type RelationTemplateExtensionFieldsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 /**
@@ -14681,10 +13247,6 @@ export type RelationTypeChangedEvent = {
     createdAt: Scalars["DateTime"]["output"];
     /** The User who created this entity. */
     createdBy: User;
-    /** Value of an extension field by name of the extension field. Null if the field does not exist. */
-    extensionField?: Maybe<Scalars["JSON"]["output"]>;
-    /** All extension fields, if a `namePrefix` is provided, only those matching it */
-    extensionFields: Array<JsonField>;
     /** Checks if the current user has a specific permission on this Node */
     hasPermission: Scalars["Boolean"]["output"];
     /** The unique id of this node */
@@ -14703,16 +13265,6 @@ export type RelationTypeChangedEvent = {
     oldType?: Maybe<IssueRelationType>;
     /** If existing, the parent TimelineItem */
     parentItem?: Maybe<ParentTimelineItem>;
-};
-
-/** Event representing that the type of an IssueRelation changed. */
-export type RelationTypeChangedEventExtensionFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-/** Event representing that the type of an IssueRelation changed. */
-export type RelationTypeChangedEventExtensionFieldsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 /** Event representing that the type of an IssueRelation changed. */
@@ -14866,7 +13418,7 @@ export type RemoveLabelFromTrackablePayload = {
  *
  */
 export type RemovedAffectedEntityEvent = AuditedNode &
-    ExtensibleNode &
+    BaseNode &
     Node &
     TimelineItem & {
         __typename?: "RemovedAffectedEntityEvent";
@@ -14874,10 +13426,6 @@ export type RemovedAffectedEntityEvent = AuditedNode &
         createdAt: Scalars["DateTime"]["output"];
         /** The User who created this entity. */
         createdBy: User;
-        /** Value of an extension field by name of the extension field. Null if the field does not exist. */
-        extensionField?: Maybe<Scalars["JSON"]["output"]>;
-        /** All extension fields, if a `namePrefix` is provided, only those matching it */
-        extensionFields: Array<JsonField>;
         /** Checks if the current user has a specific permission on this Node */
         hasPermission: Scalars["Boolean"]["output"];
         /** The unique id of this node */
@@ -14899,24 +13447,6 @@ export type RemovedAffectedEntityEvent = AuditedNode &
  *     READ is granted if READ is granted on `issue`.
  *
  */
-export type RemovedAffectedEntityEventExtensionFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-/**
- * Event representing that an entity is no longer affected by an Issue.
- *     READ is granted if READ is granted on `issue`.
- *
- */
-export type RemovedAffectedEntityEventExtensionFieldsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
-};
-
-/**
- * Event representing that an entity is no longer affected by an Issue.
- *     READ is granted if READ is granted on `issue`.
- *
- */
 export type RemovedAffectedEntityEventHasPermissionArgs = {
     permission?: InputMaybe<AllPermissionEntry>;
 };
@@ -14927,7 +13457,7 @@ export type RemovedAffectedEntityEventHasPermissionArgs = {
  *
  */
 export type RemovedArtefactEvent = AuditedNode &
-    ExtensibleNode &
+    BaseNode &
     Node &
     TimelineItem & {
         __typename?: "RemovedArtefactEvent";
@@ -14935,10 +13465,6 @@ export type RemovedArtefactEvent = AuditedNode &
         createdAt: Scalars["DateTime"]["output"];
         /** The User who created this entity. */
         createdBy: User;
-        /** Value of an extension field by name of the extension field. Null if the field does not exist. */
-        extensionField?: Maybe<Scalars["JSON"]["output"]>;
-        /** All extension fields, if a `namePrefix` is provided, only those matching it */
-        extensionFields: Array<JsonField>;
         /** Checks if the current user has a specific permission on this Node */
         hasPermission: Scalars["Boolean"]["output"];
         /** The unique id of this node */
@@ -14960,24 +13486,6 @@ export type RemovedArtefactEvent = AuditedNode &
  *     READ is granted if READ is granted on `issue`.
  *
  */
-export type RemovedArtefactEventExtensionFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-/**
- * Event representing that an Artefact was removed from an Issue.
- *     READ is granted if READ is granted on `issue`.
- *
- */
-export type RemovedArtefactEventExtensionFieldsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
-};
-
-/**
- * Event representing that an Artefact was removed from an Issue.
- *     READ is granted if READ is granted on `issue`.
- *
- */
 export type RemovedArtefactEventHasPermissionArgs = {
     permission?: InputMaybe<AllPermissionEntry>;
 };
@@ -14989,7 +13497,7 @@ export type RemovedArtefactEventHasPermissionArgs = {
  *
  */
 export type RemovedAssignmentEvent = AuditedNode &
-    ExtensibleNode &
+    BaseNode &
     Node &
     TimelineItem & {
         __typename?: "RemovedAssignmentEvent";
@@ -14997,10 +13505,6 @@ export type RemovedAssignmentEvent = AuditedNode &
         createdAt: Scalars["DateTime"]["output"];
         /** The User who created this entity. */
         createdBy: User;
-        /** Value of an extension field by name of the extension field. Null if the field does not exist. */
-        extensionField?: Maybe<Scalars["JSON"]["output"]>;
-        /** All extension fields, if a `namePrefix` is provided, only those matching it */
-        extensionFields: Array<JsonField>;
         /** Checks if the current user has a specific permission on this Node */
         hasPermission: Scalars["Boolean"]["output"];
         /** The unique id of this node */
@@ -15023,26 +13527,6 @@ export type RemovedAssignmentEvent = AuditedNode &
  *     READ is granted if READ is granted on `issue`.
  *
  */
-export type RemovedAssignmentEventExtensionFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-/**
- * Event representing that a User was unassigned from an Issue,
- *     meaning an Assignment was removed from an Issue.
- *     READ is granted if READ is granted on `issue`.
- *
- */
-export type RemovedAssignmentEventExtensionFieldsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
-};
-
-/**
- * Event representing that a User was unassigned from an Issue,
- *     meaning an Assignment was removed from an Issue.
- *     READ is granted if READ is granted on `issue`.
- *
- */
 export type RemovedAssignmentEventHasPermissionArgs = {
     permission?: InputMaybe<AllPermissionEntry>;
 };
@@ -15053,7 +13537,7 @@ export type RemovedAssignmentEventHasPermissionArgs = {
  *
  */
 export type RemovedFromPinnedIssuesEvent = AuditedNode &
-    ExtensibleNode &
+    BaseNode &
     Node &
     TimelineItem & {
         __typename?: "RemovedFromPinnedIssuesEvent";
@@ -15061,10 +13545,6 @@ export type RemovedFromPinnedIssuesEvent = AuditedNode &
         createdAt: Scalars["DateTime"]["output"];
         /** The User who created this entity. */
         createdBy: User;
-        /** Value of an extension field by name of the extension field. Null if the field does not exist. */
-        extensionField?: Maybe<Scalars["JSON"]["output"]>;
-        /** All extension fields, if a `namePrefix` is provided, only those matching it */
-        extensionFields: Array<JsonField>;
         /** Checks if the current user has a specific permission on this Node */
         hasPermission: Scalars["Boolean"]["output"];
         /** The unique id of this node */
@@ -15086,24 +13566,6 @@ export type RemovedFromPinnedIssuesEvent = AuditedNode &
  *     READ is granted if READ is granted on `issue`.
  *
  */
-export type RemovedFromPinnedIssuesEventExtensionFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-/**
- * Event representing that an Issue was unpinned on a Trackable.
- *     READ is granted if READ is granted on `issue`.
- *
- */
-export type RemovedFromPinnedIssuesEventExtensionFieldsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
-};
-
-/**
- * Event representing that an Issue was unpinned on a Trackable.
- *     READ is granted if READ is granted on `issue`.
- *
- */
 export type RemovedFromPinnedIssuesEventHasPermissionArgs = {
     permission?: InputMaybe<AllPermissionEntry>;
 };
@@ -15114,7 +13576,7 @@ export type RemovedFromPinnedIssuesEventHasPermissionArgs = {
  *
  */
 export type RemovedFromTrackableEvent = AuditedNode &
-    ExtensibleNode &
+    BaseNode &
     Node &
     ParentTimelineItem &
     TimelineItem & {
@@ -15125,10 +13587,6 @@ export type RemovedFromTrackableEvent = AuditedNode &
         createdAt: Scalars["DateTime"]["output"];
         /** The User who created this entity. */
         createdBy: User;
-        /** Value of an extension field by name of the extension field. Null if the field does not exist. */
-        extensionField?: Maybe<Scalars["JSON"]["output"]>;
-        /** All extension fields, if a `namePrefix` is provided, only those matching it */
-        extensionFields: Array<JsonField>;
         /** Checks if the current user has a specific permission on this Node */
         hasPermission: Scalars["Boolean"]["output"];
         /** The unique id of this node */
@@ -15165,24 +13623,6 @@ export type RemovedFromTrackableEventChildItemsArgs = {
  *     READ is granted if READ is granted on `issue`.
  *
  */
-export type RemovedFromTrackableEventExtensionFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-/**
- * Event representing that an Issue was removed from a Trackable.
- *     READ is granted if READ is granted on `issue`.
- *
- */
-export type RemovedFromTrackableEventExtensionFieldsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
-};
-
-/**
- * Event representing that an Issue was removed from a Trackable.
- *     READ is granted if READ is granted on `issue`.
- *
- */
 export type RemovedFromTrackableEventHasPermissionArgs = {
     permission?: InputMaybe<AllPermissionEntry>;
 };
@@ -15193,7 +13633,7 @@ export type RemovedFromTrackableEventHasPermissionArgs = {
  *
  */
 export type RemovedIncomingRelationEvent = AuditedNode &
-    ExtensibleNode &
+    BaseNode &
     Node &
     RemovedRelationEvent &
     TimelineItem & {
@@ -15202,10 +13642,6 @@ export type RemovedIncomingRelationEvent = AuditedNode &
         createdAt: Scalars["DateTime"]["output"];
         /** The User who created this entity. */
         createdBy: User;
-        /** Value of an extension field by name of the extension field. Null if the field does not exist. */
-        extensionField?: Maybe<Scalars["JSON"]["output"]>;
-        /** All extension fields, if a `namePrefix` is provided, only those matching it */
-        extensionFields: Array<JsonField>;
         /** Checks if the current user has a specific permission on this Node */
         hasPermission: Scalars["Boolean"]["output"];
         /** The unique id of this node */
@@ -15227,24 +13663,6 @@ export type RemovedIncomingRelationEvent = AuditedNode &
  *     READ is granted if READ is granted on `removedRelation`.
  *
  */
-export type RemovedIncomingRelationEventExtensionFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-/**
- * Event representing that an incoming IssueRelation was removed.
- *     READ is granted if READ is granted on `removedRelation`.
- *
- */
-export type RemovedIncomingRelationEventExtensionFieldsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
-};
-
-/**
- * Event representing that an incoming IssueRelation was removed.
- *     READ is granted if READ is granted on `removedRelation`.
- *
- */
 export type RemovedIncomingRelationEventHasPermissionArgs = {
     permission?: InputMaybe<AllPermissionEntry>;
 };
@@ -15255,7 +13673,7 @@ export type RemovedIncomingRelationEventHasPermissionArgs = {
  *
  */
 export type RemovedLabelEvent = AuditedNode &
-    ExtensibleNode &
+    BaseNode &
     Node &
     TimelineItem & {
         __typename?: "RemovedLabelEvent";
@@ -15263,10 +13681,6 @@ export type RemovedLabelEvent = AuditedNode &
         createdAt: Scalars["DateTime"]["output"];
         /** The User who created this entity. */
         createdBy: User;
-        /** Value of an extension field by name of the extension field. Null if the field does not exist. */
-        extensionField?: Maybe<Scalars["JSON"]["output"]>;
-        /** All extension fields, if a `namePrefix` is provided, only those matching it */
-        extensionFields: Array<JsonField>;
         /** Checks if the current user has a specific permission on this Node */
         hasPermission: Scalars["Boolean"]["output"];
         /** The unique id of this node */
@@ -15288,24 +13702,6 @@ export type RemovedLabelEvent = AuditedNode &
  *     READ is granted if READ is granted on `issue`.
  *
  */
-export type RemovedLabelEventExtensionFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-/**
- * Event representing that a Label was removed from an Issue.
- *     READ is granted if READ is granted on `issue`.
- *
- */
-export type RemovedLabelEventExtensionFieldsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
-};
-
-/**
- * Event representing that a Label was removed from an Issue.
- *     READ is granted if READ is granted on `issue`.
- *
- */
 export type RemovedLabelEventHasPermissionArgs = {
     permission?: InputMaybe<AllPermissionEntry>;
 };
@@ -15316,7 +13712,7 @@ export type RemovedLabelEventHasPermissionArgs = {
  *
  */
 export type RemovedOutgoingRelationEvent = AuditedNode &
-    ExtensibleNode &
+    BaseNode &
     Node &
     RemovedRelationEvent &
     TimelineItem & {
@@ -15325,10 +13721,6 @@ export type RemovedOutgoingRelationEvent = AuditedNode &
         createdAt: Scalars["DateTime"]["output"];
         /** The User who created this entity. */
         createdBy: User;
-        /** Value of an extension field by name of the extension field. Null if the field does not exist. */
-        extensionField?: Maybe<Scalars["JSON"]["output"]>;
-        /** All extension fields, if a `namePrefix` is provided, only those matching it */
-        extensionFields: Array<JsonField>;
         /** Checks if the current user has a specific permission on this Node */
         hasPermission: Scalars["Boolean"]["output"];
         /** The unique id of this node */
@@ -15350,24 +13742,6 @@ export type RemovedOutgoingRelationEvent = AuditedNode &
  *     READ is granted if READ is granted on `issue`.
  *
  */
-export type RemovedOutgoingRelationEventExtensionFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-/**
- * Event representing that an outgoing IssueRelation was removed.
- *     READ is granted if READ is granted on `issue`.
- *
- */
-export type RemovedOutgoingRelationEventExtensionFieldsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
-};
-
-/**
- * Event representing that an outgoing IssueRelation was removed.
- *     READ is granted if READ is granted on `issue`.
- *
- */
 export type RemovedOutgoingRelationEventHasPermissionArgs = {
     permission?: InputMaybe<AllPermissionEntry>;
 };
@@ -15381,10 +13755,6 @@ export type RemovedRelationEvent = {
     createdAt: Scalars["DateTime"]["output"];
     /** The User who created this entity. */
     createdBy: User;
-    /** Value of an extension field by name of the extension field. Null if the field does not exist. */
-    extensionField?: Maybe<Scalars["JSON"]["output"]>;
-    /** All extension fields, if a `namePrefix` is provided, only those matching it */
-    extensionFields: Array<JsonField>;
     /** Checks if the current user has a specific permission on this Node */
     hasPermission: Scalars["Boolean"]["output"];
     /** The unique id of this node */
@@ -15405,22 +13775,6 @@ export type RemovedRelationEvent = {
  * Event representing that an outgoing IssueRelation was removed.
  *
  */
-export type RemovedRelationEventExtensionFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-/**
- * Event representing that an outgoing IssueRelation was removed.
- *
- */
-export type RemovedRelationEventExtensionFieldsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
-};
-
-/**
- * Event representing that an outgoing IssueRelation was removed.
- *
- */
 export type RemovedRelationEventHasPermissionArgs = {
     permission?: InputMaybe<AllPermissionEntry>;
 };
@@ -15431,7 +13785,7 @@ export type RemovedRelationEventHasPermissionArgs = {
  *
  */
 export type RemovedTemplatedFieldEvent = AuditedNode &
-    ExtensibleNode &
+    BaseNode &
     Node &
     TimelineItem & {
         __typename?: "RemovedTemplatedFieldEvent";
@@ -15439,10 +13793,6 @@ export type RemovedTemplatedFieldEvent = AuditedNode &
         createdAt: Scalars["DateTime"]["output"];
         /** The User who created this entity. */
         createdBy: User;
-        /** Value of an extension field by name of the extension field. Null if the field does not exist. */
-        extensionField?: Maybe<Scalars["JSON"]["output"]>;
-        /** All extension fields, if a `namePrefix` is provided, only those matching it */
-        extensionFields: Array<JsonField>;
         /** The name of the templated field. */
         fieldName: Scalars["String"]["output"];
         /** Checks if the current user has a specific permission on this Node */
@@ -15460,24 +13810,6 @@ export type RemovedTemplatedFieldEvent = AuditedNode &
         /** If existing, the parent TimelineItem */
         parentItem?: Maybe<ParentTimelineItem>;
     };
-
-/**
- * Event representing that a templated field was removed.
- *     READ is granted if READ is granted on `issue`.
- *
- */
-export type RemovedTemplatedFieldEventExtensionFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-/**
- * Event representing that a templated field was removed.
- *     READ is granted if READ is granted on `issue`.
- *
- */
-export type RemovedTemplatedFieldEventExtensionFieldsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
-};
 
 /**
  * Event representing that a templated field was removed.
@@ -15508,7 +13840,7 @@ export enum ShapeType {
  *
  */
 export type SpentTimeChangedEvent = AuditedNode &
-    ExtensibleNode &
+    BaseNode &
     Node &
     TimelineItem & {
         __typename?: "SpentTimeChangedEvent";
@@ -15516,10 +13848,6 @@ export type SpentTimeChangedEvent = AuditedNode &
         createdAt: Scalars["DateTime"]["output"];
         /** The User who created this entity. */
         createdBy: User;
-        /** Value of an extension field by name of the extension field. Null if the field does not exist. */
-        extensionField?: Maybe<Scalars["JSON"]["output"]>;
-        /** All extension fields, if a `namePrefix` is provided, only those matching it */
-        extensionFields: Array<JsonField>;
         /** Checks if the current user has a specific permission on this Node */
         hasPermission: Scalars["Boolean"]["output"];
         /** The unique id of this node */
@@ -15543,24 +13871,6 @@ export type SpentTimeChangedEvent = AuditedNode &
  *     READ is granted if READ is granted on `issue`.
  *
  */
-export type SpentTimeChangedEventExtensionFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-/**
- * Event representing that the spent time of an Issue changed.
- *     READ is granted if READ is granted on `issue`.
- *
- */
-export type SpentTimeChangedEventExtensionFieldsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
-};
-
-/**
- * Event representing that the spent time of an Issue changed.
- *     READ is granted if READ is granted on `issue`.
- *
- */
 export type SpentTimeChangedEventHasPermissionArgs = {
     permission?: InputMaybe<AllPermissionEntry>;
 };
@@ -15571,7 +13881,7 @@ export type SpentTimeChangedEventHasPermissionArgs = {
  *
  */
 export type StartDateChangedEvent = AuditedNode &
-    ExtensibleNode &
+    BaseNode &
     Node &
     TimelineItem & {
         __typename?: "StartDateChangedEvent";
@@ -15579,10 +13889,6 @@ export type StartDateChangedEvent = AuditedNode &
         createdAt: Scalars["DateTime"]["output"];
         /** The User who created this entity. */
         createdBy: User;
-        /** Value of an extension field by name of the extension field. Null if the field does not exist. */
-        extensionField?: Maybe<Scalars["JSON"]["output"]>;
-        /** All extension fields, if a `namePrefix` is provided, only those matching it */
-        extensionFields: Array<JsonField>;
         /** Checks if the current user has a specific permission on this Node */
         hasPermission: Scalars["Boolean"]["output"];
         /** The unique id of this node */
@@ -15606,24 +13912,6 @@ export type StartDateChangedEvent = AuditedNode &
  *     READ is granted if READ is granted on `issue`.
  *
  */
-export type StartDateChangedEventExtensionFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-/**
- * Event representing that the start date of an Issue changed.
- *     READ is granted if READ is granted on `issue`.
- *
- */
-export type StartDateChangedEventExtensionFieldsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
-};
-
-/**
- * Event representing that the start date of an Issue changed.
- *     READ is granted if READ is granted on `issue`.
- *
- */
 export type StartDateChangedEventHasPermissionArgs = {
     permission?: InputMaybe<AllPermissionEntry>;
 };
@@ -15634,7 +13922,7 @@ export type StartDateChangedEventHasPermissionArgs = {
  *
  */
 export type StateChangedEvent = AuditedNode &
-    ExtensibleNode &
+    BaseNode &
     Node &
     TimelineItem & {
         __typename?: "StateChangedEvent";
@@ -15642,10 +13930,6 @@ export type StateChangedEvent = AuditedNode &
         createdAt: Scalars["DateTime"]["output"];
         /** The User who created this entity. */
         createdBy: User;
-        /** Value of an extension field by name of the extension field. Null if the field does not exist. */
-        extensionField?: Maybe<Scalars["JSON"]["output"]>;
-        /** All extension fields, if a `namePrefix` is provided, only those matching it */
-        extensionFields: Array<JsonField>;
         /** Checks if the current user has a specific permission on this Node */
         hasPermission: Scalars["Boolean"]["output"];
         /** The unique id of this node */
@@ -15663,24 +13947,6 @@ export type StateChangedEvent = AuditedNode &
         /** If existing, the parent TimelineItem */
         parentItem?: Maybe<ParentTimelineItem>;
     };
-
-/**
- * Event representing that the state of an Issue changed.
- *     READ is granted if READ is granted on `issue`.
- *
- */
-export type StateChangedEventExtensionFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-/**
- * Event representing that the state of an Issue changed.
- *     READ is granted if READ is granted on `issue`.
- *
- */
-export type StateChangedEventExtensionFieldsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
-};
 
 /**
  * Event representing that the state of an Issue changed.
@@ -15716,14 +13982,22 @@ export type StringFilterInput = {
 };
 
 /** Style of the stroke */
-export type StrokeStyle = Node & {
-    __typename?: "StrokeStyle";
-    /** The color of the stroke */
-    color?: Maybe<Scalars["String"]["output"]>;
-    /** The dash pattern of the stroke */
-    dash?: Maybe<Array<Scalars["Float"]["output"]>>;
-    /** The unique id of this node */
-    id: Scalars["ID"]["output"];
+export type StrokeStyle = BaseNode &
+    Node & {
+        __typename?: "StrokeStyle";
+        /** The color of the stroke */
+        color?: Maybe<Scalars["String"]["output"]>;
+        /** The dash pattern of the stroke */
+        dash?: Maybe<Array<Scalars["Float"]["output"]>>;
+        /** Checks if the current user has a specific permission on this Node */
+        hasPermission: Scalars["Boolean"]["output"];
+        /** The unique id of this node */
+        id: Scalars["ID"]["output"];
+    };
+
+/** Style of the stroke */
+export type StrokeStyleHasPermissionArgs = {
+    permission?: InputMaybe<AllPermissionEntry>;
 };
 
 /** Input to create a StrokeStyle */
@@ -15743,10 +14017,6 @@ export type StrokeStyleInput = {
 export type SubTemplate = {
     /** The description of this entity. */
     description: Scalars["String"]["output"];
-    /** Value of an extension field by name of the extension field. Null if the field does not exist. */
-    extensionField?: Maybe<Scalars["JSON"]["output"]>;
-    /** All extension fields, if a `namePrefix` is provided, only those matching it */
-    extensionFields: Array<JsonField>;
     /** Checks if the current user has a specific permission on this Node */
     hasPermission: Scalars["Boolean"]["output"];
     /** The unique id of this node */
@@ -15755,26 +14025,6 @@ export type SubTemplate = {
     name: Scalars["String"]["output"];
     /** All template field specifications, if a `namePrefix` is provided, only those matching it */
     templateFieldSpecifications: Array<JsonField>;
-};
-
-/**
- * BaseTemplate which is part of a Template.
- *     Defines templated fields with specific types (defined using JSON schema).
- *     Does not provide any composition features, as composition is handled by the Template it is part of.
- *
- */
-export type SubTemplateExtensionFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-/**
- * BaseTemplate which is part of a Template.
- *     Defines templated fields with specific types (defined using JSON schema).
- *     Does not provide any composition features, as composition is handled by the Template it is part of.
- *
- */
-export type SubTemplateExtensionFieldsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 /**
@@ -15801,8 +14051,6 @@ export type SubTemplateTemplateFieldSpecificationsArgs = {
 export type SubTemplateInput = {
     /** The description of the NamedNode */
     description: Scalars["String"]["input"];
-    /** The initial value of the extension fields */
-    extensionFields?: InputMaybe<Array<JsonFieldInput>>;
     /** The name of the NamedNode, must not be blank */
     name: Scalars["String"]["input"];
     /**
@@ -15813,6 +14061,117 @@ export type SubTemplateInput = {
     templateFieldSpecifications?: InputMaybe<Array<JsonFieldInput>>;
 };
 
+/** A target where users can configure how the sync should behave. */
+export type SyncPermissionTarget = {
+    /** The description of this entity. */
+    description: Scalars["String"]["output"];
+    /** Checks if the current user has a specific permission on this Node */
+    hasPermission: Scalars["Boolean"]["output"];
+    /** The unique id of this node */
+    id: Scalars["ID"]["output"];
+    /** The name of this entity. */
+    name: Scalars["String"]["output"];
+    /** The users which allow to sync the data of other users to this target. */
+    syncOthersAllowedBy: GropiusUserConnection;
+    /** The users which allow to sync their data to this target. */
+    syncSelfAllowedBy: GropiusUserConnection;
+};
+
+/** A target where users can configure how the sync should behave. */
+export type SyncPermissionTargetHasPermissionArgs = {
+    permission?: InputMaybe<AllPermissionEntry>;
+};
+
+/** A target where users can configure how the sync should behave. */
+export type SyncPermissionTargetSyncOthersAllowedByArgs = {
+    after?: InputMaybe<Scalars["String"]["input"]>;
+    before?: InputMaybe<Scalars["String"]["input"]>;
+    filter?: InputMaybe<GropiusUserFilterInput>;
+    first?: InputMaybe<Scalars["Int"]["input"]>;
+    last?: InputMaybe<Scalars["Int"]["input"]>;
+    orderBy?: InputMaybe<GropiusUserOrder>;
+    skip?: InputMaybe<Scalars["Int"]["input"]>;
+};
+
+/** A target where users can configure how the sync should behave. */
+export type SyncPermissionTargetSyncSelfAllowedByArgs = {
+    after?: InputMaybe<Scalars["String"]["input"]>;
+    before?: InputMaybe<Scalars["String"]["input"]>;
+    filter?: InputMaybe<GropiusUserFilterInput>;
+    first?: InputMaybe<Scalars["Int"]["input"]>;
+    last?: InputMaybe<Scalars["Int"]["input"]>;
+    orderBy?: InputMaybe<GropiusUserOrder>;
+    skip?: InputMaybe<Scalars["Int"]["input"]>;
+};
+
+/** The connection type for SyncPermissionTarget. */
+export type SyncPermissionTargetConnection = {
+    __typename?: "SyncPermissionTargetConnection";
+    /** A list of all edges of the current page. */
+    edges: Array<SyncPermissionTargetEdge>;
+    /** A list of all nodes of the current page. */
+    nodes: Array<SyncPermissionTarget>;
+    /** Information to aid in pagination. */
+    pageInfo: PageInfo;
+    /** Identifies the total count of items in the connection. */
+    totalCount: Scalars["Int"]["output"];
+};
+
+/** An edge in a connection. */
+export type SyncPermissionTargetEdge = {
+    __typename?: "SyncPermissionTargetEdge";
+    /** A cursor used in pagination. */
+    cursor: Scalars["String"]["output"];
+    /** The item at the end of the edge. */
+    node: SyncPermissionTarget;
+};
+
+/** Filter used to filter SyncPermissionTarget */
+export type SyncPermissionTargetFilterInput = {
+    /** Connects all subformulas via and */
+    and?: InputMaybe<Array<SyncPermissionTargetFilterInput>>;
+    /** Filter by description */
+    description?: InputMaybe<StringFilterInput>;
+    /** Filter by id */
+    id?: InputMaybe<IdFilterInput>;
+    /** Filter by name */
+    name?: InputMaybe<StringFilterInput>;
+    /** Negates the subformula */
+    not?: InputMaybe<SyncPermissionTargetFilterInput>;
+    /** Connects all subformulas via or */
+    or?: InputMaybe<Array<SyncPermissionTargetFilterInput>>;
+    /** Filter by syncOthersAllowedBy */
+    syncOthersAllowedBy?: InputMaybe<GropiusUserListFilterInput>;
+    /** Filter by syncSelfAllowedBy */
+    syncSelfAllowedBy?: InputMaybe<GropiusUserListFilterInput>;
+};
+
+/** Used to filter by a connection-based property. Fields are joined by AND */
+export type SyncPermissionTargetListFilterInput = {
+    /** Filters for nodes where all of the related nodes match this filter */
+    all?: InputMaybe<SyncPermissionTargetFilterInput>;
+    /** Filters for nodes where any of the related nodes match this filter */
+    any?: InputMaybe<SyncPermissionTargetFilterInput>;
+    /** Filters for nodes where none of the related nodes match this filter */
+    none?: InputMaybe<SyncPermissionTargetFilterInput>;
+};
+
+/** Defines the order of a SyncPermissionTarget list */
+export type SyncPermissionTargetOrder = {
+    /** The direction to order by, defaults to ASC */
+    direction?: InputMaybe<OrderDirection>;
+    /** The field to order by, defaults to ID */
+    field?: InputMaybe<SyncPermissionTargetOrderField>;
+};
+
+/** Fields a list of SyncPermissionTarget can be sorted by */
+export enum SyncPermissionTargetOrderField {
+    /** Order by id */
+    Id = "ID",
+    /** Order by name */
+    Name = "NAME"
+}
+
 /**
  * BaseTemplate with composition features.
  *     Can have SubTemplates.
@@ -15822,10 +14181,6 @@ export type SubTemplateInput = {
 export type Template = {
     /** The description of this entity. */
     description: Scalars["String"]["output"];
-    /** Value of an extension field by name of the extension field. Null if the field does not exist. */
-    extensionField?: Maybe<Scalars["JSON"]["output"]>;
-    /** All extension fields, if a `namePrefix` is provided, only those matching it */
-    extensionFields: Array<JsonField>;
     /** Checks if the current user has a specific permission on this Node */
     hasPermission: Scalars["Boolean"]["output"];
     /** The unique id of this node */
@@ -15836,26 +14191,6 @@ export type Template = {
     name: Scalars["String"]["output"];
     /** All template field specifications, if a `namePrefix` is provided, only those matching it */
     templateFieldSpecifications: Array<JsonField>;
-};
-
-/**
- * BaseTemplate with composition features.
- *     Can have SubTemplates.
- *     Defines templated fields with specific types (defined using JSON schema).
- *
- */
-export type TemplateExtensionFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-/**
- * BaseTemplate with composition features.
- *     Can have SubTemplates.
- *     Defines templated fields with specific types (defined using JSON schema).
- *
- */
-export type TemplateExtensionFieldsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 /**
@@ -15884,7 +14219,7 @@ export type TemplateTemplateFieldSpecificationsArgs = {
  *
  */
 export type TemplateChangedEvent = AuditedNode &
-    ExtensibleNode &
+    BaseNode &
     Node &
     ParentTimelineItem &
     TimelineItem & {
@@ -15895,10 +14230,6 @@ export type TemplateChangedEvent = AuditedNode &
         createdAt: Scalars["DateTime"]["output"];
         /** The User who created this entity. */
         createdBy: User;
-        /** Value of an extension field by name of the extension field. Null if the field does not exist. */
-        extensionField?: Maybe<Scalars["JSON"]["output"]>;
-        /** All extension fields, if a `namePrefix` is provided, only those matching it */
-        extensionFields: Array<JsonField>;
         /** Checks if the current user has a specific permission on this Node */
         hasPermission: Scalars["Boolean"]["output"];
         /** The unique id of this node */
@@ -15937,24 +14268,6 @@ export type TemplateChangedEventChildItemsArgs = {
  *     READ is granted if READ is granted on `issue`.
  *
  */
-export type TemplateChangedEventExtensionFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-/**
- * Event representing the template of an Issue changed.
- *     READ is granted if READ is granted on `issue`.
- *
- */
-export type TemplateChangedEventExtensionFieldsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
-};
-
-/**
- * Event representing the template of an Issue changed.
- *     READ is granted if READ is granted on `issue`.
- *
- */
 export type TemplateChangedEventHasPermissionArgs = {
     permission?: InputMaybe<AllPermissionEntry>;
 };
@@ -15965,7 +14278,7 @@ export type TemplateChangedEventHasPermissionArgs = {
  *
  */
 export type TemplatedFieldChangedEvent = AuditedNode &
-    ExtensibleNode &
+    BaseNode &
     Node &
     TimelineItem & {
         __typename?: "TemplatedFieldChangedEvent";
@@ -15973,10 +14286,6 @@ export type TemplatedFieldChangedEvent = AuditedNode &
         createdAt: Scalars["DateTime"]["output"];
         /** The User who created this entity. */
         createdBy: User;
-        /** Value of an extension field by name of the extension field. Null if the field does not exist. */
-        extensionField?: Maybe<Scalars["JSON"]["output"]>;
-        /** All extension fields, if a `namePrefix` is provided, only those matching it */
-        extensionFields: Array<JsonField>;
         /** The name of the templated field. */
         fieldName: Scalars["String"]["output"];
         /** Checks if the current user has a specific permission on this Node */
@@ -15996,24 +14305,6 @@ export type TemplatedFieldChangedEvent = AuditedNode &
         /** If existing, the parent TimelineItem */
         parentItem?: Maybe<ParentTimelineItem>;
     };
-
-/**
- * Event representing that the value of a templated field changed.
- *     READ is granted if READ is granted on `issue`.
- *
- */
-export type TemplatedFieldChangedEventExtensionFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-/**
- * Event representing that the value of a templated field changed.
- *     READ is granted if READ is granted on `issue`.
- *
- */
-export type TemplatedFieldChangedEventExtensionFieldsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
-};
 
 /**
  * Event representing that the value of a templated field changed.
@@ -16054,10 +14345,6 @@ export type TimelineItem = {
     createdAt: Scalars["DateTime"]["output"];
     /** The User who created this entity. */
     createdBy: User;
-    /** Value of an extension field by name of the extension field. Null if the field does not exist. */
-    extensionField?: Maybe<Scalars["JSON"]["output"]>;
-    /** All extension fields, if a `namePrefix` is provided, only those matching it */
-    extensionFields: Array<JsonField>;
     /** Checks if the current user has a specific permission on this Node */
     hasPermission: Scalars["Boolean"]["output"];
     /** The unique id of this node */
@@ -16070,16 +14357,6 @@ export type TimelineItem = {
     lastModifiedBy: User;
     /** If existing, the parent TimelineItem */
     parentItem?: Maybe<ParentTimelineItem>;
-};
-
-/** Supertype of all timeline items. Always part of an Issue. */
-export type TimelineItemExtensionFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-/** Supertype of all timeline items. Always part of an Issue. */
-export type TimelineItemExtensionFieldsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 /** Supertype of all timeline items. Always part of an Issue. */
@@ -16251,7 +14528,7 @@ export enum TimelineItemType {
  *
  */
 export type TitleChangedEvent = AuditedNode &
-    ExtensibleNode &
+    BaseNode &
     Node &
     TimelineItem & {
         __typename?: "TitleChangedEvent";
@@ -16259,10 +14536,6 @@ export type TitleChangedEvent = AuditedNode &
         createdAt: Scalars["DateTime"]["output"];
         /** The User who created this entity. */
         createdBy: User;
-        /** Value of an extension field by name of the extension field. Null if the field does not exist. */
-        extensionField?: Maybe<Scalars["JSON"]["output"]>;
-        /** All extension fields, if a `namePrefix` is provided, only those matching it */
-        extensionFields: Array<JsonField>;
         /** Checks if the current user has a specific permission on this Node */
         hasPermission: Scalars["Boolean"]["output"];
         /** The unique id of this node */
@@ -16280,24 +14553,6 @@ export type TitleChangedEvent = AuditedNode &
         /** If existing, the parent TimelineItem */
         parentItem?: Maybe<ParentTimelineItem>;
     };
-
-/**
- * Event representing that the title of an Issue changed.
- *     READ is granted if READ is granted on `issue`.
- *
- */
-export type TitleChangedEventExtensionFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-/**
- * Event representing that the title of an Issue changed.
- *     READ is granted if READ is granted on `issue`.
- *
- */
-export type TitleChangedEventExtensionFieldsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
-};
 
 /**
  * Event representing that the title of an Issue changed.
@@ -16322,10 +14577,6 @@ export type Trackable = {
     artefacts: ArtefactConnection;
     /** The description of this entity. */
     description: Scalars["String"]["output"];
-    /** Value of an extension field by name of the extension field. Null if the field does not exist. */
-    extensionField?: Maybe<Scalars["JSON"]["output"]>;
-    /** All extension fields, if a `namePrefix` is provided, only those matching it */
-    extensionFields: Array<JsonField>;
     /** Checks if the current user has a specific permission on this Node */
     hasPermission: Scalars["Boolean"]["output"];
     /** The unique id of this node */
@@ -16380,28 +14631,6 @@ export type TrackableArtefactsArgs = {
     last?: InputMaybe<Scalars["Int"]["input"]>;
     orderBy?: InputMaybe<ArtefactOrder>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
-};
-
-/**
- * An entity which can have Issues, Labels and Artefacts.
- *     Has pinned issues.
- *     Can be synced to an IMS by creating an IMSProject.
- *     Can be affected by Issues.
- *
- */
-export type TrackableExtensionFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-/**
- * An entity which can have Issues, Labels and Artefacts.
- *     Has pinned issues.
- *     Can be synced to an IMS by creating an IMSProject.
- *     Can be affected by Issues.
- *
- */
-export type TrackableExtensionFieldsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 /**
@@ -16571,7 +14800,7 @@ export type TrackablePermission = ComponentPermission | ProjectPermission;
  *
  */
 export type TypeChangedEvent = AuditedNode &
-    ExtensibleNode &
+    BaseNode &
     Node &
     TimelineItem & {
         __typename?: "TypeChangedEvent";
@@ -16579,10 +14808,6 @@ export type TypeChangedEvent = AuditedNode &
         createdAt: Scalars["DateTime"]["output"];
         /** The User who created this entity. */
         createdBy: User;
-        /** Value of an extension field by name of the extension field. Null if the field does not exist. */
-        extensionField?: Maybe<Scalars["JSON"]["output"]>;
-        /** All extension fields, if a `namePrefix` is provided, only those matching it */
-        extensionFields: Array<JsonField>;
         /** Checks if the current user has a specific permission on this Node */
         hasPermission: Scalars["Boolean"]["output"];
         /** The unique id of this node */
@@ -16606,24 +14831,6 @@ export type TypeChangedEvent = AuditedNode &
  *     READ is granted if READ is granted on `issue`.
  *
  */
-export type TypeChangedEventExtensionFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-/**
- * Event representing that the type of an Issue changed.
- *     READ is granted if READ is granted on `issue`.
- *
- */
-export type TypeChangedEventExtensionFieldsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
-};
-
-/**
- * Event representing that the type of an Issue changed.
- *     READ is granted if READ is granted on `issue`.
- *
- */
 export type TypeChangedEventHasPermissionArgs = {
     permission?: InputMaybe<AllPermissionEntry>;
 };
@@ -16638,8 +14845,6 @@ export type TypeMappingInput = {
 
 /** Input for the updateArtefact mutation */
 export type UpdateArtefactInput = {
-    /** Extension fields to update. To remove, provide no value */
-    extensionFields?: InputMaybe<Array<JsonFieldInput>>;
     /** The new file of the Artefact */
     file?: InputMaybe<Scalars["URL"]["input"]>;
     /** The new value of the from field of the Artefact */
@@ -16671,8 +14876,6 @@ export type UpdateArtefactPayload = {
 export type UpdateBodyInput = {
     /** The body of the Comment */
     body?: InputMaybe<Scalars["String"]["input"]>;
-    /** Extension fields to update. To remove, provide no value */
-    extensionFields?: InputMaybe<Array<JsonFieldInput>>;
     /** The id of the node to update */
     id: Scalars["ID"]["input"];
 };
@@ -16696,8 +14899,6 @@ export type UpdateComponentInput = {
     componentVersionTemplatedFields?: InputMaybe<Array<JsonFieldInput>>;
     /** The description of the NamedNode */
     description?: InputMaybe<Scalars["String"]["input"]>;
-    /** Extension fields to update. To remove, provide no value */
-    extensionFields?: InputMaybe<Array<JsonFieldInput>>;
     /** The id of the node to update */
     id: Scalars["ID"]["input"];
     /** The new name of the NamedNode, must not be empty */
@@ -16736,7 +14937,7 @@ export type UpdateComponentPermissionInput = {
     addedUsers?: InputMaybe<Array<Scalars["ID"]["input"]>>;
     /** The new value for allUsers */
     allUsers?: InputMaybe<Scalars["Boolean"]["input"]>;
-    /** The description of the BasePermission */
+    /** The description of the NamedNode */
     description?: InputMaybe<Scalars["String"]["input"]>;
     /** The id of the node to update */
     id: Scalars["ID"]["input"];
@@ -16758,8 +14959,6 @@ export type UpdateComponentPermissionPayload = {
 export type UpdateComponentVersionInput = {
     /** The description of the NamedNode */
     description?: InputMaybe<Scalars["String"]["input"]>;
-    /** Extension fields to update. To remove, provide no value */
-    extensionFields?: InputMaybe<Array<JsonFieldInput>>;
     /** The id of the node to update */
     id: Scalars["ID"]["input"];
     /** The new name of the NamedNode, must not be empty */
@@ -16776,20 +14975,6 @@ export type UpdateComponentVersionPayload = {
     componentVersion: ComponentVersion;
 };
 
-/** Input for the updateExtensionFields mutation */
-export type UpdateExtensionFieldsInput = {
-    /** Extension fields to update. To remove, provide no value */
-    extensionFields?: InputMaybe<Array<JsonFieldInput>>;
-    /** The id of the node to update */
-    id: Scalars["ID"]["input"];
-};
-
-export type UpdateExtensionFieldsPayload = {
-    __typename?: "UpdateExtensionFieldsPayload";
-    /** The updated ExtensibleNode */
-    extensibleNode: ExtensibleNode;
-};
-
 /** Input for the updateGlobalPermission mutation */
 export type UpdateGlobalPermissionInput = {
     /** Permission entries to add, must be disjoint with removedEntries */
@@ -16798,7 +14983,7 @@ export type UpdateGlobalPermissionInput = {
     addedUsers?: InputMaybe<Array<Scalars["ID"]["input"]>>;
     /** The new value for allUsers */
     allUsers?: InputMaybe<Scalars["Boolean"]["input"]>;
-    /** The description of the BasePermission */
+    /** The description of the NamedNode */
     description?: InputMaybe<Scalars["String"]["input"]>;
     /** The id of the node to update */
     id: Scalars["ID"]["input"];
@@ -16824,8 +15009,6 @@ export type UpdateGropiusUserInput = {
     displayName?: InputMaybe<Scalars["String"]["input"]>;
     /** The new email of the User to update */
     email?: InputMaybe<Scalars["String"]["input"]>;
-    /** Extension fields to update. To remove, provide no value */
-    extensionFields?: InputMaybe<Array<JsonFieldInput>>;
     /** The id of the node to update */
     id: Scalars["ID"]["input"];
     /** The new value for isAdmin of the GropiusUser to update */
@@ -16844,8 +15027,6 @@ export type UpdateImsInput = {
     addedPermissions?: InputMaybe<Array<Scalars["ID"]["input"]>>;
     /** The description of the NamedNode */
     description?: InputMaybe<Scalars["String"]["input"]>;
-    /** Extension fields to update. To remove, provide no value */
-    extensionFields?: InputMaybe<Array<JsonFieldInput>>;
     /** The id of the node to update */
     id: Scalars["ID"]["input"];
     /** The new name of the NamedNode, must not be empty */
@@ -16874,7 +15055,7 @@ export type UpdateImsPermissionInput = {
     addedUsers?: InputMaybe<Array<Scalars["ID"]["input"]>>;
     /** The new value for allUsers */
     allUsers?: InputMaybe<Scalars["Boolean"]["input"]>;
-    /** The description of the BasePermission */
+    /** The description of the NamedNode */
     description?: InputMaybe<Scalars["String"]["input"]>;
     /** The id of the node to update */
     id: Scalars["ID"]["input"];
@@ -16894,10 +15075,12 @@ export type UpdateImsPermissionPayload = {
 
 /** Input for the updateIMSProject mutation */
 export type UpdateImsProjectInput = {
-    /** Extension fields to update. To remove, provide no value */
-    extensionFields?: InputMaybe<Array<JsonFieldInput>>;
+    /** The description of the NamedNode */
+    description?: InputMaybe<Scalars["String"]["input"]>;
     /** The id of the node to update */
     id: Scalars["ID"]["input"];
+    /** The new name of the NamedNode, must not be empty */
+    name?: InputMaybe<Scalars["String"]["input"]>;
     /** Values for templatedFields to update */
     templatedFields?: InputMaybe<Array<JsonFieldInput>>;
 };
@@ -16910,8 +15093,6 @@ export type UpdateImsProjectPayload = {
 
 /** Input for the updateInterfaceDefinition mutation */
 export type UpdateInterfaceDefinitionInput = {
-    /** Extension fields to update. To remove, provide no value */
-    extensionFields?: InputMaybe<Array<JsonFieldInput>>;
     /** The id of the node to update */
     id: Scalars["ID"]["input"];
     /** Values for templatedFields to update */
@@ -16928,8 +15109,6 @@ export type UpdateInterfaceDefinitionPayload = {
 export type UpdateInterfaceInput = {
     /** The description of the NamedNode */
     description?: InputMaybe<Scalars["String"]["input"]>;
-    /** Extension fields to update. To remove, provide no value */
-    extensionFields?: InputMaybe<Array<JsonFieldInput>>;
     /** The id of the node to update */
     id: Scalars["ID"]["input"];
     /** The new name of the NamedNode, must not be empty */
@@ -16942,8 +15121,6 @@ export type UpdateInterfaceInput = {
 export type UpdateInterfacePartInput = {
     /** The description of the NamedNode */
     description?: InputMaybe<Scalars["String"]["input"]>;
-    /** Extension fields to update. To remove, provide no value */
-    extensionFields?: InputMaybe<Array<JsonFieldInput>>;
     /** The id of the node to update */
     id: Scalars["ID"]["input"];
     /** The new name of the NamedNode, must not be empty */
@@ -16968,8 +15145,6 @@ export type UpdateInterfacePayload = {
 export type UpdateInterfaceSpecificationInput = {
     /** The description of the NamedNode */
     description?: InputMaybe<Scalars["String"]["input"]>;
-    /** Extension fields to update. To remove, provide no value */
-    extensionFields?: InputMaybe<Array<JsonFieldInput>>;
     /** The id of the node to update */
     id: Scalars["ID"]["input"];
     /**
@@ -17023,8 +15198,6 @@ export type UpdateInterfaceSpecificationPayload = {
 export type UpdateInterfaceSpecificationVersionInput = {
     /** The description of the NamedNode */
     description?: InputMaybe<Scalars["String"]["input"]>;
-    /** Extension fields to update. To remove, provide no value */
-    extensionFields?: InputMaybe<Array<JsonFieldInput>>;
     /** The id of the node to update */
     id: Scalars["ID"]["input"];
     /** The new name of the NamedNode, must not be empty */
@@ -17049,8 +15222,6 @@ export type UpdateIntraComponentDependencySpecificationInput = {
     addedOutgoingParticipants?: InputMaybe<Array<IntraComponentDependencyParticipantInput>>;
     /** The description of the NamedNode */
     description?: InputMaybe<Scalars["String"]["input"]>;
-    /** Extension fields to update. To remove, provide no value */
-    extensionFields?: InputMaybe<Array<JsonFieldInput>>;
     /** The id of the node to update */
     id: Scalars["ID"]["input"];
     /** The new name of the NamedNode, must not be empty */
@@ -17073,8 +15244,6 @@ export type UpdateIssueCommentInput = {
     addedReferencedArtefacts?: InputMaybe<Array<Scalars["ID"]["input"]>>;
     /** The body of the Comment */
     body?: InputMaybe<Scalars["String"]["input"]>;
-    /** Extension fields to update. To remove, provide no value */
-    extensionFields?: InputMaybe<Array<JsonFieldInput>>;
     /** The id of the node to update */
     id: Scalars["ID"]["input"];
     /** Ids of Artefacts which should be removed from `referencedArtefacts` */
@@ -17093,8 +15262,6 @@ export type UpdateLabelInput = {
     color?: InputMaybe<Scalars["String"]["input"]>;
     /** The description of the NamedNode */
     description?: InputMaybe<Scalars["String"]["input"]>;
-    /** Extension fields to update. To remove, provide no value */
-    extensionFields?: InputMaybe<Array<JsonFieldInput>>;
     /** The id of the node to update */
     id: Scalars["ID"]["input"];
     /** The new name of the NamedNode, must not be empty */
@@ -17113,8 +15280,6 @@ export type UpdateProjectInput = {
     addedPermissions?: InputMaybe<Array<Scalars["ID"]["input"]>>;
     /** The description of the NamedNode */
     description?: InputMaybe<Scalars["String"]["input"]>;
-    /** Extension fields to update. To remove, provide no value */
-    extensionFields?: InputMaybe<Array<JsonFieldInput>>;
     /** The id of the node to update */
     id: Scalars["ID"]["input"];
     /** The new name of the NamedNode, must not be empty */
@@ -17143,7 +15308,7 @@ export type UpdateProjectPermissionInput = {
     addedUsers?: InputMaybe<Array<Scalars["ID"]["input"]>>;
     /** The new value for allUsers */
     allUsers?: InputMaybe<Scalars["Boolean"]["input"]>;
-    /** The description of the BasePermission */
+    /** The description of the NamedNode */
     description?: InputMaybe<Scalars["String"]["input"]>;
     /** The id of the node to update */
     id: Scalars["ID"]["input"];
@@ -17167,8 +15332,6 @@ export type UpdateRelationInput = {
     addedEndParts?: InputMaybe<Array<Scalars["ID"]["input"]>>;
     /** Ids of InterfaceParts of the `start` Interface to add to `startParts` */
     addedStartParts?: InputMaybe<Array<Scalars["ID"]["input"]>>;
-    /** Extension fields to update. To remove, provide no value */
-    extensionFields?: InputMaybe<Array<JsonFieldInput>>;
     /** The id of the node to update */
     id: Scalars["ID"]["input"];
     /** Ids of InterfaceParts of the `end` Interface to remove from `endParts` */
@@ -17191,6 +15354,22 @@ export type UpdateRelationPayload = {
     __typename?: "UpdateRelationPayload";
     /** The updated Relation */
     relation: Relation;
+};
+
+/** Input for the updateSyncPermissions mutation */
+export type UpdateSyncPermissionsInput = {
+    /** Whether the sync service is allowed to sync content of other users */
+    canSyncOthers: Scalars["Boolean"]["input"];
+    /** Whether the sync service is allowed to sync content of the user */
+    canSyncSelf: Scalars["Boolean"]["input"];
+    /** The SyncPermissionTarget to update the sync permissions for the current user */
+    id: Scalars["ID"]["input"];
+};
+
+export type UpdateSyncPermissionsPayload = {
+    __typename?: "UpdateSyncPermissionsPayload";
+    /** The updated SyncPermissionTarget */
+    syncPermissionTarget: SyncPermissionTarget;
 };
 
 /** Input for the updateTemplateDeprecationStatus mutation */
@@ -17225,10 +15404,6 @@ export type User = {
     displayName: Scalars["String"]["output"];
     /** The email address of the user. */
     email?: Maybe<Scalars["String"]["output"]>;
-    /** Value of an extension field by name of the extension field. Null if the field does not exist. */
-    extensionField?: Maybe<Scalars["JSON"]["output"]>;
-    /** All extension fields, if a `namePrefix` is provided, only those matching it */
-    extensionFields: Array<JsonField>;
     /** Checks if the current user has a specific permission on this Node */
     hasPermission: Scalars["Boolean"]["output"];
     /** The unique id of this node */
@@ -17275,28 +15450,6 @@ export type UserCreatedNodesArgs = {
     last?: InputMaybe<Scalars["Int"]["input"]>;
     orderBy?: InputMaybe<AuditedNodeOrder>;
     skip?: InputMaybe<Scalars["Int"]["input"]>;
-};
-
-/**
- * A user known to the Gropius System.
- *     This might be a user that registered directly, or a user the systems know via a sync adapter.
- *     A user can create AuditedNodes, participate in Issues and be assigned to Issues.
- *     READ is always granted.
- *
- */
-export type UserExtensionFieldArgs = {
-    name: Scalars["String"]["input"];
-};
-
-/**
- * A user known to the Gropius System.
- *     This might be a user that registered directly, or a user the systems know via a sync adapter.
- *     A user can create AuditedNodes, participate in Issues and be assigned to Issues.
- *     READ is always granted.
- *
- */
-export type UserExtensionFieldsArgs = {
-    namePrefix?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 /**
