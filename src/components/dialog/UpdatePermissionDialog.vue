@@ -44,6 +44,7 @@ import { useForm } from "vee-validate";
 import * as yup from "yup";
 import { UpdatePermissionFunction } from "../PermissionList.vue";
 import PermissionEntryCheckboxGrid from "../input/PermissionEntryCheckboxGrid.vue";
+import ConfirmationDialog from "./ConfirmationDialog.vue";
 
 interface Permission {
     name: string;

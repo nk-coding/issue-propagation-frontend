@@ -15,7 +15,7 @@
                 <v-hover v-slot="{ isHovering, props }">
                     <div v-bind="props">
                         <div class="d-flex align-center">
-                            <div>
+                            <div class="min-width-0">
                                 <span class="text-subtitle-2 mb-2 edit-type" @click="$emit('toggleTypeEdit', item.id)">
                                     {{ typeName(item) }}
                                     <v-fade-transition>
@@ -114,5 +114,9 @@ function typeName(item: V | Group): string {
     &:hover {
         color: rgb(var(--v-theme-primary)) !important;
     }
+}
+
+.min-width-0 {
+    min-width: 0;
 }
 </style>
