@@ -27,7 +27,9 @@
                             @confirm="cancelUpdatePermission"
                         />
                     </DefaultButton>
-                    <DefaultButton variant="text" color="primary" type="submit">Update permission</DefaultButton>
+                    <DefaultButton variant="text" color="primary" type="submit" :disabled="submitDisabled"
+                        >Update permission</DefaultButton
+                    >
                 </v-card-actions>
             </v-form>
         </v-card>
@@ -35,7 +37,7 @@
 </template>
 <script lang="ts" setup generic="T extends string">
 import { PropType, Ref, ref, watch } from "vue";
-import { withErrorMessage } from "@/util/withErrorMessage";
+import { useBlockingWithErrorMessage, withErrorMessage } from "@/util/withErrorMessage";
 import { computed } from "vue";
 import { IdObject } from "@/util/types";
 import { fieldConfig } from "@/util/vuetifyFormConfig";
@@ -72,6 +74,8 @@ const model = defineModel({
     required: false
 });
 
+const [blockWithErrorMessage, submitDisabled] = useBlockingWithErrorMessage();
+
 const updatePermissionDialog = computed({
     get: () => model.value != null,
     set: (value) => {
@@ -107,7 +111,7 @@ const [description, descriptionProps] = defineField("description", fieldConfig);
 const entries: Ref<Partial<Record<T, boolean>>> = ref<any>(transformEntries(model.value));
 
 const updatePermission = handleSubmit(async (state) => {
-    await withErrorMessage(async () => {
+    await blockWithErrorMessage(async () => {
         const addedEntries: T[] = [];
         const removedEntries: T[] = [];
         for (const entry of props.permissionEntries) {

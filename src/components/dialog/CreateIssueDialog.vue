@@ -6,6 +6,7 @@
             :form-meta="meta"
             :form-validate="validate"
             color="surface-elevated-3"
+            :submit-disabled="submitDisabled"
             @cancel="cancelCreateIssue"
             @confirm="createIssue"
         >
@@ -78,7 +79,7 @@ import IssueStateAutocomplete from "../input/IssueStateAutocomplete.vue";
 import * as yup from "yup";
 import { useForm } from "vee-validate";
 import { fieldConfig } from "@/util/vuetifyFormConfig";
-import { withErrorMessage } from "@/util/withErrorMessage";
+import { useBlockingWithErrorMessage, withErrorMessage } from "@/util/withErrorMessage";
 import { NodeReturnType, useClient } from "@/graphql/client";
 import { toTypedSchema } from "@vee-validate/yup";
 import IssueIcon from "../IssueIcon.vue";
@@ -94,6 +95,7 @@ const createIssueDialog = ref(false);
 const client = useClient();
 const typePath = ref<string | undefined>(undefined);
 const isOpen = ref<boolean | undefined>(undefined);
+const [blockWithErrorMessage, submitDisabled] = useBlockingWithErrorMessage();
 
 const emit = defineEmits<{
     (event: "created-issue", issue: IdObject): void;
@@ -183,7 +185,7 @@ watch(
 );
 
 const createIssue = handleSubmit(async (state) => {
-    const issue = await withErrorMessage(async () => {
+    const issue = await blockWithErrorMessage(async () => {
         const res = await client.createIssue({
             input: {
                 ...state,

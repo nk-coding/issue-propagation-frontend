@@ -65,7 +65,7 @@
                         @confirm="createPermissionDialog = false"
                     />
                 </DefaultButton>
-                <DefaultButton variant="text" color="primary" @click="next">
+                <DefaultButton variant="text" color="primary" :disabled="submitDisabled && step == 2" @click="next">
                     {{ step == 1 ? "Next" : "Create permission" }}
                 </DefaultButton>
             </v-card-actions>
@@ -86,7 +86,7 @@ import { useForm } from "vee-validate";
 import { fieldConfig } from "@/util/vuetifyFormConfig";
 import { enumToRegularCase } from "@/util/casingTransformers";
 import { watch } from "vue";
-import { withErrorMessage } from "@/util/withErrorMessage";
+import { useBlockingWithErrorMessage, withErrorMessage } from "@/util/withErrorMessage";
 import { objectEntries } from "@vueuse/core";
 import { DefaultUserInfoFragment } from "@/graphql/generated";
 import GropiusUserAutocomplete from "../input/GropiusUserAutocomplete.vue";
@@ -110,6 +110,7 @@ const emit = defineEmits<{
 
 const createPermissionDialog = ref(false);
 const step = ref(1);
+const [blockWithErrorMessage, submitDisabled] = useBlockingWithErrorMessage();
 
 const isDirty = computed(() => {
     return step.value > 1 || meta.value.dirty;
@@ -155,7 +156,7 @@ function next() {
 }
 
 const createPermission = handleSubmit(async (state) => {
-    const permission = await withErrorMessage(async () => {
+    const permission = await blockWithErrorMessage(async () => {
         const entriesToAdd: T[] = [];
         for (const entry in entries.value) {
             if (entries.value[entry]) {

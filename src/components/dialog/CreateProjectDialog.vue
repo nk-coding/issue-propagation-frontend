@@ -25,7 +25,9 @@
                             @confirm="cancelCreateProject"
                         />
                     </DefaultButton>
-                    <DefaultButton variant="text" color="primary" type="submit">Create project</DefaultButton>
+                    <DefaultButton variant="text" color="primary" type="submit" :disabled="submitDisabled"
+                        >Create project</DefaultButton
+                    >
                 </v-card-actions>
             </v-form>
         </v-card>
@@ -37,7 +39,7 @@ import { onEvent } from "@/util/eventBus";
 import * as yup from "yup";
 import { useForm, useIsFormDirty } from "vee-validate";
 import { fieldConfig } from "@/util/vuetifyFormConfig";
-import { withErrorMessage } from "@/util/withErrorMessage";
+import { useBlockingWithErrorMessage, withErrorMessage } from "@/util/withErrorMessage";
 import { useClient } from "@/graphql/client";
 import { toTypedSchema } from "@vee-validate/yup";
 import ConfirmationDialog from "./ConfirmationDialog.vue";
@@ -45,6 +47,7 @@ import { IdObject } from "@/util/types";
 
 const createProjectDialog = ref(false);
 const client = useClient();
+const [blockWithErrorMessage, submitDisabled] = useBlockingWithErrorMessage();
 
 const emit = defineEmits<{
     (event: "created-project", project: IdObject): void;
@@ -73,7 +76,7 @@ onEvent("create-project", () => {
 });
 
 const createProject = handleSubmit(async (state) => {
-    const project = await withErrorMessage(async () => {
+    const project = await blockWithErrorMessage(async () => {
         const res = await client.createProject({
             input: {
                 ...state,

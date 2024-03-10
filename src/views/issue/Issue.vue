@@ -15,7 +15,9 @@
                             <DefaultButton variant="outlined" color="error" @click="cancelEditTitle">
                                 Cancel
                             </DefaultButton>
-                            <DefaultButton color="primary" class="mx-3" @click="saveTitle">Save</DefaultButton>
+                            <DefaultButton color="primary" class="mx-3" :disabled="disableSaveTitle" @click="saveTitle"
+                                >Save</DefaultButton
+                            >
                         </template>
                     </div>
                     <div class="text-medium-emphasis text-subtitle-1">
@@ -399,7 +401,7 @@ import IssueIcon from "@/components/IssueIcon.vue";
 import User from "@/components/info/User.vue";
 import RelativeTimeWrapper from "@/components/RelativeTimeWrapper.vue";
 import { provide } from "vue";
-import { withErrorMessage } from "@/util/withErrorMessage";
+import { useBlockingWithErrorMessage, withErrorMessage } from "@/util/withErrorMessage";
 import TimelineBreak from "@/components/timeline/TimelineBreak.vue";
 import { useAppStore } from "@/store/app";
 import Comment, { Comment as CommentType } from "@/components/timeline/Comment.vue";
@@ -729,6 +731,7 @@ async function addOutgoingRelation(relatedIssue: DefaultIssueInfoFragment) {
 
 const editTitle = ref(false);
 const editTitleText = ref("");
+const [titleBlockWithErrorMessage, disableSaveTitle] = useBlockingWithErrorMessage();
 
 function startEditTitle() {
     editTitleText.value = issue.value!.title;
@@ -740,7 +743,7 @@ function cancelEditTitle() {
 }
 
 async function saveTitle() {
-    const event = await withErrorMessage(async () => {
+    const event = await titleBlockWithErrorMessage(async () => {
         const res = await client.changeIssueTitle({ id: issueId.value, title: editTitleText.value });
         return res.changeIssueTitle.titleChangedEvent;
     }, "Error updating issue title");

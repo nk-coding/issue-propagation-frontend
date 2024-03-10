@@ -38,7 +38,9 @@
                         @confirm="$emit('cancel')"
                     />
                 </DefaultButton>
-                <DefaultButton variant="text" color="primary" type="submit">{{ submitAction }}</DefaultButton>
+                <DefaultButton variant="text" color="primary" type="submit" :disabled="submitDisabled">{{
+                    submitAction
+                }}</DefaultButton>
             </v-card-actions>
         </v-form>
     </v-card>
@@ -88,6 +90,11 @@ const props = defineProps({
     initialValue: {
         type: Object as PropType<Label>,
         required: true
+    },
+    submitDisabled: {
+        type: Boolean,
+        required: false,
+        default: false
     }
 });
 

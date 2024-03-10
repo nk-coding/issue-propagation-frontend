@@ -65,7 +65,10 @@
                                                 </v-list-item>
                                                 <v-list-item
                                                     :disabled="
-                                                        !canCurrentlyModify || item.__typename === 'Body' || editMode
+                                                        !canCurrentlyModify ||
+                                                        item.__typename === 'Body' ||
+                                                        editMode ||
+                                                        submitDisabled
                                                     "
                                                     @click=""
                                                 >
@@ -160,11 +163,21 @@
                                             @confirm="cancelComment"
                                         />
                                     </DefaultButton>
-                                    <DefaultButton color="primary" class="mx-3" @click="saveComment(itemBody)"
+                                    <DefaultButton
+                                        color="primary"
+                                        class="mx-3"
+                                        :disabled="submitDisabled"
+                                        @click="saveComment(itemBody)"
                                         >Save</DefaultButton
                                     >
                                 </template>
-                                <DefaultButton v-else color="primary" class="mx-3" @click="createComment">
+                                <DefaultButton
+                                    v-else
+                                    color="primary"
+                                    class="mx-3"
+                                    :disabled="submitDisabled"
+                                    @click="createComment"
+                                >
                                     Comment
                                 </DefaultButton>
                             </div>
@@ -182,7 +195,7 @@ import User from "@/components/info/User.vue";
 import RelativeTimeWrapper from "../RelativeTimeWrapper.vue";
 import Markdown from "@/components/Markdown.vue";
 import { useClient } from "@/graphql/client";
-import { withErrorMessage } from "@/util/withErrorMessage";
+import { useBlockingWithErrorMessage, withErrorMessage } from "@/util/withErrorMessage";
 import ConfirmationDialog from "@/components/dialog/ConfirmationDialog.vue";
 import { markdownToText } from "@/util/markdownToText";
 import { useRouter } from "vue-router";
@@ -227,6 +240,7 @@ const itemBody = ref(props.item.body);
 const hasChanged = ref(false);
 const client = useClient();
 const router = useRouter();
+const [blockWithErrorMessage, submitDisabled] = useBlockingWithErrorMessage();
 
 const deletedText = "This comment has been deleted";
 const noDescriptionText = "No description provided";
@@ -274,13 +288,13 @@ async function updatedItemBody(value: string) {
 async function saveComment(newContent: string) {
     let newItem: CommentTimelineInfoFragment;
     if (props.item.__typename === "Body") {
-        const newBody = await withErrorMessage(
+        const newBody = await blockWithErrorMessage(
             () => client.updateBody({ id: props.item.id, body: newContent }),
             "Error updating body"
         );
         newItem = newBody.updateBody.body;
     } else {
-        const newComment = await withErrorMessage(
+        const newComment = await blockWithErrorMessage(
             () => client.updateIssueComment({ id: props.item.id, body: newContent }),
             "Error updating comment"
         );
@@ -294,7 +308,7 @@ async function saveComment(newContent: string) {
 }
 
 async function createComment() {
-    const newComment = await withErrorMessage(
+    const newComment = await blockWithErrorMessage(
         () => client.createIssueComment({ issue: issue?.value?.id!, body: itemBody.value, answers: answersId.value }),
         "Error creating comment"
     );
@@ -324,7 +338,7 @@ function selectAnswers() {
 }
 
 async function deleteComment() {
-    const newItem = await withErrorMessage(
+    const newItem = await blockWithErrorMessage(
         () => client.deleteIssueComment({ id: props.item.id }),
         "Error deleting comment"
     );

@@ -5,6 +5,7 @@
             confirmation-message="Create component"
             :form-meta="meta"
             :form-validate="validate"
+            :submit-disabled="submitDisabled"
             color="surface-elevated-3"
             @cancel="cancelCreateComponent"
             @confirm="createComponent"
@@ -42,7 +43,7 @@ import { onEvent } from "@/util/eventBus";
 import * as yup from "yup";
 import { useForm } from "vee-validate";
 import { fieldConfig } from "@/util/vuetifyFormConfig";
-import { withErrorMessage } from "@/util/withErrorMessage";
+import { useBlockingWithErrorMessage, withErrorMessage } from "@/util/withErrorMessage";
 import { NodeReturnType, useClient } from "@/graphql/client";
 import { toTypedSchema } from "@vee-validate/yup";
 import ComponentTemplateAutocomplete from "../input/ComponentTemplateAutocomplete.vue";
@@ -55,6 +56,7 @@ import { IdObject } from "@/util/types";
 
 const createComponentDialog = ref(false);
 const client = useClient();
+const [blockWithErrorMessage, submitDisabled] = useBlockingWithErrorMessage();
 
 const emit = defineEmits<{
     (event: "created-component", component: IdObject): void;
@@ -108,7 +110,7 @@ onEvent("create-component", () => {
 });
 
 const createComponent = handleSubmit(async (state) => {
-    const component = await withErrorMessage(async () => {
+    const component = await blockWithErrorMessage(async () => {
         const res = await client.createComponent({
             input: {
                 ...state,

@@ -33,7 +33,7 @@
                     @confirm="$emit('cancel')"
                 />
             </DefaultButton>
-            <DefaultButton variant="text" color="primary" @click="next">
+            <DefaultButton variant="text" color="primary" @click="next" :disabled="submitDisabled && step == 2">
                 {{ step == 1 ? "Next" : confirmationMessage }}
             </DefaultButton>
         </v-card-actions>
@@ -64,6 +64,11 @@ const props = defineProps({
     formValidate: {
         type: Function,
         required: true
+    },
+    submitDisabled: {
+        type: Boolean,
+        required: false,
+        default: false
     }
 });
 

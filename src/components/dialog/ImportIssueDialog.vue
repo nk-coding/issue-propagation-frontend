@@ -3,6 +3,7 @@
         <ImportDialogContent
             item-name="issue"
             confirmation-message="Import issue"
+            :submit-disabled="submitDisabled"
             @cancel="importIssueDialog = false"
             @import="importIssue($event as IdObject)"
         >
@@ -29,11 +30,12 @@ import ImportDialogContent from "./ImportDialogContent.vue";
 import ExternalIssueAutocomplete from "../input/ExternalIssueAutocomplete.vue";
 import Issue from "../info/Issue.vue";
 import { DefaultIssueInfoFragment } from "@/graphql/generated";
-import { withErrorMessage } from "@/util/withErrorMessage";
+import { useBlockingWithErrorMessage, withErrorMessage } from "@/util/withErrorMessage";
 import { IdObject } from "@/util/types";
 
 const importIssueDialog = ref(false);
 const client = useClient();
+const [blockWithErrorMessage, submitDisabled] = useBlockingWithErrorMessage();
 
 const emit = defineEmits<{
     (event: "imported-issue", issue: IdObject): void;
@@ -51,7 +53,7 @@ onEvent("import-issue", () => {
 });
 
 async function importIssue(issue: IdObject) {
-    withErrorMessage(async () => {
+    blockWithErrorMessage(async () => {
         await client.addIssueToTrackable({
             issue: issue.id,
             trackable: props.trackable

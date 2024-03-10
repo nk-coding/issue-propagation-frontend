@@ -7,6 +7,7 @@
             submit-action="Create label"
             :trackable="trackable"
             :initial-value="initialValue"
+            :submit-disabled="submitDisabled"
             @submit="createLabel"
             @cancel="createLabelDialog = false"
         />
@@ -16,12 +17,13 @@
 import { onEvent } from "@/util/eventBus";
 import { useClient } from "@/graphql/client";
 import { ref } from "vue";
-import { withErrorMessage } from "@/util/withErrorMessage";
+import { useBlockingWithErrorMessage, withErrorMessage } from "@/util/withErrorMessage";
 import LabelDialogContent, { Label } from "./LabelDialogContent.vue";
 import { IdObject } from "@/util/types";
 
 const createLabelDialog = ref(false);
 const client = useClient();
+const [blockWithErrorMessage, submitDisabled] = useBlockingWithErrorMessage();
 
 const emit = defineEmits<{
     (event: "created-label", label: IdObject): void;
@@ -45,7 +47,7 @@ onEvent("create-label", () => {
 });
 
 async function createLabel(state: Label) {
-    const label = await withErrorMessage(async () => {
+    const label = await blockWithErrorMessage(async () => {
         const res = await client.createLabel({
             input: {
                 ...state,

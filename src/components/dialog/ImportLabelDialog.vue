@@ -3,6 +3,7 @@
         <ImportDialogContent
             item-name="label"
             confirmation-message="Import label"
+            :submit-disabled="submitDisabled"
             @cancel="importLabelDialog = false"
             @import="importLabel($event as IdObject)"
         >
@@ -29,11 +30,12 @@ import ImportDialogContent from "./ImportDialogContent.vue";
 import ExternalLabelAutocomplete from "../input/ExternalLabelAutocomplete.vue";
 import Label from "../info/Label.vue";
 import { DefaultLabelInfoFragment } from "@/graphql/generated";
-import { withErrorMessage } from "@/util/withErrorMessage";
+import { useBlockingWithErrorMessage, withErrorMessage } from "@/util/withErrorMessage";
 import { IdObject } from "@/util/types";
 
 const importLabelDialog = ref(false);
 const client = useClient();
+const [blockWithErrorMessage, submitDisabled] = useBlockingWithErrorMessage();
 
 const emit = defineEmits<{
     (event: "imported-label", label: IdObject): void;
@@ -51,7 +53,7 @@ onEvent("import-label", () => {
 });
 
 async function importLabel(label: IdObject) {
-    withErrorMessage(async () => {
+    blockWithErrorMessage(async () => {
         await client.addLabelToTrackable({
             label: label.id,
             trackable: props.trackable

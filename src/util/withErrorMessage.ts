@@ -1,4 +1,5 @@
 import { useAppStore } from "@/store/app";
+import { Ref, ref } from "vue";
 
 export async function withErrorMessage<T>(
     action: () => Promise<T>,
@@ -15,6 +16,22 @@ export async function withErrorMessage<T>(
         console.error(error);
         throw error;
     }
+}
+
+export function useBlockingWithErrorMessage(): [typeof withErrorMessage, Ref<boolean>] {
+    const blocking = ref(false);
+    const blockingWithErrorMessage = async <T>(
+        action: () => Promise<T>,
+        message: string | ((error: unknown) => string)
+    ) => {
+        blocking.value = true;
+        try {
+            return await withErrorMessage(action, message);
+        } finally {
+            blocking.value = false;
+        }
+    };
+    return [blockingWithErrorMessage, blocking];
 }
 
 export function pushErrorMessage(message: string) {

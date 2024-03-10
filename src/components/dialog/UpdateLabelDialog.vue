@@ -8,6 +8,7 @@
             submit-action="Update label"
             :trackable="trackable"
             :initial-value="model"
+            :submit-disabled="submitDisabled"
             @submit="updateLabel"
             @cancel="updateLabelDialog = false"
         />
@@ -16,7 +17,7 @@
 <script lang="ts" setup>
 import { useClient } from "@/graphql/client";
 import { PropType } from "vue";
-import { withErrorMessage } from "@/util/withErrorMessage";
+import { useBlockingWithErrorMessage, withErrorMessage } from "@/util/withErrorMessage";
 import LabelDialogContent, { Label } from "./LabelDialogContent.vue";
 import { computed } from "vue";
 import { IdObject } from "@/util/types";
@@ -30,6 +31,7 @@ const updateLabelDialog = computed({
     }
 });
 const client = useClient();
+const [blockWithErrorMessage, submitDisabled] = useBlockingWithErrorMessage();
 
 const emit = defineEmits<{
     (event: "updated-label", label: IdObject): void;
@@ -48,7 +50,7 @@ const model = defineModel({
 });
 
 async function updateLabel(state: Label) {
-    const label = await withErrorMessage(async () => {
+    const label = await blockWithErrorMessage(async () => {
         const res = await client.updateLabel({
             input: {
                 ...state,

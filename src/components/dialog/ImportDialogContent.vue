@@ -4,7 +4,7 @@
         <div class="pa-4">
             <slot v-if="itemToImport == undefined" name="select" :selected-item="selectedItem" />
             <v-sheet v-else class="pa-4 d-flex align-center" :border="true" rounded="lger" color="surface-elevated-3">
-                <div class="flex-grow-1">
+                <div class="flex-grow-1 min-width-0">
                     <slot name="display" :item="itemToImport" />
                 </div>
                 <IconButton @click="itemToImport = undefined">
@@ -16,7 +16,12 @@
         <v-card-actions>
             <v-spacer />
             <DefaultButton variant="text" color="" @click="$emit('cancel')"> Cancel </DefaultButton>
-            <DefaultButton variant="text" color="primary" @click="importItem" :disabled="itemToImport == undefined">
+            <DefaultButton
+                variant="text"
+                color="primary"
+                @click="importItem"
+                :disabled="itemToImport == undefined || submitDisabled"
+            >
                 {{ confirmationMessage }}
             </DefaultButton>
         </v-card-actions>
@@ -33,6 +38,11 @@ defineProps({
     confirmationMessage: {
         type: String,
         required: true
+    },
+    submitDisabled: {
+        type: Boolean,
+        default: false,
+        required: false
     }
 });
 
@@ -55,5 +65,9 @@ function importItem() {
 @use "@/styles/settings.scss";
 .import-dialog {
     width: min(500px, calc(100vw - 3 * settings.$side-bar-width));
+}
+
+.min-width-0 {
+    min-width: 0;
 }
 </style>

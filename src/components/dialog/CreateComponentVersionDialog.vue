@@ -5,6 +5,7 @@
             confirmation-message="Create component version"
             :form-meta="meta"
             :form-validate="validate"
+            :submit-disabled="submitDisabled"
             color="surface-elevated-3"
             @cancel="cancelCreateComponentVersion"
             @confirm="createComponentVersion"
@@ -42,7 +43,7 @@ import { onEvent } from "@/util/eventBus";
 import * as yup from "yup";
 import { useForm } from "vee-validate";
 import { fieldConfig } from "@/util/vuetifyFormConfig";
-import { withErrorMessage } from "@/util/withErrorMessage";
+import { useBlockingWithErrorMessage, withErrorMessage } from "@/util/withErrorMessage";
 import { NodeReturnType, useClient } from "@/graphql/client";
 import { toTypedSchema } from "@vee-validate/yup";
 import TemplatedNodeDialogContent from "./TemplatedNodeDialogContent.vue";
@@ -53,6 +54,7 @@ import { IdObject } from "@/util/types";
 
 const createComponentVersionDialog = ref(false);
 const client = useClient();
+const [blockWithErrorMessage, submitDisabled] = useBlockingWithErrorMessage();
 
 const props = defineProps({
     component: {
@@ -109,7 +111,7 @@ onEvent("create-component-version", () => {
 });
 
 const createComponentVersion = handleSubmit(async (state) => {
-    const component = await withErrorMessage(async () => {
+    const componentVersion = await blockWithErrorMessage(async () => {
         const res = await client.createComponentVersion({
             input: {
                 ...state,
@@ -121,7 +123,7 @@ const createComponentVersion = handleSubmit(async (state) => {
         return res.createComponentVersion.componentVersion;
     }, "Error creating component");
     createComponentVersionDialog.value = false;
-    emit("created-component-version", component);
+    emit("created-component-version", componentVersion);
 });
 
 function cancelCreateComponentVersion() {

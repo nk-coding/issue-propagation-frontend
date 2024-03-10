@@ -3,6 +3,7 @@
         <ImportDialogContent
             item-name="project permission"
             confirmation-message="Import permission"
+            :submit-disabled="submitDisabled"
             @cancel="importProjectPermissionDialog = false"
             @import="importProjectPermission($event as IdObject)"
         >
@@ -28,12 +29,13 @@ import { ref } from "vue";
 import ImportDialogContent from "./ImportDialogContent.vue";
 import ExternalProjectPermissionAutocomplete from "../input/ExternalProjectPermissionAutocomplete.vue";
 import { DefaultProjectPermissionInfoFragment } from "@/graphql/generated";
-import { withErrorMessage } from "@/util/withErrorMessage";
+import { useBlockingWithErrorMessage, withErrorMessage } from "@/util/withErrorMessage";
 import Permission from "../info/Permission.vue";
 import { IdObject } from "@/util/types";
 
 const importProjectPermissionDialog = ref(false);
 const client = useClient();
+const [blockWithErrorMessage, submitDisabled] = useBlockingWithErrorMessage();
 
 const emit = defineEmits<{
     (event: "imported-project-permission", projectPermission: IdObject): void;
@@ -51,7 +53,7 @@ onEvent("import-permission", () => {
 });
 
 async function importProjectPermission(projectPermission: IdObject) {
-    withErrorMessage(async () => {
+    blockWithErrorMessage(async () => {
         await client.addProjectPermissionToProject({
             projectPermission: projectPermission.id,
             project: props.project

@@ -3,6 +3,7 @@
         <ImportDialogContent
             item-name="component permission"
             confirmation-message="Import permission"
+            :submit-disabled="submitDisabled"
             @cancel="importComponentPermissionDialog = false"
             @import="importComponentPermission($event as IdObject)"
         >
@@ -28,12 +29,13 @@ import { ref } from "vue";
 import ImportDialogContent from "./ImportDialogContent.vue";
 import ExternalComponentPermissionAutocomplete from "../input/ExternalComponentPermissionAutocomplete.vue";
 import { DefaultComponentPermissionInfoFragment } from "@/graphql/generated";
-import { withErrorMessage } from "@/util/withErrorMessage";
+import { useBlockingWithErrorMessage, withErrorMessage } from "@/util/withErrorMessage";
 import Permission from "../info/Permission.vue";
 import { IdObject } from "@/util/types";
 
 const importComponentPermissionDialog = ref(false);
 const client = useClient();
+const [blockWithErrorMessage, submitDisabled] = useBlockingWithErrorMessage();
 
 const emit = defineEmits<{
     (event: "imported-component-permission", componentPermission: IdObject): void;
@@ -51,7 +53,7 @@ onEvent("import-permission", () => {
 });
 
 async function importComponentPermission(componentPermission: IdObject) {
-    withErrorMessage(async () => {
+    blockWithErrorMessage(async () => {
         await client.addComponentPermissionToComponent({
             componentPermission: componentPermission.id,
             component: props.component
