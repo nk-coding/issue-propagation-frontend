@@ -305,7 +305,7 @@
                             class="mb-2"
                             hide-details
                             autofocus
-                            menu-mode="repeating"
+                            menu-mode="initial"
                             :initial-context="trackable ?? undefined"
                             @selected-item="addOutgoingRelation"
                         />

@@ -175,6 +175,9 @@ async function resetSearch() {
 
 function selectedElement(value: any) {
     let id: string | undefined;
+    const reopenMenu =
+        props.menuMode == "repeating" ||
+        (props.menuMode == "initial" && props.mode == "add-context" && value.length == 1);
     if (typeof value === "string") {
         id = value;
     } else if (Array.isArray(value)) {
@@ -188,6 +191,7 @@ function selectedElement(value: any) {
         if (item != undefined) {
             emit("selected-item", item as T);
         }
+        resetSearch();
     } else if (props.mode == "add") {
         if (item != undefined) {
             emit("selected-item", item as T);
@@ -210,12 +214,13 @@ function selectedElement(value: any) {
         menu.value = false;
     }
 
-    if (props.menuMode == "repeating") {
+    if (reopenMenu) {
         nextTick(() => {
-            menu.value = true;
+            setTimeout(() => {
+                menu.value = true;
+            }, 10);
         });
     }
-    resetSearch();
 }
 
 function transformToContextItem(item: C): C {
